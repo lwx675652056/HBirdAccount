@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <com.hbird.base.mvc.widget.HeaderViewPager
+        android:id="@+id/scrollableLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        app:hvp_topOffset="0dp">
+
+        <ScrollView
+            android:id="@+id/ll_content"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_19_80"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:id="@+id/ll_about_top"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <include
+                    android:id="@+id/layout_top"
+                    layout="@layout/index_top_chart"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/height_3_80"
+                    android:background="@color/colorPrimary">
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:scaleType="fitXY"
+                        android:src="@mipmap/ic_index_fen"/>
+                </RelativeLayout>
+            </LinearLayout>
+        </ScrollView>
+
+        <include
+            android:id="@+id/layout_top"
+            layout="@layout/top_date"/>
+
+        <LinearLayout
+            android:id="@+id/ll_nets"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_4_80"
+            android:background="@color/text_468DE1"
+            android:orientation="horizontal"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/width_4_80"
+                android:src="@mipmap/ic_net_action"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/width_2_80"
+                android:text="当前网络不可用，请检查您的网络"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_2"/>
+        </LinearLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/iv_no_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginTop="@dimen/height_6_80"
+                android:src="@mipmap/ic_normal_data"
+                android:visibility="gone"/>
+
+            <com.hbird.base.mvc.widget.XListView
+                android:id="@+id/xList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:divider="@color/line"
+                android:listSelector="@android:color/transparent"
+                android:overScrollMode="never"
+                android:visibility="gone"/>
+        </FrameLayout>
+    </com.hbird.base.mvc.widget.HeaderViewPager>
+</LinearLayout>

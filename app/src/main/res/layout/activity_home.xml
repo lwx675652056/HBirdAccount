@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ll_home_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.hbird.base.mvc.widget.NoScrollViewPager
+            android:id="@+id/viewpager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/height_7_80"
+            android:layout_weight="1"
+            android:background="@color/white"/>
+
+        <ImageView
+            android:id="@+id/index_fragment_img_filter"
+            android:layout_width="@dimen/height_9_80"
+            android:layout_height="@dimen/height_9_80"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="end|bottom"
+            android:layout_marginBottom="@dimen/height_7_80"
+            android:layout_marginRight="@dimen/width_2_80"
+            android:src="@mipmap/btn_editor"/>
+
+        <LinearLayout
+            android:id="@+id/ll_bottom_dh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:background="@color/bg_e6e6e6"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_7_80"
+                android:orientation="horizontal"
+                android:paddingTop="1dp">
+
+                <RadioGroup
+                    android:id="@+id/rg_top"
+                    style="@style/TabRadioGroup">
+
+                    <com.hbird.base.mvc.widget.TabRadioButton
+                        android:id="@+id/button_mingxi"
+                        style="@style/TabRadioButtonWithText"
+                        android:drawableTop="@drawable/tab_conversation_icon_selector"
+                        android:text="明细"
+                        app:trb_enable_animation="true"/>
+
+                    <com.hbird.base.mvc.widget.TabRadioButton
+                        android:id="@+id/button_tubiao"
+                        style="@style/TabRadioButtonWithText"
+                        android:drawableTop="@drawable/tab_conversation_icon2_selector"
+                        android:text="图表"
+                        app:trb_enable_animation="true"/>
+
+                    <com.hbird.base.mvc.widget.TabRadioButton
+                        android:id="@+id/button_zhanwei"
+                        style="@style/TabRadioButtonWithText"
+                        android:text=""
+                        app:trb_enable_animation="false"/>
+
+                    <com.hbird.base.mvc.widget.TabRadioButton
+                        android:id="@+id/button_lingpp"
+                        style="@style/TabRadioButtonWithText"
+                        android:drawableTop="@drawable/tab_conversation_icon4_selector"
+                        android:text="领票票"
+                        app:trb_enable_animation="true"/>
+
+                    <com.hbird.base.mvc.widget.TabRadioButton
+                        android:id="@+id/button_wo"
+                        style="@style/TabRadioButtonWithText"
+                        android:drawableTop="@drawable/tab_conversation_icon3_selector"
+                        android:text="我的"
+                        app:trb_enable_animation="true"/>
+                </RadioGroup>
+            </LinearLayout>
+        </LinearLayout>
+
+        <com.hbird.base.mvc.widget.TabRadioButton
+            android:id="@+id/btn_jizhang"
+            style="@style/TabRadioButtonWithText"
+            android:layout_width="@dimen/height_8_80"
+            android:layout_height="@dimen/height_10_80"
+            android:layout_gravity="center_horizontal|bottom"
+            android:drawableTop="@drawable/tab_conversation_icon5_selector"
+            android:text=""
+            app:trb_enable_animation="true"/>
+    </FrameLayout>
+</LinearLayout>

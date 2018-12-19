@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_13_80"
+        android:orientation="vertical"
+        android:background="@drawable/item_selector_white_group"
+        android:layout_marginRight="@dimen/width_2_80"
+        android:layout_marginLeft="@dimen/width_2_80"
+        android:layout_marginBottom="@dimen/width_2_80"
+        >
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/height_2_80">
+            <TextView
+                android:id="@+id/tv_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(2018年08月15日加入)"
+                android:textSize="@dimen/text_size_2"
+                android:textColor="@color/text_808080"
+                android:layout_marginRight="@dimen/width_4_80"
+                android:layout_marginLeft="@dimen/width_4_80"
+                />
+            <TextView
+                android:id="@+id/tv_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="未读"
+                android:textSize="@dimen/text_size_2"
+                android:gravity="right"
+                android:layout_marginRight="@dimen/width_4_80"
+                android:layout_gravity="right"
+                android:textColor="@color/bg_f15c3c"/>
+        </RelativeLayout>
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:text="您所在的您所在的您所在的您所在的您所在的您所在的您所在"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:textSize="@dimen/text_size_4"
+            android:textColor="@color/text_333333"
+            android:maxLines="2"
+            />
+
+    </LinearLayout>
+
+
+</LinearLayout>

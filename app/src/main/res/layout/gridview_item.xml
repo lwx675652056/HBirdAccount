@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/width_1_80"
+    android:orientation="vertical">
+    <FrameLayout
+        android:layout_width="@dimen/width_10_80"
+        android:layout_height="@dimen/width_10_80"
+        android:layout_gravity="center"
+        android:gravity="center">
+        <RelativeLayout
+            android:id="@+id/rl_bg"
+            android:layout_width="@dimen/width_10_80"
+            android:layout_height="@dimen/width_10_80"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:background="@drawable/item_choose_bg">
+            <ImageView
+                android:id="@+id/iv_head"
+                android:layout_centerInParent="true"
+                android:padding="4dp"
+                android:layout_width="@dimen/width_6_80"
+                android:layout_height="@dimen/width_6_80" />
+        </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_img_choose"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_chichuxuanzhong_normal"
+            android:layout_gravity="bottom|right"
+            android:visibility="gone"/>
+    </FrameLayout>
+
+
+    <TextView
+        android:id="@+id/tv_gridview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_0_80"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:text="电脑"/>
+
+</LinearLayout>

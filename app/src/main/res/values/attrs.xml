@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="barCharts">
+        <attr name="borderColor" format="color" />
+        <attr name="lineColor" format="color" />
+        <attr name="titleTextColor" format="color" />
+        <attr name="title" format="string" />
+        <attr name="titleTextSize" format="dimension" />
+
+        <attr name="labelTextSize" format="dimension" />
+        <attr name="labelTextColor" format="color" />
+
+        <attr name="descriptionTextSize" format="dimension" />
+        <attr name="descriptionTextColor" format="color" />
+
+        <attr name="dataTextSize" format="dimension" />
+        <attr name="dataTextColor" format="color" />
+
+        <attr name="leftTextSpace" format="dimension" />
+        <attr name="topTextSpace" format="dimension" />
+        <attr name="bottomTextSpace" format="dimension" />
+        <attr name="barShowNumber" format="integer" />
+        <attr name="isClickAnimation" format="boolean" />
+
+    </declare-styleable>
+
+    <attr name="borderRadius" format="dimension" />
+    <attr name="type">
+        <enum name="circle" value="0" />
+        <enum name="round" value="1" />
+    </attr>
+    <!--圆角图片-->
+    <declare-styleable name="RoundImageView">
+        <attr name="borderRadius" />
+        <attr name="type" />
+    </declare-styleable>
+    <!--圆形头像的设置-->
+    <declare-styleable name="CircleImageView">
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+    </declare-styleable>
+    <!--水波纹圆形进度-->
+    <declare-styleable name="WaterWaveProgress">
+        <attr name="progressWidth" format="dimension" />
+        <attr name="fontSize" format="dimension" />
+        <attr name="progressColor" format="color" />
+        <attr name="progressBgColor" format="color" />
+        <attr name="waterWaveColor" format="color" />
+        <attr name="waterWaveBgColor" format="color" />
+        <attr name="progress2WaterWidth" format="dimension" />
+        <attr name="showProgress" format="boolean" />
+        <attr name="showNumerical" format="boolean" />
+        <attr name="textColors" format="color" />
+        <attr name="progress" format="integer" />
+        <attr name="maxProgress" format="integer" />
+    </declare-styleable>
+    <declare-styleable name="HeaderViewPager">
+        <attr name="hvp_topOffset" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabRadioButton">
+        <attr name="trb_enable_animation" format="boolean"/>
+        <attr name="trb_duration" format="integer"/>
+        <attr name="trb_scale_rate" format="float"/>
+        <attr name="trb_drawable_size" format="dimension"/>
+    </declare-styleable>
+    <!--仿ios button 开关-->
+    <declare-styleable name="IosLikeToggleButton">
+        <attr name="android:layout_width"/>
+        <attr name="on_color" format="color"/>
+        <attr name="off_color" format="color"/>
+        <attr name="toggle" format="boolean"/>
+    </declare-styleable>
+    <declare-styleable name="RippleView">
+        <attr name="rv_alpha" format="integer" />
+        <attr name="rv_framerate" format="integer"/>
+        <attr name="rv_rippleDuration" format="integer"/>
+        <attr name="rv_zoomDuration" format="integer" />
+        <attr name="rv_color" format="color" />
+        <attr name="rv_centered" format="boolean" />
+        <attr name="rv_type" format="enum">
+            <enum name="simpleRipple" value="0"/>
+            <enum name="doubleRipple" value="1"/>
+            <enum name="rectangle" value="2" />
+        </attr>
+        <attr name="rv_ripplePadding" format="dimension" />
+        <attr name="rv_zoom" format="boolean" />
+        <attr name="rv_zoomScale" format="float" />
+
+    </declare-styleable>
+
+</resources>

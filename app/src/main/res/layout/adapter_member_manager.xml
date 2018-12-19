@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="horizontal">
+
+    <CheckBox
+        android:id="@+id/cb_quanxuan"
+        style="@style/CustomCheckBoxTheme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:checked="false"
+        android:clickable="true"
+        android:paddingBottom="@dimen/dp_25_x"
+        android:paddingEnd="@dimen/dp_5_x"
+        android:paddingTop="@dimen/dp_25_x"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:id="@+id/rl_linear"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_10_80"
+        android:layout_marginBottom="@dimen/width_2_80"
+        android:layout_marginLeft="@dimen/width_2_80"
+        android:layout_marginRight="@dimen/width_2_80"
+        android:background="@drawable/item_selector_white_group">
+
+        <com.hbird.base.mvc.widget.cycleView
+            android:id="@+id/img"
+            android:layout_width="@dimen/width_12_80"
+            android:layout_height="@dimen/width_12_80"
+            android:layout_centerVertical="true"
+            android:layout_gravity="bottom|center"
+            android:layout_marginLeft="@dimen/width_2_80"
+            android:src="@mipmap/ic_me_normal_headr"
+            app:border_color="@color/bg_e6e6e6"
+            app:border_width="1dp"
+            app:type="circle"/>
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/height_9_80"
+            android:gravity="center_vertical"
+            android:text="知呼哲野"
+            android:textColor="@color/text_333333"
+
+            android:textSize="@dimen/text_size_6"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:gravity="center_vertical"
+            android:text="(2018年08月15日加入)"
+            />
+    </RelativeLayout>
+
+</LinearLayout>

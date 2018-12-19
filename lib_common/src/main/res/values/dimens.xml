@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--未选中字体大小-->
+    <dimen name="design_bottom_navigation_text_size">12sp</dimen>
+    <!--选中字体大小-->
+    <dimen name="design_bottom_navigation_active_text_size">12sp</dimen>
+
+    <!--字体大小-->
+    <dimen name="text_size_9sp">9.0sp</dimen>
+    <dimen name="text_size_10sp">10.0sp</dimen>
+    <dimen name="text_size_11sp">11.0sp</dimen>
+    <dimen name="text_size_12sp">12.0sp</dimen>
+    <dimen name="text_size_13sp">13.0sp</dimen>
+    <dimen name="text_size_14sp">14.0sp</dimen>
+    <dimen name="text_size_15sp">15.0sp</dimen>
+    <dimen name="text_size_16sp">16.0sp</dimen>
+    <dimen name="text_size_17sp">17.0sp</dimen>
+    <dimen name="text_size_18sp">18.0sp</dimen>
+    <dimen name="text_size_19sp">19.0sp</dimen>
+    <dimen name="text_size_20sp">20.0sp</dimen>
+    <dimen name="text_size_21sp">21.0sp</dimen>
+    <dimen name="text_size_22sp">22.0sp</dimen>
+    <dimen name="text_size_23sp">23.0sp</dimen>
+    <dimen name="text_size_24sp">24.0sp</dimen>
+    <dimen name="text_size_28sp">28.0sp</dimen>
+    <dimen name="text_size_31sp">31.0sp</dimen>
+    <dimen name="text_size_37sp">37.0sp</dimen>
+</resources>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <include layout="@layout/activity_headers"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line2"/>
+    <ImageView
+        android:id="@+id/iv_bg_icons"
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_4_80"
+        android:src="@mipmap/ic_budget_bg_gray"/>
+
+    <TextView
+        android:id="@+id/tv_descs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="预算金额"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:textSize="@dimen/text_size_6"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_bdbdbd"/>
+    <TextView
+        android:id="@+id/tv_descs2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="设置您每个月的总预算，尽量减少修改次数~"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:textSize="@dimen/text_size_4"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/text_bdbdbd"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:layout_marginTop="@dimen/height_3_80">
+        <TextView
+            android:id="@+id/tv_moneys_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="￥"
+            android:textStyle="bold"
+            android:visibility="gone"
+            android:textSize="@dimen/text_size_12"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_F15C3C"/>
+        <TextView
+            android:id="@+id/tv_moneys"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_12"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/text_F15C3C"/>
+    </LinearLayout>
+
+
+    <include layout="@layout/item_soft_key_bodget"/>
+
+</LinearLayout>

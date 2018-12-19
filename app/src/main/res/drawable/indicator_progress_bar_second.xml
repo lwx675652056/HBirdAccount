@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@android:id/background"
+        android:drawable="@drawable/progress_gray" />
+    <item
+        android:id="@+id/indicator_progress"
+        android:drawable="@drawable/progress_orange"></item>
+    <!-- <item android:id="@+id/indicator_pattern">
+         <bitmap
+             android:src="@drawable/progressbar_pattern"
+             android:tileMode="repeat" />
+     </item >-->
+
+</layer-list>

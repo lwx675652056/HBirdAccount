@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="@dimen/width_10_80"
+    android:id="@+id/ll_contents"
+    android:background="@null"
+    android:layout_marginLeft="@dimen/width_7_80"
+    android:layout_marginRight="@dimen/width_7_80"
+    android:orientation="vertical"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_6_80">
+            <TextView
+                android:id="@+id/tv_data"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:layout_marginTop="@dimen/height_0_80"
+                tools:text="2018/07"
+                android:textSize="@dimen/text_size_1"
+                android:textColor="@color/text_808080"/>
+            <TextView
+                android:id="@+id/tv_precent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                tools:text="60%"
+                android:singleLine="true"
+                android:layout_marginTop="@dimen/height_3_80"
+                android:textSize="@dimen/text_size_2"
+                android:textColor="@color/text_F15C3C"/>
+        </RelativeLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_20_80">
+            <com.hbird.base.mvc.widget.IndicatorChartProgressBar
+                xmlns:indicator="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/progressBars"
+                style="@style/Widget.ProgressBar.IndicatorProgressBarStyleSecond"
+                android:indeterminateOnly="false"
+                android:progressDrawable="@drawable/indicator_chart_progress2_bar"
+                android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+                android:layout_width="@dimen/width_7_80"
+                android:layout_height="match_parent"
+                android:layout_gravity="center_horizontal"
+                indicator:textAlign="center"
+                indicator:textSize="@dimen/text_size_2" />
+            <RelativeLayout
+                android:id="@+id/view_emptys"
+                android:layout_width="@dimen/width_7_80"
+                android:layout_gravity="center_horizontal"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:background="@drawable/chart_empty_bg">
+
+            </RelativeLayout>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<!--测试 html与js 交互 -->
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,user-scalable=no"/>
+    <title></title>
+    <style type="text/css">
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        html,body{
+            height: 100%;
+            /*overflow: hidden;*/
+        }
+
+
+    </style>
+</head>
+
+<body>
+<div id="wrap">
+    <h1>test</h1>
+
+    <button id="btn1">点击事件1</button>
+    <button id="btn2">点击事件2</button>
+
+</div>
+</body>
+
+
+<script type="text/javascript">
+
+
+    let btn1 = document.getElementById('btn1');
+    let btn2 = document.getElementById('btn2');
+
+    btn1.addEventListener("click", function(e) {
+        console.log('点击事件1');
+    });
+
+    btn2.onclick = function(){
+        console.log('点击事件2');
+        s();
+    }
+
+    function sum(a,b){
+         return a+b;
+    }
+    function s(){
+        var result =window.android.back();
+        console.log(window);
+
+    }
+
+
+</script>
+
+
+</html>

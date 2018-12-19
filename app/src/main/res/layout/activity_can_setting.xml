@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <include layout="@layout/activity_headers"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/line2"/>
+    <TextView
+        android:id="@+id/tv_xiaolv_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:text="每月固定大额总支出："
+        android:textSize="@dimen/text_size_4"
+        android:drawableLeft="@mipmap/ic_title_line"
+        android:drawablePadding="@dimen/width_2_80"
+        android:textColor="@color/text_333333"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_moneyToBig"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_6_80"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:hint="￥0"
+            android:maxLength="8"
+            android:inputType="number"
+            android:background="@null"
+            android:textColor="@color/text_808080"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（如房贷 ¥8000）"
+            android:textColor="@color/text_bdbdbd"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:textSize="@dimen/text_size_2"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:background="@color/line2"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:text="每月固定生活总支出："
+        android:textSize="@dimen/text_size_4"
+        android:drawableLeft="@mipmap/ic_title_line"
+        android:drawablePadding="@dimen/width_2_80"
+        android:textColor="@color/text_333333"/>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <EditText
+            android:id="@+id/et_moneyToLife"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_6_80"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:hint="￥0"
+            android:maxLength="8"
+            android:background="@null"
+            android:inputType="number"
+            android:textColor="@color/text_808080"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="（如花费 ¥200）"
+            android:textColor="@color/text_bdbdbd"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:textSize="@dimen/text_size_2"/>
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:background="@color/line2"/>
+
+    <RelativeLayout
+        android:id="@+id/iv_finish"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_6_80"
+        android:layout_marginTop="@dimen/height_10_80"
+        android:layout_marginLeft="@dimen/width_10_80"
+        android:layout_marginRight="@dimen/width_10_80"
+        android:background="@drawable/btn_bg_login">
+        <TextView
+            android:id="@+id/bt_my_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="完成"
+            android:layout_centerInParent="true"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_6" />
+    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_12_80"
+        android:orientation="vertical">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:text="*存钱效率=当月结余/（当月总支出-当月固定支出）"
+            android:textSize="@dimen/text_size_2"
+            android:textColor="@color/text_bdbdbd"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/height_0_80"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:text="*当月结余=单月收入-当月总支出"
+            android:textSize="@dimen/text_size_2"
+            android:textColor="@color/text_bdbdbd"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/height_0_80"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:text="* 固定支出不会自动记录到明细中，仅作为计算用"
+            android:textSize="@dimen/text_size_2"
+            android:textColor="@color/text_bdbdbd"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/height_0_80"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:text="* 每月修改数据只对当月有效，否则下个月生效。"
+            android:textSize="@dimen/text_size_2"
+            android:textColor="@color/text_bdbdbd"/>
+
+    </LinearLayout>
+
+</LinearLayout>

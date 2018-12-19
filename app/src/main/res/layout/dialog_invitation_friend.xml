@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/lLayout_bg"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+
+              android:orientation="vertical" >
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_22_80"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/bg_cgyqhy_disabled"/>
+        <ImageView
+            android:id="@+id/iv_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:padding="@dimen/width_4_80"
+            android:src="@mipmap/ic_close_normal"/>
+    </FrameLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_16_80"
+        android:background="@drawable/bg_invitation_firend_shapes"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_num1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="成功邀请2位好友"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_10"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_2_80"/>
+        <TextView
+            android:id="@+id/tv_num2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="您获得了3张丰丰票哟~"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_6"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_1_80"/>
+       <ImageView
+           android:id="@+id/iv_chakan"
+           android:layout_width="@dimen/width_20_80"
+           android:layout_height="@dimen/height_6_80"
+           android:src="@mipmap/ic_dhtcqck_normal"
+           android:layout_marginTop="@dimen/height_0_80"
+           android:layout_gravity="center_horizontal"/>
+    </LinearLayout>
+
+</LinearLayout>

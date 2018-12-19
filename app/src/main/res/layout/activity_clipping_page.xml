@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <include layout="@layout/header_title_layout">
+
+    </include>
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.hbird.base.mvc.global.modle.PerfectControlImageView
+            app:titleHeight="@dimen/height_5_80"
+            android:scaleType="matrix"
+            android:id="@+id/targetImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <com.hbird.base.mvc.global.modle.CuttingFrameView
+            app:headerHeight="@dimen/height_5_80"
+            android:id="@+id/cutingFrame"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+
+    </FrameLayout>
+
+</LinearLayout>

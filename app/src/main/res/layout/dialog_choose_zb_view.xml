@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/lLayout_bg"
+              android:layout_width="match_parent"
+              android:layout_height="@dimen/height_40_80"
+              android:background="@drawable/bg_pop_shapes"
+              android:orientation="vertical" >
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_6_80"
+        android:gravity="center"
+        android:background="@color/colorPrimary">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/iv_img"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/icon_xzzb_disabled" />
+            <TextView
+                android:id="@+id/title_xxx"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/width_2_80"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:text="选 择 账 本" />
+        </LinearLayout>
+
+    </RelativeLayout>
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:divider="@null"
+        android:overScrollMode="never"
+        android:listSelector="@android:color/transparent"
+        android:transcriptMode="normal">
+
+    </ListView>
+
+
+</LinearLayout>

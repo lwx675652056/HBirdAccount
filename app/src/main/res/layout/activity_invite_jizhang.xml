@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+    <include layout="@layout/activity_headers_zb"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/height_4_80"
+        android:src="@mipmap/icon_yqjzch_disabled"/>
+
+    <TextView
+        android:id="@+id/tv_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/height_4_80"
+        android:text="每个账本最多5人记录，还可邀请5人"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_4"/>
+
+    <com.hbird.base.mvc.widget.MyGridView
+        android:id="@+id/grde_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/width_10_80"
+        android:layout_marginRight="@dimen/width_10_80"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:background="@color/white"
+        android:listSelector="#00000000"
+        android:numColumns="5"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/height_4_80"
+        android:gravity="bottom">
+
+        <RelativeLayout
+            android:id="@+id/rl_wx_invite"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_6_80"
+            android:layout_gravity="bottom"
+            android:layout_marginLeft="@dimen/width_6_80"
+            android:layout_marginRight="@dimen/width_6_80"
+            android:background="@drawable/btn_bg_login">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="微信邀请记账"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_6"/>
+        </RelativeLayout>
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/line2">
+    <include layout="@layout/activity_headers"/>
+
+    <ListView
+    android:id="@+id/lv"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/line2"
+    android:layout_marginTop="@dimen/width_4_80"
+    android:divider="@null"
+    android:listSelector="@android:color/transparent"
+    android:transcriptMode="normal">
+
+    </ListView>
+    <LinearLayout
+        android:id="@+id/ll_add_member"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_10_80"
+        android:gravity="center"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:background="@drawable/item_selector_white_hint">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="添加成员"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="@dimen/text_size_6"
+            android:drawableLeft="@mipmap/icon_tjzb_normal"
+            android:gravity="center"
+            android:drawablePadding="@dimen/width_2_80"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="bottom">
+        <TextView
+            android:id="@+id/tv_more_yao"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="最多可以邀请4人哦~"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/height_2_80"
+            android:textColor="@color/text_bdbdbd" />
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <RelativeLayout
+                android:id="@+id/tv_editor"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/item_selector_white_hint"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@drawable/item_text_hint"
+                    android:textSize="@dimen/text_size_8"
+                    android:padding="@dimen/width_3_80"
+                    android:gravity="center_horizontal"
+                    android:text="编辑"
+                    android:drawableLeft="@mipmap/ic_editors"
+                    android:drawablePadding="@dimen/width_2_80"/>
+            </RelativeLayout>
+            <RelativeLayout
+                android:id="@+id/tv_del"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:visibility="gone"
+                android:gravity="center_horizontal">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_8"
+                    android:padding="@dimen/width_3_80"
+                    android:gravity="center_horizontal"
+                    android:text="删除"
+                    android:drawableLeft="@mipmap/ic_white_del"
+                    android:drawablePadding="@dimen/width_2_80"/>
+            </RelativeLayout>
+        </FrameLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

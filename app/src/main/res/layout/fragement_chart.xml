@@ -1,0 +1,300 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:layout_marginLeft="@dimen/width_4_80"
+              android:layout_marginRight="@dimen/width_4_80"
+              android:background="@color/white"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:orientation="horizontal">
+
+            <RadioGroup
+                android:id="@+id/radioGroup"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/height_4_80"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/radio_left"
+                    style="@style/radio_head_bg"
+                    android:background="@drawable/radio_head_btn_bg_left"
+                    android:checked="true"
+                    android:text="支出"/>
+
+                <RadioButton
+                    android:id="@+id/radio_right"
+                    style="@style/radio_head_bg"
+                    android:background="@drawable/radio_head_btn_bg_right"
+                    android:text="收入"/>
+            </RadioGroup>
+            <!-- 提示：2018年5月，支出总额-->
+            <TextView
+                android:id="@+id/tv_top_time"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_weight="1"
+                android:gravity="center_horizontal"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@color/text_808080"
+                android:textSize="@dimen/text_size_3"/>
+        </LinearLayout>
+
+        <com.hbird.base.mvc.widget.NumberAnimTextView
+            android:id="@+id/text_top_money"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_14_80"
+            android:layout_gravity="center"
+            android:drawableLeft="@mipmap/icon_coin"
+            android:drawablePadding="@dimen/width_2_80"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/text_333333"
+            android:textSize="50sp"
+            android:textStyle="bold"/>
+
+        <TextView
+            android:id="@+id/tv_top_money"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/height_14_80"
+            android:layout_gravity="center"
+            android:drawableLeft="@mipmap/icon_coin"
+            android:drawablePadding="@dimen/width_2_80"
+            android:gravity="center"
+            android:text="0"
+            android:textColor="@color/text_333333"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:visibility="gone"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:overScrollMode="never"
+                android:scrollbars="none">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <RadioGroup
+                            android:id="@+id/btnsRadio"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:gravity="center_horizontal"
+                            android:orientation="horizontal"
+                            android:padding="@dimen/width_4_80">
+
+                            <RadioButton
+                                android:id="@+id/btn_left"
+                                style="@style/radio_choose_bg"
+                                android:background="@drawable/radio_choose_bg"
+                                android:checked="true"
+                                android:text="日"
+                                android:textStyle="bold"/>
+
+                            <RadioButton
+                                android:id="@+id/btn_middle"
+                                style="@style/radio_choose_bg"
+                                android:background="@drawable/radio_choose_bg"
+                                android:checked="false"
+                                android:text="周"
+                                android:textStyle="bold"/>
+
+                            <RadioButton
+                                android:id="@+id/btn_ritle"
+                                style="@style/radio_choose_bg"
+                                android:background="@drawable/radio_choose_bg"
+                                android:checked="false"
+                                android:text="月"
+                                android:textStyle="bold"/>
+
+                        </RadioGroup>
+
+                    </RelativeLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/new_lineChart"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"/>
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/new_lineChart2"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone"/>
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/new_lineChart3"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone"/>
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/sr_lineChart1"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone"/>
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/sr_lineChart2"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone"/>
+
+                        <com.hbird.base.mvc.widget.MyChart.LineChartInViewPager
+                            android:id="@+id/sr_lineChart3"
+                            android:layout_width="match_parent"
+                            android:layout_height="250dp"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+
+                    <com.hbird.base.mvc.view.MyScrollview
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:visibility="gone">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+                            <!-- <com.hbird.base.mvc.view.barChat.LBarChartView
+                                 android:id="@+id/frameNewBase"
+                                 android:layout_width="match_parent"
+                                 android:layout_height="@dimen/height_18_80"
+                                 app:barShowNumber="6"
+                                 app:borderColor="@color/line"
+                                 app:bottomTextSpace="20dp"
+                                 app:dataTextColor="@color/text_333333"
+                                 app:dataTextSize="12sp"
+                                 app:descriptionTextColor="@color/gray_c"
+                                 app:descriptionTextSize="20sp"
+                                 app:isClickAnimation="true"
+                                 app:leftTextSpace="0dp"
+                                 app:topTextSpace="30dp" />-->
+                            <android.support.v7.widget.RecyclerView
+                                android:id="@+id/recycler_view"
+                                android:layout_width="match_parent"
+                                android:layout_height="@dimen/height_25_80"
+                                android:scrollbars="none">
+
+                            </android.support.v7.widget.RecyclerView>
+                        </LinearLayout>
+
+                    </com.hbird.base.mvc.view.MyScrollview>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/width_4_80"
+                        android:paddingBottom="@dimen/height_2_80"
+                        android:paddingTop="@dimen/height_3_80">
+
+                        <TextView
+                            android:id="@+id/tv_paihangbang"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_title_line"
+                            android:drawablePadding="@dimen/width_2_80"
+                            android:text="支出排行榜"
+                            android:textColor="@color/text_333333"
+                            android:textSize="@dimen/text_size_8"
+                            android:textStyle="bold"/>
+                    </RelativeLayout>
+
+                    <TextView
+                        android:id="@+id/tv_text_empty"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_horizontal"
+                        android:text="暂无记账记录"
+                        android:textColor="@color/text_bdbdbd"
+                        android:textSize="@dimen/text_size_4"
+                        android:visibility="gone"/>
+
+                    <com.hbird.base.mvc.widget.MyListViews
+                        android:id="@+id/list_bar"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:scrollbars="none">
+
+                    </com.hbird.base.mvc.widget.MyListViews>
+
+                    <RelativeLayout
+                        android:id="@+id/rl_tit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/width_4_80"
+                        android:paddingBottom="@dimen/height_1_80"
+                        android:paddingTop="@dimen/height_3_80">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawableLeft="@mipmap/ic_title_line"
+                            android:drawablePadding="@dimen/width_2_80"
+                            android:text="情绪消费统计"
+                            android:textColor="@color/text_333333"
+                            android:textSize="@dimen/text_size_8"
+                            android:textStyle="bold"/>
+                    </RelativeLayout>
+
+                    <com.hbird.base.mvc.widget.MyListViews
+                        android:id="@+id/list_xinqing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:divider="@null"
+                        android:scrollbars="none">
+
+                    </com.hbird.base.mvc.widget.MyListViews>
+                </LinearLayout>
+            </ScrollView>
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_2_80"
+                android:scaleType="fitXY"
+                android:src="@mipmap/ic_shadow"/>
+        </FrameLayout>
+
+
+    </LinearLayout>
+
+
+</LinearLayout>

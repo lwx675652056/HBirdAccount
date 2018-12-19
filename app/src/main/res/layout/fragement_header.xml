@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_6_80"
+    android:background="@color/colorPrimary">
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/width_6_80"
+        android:gravity="center"
+        android:layout_centerHorizontal="true"
+        android:orientation="horizontal">
+        <FrameLayout
+            android:id="@+id/rl_tongji"
+            android:layout_width="@dimen/width_10_80"
+            android:layout_height="match_parent">
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="统计"
+                android:layout_marginTop="@dimen/height_1_80"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:layout_gravity="center_horizontal"
+                android:textSize="@dimen/text_size_12" />
+            <View
+                android:id="@+id/iv_tit_down"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/shape_btn_selected"
+                android:layout_marginBottom="@dimen/height_0_80"
+                android:layout_gravity="bottom"/>
+            <!--<ImageView
+                android:id="@+id/iv_tit_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_tubiao_choose"
+                android:layout_gravity="bottom|center_horizontal"
+
+                />-->
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/rl_fenxi"
+            android:layout_width="@dimen/width_10_80"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/width_6_80"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_title2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="分析"
+                android:layout_marginTop="@dimen/height_1_80"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_12" />
+            <View
+                android:id="@+id/iv_tit_down2"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/shape_btn_selected"
+                android:layout_marginBottom="@dimen/height_0_80"
+                android:layout_gravity="bottom"
+                android:visibility="gone"/>
+           <!-- <ImageView
+                android:id="@+id/iv_tit_down2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@mipmap/ic_tubiao_choose"
+                android:layout_gravity="bottom|center_horizontal"
+                android:visibility="gone"
+                />-->
+        </FrameLayout>
+        <FrameLayout
+            android:id="@+id/rl_zichan"
+            android:layout_width="@dimen/width_10_80"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="@dimen/width_6_80"
+            android:gravity="center_horizontal">
+            <TextView
+                android:id="@+id/tv_title3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="资产"
+                android:layout_marginTop="@dimen/height_1_80"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/white"
+                android:textSize="@dimen/text_size_12" />
+            <View
+                android:id="@+id/iv_tit_down3"
+                android:layout_width="match_parent"
+                android:layout_height="2dp"
+                android:background="@drawable/shape_btn_selected"
+                android:layout_marginBottom="@dimen/height_0_80"
+                android:layout_gravity="bottom"
+                android:visibility="gone"/>
+
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/right_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:text="记一笔"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:drawableRight="@mipmap/ic_add"
+        android:layout_alignParentRight="true"
+        android:drawablePadding="@dimen/width_2_80"
+        android:textSize="@dimen/text_size_4" />
+
+</RelativeLayout>

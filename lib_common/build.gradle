@@ -1,0 +1,61 @@
+apply plugin: 'com.android.library'
+apply plugin: 'maven'
+
+android {
+    compileSdkVersion build_versions.target_sdk
+    buildToolsVersion build_versions.build_tools
+
+    defaultConfig {
+        minSdkVersion build_versions.min_sdk
+        targetSdkVersion build_versions.target_sdk
+        versionCode 1
+        versionName "1.0.1"
+    }
+    dataBinding {
+        enabled true
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+
+}
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    // v7
+    api deps.support.app_compat
+    api deps.support.v4
+//    api deps.support.design
+//    api deps.support.constraint_layout
+    api deps.support.cardview
+    api deps.support.recyclerview
+
+    // 适配代码
+    api deps.uiadapter
+    // arouter路由框架
+    api deps.arouter.runtime
+    // fastjson
+    api deps.fastjson
+
+    //http
+    api deps.retrofit.runtime
+//    api deps.retrofit.gson
+//    api deps.retrofit.adapter_rxjava2
+    api deps.okhttp.okhttp3
+    api deps.okhttp.okhttp3_logging_interceptor
+
+    // Architecture components
+    api deps.lifecycle.runtime
+    api deps.lifecycle.extensions
+    annotationProcessor deps.lifecycle.compiler
+
+    // RxJava
+    api deps.rxjava2
+    api deps.rx_android
+
+    api deps.rxlifecycle
+    api deps.rxlifecycle_components
+}

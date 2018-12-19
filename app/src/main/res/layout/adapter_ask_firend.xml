@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <View
+        android:id="@+id/iv_view2"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_height="0.5dp"
+        android:background="@color/line"/>
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_selector_hint"
+            android:paddingLeft="@dimen/height_2_80"
+            android:paddingRight="@dimen/height_2_80"
+            android:paddingTop="@dimen/height_2_80"
+            android:paddingBottom="@dimen/height_2_80"
+            android:orientation="horizontal">
+            <com.hbird.base.mvc.widget.cycleView
+                android:id="@+id/iv_avata"
+                android:layout_width="@dimen/width_10_80"
+                android:layout_height="@dimen/width_10_80"
+                android:layout_gravity="bottom|center"
+                android:layout_centerHorizontal="true"
+                android:src="@mipmap/ic_me_normal_headr"
+                app:border_color="@color/bg_e6e6e6"
+                app:type="circle"/>
+
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/height_1_80"
+                android:layout_toLeftOf="@+id/tv_anli_shangchuanr"
+                android:text="知呼先生"
+                android:layout_gravity="center_vertical"
+                android:textSize="@dimen/text_size_6"
+                android:textColor="@color/text_333333"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_gravity="center_vertical"
+                android:gravity="right">
+
+                <TextView
+                    android:id="@+id/tv_times"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:text="2018-09-10加入"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:textSize="@dimen/text_size_4"
+                    android:textColor="@color/text_808080"
+                    android:drawablePadding="@dimen/height_0_80"
+                    android:gravity="center_vertical"
+                    android:layout_alignParentRight="true"/>
+            </LinearLayout>
+
+        </LinearLayout>
+        <View
+            android:id="@+id/iv_view3"
+            android:layout_width="match_parent"
+            android:layout_marginLeft="@dimen/width_4_80"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:layout_height="0.5dp"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+</LinearLayout>

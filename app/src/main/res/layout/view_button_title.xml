@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <ImageView
+        android:id="@+id/bar_iv"
+        android:layout_width="@dimen/width_5_80"
+        android:layout_height="@dimen/width_6_80"
+        android:layout_centerHorizontal="true"
+        android:src="@mipmap/ic_launcher"
+        android:scaleType="fitCenter"
+        />
+    <TextView
+        android:id="@+id/bar_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/bar_iv"
+        android:textColor="@color/text_bdbdbd"
+        android:layout_centerHorizontal="true"
+        android:text="选项" />
+
+</RelativeLayout>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/bg_f0f0f0"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/height_0_80"
+        android:paddingLeft="@dimen/height_2_80"
+        android:paddingRight="@dimen/height_2_80"
+        android:paddingTop="@dimen/height_0_80"
+        android:visibility="gone">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_10_x"
+            android:text="05月07日"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/dp_10_x"
+            android:text="周五"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="12sp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="end"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_shouru"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLength="13"
+                android:singleLine="true"
+                android:text="收入：20000"
+                android:textColor="@color/text_bdbdbd"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_zhichu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:drawablePadding="@dimen/height_0_80"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:maxLength="13"
+                android:singleLine="true"
+                android:text="支出：10000"
+                android:textColor="@color/text_bdbdbd"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <View
+        android:id="@+id/iv_view"
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/bg_f0f0f0"/>
+
+    <LinearLayout
+        android:id="@+id/ll_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/item_selector_hint"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/height_2_80"
+            android:paddingLeft="@dimen/height_2_80"
+            android:paddingRight="@dimen/height_2_80"
+            android:paddingTop="@dimen/height_2_80">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <RelativeLayout
+                    android:id="@+id/rl_mybg"
+                    android:layout_width="@dimen/width_7_80"
+                    android:layout_height="@dimen/width_7_80"
+                    android:gravity="center">
+
+                    <ImageView
+                        android:id="@+id/iv_icon"
+                        android:layout_width="@dimen/height_3_80"
+                        android:layout_height="@dimen/height_3_80"
+                        android:padding="4dp"/>
+                </RelativeLayout>
+
+                <com.hbird.base.mvc.widget.cycleView
+                    android:id="@+id/imagess"
+                    android:layout_width="@dimen/width_4_80"
+                    android:layout_height="@dimen/width_4_80"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginLeft="@dimen/width_4_80"
+                    android:src="@mipmap/ic_me_normal_headr"
+                    app:border_color="@color/bg_e6e6e6"
+                    app:border_width="1dp"
+                    app:type="circle"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_shour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dp_10_x"
+                android:layout_marginStart="@dimen/dp_10_x"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="意外收入"
+                android:textColor="@color/text_333333"
+                android:textSize="14sp"/>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/iv_mood"
+                    android:layout_width="@dimen/height_3_80"
+                    android:layout_height="@dimen/height_3_80"
+                    android:padding="1dp"
+                    android:src="@mipmap/icon_mood_normal_blue"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:id="@+id/tv_pay_num"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/dp_10_x"
+                    android:gravity="center_vertical"
+                    android:text="+ 100"
+                    android:textColor="@color/text_ff333333"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/iv_view2"
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ffffff"
+    android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/ll_xiaofei_a1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/width_4_80"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_marginTop="@dimen/height_1_80"
+        android:background="@mipmap/ic_bg_xiaozi"
+        android:gravity="right"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tv_up_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="2018年5月·本月"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="@dimen/text_size_6"
+            android:layout_marginRight="@dimen/width_4_80"
+            android:layout_marginTop="@dimen/height_2_80"/>
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:id="@+id/ll_texts"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="right"
+                android:layout_marginBottom="@dimen/height_2_80"
+                android:orientation="vertical">
+                <TextView
+                    android:id="@+id/tv_item_precent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="45%"
+                    android:textColor="@color/white"
+                    android:textStyle="bold"
+                    android:textSize="33sp"
+                    android:layout_marginRight="@dimen/width_4_80"
+                    android:layout_marginTop="@dimen/height_0_80"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="非食物支出占总支出的比值"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_4"
+                    android:layout_marginRight="@dimen/width_4_80" />
+            </LinearLayout>
+            <TextView
+                android:id="@+id/empty_text"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:text="暂无数据"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textSize="30sp"
+                android:layout_marginRight="@dimen/width_4_80"
+                android:layout_marginTop="@dimen/height_3_80"
+                />
+        </FrameLayout>
+
+
+    </LinearLayout>
+</LinearLayout>

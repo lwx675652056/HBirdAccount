@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@null"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:id="@+id/ll_zhankai"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginBottom="@dimen/height_2_80"
+            android:background="@mipmap/ic_yqjzzk_normal"
+            android:gravity="center"
+            android:visibility="gone">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:src="@mipmap/ic_yqhyzk_normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_index_yaoqing"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <RelativeLayout
+                android:id="@+id/rl_yaoqing"
+                android:layout_width="@dimen/width_50_80"
+                android:layout_height="@dimen/height_6_80"
+                android:layout_marginBottom="@dimen/height_2_80"
+                android:layout_marginLeft="@dimen/width_14_80"
+                android:layout_marginTop="@dimen/height_2_80"
+                android:background="@drawable/btn_bg_login">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:drawableLeft="@mipmap/icon_yaoqing"
+                    android:drawablePadding="@dimen/width_2_80"
+                    android:text="邀请记账"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_6"/>
+            </RelativeLayout>
+
+            <ImageView
+                android:id="@+id/iv_shouqi"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="@dimen/width_5_80"
+                android:src="@mipmap/icon_yqhysq_normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_toux"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <com.hbird.base.mvc.widget.MyGridView
+                android:id="@+id/mgv_banzi"
+                android:layout_width="@dimen/width_65_80"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/width_2_80"
+                android:background="@color/white"
+                android:listSelector="#00000000"
+                android:numColumns="5"/>
+
+            <!--默认隐藏-->
+            <ImageView
+                android:id="@+id/iv_index_setting"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:layout_margin="@dimen/width_2_80"
+                android:layout_marginLeft="@dimen/width_2_80"
+                android:src="@mipmap/icon_sysz_normal"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

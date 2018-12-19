@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_headers"/>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line2"/>
+
+    <LinearLayout
+        android:id="@+id/ll_one"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/iv_bg_icons"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_4_80"
+            android:src="@mipmap/ic_budget_bg_gray"/>
+
+        <TextView
+            android:id="@+id/tv_descs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:text="预算金额"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="@dimen/text_size_6"/>
+
+        <TextView
+            android:id="@+id/tv_descs2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:text="设置您每个月的总预算，尽量减少修改次数~"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="@dimen/text_size_4"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/height_3_80"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_moneys_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text="￥"
+                android:textColor="@color/text_F15C3C"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"
+                android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/tv_moneys"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:text=""
+                android:textColor="@color/text_F15C3C"
+                android:textSize="@dimen/text_size_12"
+                android:textStyle="bold"/>
+        </LinearLayout>
+
+        <include layout="@layout/item_soft_key_bodget"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_two"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_4_80"
+            android:text="此账本项目预算的起始时间"
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/text_size_6"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_budget_begin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:background="@drawable/shape_budget_normal"
+            android:paddingBottom="@dimen/width_2_80"
+            android:paddingLeft="@dimen/width_4_80"
+            android:paddingRight="@dimen/width_4_80"
+            android:paddingTop="@dimen/width_2_80">
+
+            <TextView
+                android:id="@+id/tv_begin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@mipmap/ic_calendar_normal_hui"
+                android:drawablePadding="@dimen/width_2_80"
+                android:gravity="center"
+                android:text="2018年05月11日"/>
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_zong"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_5_80"
+            android:text="结束时间：共 0 天 "
+            android:textColor="@color/text_333333"
+            android:textSize="@dimen/text_size_6"/>
+
+        <RelativeLayout
+            android:id="@+id/rl_budget_end"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="@dimen/height_2_80"
+            android:background="@drawable/shape_budget_normal"
+            android:paddingBottom="@dimen/width_2_80"
+            android:paddingLeft="@dimen/width_4_80"
+            android:paddingRight="@dimen/width_4_80"
+            android:paddingTop="@dimen/width_2_80">
+
+            <TextView
+                android:id="@+id/tv_end"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableLeft="@mipmap/ic_calendar_normal_hui"
+                android:drawablePadding="@dimen/width_2_80"
+                android:gravity="center"
+                android:text="2018年05月11日"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/height_4_80"
+            android:gravity="bottom">
+
+            <RelativeLayout
+                android:id="@+id/bt_finish"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/height_6_80"
+                android:layout_gravity="bottom"
+                android:layout_marginLeft="@dimen/width_10_80"
+                android:layout_marginRight="@dimen/width_10_80"
+                android:background="@drawable/btn_bg_login">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerInParent="true"
+                    android:text="完成"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_6"/>
+            </RelativeLayout>
+        </RelativeLayout>
+    </LinearLayout>
+</LinearLayout>

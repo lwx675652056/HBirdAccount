@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_contents"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include layout="@layout/activity_my_header"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginBottom="@dimen/height_2_80"
+        android:layout_marginLeft="@dimen/width_18_80"
+        android:layout_marginRight="@dimen/width_18_80"
+        android:layout_marginTop="@dimen/height_2_80"
+        android:orientation="horizontal">
+
+        <RadioGroup
+            android:id="@+id/radioGroups"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_4_80"
+            android:layout_gravity="center_vertical"
+            android:layout_marginBottom="@dimen/width_1_80"
+            android:layout_marginTop="@dimen/width_1_80"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/radio_left_out"
+                style="@style/radio_head_bg"
+                android:background="@drawable/radio_head_btn_bg_left"
+                android:checked="true"
+                android:text="支出"/>
+
+            <RadioButton
+                android:id="@+id/radio_right_come"
+                style="@style/radio_head_bg"
+                android:background="@drawable/radio_head_btn_bg_right"
+                android:text="收入"/>
+        </RadioGroup>
+    </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_3_80"
+        android:background="@color/line2"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/width_4_80"
+        android:text="长按可拖动排序"
+        android:textColor="@color/text_808080"/>
+
+    <com.hbird.base.mvc.widget.NoScrollViewPager
+        android:id="@+id/vp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:background="@color/white"/>
+</LinearLayout>

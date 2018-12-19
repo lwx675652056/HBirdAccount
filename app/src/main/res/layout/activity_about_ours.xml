@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+    <include layout="@layout/activity_headers"/>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/line2"/>
+    <ImageView
+        android:layout_gravity="center_horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/height_5_80"
+        android:src="@mipmap/account_logo"/>
+    <TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="蜂鸟记账"
+    android:layout_marginTop="@dimen/height_2_80"
+    android:textSize="@dimen/text_size_15"
+    android:layout_gravity="center_horizontal"
+    android:textColor="@color/colorPrimary"/>
+    <TextView
+        android:id="@+id/tv_version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="V0.0.0"
+        android:layout_marginTop="@dimen/height_1_80"
+        android:textSize="@dimen/text_size_8"
+        android:layout_gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="bottom"
+        android:orientation="vertical">
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_about_grays"
+            android:layout_marginBottom="@dimen/height_2_80"
+            android:layout_gravity="center_horizontal"/>
+        <LinearLayout
+            android:id="@+id/iv_guanzhu"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_6_80"
+            android:layout_marginLeft="@dimen/width_10_80"
+            android:layout_marginRight="@dimen/width_10_80"
+            android:gravity="center"
+            android:layout_marginBottom="@dimen/height_6_80"
+            android:background="@drawable/btn_bg_add">
+            <TextView
+                android:id="@+id/bt_save_add"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="关注蜂鸟记账微信公众号"
+                android:layout_gravity="center_horizontal"
+                android:gravity="center"
+                android:textSize="@dimen/text_size_6"
+                android:textColor="@drawable/textviews"/>
+        </LinearLayout>
+    </LinearLayout>
+
+
+
+</LinearLayout>

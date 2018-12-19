@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_6_80"
+    android:background="@color/colorPrimary">
+    <ImageView
+        android:id="@+id/iv_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:padding="@dimen/height_2_80"
+        android:src="@mipmap/ic_white_back"/>
+
+    <TextView
+        android:id="@+id/center_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:text="我的账本"
+        android:gravity="center"
+        android:layout_centerInParent="true"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_10" />
+    <TextView
+        android:id="@+id/right_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/width_4_80"
+        android:text="添加"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:layout_centerVertical="true"
+        android:drawableRight="@mipmap/ic_add"
+        android:layout_alignParentRight="true"
+        android:drawablePadding="@dimen/width_1_80"
+        android:textSize="@dimen/text_size_4"
+        android:visibility="visible"/>
+
+</RelativeLayout>

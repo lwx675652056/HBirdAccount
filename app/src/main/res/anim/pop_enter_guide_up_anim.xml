@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<set xmlns:android="http://schemas.android.com/apk/res/android">
+   <!-- &lt;!&ndash;android:fromYDelta="-100%p":效果为从上往下弹出&ndash;&gt;
+    &lt;!&ndash;android:fromYDelta="100%p":效果为从下往上弹出&ndash;&gt;
+    <translate
+        android:duration="200"
+        android:fromYDelta="-100%p"
+        android:toYDelta="0" />
+    <alpha
+        android:duration="200"
+        android:fromAlpha="0.0"
+        android:toAlpha="1.0" />-->
+
+    <!--android:fromXDelta="10%p"
+    android:toXDelta="-10%p"-->
+
+    <translate
+        android:duration="500"
+        android:fromYDelta="0"
+        android:toYDelta="1%p"
+        android:interpolator="@android:anim/bounce_interpolator"
+        android:startOffset="0"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        android:repeatCount="5"
+        android:repeatMode="reverse"
+        android:fillBefore="true"
+        android:fillAfter = "false"
+        />
+    <scale
+        android:duration="300"
+        android:fromXScale="0"
+        android:fromYScale="0"
+        android:toXScale="1"
+        android:toYScale="1"
+        android:pivotX="50%"
+        android:pivotY="50%"
+        />
+    <alpha
+        android:duration="300"
+        android:fromAlpha="0"
+        android:toAlpha="1.0" />
+</set>

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:layout_gravity="center_vertical"
+        android:gravity="center_vertical"
+        android:paddingLeft="12dp"
+        android:paddingRight="@dimen/width_4_80">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:id="@+id/unread_num_view"
+                android:layout_width="@dimen/height_5_80"
+                android:layout_height="@dimen/height_5_80"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:singleLine="true"
+                android:layout_marginRight="6dp"
+                android:textStyle="bold"
+                android:background="@mipmap/ic_calendar_normal"/>
+
+            <LinearLayout
+                android:id="@+id/sys_new_title_relative"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:orientation="vertical">
+
+                <RelativeLayout
+                    android:id="@+id/sys_new_title_top_linear"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:id="@+id/sys_new_message_release_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_4"
+                        android:textColor="@color/text_333333"
+                        android:layout_gravity="right"
+                        android:text="sfdsfdsfsdfsdf"
+                        android:layout_alignParentRight="true"/>
+
+                    <TextView
+                        android:id="@+id/sys_new_name_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/text_size_6"
+                        android:textStyle="bold"
+                        android:textColor="@color/text_333333"
+                        android:text="蜂鸟活动"
+                        android:singleLine="true"
+                        android:layout_marginRight="3dp"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:layout_alignParentLeft="true"
+                        android:layout_toLeftOf="@+id/sys_new_message_release_time" />
+                </RelativeLayout>
+
+                <TextView
+                    android:id="@+id/sys_new_content_text"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="@dimen/text_size_4"
+                    android:text="我是活动内容"
+                    android:textColor="@color/text_bdbdbd"
+                    android:singleLine="true"
+                    android:ellipsize="end"
+                    android:layout_marginTop="5dp"/>
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

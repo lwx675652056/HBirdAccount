@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="IndicatorProgressBar">
+        <attr name="progressIndicator" format="reference"></attr>
+        <attr name="xOffsetIndicator" format="dimension"></attr>
+        <attr name="yOffsetIndicator" format="dimension"></attr>
+
+        <attr name="textSize" format="dimension"></attr>
+        <attr name="textColor" format="reference|color"></attr>
+
+        <attr name="textStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+        </attr>
+        <attr name="textAlign">
+            <flag name="left" value="0" />
+            <flag name="center" value="1" />
+            <flag name="right" value="2" />
+        </attr>
+
+    </declare-styleable>
+    <!--loading dialoag-->
+    <declare-styleable name="SpinnerLoader">
+        <attr name="point_color" format="color" />
+        <attr name="isdynamic" format="boolean" />
+    </declare-styleable>
+    <!--perfectControlImage-->
+    <declare-styleable name="PerfectControlImageView">
+        <attr name="titleHeight" format="dimension"/>
+    </declare-styleable>
+    <!--CuttingFrameView-->
+    <declare-styleable name="CuttingFrameView">
+        <attr name="headerHeight" format="dimension"/>
+    </declare-styleable>
+
+
+</resources>
