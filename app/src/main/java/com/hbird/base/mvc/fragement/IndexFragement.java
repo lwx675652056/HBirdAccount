@@ -84,10 +84,13 @@ import java.util.TimerTask;
 import java.util.concurrent.Executors;
 
 import butterknife.BindView;
+import sing.util.AppUtil;
 import sing.util.LogUtil;
 import zhy.com.highlight.HighLight;
 
 import static com.hbird.base.R.id.waterwave_day;
+import static com.hbird.base.app.constant.CommonTag.FIRST_COME_1_2_0;
+import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -404,17 +407,17 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
         }
         //下拉将数据同步到本地数据库 (如果是从登陆界面过来的 注册 或微信则需要重新拉数据 而非直接展示
 //        com.hbird.base.util.L.liul("99999999999999999999999");
-        comeInForLogin = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+        comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
         isFirst = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, true);
 
         // 因为前辈的数据库不能升级，现阶段数据库新增了字段，故这里废弃之前的数据库，强制同步最新数据到新数据库
-        boolean mustUpload = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, true);
+        boolean mustUpload = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, false);
 
         if (NetworkUtil.isNetWorkAvailable(getActivity())) {
-            if (isFirst || mustUpload) {
-                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, false);
+            if (isFirst || !mustUpload) {
+                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, true);
                 pullToSyncDate();
-                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+                SPUtil.setPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
             } else {
                 if (comeInForLogin) {
                     pullToSyncDate();
@@ -444,7 +447,16 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
         }
         showGifProgress("");
         String mobileDevice = Utils.getDeviceInfo(getActivity());
-        comeInForLogin = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+        if (AppUtil.getVersionCode(getActivity()) < 10){
+            comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
+        }else{
+            boolean a = SPUtil.getPrefBoolean(getActivity(), FIRST_COME_1_2_0, false);
+            if (!a){// 主动更新一下数据库
+                SPUtil.setPrefBoolean(getActivity(), FIRST_COME_1_2_0, true);
+                comeInForLogin = true;
+            }
+        }
+
         NetWorkManager.getInstance().setContext(getActivity())
                 .postPullToSyncDate(mobileDevice, comeInForLogin, token, new NetWorkManager.CallBack() {
                     @Override
@@ -469,9 +481,9 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
                         hideGifProgress();
                         if (isFirst) {
                             getIndexInfo();
-                            SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+                            SPUtil.setPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
                         } else {
-                            comeInForLogin = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+                            comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
                             if (comeInForLogin) {
                                 getIndexInfo();
                             } else {
@@ -480,7 +492,7 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
                             }
                         }
                         isFirst = false;
-                        SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
+                        SPUtil.setPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
                     }
 
                     @Override

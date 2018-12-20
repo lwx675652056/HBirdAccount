@@ -20,6 +20,7 @@
     <string name="my_collect">我的收藏</string>
     <string name="upload">上传例子</string>
     <string name="download">下载例子</string>
+    <string name="download_app">下载中...</string>
     <string name="playing">正在上映</string>
     <string name="comming">即将上映</string>
     <string name="collect">我的收藏(%d)</string>

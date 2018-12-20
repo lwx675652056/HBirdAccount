@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content"
-              android:orientation="vertical" >
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <LinearLayout
             android:id="@+id/lLayout_bg"
             android:layout_width="match_parent"
@@ -23,7 +25,7 @@
                 android:gravity="center"
                 android:text="更新内容"
                 android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:textSize="18sp"/>
 
             <ScrollView
                 android:layout_width="match_parent"
@@ -39,90 +41,37 @@
                     android:paddingRight="@dimen/width_4_80"
                     android:text="内容123456"
                     android:textColor="@color/white"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"/>
             </ScrollView>
+
             <RelativeLayout
                 android:id="@+id/tv_update"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_6_80"
-                android:layout_marginTop="@dimen/height_1_80"
                 android:layout_marginBottom="@dimen/height_2_80"
                 android:layout_marginLeft="@dimen/width_4_80"
                 android:layout_marginRight="@dimen/width_4_80"
+                android:layout_marginTop="@dimen/height_1_80"
                 android:background="@drawable/btn_bg_updates">
+
                 <TextView
                     android:id="@+id/bt_my_login"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="立即更新"
                     android:layout_centerInParent="true"
+                    android:text="立即更新"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="@dimen/text_size_6" />
+                    android:textSize="@dimen/text_size_6"/>
             </RelativeLayout>
         </LinearLayout>
 
-
-        <!-- <TextView
-             android:id="@+id/tv_update"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:layout_gravity="center_horizontal"
-             android:text="立即更新"
-             android:textSize="@dimen/text_size_8"
-             android:gravity="center"
-             android:textColor="@color/white"
-             android:background="@mipmap/update_button"/>-->
         <ImageView
             android:id="@+id/iv_del"
             android:layout_width="@dimen/width_4_80"
             android:layout_height="@dimen/width_4_80"
             android:layout_gravity="right"
-            android:layout_marginTop="@dimen/height_7_80"
             android:layout_marginRight="@dimen/width_4_80"
-
+            android:layout_marginTop="@dimen/height_7_80"
             android:src="@mipmap/ic_close_del"/>
     </FrameLayout>
-
-
-   <!-- <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_marginTop="10dp"
-        android:background="@color/line2" />
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FEFEFF"
-        android:orientation="horizontal" >
-
-        <Button
-            android:id="@+id/btn_cancle"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#FEFEFF"
-            android:text="取消"
-            android:textColor="@color/text_333333"
-            android:textSize="16sp" />
-
-        <ImageView
-            android:id="@+id/img_line"
-            android:layout_width="0.5dp"
-            android:layout_height="@dimen/height_5_80"
-            android:background="@color/line2" />
-
-        <Button
-            android:id="@+id/btn_del"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:background="#FEFEFF"
-            android:textColor="@color/colorPrimary"
-            android:text="删除"
-            android:textSize="16sp"/>
-    </LinearLayout>-->
-
 </LinearLayout>

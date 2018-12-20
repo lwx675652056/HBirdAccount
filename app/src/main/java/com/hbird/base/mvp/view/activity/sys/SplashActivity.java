@@ -6,7 +6,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.text.TextUtils;
-import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.Interpolator;
@@ -16,7 +15,6 @@ import android.widget.ImageView;
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.activity.DownLoadService;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.AccountZbBean;
@@ -24,6 +22,7 @@ import com.hbird.base.mvc.bean.ReturnBean.CheckVersionReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.updateDialog;
+import com.hbird.base.mvc.widget.DownLoadDialog;
 import com.hbird.base.mvp.presenter.sys.SplashPresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.activity.login.GestureLoginActivity;
@@ -36,14 +35,18 @@ import com.hbird.base.util.Utils;
 import com.hbird.base.util.alarmClock.AlarmManagerUtil;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.base.activity.IBaseActivity;
+import com.ljy.devring.util.FileUtil;
 
+import java.io.File;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
+import sing.common.util.DownLoadUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
+import sing.util.ToastUtil;
 
 public class SplashActivity extends BaseActivity<SplashPresenter> implements ISplashView, IBaseActivity {
     @BindView(R.id.iv_gif_img)
@@ -230,34 +233,13 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                         if (null != b1.getResult()) {
                             result = b1.getResult();
                             String ver = result.getVersion();
-                            //showMessage(ver.compareTo(version)+"");
                             url = result.getUrl();
                             if (ver.compareTo(version) > 0) {
-                                //执行下载操作
                                 downLoadApp(result);
-                               /* boolean hasInstallPerssion;
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                                    hasInstallPerssion = getPackageManager().canRequestPackageInstalls();
-                                    if (hasInstallPerssion ) {
-                                        downLoadApp(result);
-                                    }else {
-                                        downLoadApp(result);
-                                      *//*  Uri packageURI = Uri.parse("package:" + getPackageName());
-                                        //注意这个是8.0新API
-                                         //跳转至“安装未知应用”权限界面，引导用户开启权限，可以在onActivityResult中接收权限的开启结果
-                                        Intent intent = new Intent(Settings.ACTION_MANAGE_UNKNOWN_APP_SOURCES, packageURI);
-                                        startActivityForResult(intent, REQUEST_CODE_UNKNOWN_APP);*//*
-                                    }
-                                }else {
-                                    downLoadApp(result);
-                                }*/
-
-                            } else {
-                                //showMessage("当前已经是最新版本了");
+                            } else {// 当前已经是最新版本了
                                 setIsContinue();
                             }
-                        } else {
-                            //showMessage("当前已经是最新版本了");
+                        } else { // 当前已经是最新版本了
                             setIsContinue();
                         }
                     }
@@ -272,40 +254,60 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
     }
 
     private void downLoadApp(final CheckVersionReturn.ResultBean result) {
-        new updateDialog(SplashActivity.this).builder()
+        //执行下载操作
+        new updateDialog(this).builder()
                 .setMsg(result.getUpdateLog())
-                .setUpdateButton(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent();
-                        SPUtil.setPrefString(getApplicationContext(), com.hbird.base.mvc.global.CommonTag.UPDATE_URL, url);
-                        intent.setClass(getApplicationContext(), DownLoadService.class);
-                        startService(intent);
-                        setIsContinue();
-                    }
+                .setUpdateButton(view -> {
+                    SPUtil.setPrefString(this, com.hbird.base.mvc.global.CommonTag.UPDATE_URL, url);
+                    downLoad();
                 })
-                .setCancleButton(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        int status = result.getInstallStatus();
-                        if (status == 1) {
-                            //强制更新  否则退出程序
-                            DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN, "");
-                            DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN_EXPIRE, "");
-                            DevRing.activityListManager().killAll();
-                            finish();
-                            return;
-                        }
-                        setIsContinue();
+                .setCancleButton(view -> {
+                    int status = result.getInstallStatus();
+                    if (status == 1) { //强制更新  否则退出程序
+                        DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN, "");
+                        DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN_EXPIRE, "");
+                        DevRing.activityListManager().killAll();
+                        finish();
+                        return;
                     }
                 }).show();
-              /*  //下载操作  先放到上面的服务中操作 后面看需求
-                RxLifecycleUtil.getActivityLifeSubject(AboutOursActivity.this.toString()).onNext(ActivityEvent.DESTROY);
-                //开启新的下载请求
-                if (mFileSave == null) {
-                    mFileSave = FileUtil.getFile(FileUtil.getExternalCacheDir(AboutOursActivity.this), "fengniao.apk");
-                }
-                downloadFile(mFileSave,url);*/
+    }
+
+    DownLoadDialog dialog;
+    private void downLoad() {
+        dialog = new DownLoadDialog(this );
+
+        File mFileSave = FileUtil.getFile(FileUtil.getExternalCacheDir(this), "fengniao.apk");
+        String url = SPUtil.getPrefString(this, com.hbird.base.mvc.global.CommonTag.UPDATE_URL, "");
+
+        DownLoadUtil util = new DownLoadUtil(this,url,mFileSave.getPath());
+        util.downLoadFile(new DownLoadUtil.Callback() {
+            @Override
+            public void success(String url, String localPath) {
+                dialog.dismiss();
+                sing.common.util.Utils.installApk(SplashActivity.this,localPath);
+                DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN, "");
+                DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN_EXPIRE, "");
+                DevRing.activityListManager().killAll();
+                finish();
+            }
+
+            @Override
+            public void failure(String url, String errorMsg) {
+                ToastUtil.showShort("下载失败:" + errorMsg);
+                dialog.dismiss();
+                DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN, "");
+                DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN_EXPIRE, "");
+                DevRing.activityListManager().killAll();
+                finish();
+            }
+
+            @Override
+            public void process(long current, long total) {
+                dialog.start(current,total);
+                sing.common.util.LogUtil.e("当前已下载：" + current);
+            }
+        });
     }
 
     @Override

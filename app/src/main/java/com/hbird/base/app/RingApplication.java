@@ -55,7 +55,7 @@ public class RingApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-//        LogUtil.init(true,"aaa1");
+        LogUtil.init(true,"aaa1");
         ToastUtil.init(this);
         SharedPreferencesUtil.init(this,"ap_data");
 

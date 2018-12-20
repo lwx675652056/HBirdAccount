@@ -79,6 +79,8 @@ public class CommonTag {
     public static final String MUST_UPDATE = "must_update";
     //下拉数据时 判断用户是否首次调用 是从重新登录 微信登录 注册界面跳转过来的判断
     public static final String OFFLINEPULL_FIRST_LOGIN = "offlinepull_first_login";
+    // 第一次进入1.2.0
+    public static final String FIRST_COME_1_2_0 = "first_come_1_2_0";
     //资产重置时间
     public static final String ZICHANCHONGZHI = "zichanchongzhi";
     //蜂鸟ID

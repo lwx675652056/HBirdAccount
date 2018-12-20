@@ -6,7 +6,6 @@ import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -39,20 +38,17 @@ public class updateDialog {
     }
 
     public updateDialog builder() {
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.dialog_update, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_update, null);
 
-        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
-        txt_title = (TextView) view.findViewById(R.id.tv_title);
-        content = (TextView) view.findViewById(R.id.tv_content);
-        bUpdate = (RelativeLayout) view.findViewById(R.id.tv_update);
-        del = (ImageView) view.findViewById(R.id.iv_del);
+        lLayout_bg = view.findViewById(R.id.lLayout_bg);
+        txt_title = view.findViewById(R.id.tv_title);
+        content = view.findViewById(R.id.tv_content);
+        bUpdate = view.findViewById(R.id.tv_update);
+        del = view.findViewById(R.id.iv_del);
 
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
-                .getWidth() * 0.85), LinearLayout.LayoutParams.WRAP_CONTENT));
-
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display.getWidth() * 0.85), LinearLayout.LayoutParams.WRAP_CONTENT));
         return this;
     }
 
@@ -75,7 +71,6 @@ public class updateDialog {
         return this;
     }
 
-
     /**
      * 设置更新
      * @param listener
@@ -97,7 +92,6 @@ public class updateDialog {
      * @return
      */
     public updateDialog setCancleButton(final View.OnClickListener listener) {
-
         del.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -107,7 +101,6 @@ public class updateDialog {
         });
         return this;
     }
-
 
     public void show() {
         dialog.setCanceledOnTouchOutside(true);

@@ -21,6 +21,7 @@ import java.io.File;
 
 import io.reactivex.Observable;
 import okhttp3.ResponseBody;
+import sing.util.LogUtil;
 
 /**
  * Created by Liul on 2018/7/13.
@@ -40,7 +41,6 @@ public class DownLoadService extends Service {
         }
 
         downloadFile(mFileSave);
-
     }
 
     @Nullable
@@ -48,7 +48,6 @@ public class DownLoadService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
-
 
     public void downloadFile(File file) {
         if (mDownloadObserver == null) {
@@ -69,8 +68,7 @@ public class DownLoadService extends Service {
                                 Intent intent = new Intent();
                                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 intent.setAction(Intent.ACTION_VIEW);
-                                intent.setDataAndType(Uri.fromFile(new File(filePath)),
-                                        "application/vnd.android.package-archive");
+                                intent.setDataAndType(Uri.fromFile(new File(filePath)),   "application/vnd.android.package-archive");
                                 startActivity(intent);
                             }
 
@@ -82,19 +80,17 @@ public class DownLoadService extends Service {
 
                 @Override
                 public void onError(long progressInfoId, HttpThrowable throwable) {
-
                     RingToast.show("下载失败" + throwable.message);
                 }
 
                 @Override
                 public void onProgress(ProgressInfo progressInfo) {
-
+                    LogUtil.e("当前已下载：" + progressInfo.getCurrentbytes());
+                    LogUtil.e("总大小：" + progressInfo.getContentLength());
                 }
             };
         }
         Observable<ResponseBody> observable = DevRing.httpManager().getService(DownloadApiService.class).downloadFile(url);
         DevRing.httpManager().downloadRequest(file, observable, mDownloadObserver, null);
-
     }
-
 }

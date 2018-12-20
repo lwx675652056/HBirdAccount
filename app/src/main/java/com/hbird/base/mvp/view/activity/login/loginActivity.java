@@ -466,7 +466,6 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
             //个人userInfo
             Integer userInfoId = result.getLabel().get(0).getUserInfoId();
             SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, userInfoId + "");
-            LogUtil.e("userInfoId = " + userInfoId);
             for (int i = 0; i < result.getLabel().size(); i++) {
                 SystemBiaoqReturn.ResultBean.LabelBean bean = result.getLabel().get(i);
                 // 收入
@@ -483,7 +482,6 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
 
                 List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> spendList = result.getLabel().get(i).getSpend();
                 Integer abTypeId = result.getLabel().get(i).getAbTypeId();
-                LogUtil.e("abTypeId = " + abTypeId);
                 DBUtil.insertAllUserCommUseSpendToLocalDB(spendList, abTypeId, userInfoId);
                 List<SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean> incomeList = result.getLabel().get(i).getIncome();
                 DBUtil.insertAllUserCommUseIncomeToLocalDB(incomeList, abTypeId, userInfoId);
