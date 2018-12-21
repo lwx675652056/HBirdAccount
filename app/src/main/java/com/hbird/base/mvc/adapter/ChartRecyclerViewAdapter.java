@@ -1,28 +1,20 @@
 package com.hbird.base.mvc.adapter;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
-import com.hbird.base.mvc.bean.ChartDateBean;
 import com.hbird.base.mvc.bean.YearAndMonthBean;
 import com.hbird.base.mvc.widget.IndicatorChartProgressBar;
-import com.hbird.base.mvc.widget.IndicatorProgressBar;
-import com.hbird.base.util.L;
-import com.hbird.base.util.Utils;
 
 import java.util.ArrayList;
 import java.util.concurrent.Executors;
-
-import static com.umeng.commonsdk.proguard.g.t;
 
 /**
  * Created by liul on 2018/7/17.

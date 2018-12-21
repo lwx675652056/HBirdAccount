@@ -32,7 +32,6 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.KeyboardUtil;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 
@@ -40,7 +39,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 
 import butterknife.BindView;
-import sing.util.LogUtil;
+import sing.common.util.LogUtil;
 import sing.util.ToastUtil;
 
 import static com.hbird.base.R.id.tv_zong;
@@ -456,7 +455,7 @@ public class ActSetBudget extends BaseActivity<BaseActivityPresenter> implements
         String money = GlobalVariables.getmInputMoney();
         if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length() > 2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
-            L.liul("calculatorNumOnclick: " + dot);
+            LogUtil.e("calculatorNumOnclick: " + dot);
             if (dot.equals(".")) {
                 //showMessage("陛下，不到一分钱了");
                 return;

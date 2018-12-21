@@ -43,6 +43,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
         super.onCreate(savedInstanceState);
         AppManager.getInstance().addActivity(this);
 
+
         //页面接受的参数方法
         initParam();
         //私有的初始化Databinding和ViewModel方法
@@ -85,6 +86,7 @@ public abstract class BaseActivity<V extends ViewDataBinding, VM extends BaseVie
     private void initViewDataBinding(Bundle savedInstanceState) {
         //DataBindingUtil类需要在project的build中配置 dataBinding {enabled true }, 同步后会自动关联android.databinding包
         binding = DataBindingUtil.setContentView(this, initContentView(savedInstanceState));
+
         viewModelId = initVariableId();
         viewModel = initViewModel();
         if (viewModel == null) {

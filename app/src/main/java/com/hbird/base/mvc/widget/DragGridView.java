@@ -24,6 +24,8 @@ import com.hbird.base.R;
 import java.util.ArrayList;
 import java.util.List;
 
+import sing.common.util.LogUtil;
+
 /**
  * Created by Liul on 18/7/02.
  */
@@ -136,7 +138,7 @@ public class DragGridView extends GridView
             return;
         }
         resumeView();
-        com.hbird.base.util.L.liu("点击 Item " + position);
+        LogUtil.e("点击 Item " + position);
     }
 
     private void resumeView()

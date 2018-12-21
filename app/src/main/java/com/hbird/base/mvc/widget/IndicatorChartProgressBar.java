@@ -13,9 +13,6 @@ import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
 import com.hbird.base.R;
-import com.hbird.base.util.L;
-
-import static android.R.attr.width;
 
 
 /**

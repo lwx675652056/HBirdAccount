@@ -33,7 +33,6 @@ import com.hbird.base.mvc.bean.ReturnBean.Html5Date;
 import com.hbird.base.mvc.bean.ReturnBean.SaveMoney2Return;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.util.DateUtils;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Util;
 import com.hbird.base.util.Utils;
@@ -46,6 +45,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import java.util.Date;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 import sing.util.ToastUtil;
 
 import static com.sobot.chat.api.apiUtils.SobotApp.getApplicationContext;
@@ -96,7 +96,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
         String version = Utils.getVersion(getActivity());
         url = url+token+"&currentVersion="+version;
-        L.liul("领票票URL:---"+url);
+        LogUtil.e("领票票URL:---"+url);
         activity = (homeActivity)getActivity();
     }
 
@@ -237,7 +237,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
             @Override
             public void handler(String data, CallBackFunction function) {
                 //showMessage("轮播图");
-                L.liul(data);
+                LogUtil.e(data);
                 Html5Date bean = new Gson().fromJson(data, Html5Date.class);
                 String jumpType = bean.getJumpType();
                 if(TextUtils.equals("0",jumpType)){

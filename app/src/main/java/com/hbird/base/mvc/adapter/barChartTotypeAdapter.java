@@ -1,7 +1,6 @@
 package com.hbird.base.mvc.adapter;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -10,22 +9,20 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hbird.base.R;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRanking2Return;
-import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.widget.IndicatorProgressBar;
-import com.hbird.base.util.L;
-import com.hbird.base.util.Utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Executors;
+
+import sing.common.util.LogUtil;
 
 /**
  * Created by liul on 2018/06/30.
@@ -140,7 +137,7 @@ public class barChartTotypeAdapter extends BaseAdapter {
                 animation.start();
             }
         }*/
-        if (position == 0)   L.liul("数据 = "+totalRegisterNum );
+        if (position == 0)   LogUtil.e("数据 = "+totalRegisterNum );
         setIpbValue(totalRegisterNum , idc , imageAnmins , totalRegisterNum  , preTotalRegisterNum );
 
         if (bean.isFrist() && isProvinceShow){

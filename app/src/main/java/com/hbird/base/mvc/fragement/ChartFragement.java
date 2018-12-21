@@ -46,7 +46,6 @@ import com.hbird.base.mvc.widget.MyListViews;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtils;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.StringUtils;
 import com.hbird.base.util.Utils;
@@ -58,6 +57,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 
 import static com.hbird.base.util.Utils.getDateByWeeks;
 
@@ -253,7 +253,7 @@ public class ChartFragement extends BaseFragement {
     @Override
     public void loadDate() {
         super.loadDate();
-        L.liul("loadDate=====================");
+        LogUtil.e("loadDate=====================");
         accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
         if (firstCome > 0) {
             //解决 点选柱状图其它日期后 跳转到其它界面再回来时 当前天刷新到当前天的问题而不是默认之前选中的某一天

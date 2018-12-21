@@ -12,6 +12,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
+import sing.common.util.LogUtil;
+
 /**
  *  Created by Liul on 2018/7/6.
  * SD卡相关的辅助类
@@ -136,7 +138,7 @@ public class SDCardUtils {
         if(!f.exists())
             f.mkdirs();//如果没有这个文件夹的话，会报file not found错误
         f=new File(path+bitName);
-        com.hbird.base.util.L.liul("存储的地址 = " + path+bitName);
+        LogUtil.e("存储的地址 = " + path+bitName);
 
         try {
             f.createNewFile();

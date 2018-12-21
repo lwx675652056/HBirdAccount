@@ -7,25 +7,16 @@ import android.support.annotation.Px;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
-import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.base.baseActivity.BaseFragementPagerAdapter;
-import com.hbird.base.mvc.widget.NoScrollViewPager;
-import com.hbird.base.util.L;
-import com.ljy.devring.util.ImageUtil;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
-
-import static android.content.ContentValues.TAG;
 
 /**
  * Created by Liul on 2018/8/8.

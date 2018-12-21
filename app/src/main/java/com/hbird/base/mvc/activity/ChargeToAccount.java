@@ -52,7 +52,6 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 import com.ljy.devring.DevRing;
@@ -66,9 +65,11 @@ import java.util.List;
 import java.util.UUID;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
 import zhy.com.highlight.shape.BaseLightShape;
+import zhy.com.highlight.util.L;
 
 import static com.hbird.base.R.id.anime_date;
 
@@ -717,7 +718,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         String money = GlobalVariables.getmInputMoney();
         if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length()>2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
-            L.liul( "calculatorNumOnclick: " + dot);
+            LogUtil.e("calculatorNumOnclick: " + dot);
             if (dot.equals(".")) {
                 //showMessage("陛下，不到一分钱了");
                 return;

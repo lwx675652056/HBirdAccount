@@ -10,10 +10,10 @@ import com.alibaba.fastjson.JSONObject;
 import com.hbird.base.R;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.util.L;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul(245904552@qq.com) on 2018/10/29.
@@ -48,10 +48,10 @@ public class OpenClickActivity extends BaseActivity<BasePresenter> {
      * 方式启动，只需要在 onCreat 中调⽤此方法进行处理
      */
     private void handleOpenClick() {
-        L.liul("⽤户点击打开了通知");
+        LogUtil.e("⽤户点击打开了通知");
         if (getIntent().getData() == null) return;
         String data = getIntent().getData().toString();
-        L.liul( "msg content is " + String.valueOf(data));
+        LogUtil.e( "msg content is " + String.valueOf(data));
         if (TextUtils.isEmpty(data)) return;
         try {
             JSONObject jsonObject = JSON.parseObject(data);
@@ -84,27 +84,27 @@ public class OpenClickActivity extends BaseActivity<BasePresenter> {
                 JSONObject js = JSON.parseObject(extras);
                 String jumpType = js.getString("jumpType");
                 String jumpPage = js.getString("jumpPage");
-                L.liul("6666666666 "+jumpPage+" , "+jumpType);
+                LogUtil.e("6666666666 "+jumpPage+" , "+jumpType);
                 if(TextUtils.equals(jumpType,"0")){
                     switch (jumpPage){
                         case "mxsy":
-                            L.liul("mxsy");
+                            LogUtil.e("mxsy");
                             //setTiaozhuanFragement(0,0);
                             break;
                         case "tbtj":
-                            L.liul("tbtj");
+                            LogUtil.e("tbtj");
                             //setTiaozhuanFragement(1,0);
                             break;
                         case "tbfx":
-                            L.liul("tbfx");
+                            LogUtil.e("tbfx");
 //                            setTiaozhuanFragement(1,1);
                             break;
                         case "tbzc":
-                            L.liul("tbzc");
+                            LogUtil.e("tbzc");
 //                            setTiaozhuanFragement(1,2);
                             break;
                         case "jzsy":
-                            L.liul("jzsy");
+                            LogUtil.e("jzsy");
                             startActivity(new Intent(this, ChooseAccountTypeActivity.class));
                             break;
                         case "lppsy":
@@ -115,7 +115,7 @@ public class OpenClickActivity extends BaseActivity<BasePresenter> {
 
             }
         } catch (Exception e) {
-            L.liul("parse notification error");
+            LogUtil.e("parse notification error");
         }
     }
     private String getPushSDKName(byte whichPushSDK) {

@@ -33,7 +33,6 @@ import com.hbird.base.mvc.widget.NoScrollViewPager;
 import com.hbird.base.mvc.widget.TabRadioButton;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.ljy.devring.DevRing;
 import com.sobot.chat.utils.ZhiChiConstant;
@@ -43,6 +42,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul(245904552@qq.com) on 2018/6/28.
@@ -89,7 +89,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-        L.liul("homeActivity");
+        LogUtil.e("homeActivity");
     }
 
     @SuppressLint("NewApi")
@@ -188,7 +188,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
 
     public void setTiaozhuanFragement(int i, int m) {
         if (i == 1) {
-            L.liul("wo bei zhixing la");
+            LogUtil.e("wo bei zhixing la");
             rg.check(R.id.button_tubiao);
             viewPager.setCurrentItem(i);
             tuBiaoFragement.setH5TiaoZhuan(m);
@@ -367,23 +367,23 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
 
             switch (jumpPage) {
                 case "mxsy":
-                    L.liul("mxsy");
+                    LogUtil.e("mxsy");
                     setTiaozhuanFragement(0, 0);
                     break;
                 case "tbtj":
-                    L.liul("tbtj");
+                    LogUtil.e("tbtj");
                     setTiaozhuanFragement(1, 0);
                     break;
                 case "tbfx":
-                    L.liul("tbfx");
+                    LogUtil.e("tbfx");
                     setTiaozhuanFragement(1, 1);
                     break;
                 case "tbzc":
-                    L.liul("tbzc");
+                    LogUtil.e("tbzc");
                     setTiaozhuanFragement(1, 2);
                     break;
                 case "jzsy":
-                    L.liul("jzsy");
+                    LogUtil.e("jzsy");
                     startActivity(new Intent(this, ChooseAccountTypeActivity.class));
                     break;
                 case "lppsy":
@@ -396,7 +396,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
 
 
         } catch (Exception e) {
-            L.liul("parse notification error");
+            LogUtil.e("parse notification error");
         }
     }
 

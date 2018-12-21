@@ -61,6 +61,11 @@
             </intent-filter>
         </activity>
 
+        <!--首页的更多 账本明细-->
+        <activity
+            android:name="com.hbird.ui.detailed.ActAccountDetailed"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 
@@ -178,7 +183,7 @@
         <!--友盟渠道包-->
         <meta-data
             android:name="UMENG_CHANNEL"
-            android:value="${UMENG_CHANNEL_VALUE}"/><!--渠道号，多渠道这里使用了占位符$-->
+            android:value="default_channel"/><!--渠道号，多渠道这里使用了占位符$-->
         <!--微信-->
         <activity
             android:name=".wxapi.WXEntryActivity"

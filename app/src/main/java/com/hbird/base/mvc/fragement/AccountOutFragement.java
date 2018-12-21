@@ -24,7 +24,6 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseSpend;
 import com.hbird.base.util.DBUtil;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectManager;
 import com.ljy.devring.DevRing;
@@ -34,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul on 2018/7/02.
@@ -61,7 +61,7 @@ public class AccountOutFragement extends BaseFragement{
 
     @Override
     public void initView() {
-        L.liul("AccountOutFragement");
+        LogUtil.e("AccountOutFragement");
     }
 
     @Override

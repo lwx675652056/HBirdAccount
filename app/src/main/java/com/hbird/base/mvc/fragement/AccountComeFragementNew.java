@@ -25,7 +25,6 @@ import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.global.CommonUserIInfo;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
 import com.ljy.devring.util.NetworkUtil;
@@ -35,6 +34,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 
 /**
@@ -66,7 +66,7 @@ public class AccountComeFragementNew extends BaseFragement{
 
     @Override
     public void initView() {
-        L.liul("AccountComeFragement");
+        LogUtil.e("AccountComeFragement");
     }
 
     @Override

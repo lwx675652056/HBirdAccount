@@ -12,6 +12,8 @@ import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+
+import sing.common.util.LogUtil;
 /**
  * Created by Liul on 2018/6/28.
  */
@@ -59,8 +61,7 @@ public class JSONUtil<T, PK extends Serializable> {
 				return pk;
 			}
 		} catch (JsonSyntaxException e) {
-			com.hbird.base.util.L.liul("json解析错误= " + e.getMessage());
-			// TODO Auto-generated catch block
+            LogUtil.e("json解析错误= " + e.getMessage());
 			e.printStackTrace();
 		}
 		return null;

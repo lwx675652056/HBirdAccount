@@ -1,7 +1,6 @@
 package com.hbird.base.mvc.adapter;
 
 import android.content.Context;
-import android.graphics.Rect;
 import android.os.AsyncTask;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
@@ -9,17 +8,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hbird.base.R;
-import com.hbird.base.mvc.bean.CeshiDateBean;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.widget.IndicatorProgressBar;
-import com.hbird.base.util.L;
-import com.hbird.base.util.Utils;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;

@@ -19,9 +19,9 @@ android {
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
         versionCode 10
-        versionName "1.1.1"
+        versionName "1.2.1"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "default_channel"]
+//        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "default_channel"]
         resValue("string", "growingio_project_id", "896f3ed1dd9d81de")
         resValue("string", "growingio_url_scheme", "growing.2ae4a869621ea961")
         ndk {
@@ -48,26 +48,26 @@ android {
         multiDexEnabled true
     }
 
-    productFlavors {
-        default_channel{}
-        mumayi{}
-        qihoo{}
-        yingyongbao{}
-        xiaomi{}
-        baidu{}
-        huawei{}
-        alibaba{}
-        vivo {}
-        oppo {}
-        meizu {}
-        sougou {}
-        anzhi {}
-        jifeng {}
-    }
-    flavorDimensions 'api'
-    productFlavors.all { flavor ->
-        flavor.manifestPlaceholders = [ UMENG_CHANNEL_VALUE:name ]
-    }
+//    productFlavors {
+//        default_channel{}
+//        mumayi{}
+//        qihoo{}
+//        yingyongbao{}
+//        xiaomi{}
+//        baidu{}
+//        huawei{}
+//        alibaba{}
+//        vivo {}
+//        oppo {}
+//        meizu {}
+//        sougou {}
+//        anzhi {}
+//        jifeng {}
+//    }
+//    flavorDimensions 'api'
+//    productFlavors.all { flavor ->
+//        flavor.manifestPlaceholders = [ UMENG_CHANNEL_VALUE:name ]
+//    }
 
     buildTypes {
         debug {
@@ -93,7 +93,8 @@ android {
 
             android.applicationVariants.all { variant ->
                 variant.outputs.all {
-                    outputFileName = "HBird_${variant.productFlavors[0].name}_v${variant.versionName}.apk"
+//                    outputFileName = "HBird_${variant.productFlavors[0].name}_v${variant.versionName}.apk"
+                    outputFileName = "HBird_v${variant.versionName}.apk"
                 }
             }
         }
@@ -166,8 +167,8 @@ dependencies {
     implementation 'sing.util:library:1.0.14'
 
     // bugly
-    compile 'com.tencent.bugly:crashreport:2.8.6.0'
-    compile 'com.tencent.bugly:nativecrashreport:3.6.0.0'
+    api 'com.tencent.bugly:crashreport:2.8.6.0'
+    api 'com.tencent.bugly:nativecrashreport:3.6.0.0'
 
     api project(':lib_common')
 }

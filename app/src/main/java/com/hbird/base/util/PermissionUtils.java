@@ -17,6 +17,8 @@ import com.hbird.base.mvc.bean.MyPermissionBean;
 import java.util.ArrayList;
 import java.util.List;
 
+import sing.common.util.LogUtil;
+
 /**
  * Created by chenggs on 2017/6/21.
  */
@@ -90,7 +92,7 @@ public class PermissionUtils {
         try {
             for(int i =0; i<myPermissionsList.size();i++){
                 if(myPermissionsList!=null && !myPermissionsList.get(i).isHas()){
-                   L.liu("liul---需要获取权限--->"+myPermissionsList.get(i).getPermissionName());
+                    LogUtil.e("liul---需要获取权限--->"+myPermissionsList.get(i).getPermissionName());
                     if (ActivityCompat.shouldShowRequestPermissionRationale(mContext, myPermissionsList.get(i).getPermissionName())) {
                         explainDialog(mContext,myPermissionsList,i);
                         return;

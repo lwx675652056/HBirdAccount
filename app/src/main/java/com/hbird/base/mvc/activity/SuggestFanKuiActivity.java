@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -14,16 +13,11 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.SuggestReq;
-import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;

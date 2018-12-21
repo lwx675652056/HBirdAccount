@@ -4,6 +4,7 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
 import com.hbird.base.R;
@@ -26,6 +27,7 @@ import com.xiaomi.mipush.sdk.MiPushClient;
 
 import cn.jpush.android.api.JPushInterface;
 import retrofit2.Retrofit;
+import sing.common.util.Utils;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;

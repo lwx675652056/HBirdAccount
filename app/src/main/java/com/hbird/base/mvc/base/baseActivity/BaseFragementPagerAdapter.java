@@ -5,9 +5,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
 import com.hbird.base.mvc.base.BaseFragement;
-import com.hbird.base.util.L;
 
 import java.util.ArrayList;
+
+import sing.common.util.LogUtil;
 
 /**
  * Created by Administrator on 2018/10/11.
@@ -21,7 +22,7 @@ public class BaseFragementPagerAdapter extends FragmentPagerAdapter {
         super(fm);
         this.mFragments = new ArrayList<>();
         this.mFragments.addAll(fragments);
-        L.e(mFragments.size()+"");
+        LogUtil.e(mFragments.size()+"");
     }
 
     @Override

@@ -9,13 +9,14 @@ import android.view.ViewGroup;
 
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.view.dialog.DialogToGig;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.ToastUtils;
 import com.hbird.base.util.VoiceUtils;
 
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import sing.common.util.LogUtil;
+import zhy.com.highlight.util.L;
 
 /**
  * Created by Liul on 2018/6/28.
@@ -32,34 +33,36 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     private VoiceUtils voiceUtils;
 
 
-    public void hideProgress(){
-        if (dialogToGig != null){
-            dialogToGig.hide();
-        }
-    }
-    public void hideGifProgress(){
-        if (dialogToGig != null){
+    public void hideProgress() {
+        if (dialogToGig != null) {
             dialogToGig.hide();
         }
     }
 
-
-    public void showProgress(String title){
-
-        if(dialogToGig==null){
-            dialogToGig = new DialogToGig(getActivity());
+    public void hideGifProgress() {
+        if (dialogToGig != null) {
+            dialogToGig.hide();
         }
-        dialogToGig.builder().show();
     }
-    public void showGifProgress(String title){
-        if(dialogToGig==null){
+
+
+    public void showProgress(String title) {
+
+        if (dialogToGig == null) {
             dialogToGig = new DialogToGig(getActivity());
         }
         dialogToGig.builder().show();
     }
 
+    public void showGifProgress(String title) {
+        if (dialogToGig == null) {
+            dialogToGig = new DialogToGig(getActivity());
+        }
+        dialogToGig.builder().show();
+    }
 
-    public void showMessage(String arg){
+
+    public void showMessage(String arg) {
         ToastUtils.ShowMessage(getActivity(), arg);
     }
 
@@ -67,7 +70,7 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        contentView = inflater.inflate(setContentId(),null);
+        contentView = inflater.inflate(setContentId(), null);
         butterKnife = ButterKnife.bind(this, contentView);
         return contentView;
     }
@@ -86,12 +89,11 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     }
 
 
-
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (getUserVisibleHint()) {
-            if(isPrepared) {
+            if (isPrepared) {
                 loadDate();
             }
 
@@ -102,6 +104,7 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
             onInvisible();
         }
     }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -123,13 +126,13 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     }
 
     private void lazyLoad() {
-        L.e("isPrepared"+isPrepared+isVisible+isFirstLoad);
-        if ( !isPrepared || !isVisible || !isFirstLoad) {
+        L.e("isPrepared" + isPrepared + isVisible + isFirstLoad);
+        if (!isPrepared || !isVisible || !isFirstLoad) {
             return;
         }
         isFirstLoad = false;
         loadDataForNet();
-        L.e("loadDataForNet");
+        LogUtil.e("loadDataForNet");
 
     }
 
@@ -138,7 +141,7 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
 
     }
 
-    public void loadDate(){
+    public void loadDate() {
 
     }
 
@@ -146,6 +149,7 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -156,7 +160,7 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
         boolean opens = SPUtil.getPrefBoolean(getActivity(), CommonTag.VOICE_KEY, true);
         if (opens) {
             try {
-                if (voiceUtils == null){
+                if (voiceUtils == null) {
                     voiceUtils = VoiceUtils.newInstance(getActivity());
                 }
                 voiceUtils.playVoice(resid);

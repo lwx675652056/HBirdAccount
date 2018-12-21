@@ -1,6 +1,8 @@
 package com.hbird.base.mvc.fragement;
 
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -8,6 +10,7 @@ import android.os.Message;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -64,6 +67,7 @@ import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
+import com.hbird.ui.detailed.ActAccountDetailed;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
 
@@ -91,6 +95,7 @@ import zhy.com.highlight.HighLight;
 import static com.hbird.base.R.id.waterwave_day;
 import static com.hbird.base.app.constant.CommonTag.FIRST_COME_1_2_0;
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
+import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -219,12 +224,32 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
 
         adapter = new IndexFragementAdapter(getActivity(), IndexFragement.this, dates);
         lv.setAdapter(adapter);
+
+
+        // 临时
+        getActivity().findViewById(R.id.more).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity(),ActAccountDetailed.class);
+                intent.putExtra("accountId",accountId);
+                startActivity(intent);
+            }
+        });
+
+        ApplicationInfo appInfo = null;
+        try {
+            appInfo = getActivity().getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+        String msg = appInfo.metaData.getString("UMENG_CHANNEL");
+        ((Button)getActivity().findViewById(R.id.more)).setText(msg);
     }
 
     @Override
     public void initData() {
         zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        com.hbird.base.util.L.liul("zhangbenId:" + zhangbenId);
+        LogUtil.e("zhangbenId:" + zhangbenId);
         if (TextUtils.isEmpty(zhangbenId)) {
             //账本id
             accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
@@ -232,7 +257,7 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
         }
         //账本id
         accountId = zhangbenId;
-        com.hbird.base.util.L.liul("accountId:" + accountId);
+        LogUtil.e("accountId:" + accountId);
 
         waveProgress.setShowNumerical(false);
         yyyy = parseInt(DateUtils.getCurYear("yyyy"));
@@ -246,7 +271,7 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
 
         typeBudget = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, "1");
         token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
-        com.hbird.base.util.L.liul("token:" + token);
+        LogUtil.e("token:" + token);
         //间隔上传时间
         String jiange = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.SYNINTERVAL, "");
         long prefLong = SPUtil.getPrefLong(getActivity(), com.hbird.base.app.constant.CommonTag.SYNDATE, 0);
@@ -447,11 +472,11 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
         }
         showGifProgress("");
         String mobileDevice = Utils.getDeviceInfo(getActivity());
-        if (AppUtil.getVersionCode(getActivity()) < 10){
+        if (AppUtil.getVersionCode(getActivity()) < 10) {
             comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
-        }else{
+        } else {
             boolean a = SPUtil.getPrefBoolean(getActivity(), FIRST_COME_1_2_0, false);
-            if (!a){// 主动更新一下数据库
+            if (!a) {// 主动更新一下数据库
                 SPUtil.setPrefBoolean(getActivity(), FIRST_COME_1_2_0, true);
                 comeInForLogin = true;
             }
@@ -869,7 +894,7 @@ public class IndexFragement extends BaseFragement implements View.OnClickListene
 
         if (null != dbList && dbList.size() > 0) {
             Collections.sort(dbList);
-            Map<String, Object> dbDate = getDBDate(dbList );
+            Map<String, Object> dbDate = getDBDate(dbList);
             String json = new Gson().toJson(dbDate);
             dayListBean.ResultBean bean = new Gson().fromJson(json, dayListBean.ResultBean.class);
 

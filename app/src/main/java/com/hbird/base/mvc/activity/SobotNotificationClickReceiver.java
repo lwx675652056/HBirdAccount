@@ -4,9 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.hbird.base.util.L;
 import com.hbird.base.util.SobotUtils;
-import com.sobot.chat.utils.LogUtils;
 import com.sobot.chat.utils.ZhiChiConstant;
 
 /**

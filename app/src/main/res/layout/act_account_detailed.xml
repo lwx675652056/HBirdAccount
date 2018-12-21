@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="title"
+            type="com.hbird.bean.TitleBean"/>
+
+        <variable
+            name="click"
+            type="com.hbird.ui.detailed.ActAccountDetailed.OnClick"/>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.detailed.AccountDetailedData"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            bind:setTitle="@{title}"
+            layout="@layout/head_toolbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingTop="@dimen/dp_10_x">
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/choose_data"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:onClick="@{click.chooseAccount}"
+                android:paddingBottom="@dimen/dp_10_x"
+                android:paddingEnd="@dimen/space_15"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_10_x">
+
+                <TextView
+                    android:id="@+id/tv_year"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{String.valueOf(data.yyyy)+@string/year}"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10_x"
+                    android:text="@{String.valueOf(data.mm)}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_year"
+                    app:layout_constraintTop_toBottomOf="@id/tv_year"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_5_x"
+                    android:layout_marginTop="@dimen/dp_5_x"
+                    android:drawableEnd="@mipmap/ic_down"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:singleLine="true"
+                    android:text="月"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toEndOf="@id/tv_month"
+                    app:layout_constraintTop_toTopOf="@id/tv_month"/>
+            </android.support.constraint.ConstraintLayout>
+
+            <View
+                android:layout_width="0.5dp"
+                android:layout_height="@dimen/dp_40_x"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:background="@color/white"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_10_x"
+                android:paddingEnd="@dimen/space_15"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_10_x">
+
+                <TextView
+                    android:id="@+id/tv_spend"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="支出（元）"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_spending_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10_x"
+                    android:text="@{@string/money+String.valueOf(data.spendingMoney)}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_spend"
+                    app:layout_constraintTop_toBottomOf="@id/tv_spend"/>
+            </android.support.constraint.ConstraintLayout>
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_10_x"
+                android:paddingEnd="@dimen/space_15"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_10_x">
+
+                <TextView
+                    android:id="@+id/tv_income"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="收入（元）"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+
+                <TextView
+                    android:id="@+id/tv_income_money"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10_x"
+                    android:text="@{@string/money+String.valueOf(data.inComeMoney)}"
+                    android:textColor="@color/white"
+                    android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="@id/tv_income"
+                    app:layout_constraintTop_toBottomOf="@id/tv_income"/>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:background="#F6F6F6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </LinearLayout>
+</layout>

@@ -19,19 +19,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.hbird.base.R;
-import com.hbird.base.app.GestureUtil;
-import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.persionalReq;
 import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.QiNiuReturn;
-import com.hbird.base.mvc.fragement.MeFragement;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.MyChooseSexDialog;
 import com.hbird.base.mvc.view.dialog.MyHangYeDialog;
@@ -40,13 +35,10 @@ import com.hbird.base.mvc.widget.CityPickerDialog;
 import com.hbird.base.mvc.widget.TimePickerDialog;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.ConstantSet;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SDCardUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
-import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.GlideApp;
 import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
@@ -61,9 +53,7 @@ import java.io.File;
 import java.text.SimpleDateFormat;
 
 import butterknife.BindView;
-
-import static android.R.attr.data;
-import static android.R.attr.key;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul on 2018/7/4.
@@ -465,7 +455,7 @@ public class PersionnalInfoActivity extends BaseActivity<BasePresenter> implemen
                             startActivityForResult(intent, ConstantSet.TAKEPICTURE);
 
                         }catch (Exception e){
-                            L.liu("个人界面相机调取异常 = " + e.getMessage());
+                            LogUtil.e("个人界面相机调取异常 = " + e.getMessage());
                         }
                     }else{
                         showMessage("请打开相机权限");

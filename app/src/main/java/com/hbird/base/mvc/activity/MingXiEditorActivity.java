@@ -35,7 +35,6 @@ import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 import com.ljy.devring.DevRing;
@@ -44,6 +43,7 @@ import java.text.DecimalFormat;
 import java.util.Date;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul on 2018/7/2.
@@ -634,7 +634,7 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
         String money = GlobalVariables.getmInputMoney();
         if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length()>2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
-            L.liul( "calculatorNumOnclick: " + dot);
+            LogUtil.e("calculatorNumOnclick: " + dot);
             if (dot.equals(".")) {
                 //showMessage("陛下，不到一分钱了");
                 return;

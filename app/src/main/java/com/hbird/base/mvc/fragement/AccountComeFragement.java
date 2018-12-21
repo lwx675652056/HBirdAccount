@@ -24,7 +24,6 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseIncome;
 import com.hbird.base.util.DBUtil;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
 import com.ljy.devring.DevRing;
@@ -34,6 +33,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.common.util.LogUtil;
 
 /**
  * Created by Liul on 2018/7/02.
@@ -60,7 +60,7 @@ public class AccountComeFragement extends BaseFragement{
 
     @Override
     public void initView() {
-        L.liul("AccountComeFragement");
+        LogUtil.e("AccountComeFragement");
     }
 
     @Override

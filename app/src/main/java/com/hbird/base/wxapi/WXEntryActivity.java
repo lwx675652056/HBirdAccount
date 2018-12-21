@@ -16,7 +16,6 @@ import com.hbird.base.mvc.activity.AccountSafeActivity;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
 import com.hbird.base.mvp.event.WxLoginEvent;
 import com.hbird.base.mvp.model.http.UserApiService;
-import com.hbird.base.util.L;
 import com.hbird.base.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
@@ -36,7 +35,7 @@ import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import sing.util.LogUtil;
+import sing.common.util.LogUtil;
 
 /**
  * WXEntryActivity是一个Activity，用来接收微信的响应信息。这里有几个需要注意的地方：
@@ -179,7 +178,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private void getAccessToken(String code) {
         String deviceId = Utils.getDeviceInfo(this);
-        L.liul(deviceId);
+        LogUtil.e(deviceId);
         String channelName =getChannelName();
         String mobileType = android.os.Build.MODEL;
         String jsonInfo = "{\"code\":\"" + code + "\", \"mobileDevice\":\"" + deviceId + "\", \"mobileManufacturer\":\"" + mobileType + "\", \"androidChannel\":\"" + channelName + "\"}";

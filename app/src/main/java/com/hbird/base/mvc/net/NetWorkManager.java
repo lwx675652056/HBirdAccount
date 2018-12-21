@@ -55,7 +55,6 @@ import com.hbird.base.mvc.bean.ReturnBean.indexDatasReturn;
 import com.hbird.base.mvc.bean.dayListBean;
 import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.JSONUtil;
-import com.hbird.base.util.L;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.checkInterCode;
 import com.ljy.devring.DevRing;
@@ -72,12 +71,9 @@ import io.reactivex.Observable;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
-import sing.util.LogUtil;
+import sing.common.util.LogUtil;
+import zhy.com.highlight.util.L;
 
-/**
- * Created by Liul on 2018/7/7.
- * 统一网络请求管理
- */
 
 public class NetWorkManager {
     static NetWorkManager networkManager;
@@ -130,7 +126,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 //尚不清楚 错误信息怎么提示 暂时提示错误
                 callBack.onError("失败");
             }
@@ -184,7 +180,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -215,7 +211,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -250,7 +246,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -282,7 +278,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -314,7 +310,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -347,7 +343,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -378,7 +374,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -411,7 +407,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -447,7 +443,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -484,7 +480,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -531,7 +527,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -570,7 +566,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -610,7 +606,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -642,7 +638,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -674,7 +670,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -707,7 +703,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -742,7 +738,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -774,7 +770,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -805,7 +801,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -841,7 +837,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -886,7 +882,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -933,7 +929,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -978,7 +974,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1025,7 +1021,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1057,7 +1053,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1090,7 +1086,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1122,7 +1118,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1154,7 +1150,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1187,7 +1183,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1219,7 +1215,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1252,7 +1248,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1478,7 +1474,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1513,7 +1509,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1545,7 +1541,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
          },RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1577,7 +1573,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1609,7 +1605,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1642,7 +1638,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1675,7 +1671,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1706,7 +1702,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1739,7 +1735,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1930,7 +1926,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1963,7 +1959,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -1996,7 +1992,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2060,7 +2056,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2156,7 +2152,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2188,7 +2184,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2220,7 +2216,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2252,7 +2248,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
@@ -2284,7 +2280,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                L.liul(message);
+                LogUtil.e(message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
