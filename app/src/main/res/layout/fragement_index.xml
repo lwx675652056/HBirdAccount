@@ -1,105 +1,316 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+<layout>
 
-    <Button
-        android:id="@+id/more"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="更多"/>
+    <data>
 
-    <com.hbird.base.mvc.widget.HeaderViewPager
-        android:id="@+id/scrollableLayout"
+        <import type="android.view.View"/>
+
+        <variable
+            name="bean"
+            type="com.hbird.ui.index.IndexFragmentData"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.index.IndexFragement.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:hvp_topOffset="0dp">
-
-        <ScrollView
-            android:id="@+id/ll_content"
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_19_80"
-            android:overScrollMode="never">
-
-            <LinearLayout
-                android:id="@+id/ll_about_top"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <include
-                    android:id="@+id/layout_top"
-                    layout="@layout/index_top_chart"/>
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_3_80"
-                    android:background="@color/colorPrimary">
-
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:scaleType="fitXY"
-                        android:src="@mipmap/ic_index_fen"/>
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
-
-        <include
-            android:id="@+id/layout_top"
-            layout="@layout/top_date"/>
+        android:background="#F6F6F6"
+        android:orientation="vertical">
 
         <LinearLayout
-            android:id="@+id/ll_nets"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/height_4_80"
-            android:background="@color/text_468DE1"
-            android:orientation="horizontal"
-            android:visibility="gone">
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@color/white">
 
             <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:src="@mipmap/ic_net_action"/>
+                android:layout_width="@dimen/dp_45_x"
+                android:layout_height="@dimen/dp_45_x"
+                android:onClick="@{listener.chooseAccount}"
+                android:padding="@dimen/dp_12_x"
+                android:src="@mipmap/nav_icon_syzb_normal"/>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginLeft="@dimen/width_2_80"
-                android:text="当前网络不可用，请检查您的网络"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_2"/>
+                android:id="@+id/ab_moren"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:text="asdas"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_45_x"
+                android:layout_height="@dimen/dp_45_x"
+                android:onClick="@{listener.calendar}"
+                android:padding="@dimen/dp_12_x"
+                android:src="@mipmap/nav_icon_calendar_normal"/>
         </LinearLayout>
 
-        <FrameLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/iv_no_data"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginTop="@dimen/height_6_80"
-                android:src="@mipmap/ic_normal_data"
-                android:visibility="gone"/>
-
-            <com.hbird.base.mvc.widget.XListView
-                android:id="@+id/xList"
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:divider="@color/line"
-                android:listSelector="@android:color/transparent"
-                android:overScrollMode="never"
-                android:visibility="gone"/>
-        </FrameLayout>
-    </com.hbird.base.mvc.widget.HeaderViewPager>
-</LinearLayout>
+                android:orientation="vertical">
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginTop="@dimen/dp_15_x"
+                    android:background="@mipmap/home_bg_tbsjzs_disabled">
+
+                    <TextView
+                        android:id="@+id/tv_spend"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:text="@{bean.mm+@string/money_spend}"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_spend_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:text="@{@string/money+(bean.showMoney?bean.spendingMoney:@string/hide_money)}"
+                        android:textColor="@color/white"
+                        android:textSize="24sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_spend"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_spend"/>
+
+                    <ImageView
+                        android:id="@+id/line1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:background="@mipmap/home_icon_kpcx_disabled"
+                        app:layout_constraintStart_toStartOf="@id/tv_spend"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_spend_money"/>
+
+                    <TextView
+                        android:id="@+id/tv_budget"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:text="@{bean.mm+@string/money_budget}"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_spend"
+                        app:layout_constraintTop_toBottomOf="@+id/line1"/>
+
+                    <TextView
+                        android:id="@+id/tv_budget_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:maxLength="9"
+                        android:text="@{@string/money+(bean.showMoney?bean.budget:@string/hide_money)}"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/tv_spend"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_budget"/>
+
+                    <TextView
+                        android:id="@+id/tv_editor"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_10_x"
+                        android:drawablePadding="@dimen/dp_3_x"
+                        android:drawableStart="@mipmap/icon_editor"
+                        android:onClick="@{listener.editor}"
+                        android:text="编辑"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_budget_money"
+                        app:layout_constraintStart_toEndOf="@+id/tv_budget_money"
+                        app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+
+                    <ImageView
+                        android:id="@+id/line2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/home_icon_kpdx_disabled"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@+id/line1"/>
+
+                    <TextView
+                        android:id="@+id/tv_income"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:text="@{bean.mm+@string/money_income}"
+                        android:textColor="@color/white"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toEndOf="@+id/line2"
+                        app:layout_constraintTop_toTopOf="@+id/tv_budget"/>
+
+                    <TextView
+                        android:id="@+id/tv_income_money"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/dp_15_x"
+                        android:maxLength="9"
+                        android:text="@{@string/money+(bean.showMoney?bean.inComeMoney:@string/hide_money)}"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toStartOf="@id/tv_income"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_budget"
+                        app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:onClick="@{listener.showMoney}"
+                        android:padding="@dimen/dp_5_x"
+                        android:src="@{bean.showMoney?@drawable/home_icon_chakan_normal:@drawable/home_icon_yincang_normal}"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginTop="@dimen/dp_15_x"
+                    android:gravity="center_vertical"
+                    android:visibility="@{bean.show?View.VISIBLE:View.GONE}">
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@drawable/select_home"
+                        android:gravity="center"
+                        android:onClick="@{listener.invitation}"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@mipmap/home_btn_shouqi_pressed"
+                        android:onClick="@{listener.retract}"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@drawable/select_zankai"
+                    android:onClick="@{listener.open}"
+                    android:visibility="@{bean.show?View.GONE:View.VISIBLE}"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:gravity="center_vertical"
+                        android:paddingBottom="@dimen/dp_10_x"
+                        android:paddingTop="@dimen/dp_10_x">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <ImageView
+                            android:id="@+id/iv_index_setting"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:src="@mipmap/icon_sysz_normal"/>
+                    </LinearLayout>
+                </LinearLayout>
+
+                <Button
+                    android:id="@+id/more"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="更多"/>
+
+                <com.hbird.base.mvc.widget.HeaderViewPager
+                    android:id="@+id/scrollableLayout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:hvp_topOffset="0dp">
+
+                    <LinearLayout
+                        android:id="@+id/ll_nets"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/height_4_80"
+                        android:background="@color/text_468DE1"
+                        android:orientation="horizontal"
+                        android:visibility="gone">
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/width_4_80"
+                            android:src="@mipmap/ic_net_action"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="@dimen/width_2_80"
+                            android:text="当前网络不可用，请检查您的网络"
+                            android:textColor="@color/white"
+                            android:textSize="@dimen/text_size_2"/>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <ImageView
+                            android:id="@+id/iv_no_data"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/height_6_80"
+                            android:src="@mipmap/ic_normal_data"
+                            android:visibility="gone"/>
+
+                        <com.hbird.base.mvc.widget.XListView
+                            android:id="@+id/xList"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:divider="@color/line"
+                            android:listSelector="@android:color/transparent"
+                            android:overScrollMode="never"
+                            android:visibility="gone"/>
+                    </FrameLayout>
+                </com.hbird.base.mvc.widget.HeaderViewPager>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

@@ -70,7 +70,6 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
     }
 
     @Override

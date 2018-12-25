@@ -17,11 +17,16 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10_x"
+            android:background="#F5F5F5"
+            android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_15_x"
-            android:layout_marginStart="@dimen/dp_15_x"
+            android:background="@drawable/shape_top_white"
             android:orientation="horizontal"
             android:paddingBottom="@dimen/dp_10_x"
             android:paddingEnd="@dimen/dp_15_x"
@@ -79,23 +84,20 @@
             android:id="@+id/view"
             android:layout_width="match_parent"
             android:layout_height="0.5dp"
-            android:layout_marginEnd="@dimen/dp_15_x"
-            android:layout_marginStart="@dimen/dp_15_x"
             android:background="@color/line"
             android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}"/>
 
         <LinearLayout
+            android:id="@+id/ll_content"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginEnd="@dimen/dp_15_x"
-            android:layout_marginStart="@dimen/dp_15_x"
             android:background="@drawable/item_selector_hint"
             android:gravity="center_vertical"
             android:orientation="horizontal"
-            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingBottom="@dimen/dp_15_x"
             android:paddingEnd="@dimen/dp_15_x"
             android:paddingStart="@dimen/dp_15_x"
-            android:paddingTop="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_15_x"
             android:visibility="@{bean.tag==0?View.GONE:View.VISIBLE}">
 
             <FrameLayout
@@ -105,14 +107,14 @@
                 <View
                     android:layout_width="@dimen/dp_40_x"
                     android:layout_height="@dimen/dp_40_x"
-                    android:background="@drawable/circle_333333" />
+                    android:background="@drawable/circle_333333"/>
 
                 <ImageView
-                    app:imageUrl="@{bean.icon}"
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/dp_25_x"
-                    android:layout_height="@dimen/dp_25_x"
-                    android:layout_gravity="center" />
+                    android:layout_width="@dimen/dp_15_x"
+                    android:layout_height="@dimen/dp_15_x"
+                    android:layout_gravity="center"
+                    app:imageUrl="@{bean.icon}"/>
 
                 <com.hbird.widget.CircleView
                     android:id="@+id/imagess"
@@ -123,6 +125,7 @@
                     android:src="@mipmap/ic_me_normal_headr"
                     app:border_color="@color/bg_e6e6e6"
                     app:border_width="1dp"
+                    app:imageUrl="@{bean.reporterAvatar}"
                     app:type="circle"/>
             </FrameLayout>
 
@@ -140,33 +143,62 @@
                 android:textSize="14sp"/>
 
             <ImageView
-                android:id="@+id/iv_mood"
                 android:layout_width="@dimen/dp_20_x"
                 android:layout_height="@dimen/dp_20_x"
-                android:src="@mipmap/icon_mood_normal_blue"/>
+                android:src="@mipmap/icon_mood_happy_blue"
+                android:visibility="@{bean.spendHappiness==0?View.VISIBLE:View.GONE}"/>
 
+            <ImageView
+                android:layout_width="@dimen/dp_20_x"
+                android:layout_height="@dimen/dp_20_x"
+                android:src="@mipmap/icon_mood_normal_blue"
+                android:visibility="@{bean.spendHappiness==1?View.VISIBLE:View.GONE}"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_20_x"
+                android:layout_height="@dimen/dp_20_x"
+                android:src="@mipmap/icon_mood_blue"
+                android:visibility="@{bean.spendHappiness==2?View.VISIBLE:View.GONE}"/>
+
+            <!--支出-->
             <TextView
-                android:id="@+id/tv_pay_num"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10_x"
-                android:text="+ 100"
-                android:textColor="#333333"
-                android:textSize="16sp"/>
+                android:text="@{@string/subtraction+bean.money}"
+                android:textColor="@color/text_333333"
+                android:textSize="16sp"
+                android:visibility="@{bean.orderType==1?View.VISIBLE:View.GONE}"/>
+            <!--收入-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10_x"
+                android:text="@{@string/addition+bean.money}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:visibility="@{bean.orderType!=1?View.VISIBLE:View.GONE}"/>
         </LinearLayout>
 
         <LinearLayout
-            android:id="@+id/ll_content"
+            android:id="@+id/ll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:visibility="@{bean.tag==0?View.GONE:View.VISIBLE}">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <View
-                android:id="@+id/iv_view2"
                 android:layout_width="match_parent"
                 android:layout_height="0.5dp"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"
                 android:background="@color/line"/>
         </LinearLayout>
+
+        <View
+            android:id="@+id/bottom_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_10_x"
+            android:background="#F5F5F5" />
     </LinearLayout>
 </layout>

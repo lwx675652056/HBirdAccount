@@ -4,7 +4,6 @@ import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 
-import com.alibaba.android.arouter.launcher.ARouter;
 import com.growingio.android.sdk.collection.Configuration;
 import com.growingio.android.sdk.collection.GrowingIO;
 import com.hbird.base.R;
@@ -14,6 +13,7 @@ import com.hbird.base.mvp.model.bus.RxBusManager;
 import com.hbird.base.mvp.model.db.greendao.GreenDBManager;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.wxapi.WXEntryActivity;
+import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
 import com.sobot.chat.SobotApi;
@@ -25,9 +25,11 @@ import com.umeng.commonsdk.UMConfigure;
 import com.umeng.socialize.PlatformConfig;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
+import java.io.File;
+import java.io.IOException;
+
 import cn.jpush.android.api.JPushInterface;
 import retrofit2.Retrofit;
-import sing.common.util.Utils;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
@@ -38,7 +40,6 @@ import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
  * author:  admin
  * date:    2018/6/28
  * description: 做全局初始化操作
- *
  */
 
 public class RingApplication extends Application {
@@ -57,9 +58,18 @@ public class RingApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        LogUtil.init(true,"aaa1");
+        LogUtil.init(true, "aaa1");
         ToastUtil.init(this);
-        SharedPreferencesUtil.init(this,"ap_data");
+        SharedPreferencesUtil.init(this, "ap_data");
+
+        File p = new File(Constants.BASE_PATH);
+        if (!p.exists()) {
+            LogUtil.e("create Folder isSuccess:"+p.mkdirs());
+        }
+        File img = new File(Constants.IMAGE_PATH);
+        if (!img.exists()) {
+            LogUtil.e("create Folder isSuccess:"+img.mkdirs());
+        }
 
 //        Utils.init(this);
 //        if (Utils.isAppDebug()) {
@@ -74,7 +84,7 @@ public class RingApplication extends Application {
         Thread.setDefaultUncaughtExceptionHandler(restartHandler);
 
         //友盟分享
-        UMConfigure.init(this,"5b46fa2ca40fa339f400011d","umeng",UMConfigure.DEVICE_TYPE_PHONE,"");
+        UMConfigure.init(this, "5b46fa2ca40fa339f400011d", "umeng", UMConfigure.DEVICE_TYPE_PHONE, "");
         PlatformConfig.setWeixin(CommonTag.WEIXIN_APP_ID, CommonTag.APP_SECRET);
         UMConfigure.setLogEnabled(true);
 
@@ -136,14 +146,14 @@ public class RingApplication extends Application {
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
         String ss = SPUtil.getPrefString(getApplicationContext(), CommonTag.FENG_NIAO_ID, "");
-        JPushInterface.setAlias(getApplicationContext(),1,ss);
+        JPushInterface.setAlias(getApplicationContext(), 1, ss);
         MiPushClient.getRegId(getApplicationContext());
 
         // 打包时设置为false  控制日志
         CrashReport.initCrashReport(getApplicationContext(), "bd239c9a7f", true);
     }
 
-    public static Context getContextObject(){
+    public static Context getContextObject() {
         return context;
     }
 
@@ -151,6 +161,7 @@ public class RingApplication extends Application {
         mWxApi = WXAPIFactory.createWXAPI(this, CommonTag.WEIXIN_APP_ID, true);
         mWxApi.registerApp(CommonTag.WEIXIN_APP_ID);
     }
+
     // 创建服务用于捕获崩溃异常
     private Thread.UncaughtExceptionHandler restartHandler = new Thread.UncaughtExceptionHandler() {
         public void uncaughtException(Thread thread, Throwable ex) {

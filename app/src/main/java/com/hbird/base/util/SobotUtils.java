@@ -1,23 +1,13 @@
 package com.hbird.base.util;
 
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.IntentFilter;
-import android.text.TextUtils;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.activity.KeFuActivity;
-import com.hbird.base.mvc.activity.SobotNotificationClickReceiver;
-import com.hbird.base.mvc.activity.SobotUnReadMsgReceiver;
 import com.sobot.chat.SobotApi;
 import com.sobot.chat.SobotUIConfig;
-import com.sobot.chat.api.enumtype.SobotAutoSendMsgMode;
 import com.sobot.chat.api.enumtype.SobotChatTitleDisplayMode;
-import com.sobot.chat.api.model.ConsultingContent;
 import com.sobot.chat.api.model.Information;
-import com.sobot.chat.utils.ToastUtil;
-import com.sobot.chat.utils.ZhiChiConstant;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -47,7 +37,7 @@ public class SobotUtils {
 
         //用户编号
         //注意：uid为用户唯一标识，不能传入一样的值
-        String deviceId = Utils.getDeviceInfo(context);
+        String deviceId = com.hbird.util.Utils.getDeviceInfo(context);
         info.setUid(deviceId);
         //用户昵称，选填
         String name = SPUtil.getPrefString(context, CommonTag.KEFUNICKNAME, "");

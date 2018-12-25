@@ -1,6 +1,5 @@
 package com.hbird.base.mvp.view.activity.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -8,46 +7,34 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.mvc.activity.WebViewActivity;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
-import com.hbird.base.mvc.bean.ReturnBean.SystemParamsReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.model.login.RegisterModel;
-import com.hbird.base.mvp.model.login.loginModel;
-import com.hbird.base.mvp.presenter.login.loginPresenter;
-import com.hbird.base.mvp.view.activity.base.BaseActivity;
-
-import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.mvp.presenter.login.RegisterPresenter;
-
-import com.hbird.base.R;
+import com.hbird.base.mvp.view.activity.base.BaseActivity;
+import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
-import com.hbird.base.util.Utils;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
@@ -55,7 +42,6 @@ import java.util.Set;
 import butterknife.BindView;
 import butterknife.OnClick;
 
-import static com.hbird.base.R.id.iv_wx_login;
 import static com.hbird.base.R.id.userName;
 
 

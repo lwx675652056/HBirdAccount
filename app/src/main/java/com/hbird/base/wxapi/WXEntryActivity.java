@@ -12,11 +12,12 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.hbird.base.app.RingApplication;
 import com.hbird.base.app.constant.UrlConstants;
+import com.hbird.base.listener.OnItemClickListener;
 import com.hbird.base.mvc.activity.AccountSafeActivity;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
 import com.hbird.base.mvp.event.WxLoginEvent;
 import com.hbird.base.mvp.model.http.UserApiService;
-import com.hbird.base.util.Utils;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -36,6 +37,7 @@ import retrofit2.Retrofit;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 import sing.common.util.LogUtil;
+import sing.util.SharedPreferencesUtil;
 
 /**
  * WXEntryActivity是一个Activity，用来接收微信的响应信息。这里有几个需要注意的地方：
@@ -73,6 +75,11 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     }
 
+    private static OnItemClickListener listener;
+    public static void setListener(OnItemClickListener l){
+        listener = l;
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -91,7 +98,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     //微信发送的请求将回调到onReq方法
     @Override
     public void onReq(BaseReq req) {
-
     }
 
     //发送到微信请求的响应结果
@@ -118,16 +124,27 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 //RingToast.show("ERR_OK");
                 if (sendResp != null) {
                     String code = sendResp.code;
-                    Activity activity = DevRing.activityListManager().findActivity(AccountSafeActivity.class);
-                    if(activity!=null){
-                        //账户安全中 绑定微信时的判断流程
-                        DevRing.busManager().postEvent(new WxLoginCodeEvent(code));
+                    boolean getCode = (boolean) SharedPreferencesUtil.get("get_weixin_code",false);
+                    if (getCode){
+                        if (listener != null){
+                            listener.onClick(0,code,0);
+                        }
+
+                        SharedPreferencesUtil.put("get_weixin_code",false);// 标记为不是获取code，每次获取都设置
                         finish();
                         return;
+                    }else{
+                        Activity activity = DevRing.activityListManager().findActivity(AccountSafeActivity.class);
+                        if(activity!=null){
+                            //账户安全中 绑定微信时的判断流程
+                            DevRing.busManager().postEvent(new WxLoginCodeEvent(code));
+                            finish();
+                            return;
+                        }
+                        //执行微信登录
+                        getAccessToken(code);
+                        //loginByWeChat(code);
                     }
-                    //执行微信登录
-                    getAccessToken(code);
-                    //loginByWeChat(code);
                 }
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:

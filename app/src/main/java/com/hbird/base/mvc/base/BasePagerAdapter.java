@@ -12,9 +12,9 @@ import java.util.ArrayList;
 
 public class BasePagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<BaseFragement> mFragments;
+    private ArrayList<Fragment> mFragments;
 
-    public BasePagerAdapter(FragmentManager fm, ArrayList<BaseFragement> fragments) {
+    public BasePagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);
         this.mFragments = new ArrayList<>();
         this.mFragments.addAll(fragments);

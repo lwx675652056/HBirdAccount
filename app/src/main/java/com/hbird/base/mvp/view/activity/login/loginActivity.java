@@ -179,7 +179,6 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
             //微信登录
             case iv_wx_login:
                 doWeChatLogin();
-                //showMessage("开发中，敬请期待！");
                 break;
             //注册
             case R.id.tv_register:

@@ -4,8 +4,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -31,11 +29,10 @@ import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
-import com.hbird.base.util.Utils;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
 
-import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 

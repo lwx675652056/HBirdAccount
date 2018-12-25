@@ -157,6 +157,8 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:background="#F6F6F6"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"

@@ -10,6 +10,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -22,10 +23,8 @@ import android.widget.Toast;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.fragement.ChartFragement;
-import com.hbird.base.mvc.fragement.IndexFragement;
 import com.hbird.base.mvc.fragement.LingPiaoFragement;
 import com.hbird.base.mvc.fragement.MeFragement;
 import com.hbird.base.mvc.fragement.TuBiaoFragement;
@@ -34,6 +33,7 @@ import com.hbird.base.mvc.widget.TabRadioButton;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
+import com.hbird.ui.index.IndexFragement;
 import com.ljy.devring.DevRing;
 import com.sobot.chat.utils.ZhiChiConstant;
 import com.umeng.socialize.UMShareAPI;
@@ -70,7 +70,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
     @BindView(R.id.ll_bottom_dh)
     LinearLayout mBottomDh;
 
-    private ArrayList<BaseFragement> fragements = new ArrayList<>();
+    private ArrayList<Fragment> fragements = new ArrayList<>();
     private BasePagerAdapter pagerAdapter;
     private IndexFragement indexFragement;
     private ChartFragement chartFragement;

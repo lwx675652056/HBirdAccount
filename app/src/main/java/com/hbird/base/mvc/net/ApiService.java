@@ -473,4 +473,11 @@ public interface ApiService {
     @GET("getHadABType/android")
     Observable<ResponseBody> getHadABType(@Header("X-AUTH-TOKEN") String token);
 
+    /**
+     * 移动端上传code---->获取openid
+     */
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("uploadCode/android")
+    Observable<ResponseBody> uploadCode(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
+
 }

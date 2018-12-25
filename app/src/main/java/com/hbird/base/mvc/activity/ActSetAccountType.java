@@ -8,6 +8,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.View;
@@ -18,7 +19,6 @@ import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.fragement.AccountComeFragementNew;
@@ -62,7 +62,7 @@ public class ActSetAccountType extends BaseActivity<BaseActivityPresenter> imple
     NoScrollViewPager viewPager;
 
     private int type = 0;
-    private ArrayList<BaseFragement> list;
+    private ArrayList<Fragment> list;
     private AccountOutFragementNew outFragement;
     private AccountComeFragementNew comeFragement;
     private BasePagerAdapter pagerAdapter;

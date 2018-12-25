@@ -2,6 +2,7 @@ package com.hbird.bean;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.support.annotation.NonNull;
 
 import com.android.databinding.library.baseAdapters.BR;
 import com.hbird.base.mvc.bean.indexBaseListBean;
@@ -11,7 +12,7 @@ import com.hbird.base.util.DateUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountDetailedBean extends BaseObservable {
+public class AccountDetailedBean extends BaseObservable implements Comparable<AccountDetailedBean> {
 
     private int tag;//自定义标签 区分二三级条目 （0标题条目和1数据条目） 根据这个首页显示不同的样式布局
     private int orderType;
@@ -29,8 +30,18 @@ public class AccountDetailedBean extends BaseObservable {
     private long createDate;
     private String typePname;
     private List<indexBean> indexBeen;
-    public String reporterAvatar;//记录者头像
-    public String reporterNickName;    //记录者昵称
+    public String reporterAvatar; // 记录者头像
+    public String reporterNickName; // 记录者昵称
+
+    @Override
+    public int compareTo(@NonNull AccountDetailedBean o) {
+        if (indexBeen != null && o.indexBeen != null) {
+            if (createDate > o.createDate) {
+                return -1;
+            }
+        }
+        return 0;
+    }
 
     public static class indexBean extends BaseObservable {
         private double daySpend;

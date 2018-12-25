@@ -2254,7 +2254,7 @@ public class NetWorkManager {
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
     }
 
-  // 获取用户已拥有的账本类型--->类目设置调用
+    // 获取用户已拥有的账本类型--->类目设置调用
     public void getHadABType(String token,final CallBack callBack){
         Observable<ResponseBody> observable = DevRing.httpManager().getService(ApiService.class).getHadABType(token);
         DevRing.httpManager().commonRequest(observable, new CommonObserver<ResponseBody>(){
@@ -2269,6 +2269,39 @@ public class NetWorkManager {
                     }else {
                         callBack.onError(checkInterCode.MSG);
                         tokenSetting(json);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callBack.onError("解析错误");
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable httpThrowable) {
+                String message = httpThrowable.message;
+                LogUtil.e(message);
+                callBack.onError("失败");
+            }
+        }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY) );
+    }
+
+
+    // 上传code
+    public void uploadCode(String token,String code,final CallBack callBack){
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), "{\"code\":\""+code+"\"}");
+
+        Observable<ResponseBody> observable = DevRing.httpManager().getService(ApiService.class).uploadCode(token,body);
+        DevRing.httpManager().commonRequest(observable, new CommonObserver<ResponseBody>(){
+            @Override
+            public void onResult(ResponseBody result) {
+                try {
+                    String json = result.string();
+                    L.e(json);
+                    if(checkInterCode.isSuccess(json)){
+                        callBack.onSuccess(null);
+                    }else {
+                        callBack.onError(checkInterCode.MSG);
                     }
 
                 } catch (IOException e) {

@@ -1,5 +1,6 @@
 package com.hbird.ui.detailed;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,8 +14,15 @@ import com.alibaba.fastjson.serializer.SerializerFeature;
 import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.databinding.ActAccountDetailedBinding;
+import com.hbird.base.mvc.activity.MingXiInfoActivity;
+import com.hbird.base.mvc.bean.BaseReturn;
+import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
 import com.hbird.base.mvc.bean.dayListBean;
 import com.hbird.base.mvc.bean.indexBaseListBean;
+import com.hbird.base.mvc.global.CommonTag;
+import com.hbird.base.mvc.net.NetWorkManager;
+import com.hbird.base.mvc.view.dialog.DialogToGig;
+import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvc.widget.MyTimerPop;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
@@ -25,10 +33,11 @@ import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.TitleBean;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.base.activity.IBaseActivity;
+import com.ljy.devring.util.NetworkUtil;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,7 +48,9 @@ import java.util.Map;
 import java.util.Set;
 
 import sing.common.base.BaseActivity;
+import sing.util.ToastUtil;
 
+import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
 import static java.lang.Integer.parseInt;
 
 /**
@@ -48,10 +59,12 @@ import static java.lang.Integer.parseInt;
  * @date: 2018/12/20 14:47
  * @Description: 首页的更多 账本明细
  */
-public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,AccountDetailedModle> {
+public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, AccountDetailedModle> implements IBaseActivity {
 
     private AccountDetailedData data;
     private String accountId;
+    private AccountDetailedAdapter adapter;
+    private List<AccountDetailedBean> list = new ArrayList<>();
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -69,7 +82,7 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
         binding.toolbar.ivBack.setOnClickListener(v -> finish());
         binding.setClick(new OnClick());
 
-        accountId = getIntent().getExtras().getString("accountId","");
+        accountId = getIntent().getExtras().getString("accountId", "");
 
         setInitData();
 
@@ -80,7 +93,47 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
         data.setSpendingMoney("0.00");
         binding.setData(data);
 
+        adapter = new AccountDetailedAdapter(this, list, R.layout.row_account_detailed, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
+        binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
         getData();
+    }
+
+    // Item点击，type=0 为点击，type=1 为长按
+    private void onItemClick(AccountDetailedBean data, int type) {
+        if (type == 0) {
+            Utils.playVoice(this, R.raw.changgui02);
+            Intent intent = new Intent();
+            intent.setClass(this, MingXiInfoActivity.class);
+            intent.putExtra("ID", data.getId());
+            startActivityForResult(intent, 101);
+        } else if (type == 1) {
+            Utils.playVoice(this, R.raw.changgui02);
+            alertDialog(data.getId());
+        }
+    }
+
+    private void alertDialog(String id) {
+        new DialogUtils(this)
+                .builder()
+                .setTitle("温馨提示")
+                .setMsg("确认删除吗？")
+                .setCancleButton("取消", view -> {
+                })
+                .setSureButton("删除", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        //数据库的操作 （删除显示的是 数据库的更新）
+                        Boolean b = DBUtil.updateOneDate(id, accountId);
+                        if (b) {
+                            //刷新界面数据
+                            getData();
+                            //删除 并同步上传到服务器
+                            pullToSyncDate();
+                        }
+                    }
+                }).show();
     }
 
     //初始化 年（2010-2050），月（1-12）
@@ -97,11 +150,21 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
     private ArrayList<String> dataY = new ArrayList<>();
     private ArrayList<String> dataM = new ArrayList<>();
 
+    @Override
+    public boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    public boolean isUseFragment() {
+        return false;
+    }
+
 
     public class OnClick {
         // 选择账户
-        public void chooseAccount(View view){
-            Utils.playVoice(ActAccountDetailed.this,R.raw.changgui02);
+        public void chooseAccount(View view) {
+            Utils.playVoice(ActAccountDetailed.this, R.raw.changgui02);
             new MyTimerPop(ActAccountDetailed.this, view, dataY, dataM, data.getYyyy() - 2010, data.getMm() - 1, new MyTimerPop.OnDateListener() {
                 @Override
                 public void getYearList(String s) {
@@ -128,6 +191,7 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
         NF.setGroupingUsed(false);//去掉科学计数法显示
         return NF.format(d);
     }
+
     private void getData() {
         //查询指定月份记录
         String MonthFirstDay = DateUtil.getMonthday2First(data.getYyyy(), data.getMm());
@@ -173,13 +237,12 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
         }
 
         if (null != dbList && dbList.size() > 0) {
-            Collections.sort(dbList);
             Map<String, Object> dbDate = getDBDate(dbList);
             String json = new Gson().toJson(dbDate);
             dayListBean.ResultBean bean = new Gson().fromJson(json, dayListBean.ResultBean.class);
 
             if (bean != null) {
-                ArrayList<indexBaseListBean>  dates = getDBDates(bean);
+                ArrayList<indexBaseListBean> dates = getDBDates(bean);
                 if (dates != null && dates.size() > 0) {
                     double monthIncome = bean.getMonthIncome();
                     double monthSpend = bean.getMonthSpend();
@@ -188,24 +251,86 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding,A
                     data.setInComeMoney(monthIncomes);
                     data.setSpendingMoney(monthSpends);
 
-                    List<AccountDetailedBean> list = new ArrayList<>();
+                    list.clear();
                     for (int i = 0; i < dates.size(); i++) {
-                        AccountDetailedBean temp  = new AccountDetailedBean();
+                        AccountDetailedBean temp = new AccountDetailedBean();
                         temp.setBean(dates.get(i));
                         list.add(temp);
                     }
-                    AccountDetailedAdapter adapter = new AccountDetailedAdapter(this,list,R.layout.row_account_detailed);
-                    binding.recyclerView.setAdapter(adapter);
-                    binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//                    Collections.sort(list);
+                    adapter.notifyDataSetChanged();
                 } else {
                     data.setInComeMoney("0.00");
                     data.setSpendingMoney("0.00");
+                    list.clear();
+                    adapter.notifyDataSetChanged();
                 }
             }
         } else {
             data.setInComeMoney("0.00");
             data.setSpendingMoney("0.00");
+            list.clear();
+            adapter.notifyDataSetChanged();
         }
+    }
+
+
+    private DialogToGig dialogToGig;
+
+    public void showGifProgress(String title) {
+        if (dialogToGig == null) {
+            dialogToGig = new DialogToGig(this);
+        }
+        dialogToGig.builder().show();
+    }
+
+    public void hideGifProgress() {
+        if (dialogToGig != null) {
+            dialogToGig.hide();
+        }
+    }
+
+    private void pullToSyncDate() {
+        //判断当前网络状态
+        boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(this);
+
+        if (!netWorkAvailable) {
+            return;
+        }
+        showGifProgress("");
+        String mobileDevice = Utils.getDeviceInfo(this);
+
+        String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+        NetWorkManager.getInstance().setContext(ActAccountDetailed.this).postPullToSyncDate(mobileDevice, false, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                PullSyncDateReturn b1 = (PullSyncDateReturn) b;
+                String synDate = b1.getResult().getSynDate();
+                long L = 0;
+                if (null != synDate) {
+                    try {
+                        L = Long.parseLong(synDate);
+                    } catch (Exception e) {
+
+                    }
+                }
+                SPUtil.setPrefLong(ActAccountDetailed.this, com.hbird.base.app.constant.CommonTag.SYNDATE, L);
+                List<PullSyncDateReturn.ResultBean.SynDataBean> synData = b1.getResult().getSynData();
+                //插入本地数据库
+                DBUtil.insertLocalDB(synData);
+                SPUtil.setPrefBoolean(ActAccountDetailed.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
+                hideGifProgress();
+
+                getData();
+                SPUtil.setPrefBoolean(ActAccountDetailed.this, OFFLINEPULL_FIRST_LOGIN, false);
+            }
+
+            @Override
+            public void onError(String s) {
+                hideGifProgress();
+                ToastUtil.showShort(s);
+            }
+        });
     }
 
     private Map<String, Object> getDBDate(List<WaterOrderCollect> list) {

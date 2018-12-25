@@ -9,14 +9,10 @@ import android.widget.BaseAdapter;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hbird.base.R;
 import com.hbird.base.mvc.bean.IndexFirends;
-import com.hbird.base.mvc.fragement.IndexFragement;
+import com.hbird.ui.index.IndexFragement;
 import com.ljy.devring.image.support.GlideApp;
 
 import java.util.ArrayList;
-
-/**
- * Created by Liul(245904552@qq.com) on 2018/11/6.
- */
 
 public class IndexGridViewAdapter extends BaseAdapter {
     private Context mContext;

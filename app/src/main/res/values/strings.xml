@@ -60,7 +60,13 @@
     <string name="money">￥</string>
     <string name="income">收入:</string>
     <string name="spend">支出:</string>
-
+    <string name="addition">+</string>
+    <string name="subtraction">-</string>
+    <string name="money_spend">月支出（元）</string>
+    <string name="money_income">月收入（元）</string>
+    <string name="money_budget">月剩余预算（元）</string>
+    <string name="no_money">--</string>
+    <string name="hide_money">****</string>
 
 
 </resources>

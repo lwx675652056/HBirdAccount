@@ -1,6 +1,7 @@
 package sing.common.base;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModel;
 import android.arch.lifecycle.ViewModelProviders;
@@ -34,12 +35,12 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
     protected int viewModelId;
     private LoadingDialog dialog;
 
-    protected BaseActivity mActivity;
+    protected Activity mActivity;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.mActivity = (BaseActivity) context;
+        this.mActivity = (Activity) context;
     }
 
     @Override
@@ -288,7 +289,8 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
      * @return BaseActivity
      */
     protected BaseActivity getHoldingActivity() {
-        return mActivity;
+//        return mActivity;
+        return null;
     }
 
 

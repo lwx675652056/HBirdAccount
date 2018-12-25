@@ -69,7 +69,6 @@ import sing.common.util.LogUtil;
 import zhy.com.highlight.HighLight;
 import zhy.com.highlight.interfaces.HighLightInterface;
 import zhy.com.highlight.shape.BaseLightShape;
-import zhy.com.highlight.util.L;
 
 import static com.hbird.base.R.id.anime_date;
 
@@ -928,7 +927,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             return;
         }
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
-        String mobileDevice = Utils.getDeviceInfo(ChargeToAccount.this);
+        String mobileDevice =com.hbird.util.Utils.getDeviceInfo(ChargeToAccount.this);
         comeInForLogin = SPUtil.getPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
         NetWorkManager.getInstance().setContext(ChargeToAccount.this)
                 .postPullToSyncDate(mobileDevice, comeInForLogin, token, new NetWorkManager.CallBack() {
@@ -971,7 +970,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
 
     private void pushOffLine(final int code) {
         OffLineReq req = new OffLineReq();
-        String deviceId = Utils.getDeviceInfo(ChargeToAccount.this);
+        String deviceId = com.hbird.util.Utils.getDeviceInfo(ChargeToAccount.this);
         req.setMobileDevice(deviceId);
         Long time = SPUtil.getPrefLong(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.SYNDATE, new Date().getTime());
         String times = String.valueOf(time);

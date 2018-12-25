@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.MultiAutoCompleteTextView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -20,13 +19,11 @@ import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
-import com.hbird.base.mvp.event.WxLoginEvent;
-import com.hbird.base.mvp.model.login.loginModel;
-import com.hbird.base.mvp.presenter.login.loginPresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
+import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.sobot.chat.SobotApi;
@@ -35,6 +32,7 @@ import com.umeng.analytics.MobclickAgent;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import sing.util.SharedPreferencesUtil;
 
 import static com.hbird.base.R.color.text_468DE1;
 import static com.hbird.base.mvp.view.activity.login.loginActivity.isWeChatAppInstalled;
@@ -44,7 +42,7 @@ import static com.hbird.base.mvp.view.activity.login.loginActivity.isWeChatAppIn
  * 账户安全
  */
 
-public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener{
+public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
     @BindView(R.id.iv_back)
     ImageView mBack;
     @BindView(R.id.center_title)
@@ -74,15 +72,15 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
     private String phone;
     private String phones;
     private String weiXin;
-    private boolean hasBd=false;
-    private boolean phoneClick =false;
+    private boolean hasBd = false;
+    private boolean phoneClick = false;
 
     @org.greenrobot.eventbus.Subscribe //如果使用默认的EventBus则使用此@Subscribe
     @com.hbird.base.mvp.model.bus.support.Subscribe //如果使用RxBus则使用此@Subscribe
     public void handlerEvent(WxLoginCodeEvent event) {
         //处理事件
         String code = event.getCode();
-       //调用绑定方法
+        //调用绑定方法
         bindWeCharts(code);
     }
 
@@ -108,41 +106,41 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
         phones = getIntent().getStringExtra("PHONE");
         weiXin = getIntent().getStringExtra("WEIXIN");
         mLoginPasswords.setVisibility(View.VISIBLE);
-        if(!TextUtils.isEmpty(phones)){
+        if (!TextUtils.isEmpty(phones)) {
             phone = Utils.getHiddenPhone(phones);
             mPhoneNum.setText(phone);
             mModifiPhone.setVisibility(View.VISIBLE);
             phoneClick = true;
             mFangshi.setText("当前登录方式（手机号）");
-        }else {
+        } else {
             mPhoneNum.setText("去绑定");
             mPhoneNum.setTextColor(getResources().getColor(text_468DE1));
             mArrows.setVisibility(View.VISIBLE);
             mModifiPhone.setVisibility(View.GONE);
             phoneClick = false;
         }
-        if(TextUtils.isEmpty(weiXin)){
-            hasBd =false;
+        if (TextUtils.isEmpty(weiXin)) {
+            hasBd = false;
             //doWeChatLogin();
 
-        }else {
+        } else {
             mFangshi.setText("当前登录方式（微信）");
             mWxNum.setText("已绑定");
             mWxNum.setTextColor(getResources().getColor(R.color.text_808080));
             mArrows2.setVisibility(View.GONE);
-            hasBd= true;
+            hasBd = true;
             mLoginPasswords.setVisibility(View.GONE);
         }
-        if(!TextUtils.isEmpty(phones) && !TextUtils.isEmpty(weiXin)){
+        if (!TextUtils.isEmpty(phones) && !TextUtils.isEmpty(weiXin)) {
             mWxUnbind.setVisibility(View.VISIBLE);
-            String methods = SPUtil.getPrefString(AccountSafeActivity.this,CommonTag.CURRENT_LOGIN_METHOD, "sj");
-            String ss ="手机号";
-            if(TextUtils.equals(methods,"wx")){
+            String methods = SPUtil.getPrefString(AccountSafeActivity.this, CommonTag.CURRENT_LOGIN_METHOD, "sj");
+            String ss = "手机号";
+            if (TextUtils.equals(methods, "wx")) {
                 ss = "微信";
                 mLoginPasswords.setVisibility(View.GONE);
             }
-            mFangshi.setText("当前登录方式（"+ss+")");
-        }else {
+            mFangshi.setText("当前登录方式（" + ss + ")");
+        } else {
             mWxUnbind.setVisibility(View.GONE);
         }
     }
@@ -152,11 +150,11 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
         mBack.setOnClickListener(this);
     }
 
-    @OnClick({R.id.ll_phone,R.id.ll_weixin,R.id.ll_safekey,R.id.ll_modifi_phone
-            ,R.id.rl_bottom_btn,R.id.ll_wx_unbind})
+    @OnClick({R.id.ll_phone, R.id.ll_weixin, R.id.ll_safekey, R.id.ll_modifi_phone
+            , R.id.rl_bottom_btn, R.id.ll_wx_unbind})
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
                 finish();
@@ -164,16 +162,16 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
             case R.id.ll_phone:
                 //showMessage("手机号");
                 playVoice(R.raw.changgui02);
-                if(phoneClick){
+                if (phoneClick) {
                     return;
                 }
                 Intent intent1 = new Intent(this, BindingActivity.class);
-                startActivityForResult(intent1,303);
+                startActivityForResult(intent1, 303);
                 break;
             case R.id.ll_weixin:
                 //showMessage("微信");
                 //判断微信当前的状态 处于已绑定状态时 则没有点击事件
-                if(hasBd){
+                if (hasBd) {
                     return;
                 }
                 playVoice(R.raw.changgui02);
@@ -184,14 +182,14 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
             case R.id.ll_safekey:
                 ////showMessage("修改登录密码");
                 playVoice(R.raw.changgui02);
-                startActivity(new Intent(this,ChangePasswordActivity.class));
+                startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
             case R.id.ll_modifi_phone:
                 //showMessage("修改手机号");
                 playVoice(R.raw.changgui02);
                 Intent intent = new Intent();
-                intent.setClass(this,BindingModifiActivity.class);
-                intent.putExtra("PHONE",phones);
+                intent.setClass(this, BindingModifiActivity.class);
+                intent.putExtra("PHONE", phones);
                 startActivity(intent);
                 break;
             case R.id.ll_wx_unbind:
@@ -208,7 +206,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                                 mWxNum.setText("去绑定");
                                 mWxNum.setTextColor(getResources().getColor(R.color.text_468DE1));
                                 mArrows2.setVisibility(View.VISIBLE);
-                                hasBd =false;
+                                hasBd = false;
                                 mWxUnbind.setVisibility(View.GONE);
                             }
 
@@ -231,14 +229,16 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN, "");
                 DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN_EXPIRE, "");
                 //
-                SPUtil.setPrefString(AccountSafeActivity.this, com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN,"");
-                SPUtil.setPrefString(AccountSafeActivity.this, com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN_EXPIRE,"");
+                SPUtil.setPrefString(AccountSafeActivity.this, CommonTag.GLOABLE_TOKEN, "");
+                SPUtil.setPrefString(AccountSafeActivity.this, CommonTag.GLOABLE_TOKEN_EXPIRE, "");
                 //
                 //清空手势密码
                 GestureUtil.clearGesturePassword();
                 //关闭手势密码开关（必须重新打开设置）
-                DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).
-                        put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
+                DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.SHOUSHI_PASSWORD_OPENED, false);
+
+                SharedPreferencesUtil.put(Constants.WX_CODE, "");// 微信code置空
+                SharedPreferencesUtil.put("get_weixin_code",false);
 
                 //杀掉所有Activity，返回打开登录界面
                 DevRing.activityListManager().killAll();
@@ -246,6 +246,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 break;
         }
     }
+
     private void bindWeCharts(String code) {
         String token = SPUtil.getPrefString(this, com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN, "");
         showProgress("");
@@ -258,7 +259,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                         mWxNum.setText("已绑定");
                         mWxNum.setTextColor(getResources().getColor(R.color.text_808080));
                         mArrows2.setVisibility(View.GONE);
-                        hasBd =true;
+                        hasBd = true;
                         mWxUnbind.setVisibility(View.VISIBLE);
                     }
 
@@ -270,11 +271,11 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 });
     }
 
-    private void doWeChatLogin(){
+    private void doWeChatLogin() {
         //先判断是否安装微信APP,按照微信的说法，目前移动应用上微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
         if (!isWeChatAppInstalled(this)) {
             RingToast.show("您还未安装微信客户端");
-        }else {
+        } else {
             SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";
             req.state = "diandi_wx_login";
@@ -286,7 +287,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if(requestCode==303 && resultCode==302){
+        if (requestCode == 303 && resultCode == 302) {
             //说明微信登录状态下 手机号绑定成功 更新UI
             String phone = data.getStringExtra("PHONE");
             String mobile = Utils.getHiddenPhone(phone);

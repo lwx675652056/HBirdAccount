@@ -15,9 +15,9 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.hbird.base.R;
 import com.hbird.base.mvc.bean.indexBaseListBean;
-import com.hbird.base.mvc.fragement.IndexFragement;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
+import com.hbird.ui.index.IndexFragement;
 
 import java.util.List;
 

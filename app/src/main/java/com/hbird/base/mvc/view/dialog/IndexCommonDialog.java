@@ -9,12 +9,9 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.hbird.base.R;
-import com.hbird.base.mvc.fragement.IndexFragement;
-import com.hbird.base.mvc.fragement.MeFragement;
+import com.hbird.ui.index.IndexFragement;
 import com.ljy.devring.image.support.GlideApp;
 
 /**

@@ -5,27 +5,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
-import com.hbird.base.mvc.activity.ShaiChengJiuActivity;
-import com.hbird.base.mvc.bean.ReturnBean.AskFirendBean;
 import com.hbird.base.mvc.bean.ReturnBean.UserFirendsReturn;
-import com.hbird.base.mvc.bean.indexBaseListBean;
-import com.hbird.base.mvc.fragement.IndexFragement;
 import com.hbird.base.mvc.widget.cycleView;
-import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.ljy.devring.image.support.GlideApp;
 
 import java.util.List;
-
-import butterknife.BindView;
-
-import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
 /**
  * Created by Liul on 2018/10/18.
