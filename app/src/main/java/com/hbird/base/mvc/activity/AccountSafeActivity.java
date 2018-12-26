@@ -23,7 +23,6 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
-import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.sobot.chat.SobotApi;
@@ -237,7 +236,6 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 //关闭手势密码开关（必须重新打开设置）
                 DevRing.cacheManager().spCache(CommonTag.SPCACH).put(CommonTag.SHOUSHI_PASSWORD_OPENED, false);
 
-                SharedPreferencesUtil.put(Constants.WX_CODE, "");// 微信code置空
                 SharedPreferencesUtil.put("get_weixin_code",false);
 
                 //杀掉所有Activity，返回打开登录界面

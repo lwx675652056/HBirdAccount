@@ -186,6 +186,15 @@ public class DateUtil {
         return date;
     }
 
+    public static String dateToStamp1(String s) throws ParseException{
+        String res;
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = simpleDateFormat.parse(s);
+        long ts = date.getTime();
+        res = String.valueOf(ts);
+        return res;
+    }
+
     /**
      * Tue Jul 12 00:00:00 GMT+08:00 2016转为2016-07-12
      */

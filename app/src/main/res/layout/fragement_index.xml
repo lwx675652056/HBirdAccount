@@ -217,43 +217,76 @@
                     android:layout_gravity="center_horizontal"
                     android:background="@drawable/select_zankai"
                     android:onClick="@{listener.open}"
-                    android:visibility="@{bean.show?View.GONE:View.VISIBLE}"/>
+                    android:visibility="@{bean.showArrow?View.VISIBLE:View.GONE}"/>
+
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:gravity="center_vertical"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:visibility="@{bean.showMember?View.VISIBLE:bean.showMemberSeting?View.VISIBLE:View.GONE}">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:visibility="@{bean.showMember?View.VISIBLE:View.GONE}"/>
+
+                    <ImageView
+                        android:id="@+id/iv_index_setting"
+                        android:layout_width="@dimen/dp_40_x"
+                        android:layout_height="@dimen/dp_40_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:onClick="@{listener.setMemberSetting}"
+                        android:src="@mipmap/icon_sysz_normal"
+                        android:visibility="@{bean.showMemberSeting?View.VISIBLE:View.GONE}"/>
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginTop="@dimen/dp_10_x"
+                    android:background="@drawable/select_white_8px"
                     android:orientation="vertical">
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="0.5dp"
+                        android:background="@color/line"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginEnd="@dimen/dp_15_x"
-                        android:layout_marginStart="@dimen/dp_15_x"
-                        android:gravity="center_vertical"
-                        android:paddingBottom="@dimen/dp_10_x"
-                        android:paddingTop="@dimen/dp_10_x">
+                        android:background="@drawable/select_bottom_white"
+                        android:gravity="center"
+                        android:onClick="@{listener.more}">
 
-                        <android.support.v7.widget.RecyclerView
-                            android:id="@+id/recycler_view"
-                            android:layout_width="0dp"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"/>
-
-                        <ImageView
-                            android:id="@+id/iv_index_setting"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp_15_x"
-                            android:src="@mipmap/icon_sysz_normal"/>
+                            android:drawableEnd="@drawable/home_icon_ckqbjr_normal"
+                            android:drawablePadding="@dimen/dp_5_x"
+                            android:padding="@dimen/dp_10_x"
+                            android:text="查看全部"
+                            android:textColor="#333333"
+                            android:textSize="16sp"/>
                     </LinearLayout>
                 </LinearLayout>
 
-                <Button
-                    android:id="@+id/more"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="更多"/>
 
                 <com.hbird.base.mvc.widget.HeaderViewPager
                     android:id="@+id/scrollableLayout"
@@ -300,14 +333,6 @@
                             android:src="@mipmap/ic_normal_data"
                             android:visibility="gone"/>
 
-                        <com.hbird.base.mvc.widget.XListView
-                            android:id="@+id/xList"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:divider="@color/line"
-                            android:listSelector="@android:color/transparent"
-                            android:overScrollMode="never"
-                            android:visibility="gone"/>
                     </FrameLayout>
                 </com.hbird.base.mvc.widget.HeaderViewPager>
             </LinearLayout>

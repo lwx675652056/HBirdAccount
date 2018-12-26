@@ -67,6 +67,8 @@
     <string name="money_budget">月剩余预算（元）</string>
     <string name="no_money">--</string>
     <string name="hide_money">****</string>
+    <string name="year_month_format">%1$s月 - %2$s年</string>
+    <string name="no_money1">0.00</string>
 
 
 </resources>

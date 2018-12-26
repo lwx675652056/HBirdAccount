@@ -66,6 +66,11 @@
             android:name="com.hbird.ui.detailed.ActAccountDetailed"
             android:screenOrientation="portrait"/>
 
+        <!--首页的日历-->
+        <activity
+            android:name="com.hbird.ui.calendar.ActCalendar"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 

@@ -1,0 +1,176 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="lastPosition"
+            type="Boolean"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="bean"
+            type="com.hbird.bean.AccountDetailedBean"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_15_x"
+            android:background="#F6F6F6"
+            android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_top_white"
+            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/income"
+                android:textColor="#333333"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{bean.tag==0?String.valueOf(bean.indexBeen[0].dayIncome):@string/no_money1}"
+                android:textColor="#333333"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:text="@string/spend"
+                android:textColor="#333333"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{bean.tag==0?String.valueOf(bean.indexBeen[0].daySpend):@string/no_money1}"
+                android:textColor="#333333"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line"
+            android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}"/>
+
+        <LinearLayout
+            android:id="@+id/ll_content"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@{lastPosition?@drawable/select_bottom_white:@drawable/select_white_0px}"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:paddingBottom="@dimen/dp_15_x"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x"
+            android:paddingTop="@dimen/dp_15_x"
+            android:visibility="@{bean.tag==0?View.GONE:View.VISIBLE}">
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    android:layout_width="@dimen/dp_40_x"
+                    android:layout_height="@dimen/dp_40_x"
+                    android:background="@drawable/circle_333333"/>
+
+                <ImageView
+                    android:id="@+id/iv_icon"
+                    android:layout_width="@dimen/dp_15_x"
+                    android:layout_height="@dimen/dp_15_x"
+                    android:layout_gravity="center"
+                    app:imageUrl="@{bean.icon}"/>
+
+                <com.hbird.widget.CircleView
+                    android:id="@+id/imagess"
+                    android:layout_width="@dimen/dp_15_x"
+                    android:layout_height="@dimen/dp_15_x"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:src="@mipmap/ic_me_normal_headr"
+                    app:border_color="@color/bg_e6e6e6"
+                    app:border_width="1dp"
+                    app:imageUrl="@{bean.reporterAvatar}"
+                    app:type="circle"/>
+            </FrameLayout>
+
+            <TextView
+                android:id="@+id/tv_shour"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginEnd="@dimen/dp_10_x"
+                android:layout_marginStart="@dimen/dp_10_x"
+                android:layout_weight="1"
+                android:singleLine="true"
+                android:text="@{bean.typeName}"
+                android:textColor="#333333"
+                android:textSize="14sp"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_20_x"
+                android:layout_height="@dimen/dp_20_x"
+                android:src="@mipmap/icon_mood_happy_blue"
+                android:visibility="@{bean.spendHappiness==0?View.VISIBLE:View.GONE}"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_20_x"
+                android:layout_height="@dimen/dp_20_x"
+                android:src="@mipmap/icon_mood_normal_blue"
+                android:visibility="@{bean.spendHappiness==1?View.VISIBLE:View.GONE}"/>
+
+            <ImageView
+                android:layout_width="@dimen/dp_20_x"
+                android:layout_height="@dimen/dp_20_x"
+                android:src="@mipmap/icon_mood_blue"
+                android:visibility="@{bean.spendHappiness==2?View.VISIBLE:View.GONE}"/>
+
+            <!--支出-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10_x"
+                android:text="@{@string/subtraction+bean.money}"
+                android:textColor="@color/text_333333"
+                android:textSize="16sp"
+                android:visibility="@{bean.orderType==1?View.VISIBLE:View.GONE}"/>
+            <!--收入-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_10_x"
+                android:text="@{@string/addition+bean.money}"
+                android:textColor="@color/colorPrimary"
+                android:textSize="16sp"
+                android:visibility="@{bean.orderType!=1?View.VISIBLE:View.GONE}"/>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:background="@color/line"
+            android:visibility="@{lastPosition?View.GONE:bean.tag==0?View.GONE:View.VISIBLE}"/>
+    </LinearLayout>
+</layout>

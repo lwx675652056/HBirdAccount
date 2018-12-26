@@ -1,0 +1,42 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="bean"
+            type="String"/>
+
+        <variable
+            name="position"
+            type="int"/>
+    </data>
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_10_x">
+
+        <com.hbird.widget.CircleView
+            android:layout_width="@dimen/dp_40_x"
+            android:layout_height="@dimen/dp_40_x"
+            android:src="@mipmap/ic_me_normal_headr"
+            android:visibility="@{position==0?View.VISIBLE:View.GONE}"
+            app:border_color="@color/colorPrimary"
+            app:border_width="1dp"
+            app:imageUrl="@{bean}"
+            app:type="circle"/>
+
+        <com.hbird.widget.CircleView
+            android:layout_width="@dimen/dp_40_x"
+            android:layout_height="@dimen/dp_40_x"
+            android:src="@mipmap/ic_me_normal_headr"
+            android:visibility="@{position==0?View.GONE:View.VISIBLE}"
+            app:border_color="@color/colorYellow"
+            app:border_width="1dp"
+            app:imageUrl="@{bean}"
+            app:type="circle"/>
+    </FrameLayout>
+</layout>

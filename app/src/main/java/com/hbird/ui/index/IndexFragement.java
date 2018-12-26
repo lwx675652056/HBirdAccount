@@ -1,19 +1,16 @@
 package com.hbird.ui.index;
 
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -35,10 +32,7 @@ import com.hbird.base.mvc.activity.MingXiInfoActivity;
 import com.hbird.base.mvc.activity.MyZhangBenActivity;
 import com.hbird.base.mvc.activity.NotificationMessageActivity;
 import com.hbird.base.mvc.activity.homeActivity;
-import com.hbird.base.mvc.adapter.IndexFragementAdapter;
-import com.hbird.base.mvc.adapter.IndexGridViewAdapter;
 import com.hbird.base.mvc.bean.BaseReturn;
-import com.hbird.base.mvc.bean.IndexFirends;
 import com.hbird.base.mvc.bean.RequestBean.OffLine2Req;
 import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
 import com.hbird.base.mvc.bean.ReturnBean.AccountMembersBean;
@@ -57,13 +51,13 @@ import com.hbird.base.mvc.view.dialog.InvitationFirendDialog;
 import com.hbird.base.mvc.widget.HeaderViewPager;
 import com.hbird.base.mvc.widget.NewGuidePop;
 import com.hbird.base.mvc.widget.TabRadioButton;
-import com.hbird.base.mvc.widget.XListView;
-import com.hbird.base.mvc.widget.waterwave_progress.WaterWaveProgress;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
+import com.hbird.bean.AccountDetailedBean;
+import com.hbird.ui.calendar.ActCalendar;
 import com.hbird.ui.detailed.ActAccountDetailed;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
@@ -81,28 +75,25 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.Timer;
-import java.util.TimerTask;
 
 import sing.common.base.BaseFragment;
 import sing.util.AppUtil;
 import sing.util.LogUtil;
+import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
-import zhy.com.highlight.HighLight;
 
 import static com.hbird.base.app.constant.CommonTag.FIRST_COME_1_2_0;
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
-import static com.umeng.socialize.utils.ContextUtil.getPackageName;
 import static java.lang.Integer.parseInt;
 
 /**
- * Created by Liul(245904552@qq.com) on 2018/6/28.
- * 明细
+ * @author: LiangYX
+ * @ClassName: IndexFragement
+ * @date: 2018/12/25 17:29
+ * @Description: 首页
  */
+public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFragementModle> {
 
-public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFragementModle> implements View.OnClickListener, XListView.IXListViewListener {
-
-    XListView lv;
     ImageView mNoData;
     LinearLayout mNets;
     HeaderViewPager scrollableLayout;
@@ -112,20 +103,14 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private ArrayList<String> dataM;
     private int yyyy = 2018;
 
-    private IndexFragementAdapter adapter;
-    private dayListBean bean;
     private ArrayList<indexBaseListBean> dates = new ArrayList<>();
     //代表第一次进入页面
     private int ii = 0;
     private String token;
-    private HighLight mHightLight;
     private String mMonth;
-    private int currentYY;
-    private int currentMM;
     private indexDatasReturn.ResultBean indexResult;
     private String accountId = "";
     private boolean isFirst;
-    private String jzDays;
     private boolean comeInForLogin;
     private boolean timeB = false;
     private final int FIRST_LENGHT = 4000;
@@ -134,19 +119,19 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private int tanci = 0;
     private List<WindowPopReturn.ResultBean.ActivityBean> windowPop;
     private WindowPopReturn.ResultBean.InviteCountBean windowPopInvite;
-    private boolean netTrue = false;
-    private View vHead;
-    private LinearLayout mSettings;
-    private LinearLayout mIndexYaoQing;
-    private com.hbird.base.mvc.widget.MyGridView mGride;// 成员头像
-    private ImageView mIndexSet;// 設置按鈕
+
     private String typeBudget = "1";
     private String zhangbenId = "";
-    private String abTypeId;
 
     private String deviceId;// 设备唯一标识
     private int mm = 12; // 当前月
     private IndexFragmentData data;
+
+    private MemberAdapter memberAdapter;
+    private List<String> memberList = new ArrayList<>();
+
+    private IndexAdapter adapter;
+    private List<AccountDetailedBean> list = new ArrayList<>();
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -167,7 +152,10 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         deviceId = Utils.getDeviceInfo(getActivity());
 
-        lv = binding.xList;
+        memberAdapter = new MemberAdapter(getActivity(), memberList, R.layout.row_member);
+        binding.recyclerView.setAdapter(memberAdapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
+
         mNoData = binding.ivNoData;
         mNets = binding.llNets;
         scrollableLayout = binding.scrollableLayout;
@@ -175,39 +163,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         //数据库相关操作
         jizhangs = getActivity().findViewById(R.id.btn_jizhang);
+
         popOnces = 0;//重新执行则将其置为0
-        vHead = View.inflate(getActivity(), R.layout.item_head_list, null);
-        vHead.findViewById(R.id.rl_yaoqing).setVisibility(View.GONE);
-        mSettings = vHead.findViewById(R.id.ll_toux);
-        vHead.findViewById(R.id.ll_zhankai).setVisibility(View.GONE);
-        mIndexYaoQing = vHead.findViewById(R.id.ll_index_yaoqing);
-        vHead.findViewById(R.id.iv_shouqi).setVisibility(View.GONE);
-        mIndexSet = vHead.findViewById(R.id.iv_index_setting);
-        mGride = vHead.findViewById(R.id.mgv_banzi);
 
-        adapter = new IndexFragementAdapter(getActivity(), IndexFragement.this, dates);
-        lv.setAdapter(adapter);
-
-        // 临时
-        getActivity().findViewById(R.id.more).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ActAccountDetailed.class);
-                intent.putExtra("accountId", accountId);
-                startActivity(intent);
-            }
-        });
-
-        ApplicationInfo appInfo = null;
-        try {
-            appInfo = getActivity().getPackageManager().getApplicationInfo(getPackageName(), PackageManager.GET_META_DATA);
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        String msg = appInfo.metaData.getString("UMENG_CHANNEL");
-        ((Button) getActivity().findViewById(R.id.more)).setText(msg);
-
-        initListener();
+        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick((AccountDetailedBean) data,type));
+        binding.recyclerView1.setAdapter(adapter);
+        binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
 
         zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
         LogUtil.e("zhangbenId:" + zhangbenId);
@@ -221,12 +182,10 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         LogUtil.e("accountId:" + accountId);
 
         yyyy = parseInt(DateUtils.getCurYear("yyyy"));
-        currentYY = yyyy;
 
         mMonth = DateUtils.date2Str(new Date(), "MM");
         String s = mMonth.substring(0, 2);
         mm = parseInt(s);
-        currentMM = mm;
 
         data.setMm(mm);
         data.setShow(true);
@@ -261,13 +220,22 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             setNewGuide();
         }
 
-        //设置listView 滑动监听相关 与头部相结合实现相互关联
-        scrollableLayout.setCurrentScrollableContainer(() -> lv);
-
         //首页弹框接口
         if (getUserVisibleHint()) {
             setHomePage();
-            netTrue = true;
+        }
+    }
+
+    // 点击记账的条目
+    private void onItemClick(AccountDetailedBean data, int type) {
+        if (type == 0) {
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+            Intent intent = new Intent(getActivity(), MingXiInfoActivity.class);
+            intent.putExtra("ID", data.getId());
+            startActivityForResult(intent, 101);
+        } else if (type == 1) {
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+            alertDialog(data);
         }
     }
 
@@ -284,7 +252,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         // 日历
         public void calendar(View view) {
-            ToastUtil.showShort("日历");
+            Intent intent = new Intent(getActivity(), ActCalendar.class);
+            intent.putExtra("account_id",accountId);
+            startActivity(intent);
         }
 
         // 邀请记账
@@ -299,12 +269,18 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         // 展开
         public void open(View view) {
             data.setShow(true);
+            data.setShowArrow(false);
+            data.setShowMember(false);
+            data.setShowMemberSeting(false);
             Utils.playVoice(getActivity(), R.raw.changgui02);
         }
 
         //收起
         public void retract(View view) {
             data.setShow(false);
+            data.setShowArrow(true);
+            data.setShowMember(false);
+            data.setShowMemberSeting(false);
             Utils.playVoice(getActivity(), R.raw.changgui02);
         }
 
@@ -330,55 +306,21 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             startActivity(intent3);
         }
 
-    }
-
-    public void initListener() {
-        lv.setXListViewListener(this);
-        lv.addHeaderView(vHead);
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Utils.playVoice(getActivity(), R.raw.changgui02);
-                boolean prefBoolean = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, false);
-                int p = position;
-                if (prefBoolean) {
-                    p = p + 1;
-                }
-                if (p == 1) {
-                    return;
-                }
-                if (dates.size() - 1 < (p - 2) || dates.get(p - 2).getTag() == 0) {
-                    return;
-                }
-                Intent intent = new Intent();
-                intent.setClass(getActivity(), MingXiInfoActivity.class);
-                intent.putExtra("ID", dates.get(p - 2).getId());
-                startActivityForResult(intent, 101);
-            }
-        });
-        lv.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, final int position, long l) {
-                Utils.playVoice(getActivity(), R.raw.changgui02);
-                boolean prefBoolean = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, false);
-                int p = position;
-                if (prefBoolean) {
-                    p = p + 1;
-                }
-                alertDialog(p);
-                return true;
-            }
-        });
-
-
-        // 设置
-        mIndexSet.setOnClickListener(view -> {
+        // 账本成员设置
+        public void setMemberSetting(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent = new Intent();
             intent.setClass(getActivity(), MemberManagerActivity.class);
             intent.putExtra("ID", zhangbenId);
             startActivity(intent);
-        });
+        }
+
+        // 查看更多
+        public void more(View view) {
+            Intent intent = new Intent(getActivity(), ActAccountDetailed.class);
+            intent.putExtra("accountId", accountId);
+            startActivity(intent);
+        }
     }
 
     @Override
@@ -397,14 +339,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     @Override
     public void onResume() {
         super.onResume();
-        ii = ii + 1;
-        if (ii > 1) {
+//        ii = ii + 1;
+//        if (ii > 1) {
             getIndexInfo();
             if (popOnces >= 0) {
                 //继续弹窗
                 tanDialog(windowPop);
             }
-        }
+            loadDataForNet();
+//        }
     }
 
 
@@ -548,12 +491,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                             Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
                             if (cursor != null) {
                                 cursor.moveToFirst();
-                                jzDays = cursor.getString(0);
-
                             }
                             setZhangBenAbout();
-
-
                         }
 
                         @Override
@@ -567,28 +506,21 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private void setZhangBenAbout() {
         String moRenAcc = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, "默认账本");
         mMoRen.setText(moRenAcc);
-        //List list = DevRing.tableManager(WaterOrderCollect.class).loadAll();
         zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        if (TextUtils.isEmpty(zhangbenId)) {
-            // 表示这个地方是总账本
-            boolean prefBoolean = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, false);
-            if (prefBoolean) {
-                lv.removeHeaderView(vHead);
-            } else {
-                lv.removeHeaderView(vHead);
-                //如果将此headview移除 则记录 再次点击时需要回复
-                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, true);
-            }
-            //查询总账本的数据 并展示
+        if (TextUtils.isEmpty(zhangbenId)) { // 表示这个地方是总账本
+            SharedPreferencesUtil.put("index_is_show", data.isShow());
+            SharedPreferencesUtil.put("index_is_show_arrow", data.isShowArrow());
+            SharedPreferencesUtil.put("index_is_show_member", data.isShowMember());
+            SharedPreferencesUtil.put("index_is_show_member_seting", data.isShowMemberSeting());
+            data.setShow(false);
+            data.setShowArrow(false);
+            data.setShowMember(false);
+            data.setShowMemberSeting(false);
         } else {
-            boolean prefBoolean = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, false);
-            if (prefBoolean) {
-                lv.addHeaderView(vHead);
-                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_LISTVIEW_HEADER, false);
-            } else {
-
-            }
-
+            data.setShow((Boolean) SharedPreferencesUtil.get("index_is_show", false));
+            data.setShowArrow((Boolean) SharedPreferencesUtil.get("index_is_show_arrow", false));
+            data.setShowMember((Boolean) SharedPreferencesUtil.get("index_is_show_member", false));
+            data.setShowMemberSeting((Boolean) SharedPreferencesUtil.get("index_is_show_member_seting", false));
             if (TextUtils.equals(typeBudget, "1")) {
                 setWaveDate(indexResult);
             } else {
@@ -621,48 +553,40 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     private void setNewGuide() {
         View cv = getActivity().getWindow().getDecorView();
-        cv.post(new Runnable() {
-            @Override
-            public void run() {
-                //改为popwindow
-                final NewGuidePop pop = new NewGuidePop(getActivity(), jizhangs, "点击这里开始记账~", 2, new NewGuidePop.PopDismissListener() {
-                    @Override
-                    public void PopDismiss() {
-                        SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
-                    }
-                });
-                pop.showPopWindowToUp();
-                new android.os.Handler().postDelayed(() -> {
-                    if (pop != null) {
-                        pop.hidePopWindow();
-                    }
-                }, FIRST_LENGHT);
-            }
+        cv.post(() -> {  //改为popwindow
+            final NewGuidePop pop = new NewGuidePop(getActivity(), jizhangs, "点击这里开始记账~", 2, new NewGuidePop.PopDismissListener() {
+                @Override
+                public void PopDismiss() {
+                    SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
+                }
+            });
+            pop.showPopWindowToUp();
+            new Handler().postDelayed(() -> {
+                if (pop != null) {
+                    pop.hidePopWindow();
+                }
+            }, FIRST_LENGHT);
         });
     }
 
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-            case R.id.rl_top_btn: //来记一笔
-                Utils.playVoice(getActivity(), R.raw.jizhang);
-                LogUtil.e("11");
-                startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
-                LogUtil.e("22");
-                break;
-        }
-    }
-
+//    @Override
+//    public void onClick(View view) {
+//        switch (view.getId()) {
+//
+//            case R.id.rl_top_btn: //来记一笔
+//                Utils.playVoice(getActivity(), R.raw.jizhang);
+//                LogUtil.e("11");
+//                startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
+//                LogUtil.e("22");
+//                break;
+//        }
+//    }
 
     private void getIndexInfo() {
         //查询指定月份记录
         String MonthFirstDay = DateUtil.getMonthday2First(yyyy, mm);
         String MonthLastDay = DateUtil.getMonthday2Last(yyyy, mm);
         String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
-//        List list = DevRing.tableManager(WaterOrderCollect.class).loadAll();
-        //String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.ACCOUNT_BOOK_ID=" + 80 + " AND wo.DELFLAG = 0 AND wo.CHARGE_DATE >=" + MonthFirstDay + " and wo.CHARGE_DATE<=" + MonthLastDay + " ORDER BY wo.CHARGE_DATE DESC,wo.CREATE_DATE DESC";
-        //String sql = "SELECT wo.id,wo.money,wo.account_book_id,wo.order_type,wo.is_staged,wo.spend_happiness,wo.use_degree,wo.type_pid,wo.type_pname,wo.type_id,wo.type_name,wo.picture_url,wo.create_date,wo.charge_date,wo.remark, ( CASE wo.order_type WHEN 1 THEN st.icon WHEN 2 THEN it.icon ELSE NULL END ) AS icon FROM WATER_ORDER_COLLECT wo LEFT JOIN HBIRD_SPEND_TYPE st ON wo.type_id = st.id LEFT JOIN HBIRD_INCOME_TYPE it ON wo.type_id = it.id where wo.ACCOUNT_BOOK_ID=" + accountId + " AND wo.DELFLAG = 0 AND wo.CHARGE_DATE >=" + MonthFirstDay + " and wo.CHARGE_DATE<" + MonthLastDays + " ORDER BY wo.CHARGE_DATE DESC,wo.CREATE_DATE DESC";
         String sql = "";
         accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
         zhangbenId = accountId;
@@ -713,9 +637,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             if (bean != null) {
                 dates = getDBDates(bean);
                 if (dates != null && dates.size() > 0) {
-                    //填充ListView 刷新界面
-                    mNoData.setVisibility(View.GONE);
-                    lv.setVisibility(View.VISIBLE);
                     double monthIncome = bean.getMonthIncome();
                     double monthSpend = bean.getMonthSpend();
                     String monthIncomes = getNumToNumber(monthIncome);
@@ -724,35 +645,37 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     data.setSpendingMoney(monthSpends);// 支出
                     data.setInComeMoney(monthIncomes);// 收入
 
-                    adapter = new IndexFragementAdapter(getActivity(), IndexFragement.this, dates);
-                    lv.setAdapter(adapter);
-                    lv.setPullLoadEnable(false);
+                    list.clear();
+                    int a = 0;// 只记录3天数据
+                    for (int i = 0; i < dates.size(); i++) {
+                        AccountDetailedBean temp = new AccountDetailedBean();
+                        temp.setBean(dates.get(i));
+                        if (dates.get(i).getIndexBeen() == null || dates.get(i).getIndexBeen().size() < 1) {// 代表是真实记录的，不是时间标题
+                            a += 1;
+                        }
+                        if (a <= 3) {
+                            list.add(temp);
+                        }
+                        if (a==3){
+                            break;
+                        }
+                    }
+//                    Collections.sort(list);
+                    adapter.notifyDataSetChanged();
                 } else {
                     data.setSpendingMoney("0.00");// 支出
                     data.setInComeMoney("0.00");// 收入
 
-                    mNoData.setVisibility(View.VISIBLE);
-                    lv.setVisibility(View.GONE);
+                    list.clear();
+                    adapter.notifyDataSetChanged();
                 }
             }
         } else {
             data.setSpendingMoney("0.00");// 支出
             data.setInComeMoney("0.00");// 收入
 
-            if (dates != null) {
-                dates.clear();
-            } else {
-                dates = new ArrayList<>();
-            }
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-//            mNoData.setVisibility(View.VISIBLE);
-//            lv.setVisibility(View.GONE);
-            mNoData.setVisibility(View.GONE);
-            lv.setVisibility(View.VISIBLE);
-
-            lv.setPullLoadEnable(false);
+            list.clear();
+            adapter.notifyDataSetChanged();
         }
         getHeadNetInfo();
         //获取账本内组员情况 --->首页展示
@@ -773,56 +696,48 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                         List<String> members = b1.getResult().getMembers();
                         LogUtil.e("空代表是管理員：" + owner);
 
-                        ArrayList<String> list = new ArrayList<>();
-                        list.clear();
+                        memberList.clear();
                         if (yourSelf != null) {
-                            list.add(yourSelf);
+                            memberList.add(yourSelf);
                         } else {
-                            list.add("");// 你没有头像
+                            memberList.add("");// 你没有头像
                         }
 
                         if (members != null) {
-                            list.addAll(members);
+                            memberList.addAll(members);
                         }
 
-                        //初始化 邀请来的好友
-                        if (list.size() > 1) {
-                            ArrayList<IndexFirends> indexFirends = new ArrayList<>();
-
-                            for (int i = 0; i < list.size(); i++) {
-                                IndexFirends indexBean = new IndexFirends();
-                                indexBean.setImgUrl(list.get(i));
-                                indexFirends.add(indexBean);
-                            }
-                            IndexGridViewAdapter grideView = new IndexGridViewAdapter(getActivity(), IndexFragement.this, indexFirends);
-                            mGride.setAdapter(grideView);
-                        }
-
-                        data.setShow(false);
-//                        mZhanKai.setVisibility(View.GONE);// 展开要隐藏
+                        memberAdapter.notifyDataSetChanged();
 
                         if (null != owner) {//不是管理员  显示成员头像，不显示邀请，不显示设置
                             members.add(owner);
-                            mIndexSet.setVisibility(View.GONE);
-                            mIndexYaoQing.setVisibility(View.GONE);
+                            SharedPreferencesUtil.put("index_is_show", false);
+                            SharedPreferencesUtil.put("index_is_show_arrow", false);
+                            SharedPreferencesUtil.put("index_is_show_member", true);
+                            SharedPreferencesUtil.put("index_is_show_member_seting", false);
                         } else {  //代表是管理员   显示邀请，显示设置
-                            LogUtil.e(list.size() + "");
+                            LogUtil.e(memberList.size() + "");
 
-                            if (list.size() == 1) {// 只有自己
-                                mIndexSet.setVisibility(View.GONE);
-                                mSettings.setVisibility(View.GONE);
-                                mIndexYaoQing.setVisibility(View.VISIBLE);
+                            if (memberList.size() == 1) {// 只有自己
+                                SharedPreferencesUtil.put("index_is_show", true);
+                                SharedPreferencesUtil.put("index_is_show_arrow", false);
+                                SharedPreferencesUtil.put("index_is_show_member", false);
+                                SharedPreferencesUtil.put("index_is_show_member_seting", false);
                             } else {
-                                mIndexSet.setVisibility(View.VISIBLE);
-                                mIndexYaoQing.setVisibility(View.GONE);
-                                mSettings.setVisibility(View.VISIBLE);
+                                SharedPreferencesUtil.put("index_is_show", false);
+                                SharedPreferencesUtil.put("index_is_show_arrow", false);
+                                SharedPreferencesUtil.put("index_is_show_member", true);
+                                SharedPreferencesUtil.put("index_is_show_member_seting", true);
                             }
                         }
                     }
 
                     @Override
                     public void onError(String s) {
-
+                        SharedPreferencesUtil.put("index_is_show", false);
+                        SharedPreferencesUtil.put("index_is_show_arrow", false);
+                        SharedPreferencesUtil.put("index_is_show_member", false);
+                        SharedPreferencesUtil.put("index_is_show_member_seting", false);
                     }
                 });
     }
@@ -971,54 +886,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         return listBySql;
     }
 
-    private ArrayList<indexBaseListBean> getDates(dayListBean bean) {
-        List<dayListBean.ResultBean.ArraysBean> arrays = bean.getResult().getArrays();
-        if (arrays == null) return null;
-        //数据处理 抽取到同一个集合indexBeans中去
-        ArrayList<indexBaseListBean> been = new ArrayList<>();
-
-
-        for (int i = 0; i < arrays.size(); i++) {
-            List<dayListBean.ResultBean.ArraysBean.DayArraysBean> dayArrays = arrays.get(i).getDayArrays();
-            indexBaseListBean indexBeans = new indexBaseListBean();
-            if (dayArrays != null && dayArrays.size() > 0) {
-                ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, "");
-                indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
-                xBean.setDayIncome(arrays.get(i).getDayIncome());
-                xBean.setDaySpend(arrays.get(i).getDaySpend());
-                xBean.setDayTime(arrays.get(i).getDayTime());
-                iBeen.add(xBean);
-                indexBeans.setIndexBeen(iBeen);
-                been.add(indexBeans);
-            }
-            for (int j = 0; j < dayArrays.size(); j++) {
-                indexBaseListBean indexBeans2 = new indexBaseListBean();
-                dayListBean.ResultBean.ArraysBean.DayArraysBean dates = dayArrays.get(j);
-                indexBeans2.setTag(1);//1为数据条目 （自定义标签）
-                indexBeans2.setOrderType(dates.getOrderType());
-                indexBeans2.setIcon(dates.getIcon());
-                indexBeans2.setTypeName(dates.getTypeName());
-                indexBeans2.setIsStaged(dates.getIsStaged());
-                indexBeans2.setRemark(dates.getRemark());
-                if (null != dates.getSpendHappiness()) {
-                    indexBeans2.setSpendHappiness(dates.getSpendHappiness());
-                }
-                indexBeans2.setMoney(dates.getMoney());
-                indexBeans2.setTypePid(dates.getTypePid());
-                indexBeans2.setTypeId(dates.getTypeId());
-                indexBeans2.setId(dates.getId());
-                indexBeans2.setAccountBookId(dates.getAccountBookId());
-                indexBeans2.setChargeDate(dates.getChargeDate());
-                indexBeans2.setCreateDate(dates.getCreateDate());
-                indexBeans2.setTypeName(dates.getTypeName());
-                been.add(indexBeans2);
-            }
-        }
-        return been;
-    }
-
-
     private ArrayList<indexBaseListBean> getDBDates(dayListBean.ResultBean bean) {
         List<dayListBean.ResultBean.ArraysBean> arrays = bean.getArrays();
         if (arrays == null) return null;
@@ -1081,38 +948,32 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         }
     }
 
-    private void alertDialog(final int position) {
+    private void alertDialog(final AccountDetailedBean data) {
         new DialogUtils(getActivity())
                 .builder()
                 .setTitle("温馨提示")
                 .setMsg("确认删除吗？")
                 .setCancleButton("取消", view -> {
                 })
-                .setSureButton("删除", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String id = dates.get(position - 2).getId();
-//                        dates.get(position-1).get
-
-                        //数据库的操作 （删除显示的是 数据库的更新）
-                        Boolean b = DBUtil.updateOneDate(id, accountId);
-                        if (b) {
-                            //刷新界面数据
-                            getIndexInfo();
-                            //删除 并同步上传到服务器
-                            pullToSyncDate();
-                        }
+                .setSureButton("删除", view -> {
+                    String id = data.getId();
+                    //数据库的操作 （删除显示的是 数据库的更新）
+                    Boolean b = DBUtil.updateOneDate(id, accountId);
+                    if (b) {
+                        //刷新界面数据
+                        getIndexInfo();
+                        //删除 并同步上传到服务器
+                        pullToSyncDate();
                     }
                 }).show();
     }
 
-    @Override
-    public void onRefresh() {
-        getIndexInfo();
-        //getHeadNetInfo();
-        pullToSyncDate();
-        onLoad();
-    }
+//    @Override
+//    public void onRefresh() {
+//        getIndexInfo();
+//        pullToSyncDate();
+//        onLoad();
+//    }
 
     private void pushOffLine() {
         OffLineReq req = new OffLineReq();
@@ -1213,16 +1074,16 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         }
     }
 
-    @Override
-    public void onLoadMore() {
+//    @Override
+//    public void onLoadMore() {
+//
+//    }
 
-    }
-
-    private void onLoad() {
-        String time = DateUtil.formatDate("HH:mm", new Date());
-        lv.setRefreshTime("今天:" + time);
-        lv.stopRefresh();
-    }
+//    private void onLoad() {
+//        String time = DateUtil.formatDate("HH:mm", new Date());
+//        lv.setRefreshTime("今天:" + time);
+//        lv.stopRefresh();
+//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1236,53 +1097,50 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, zhangbenId);
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, zhangbenId);
             typeBudget = data.getStringExtra("typeBudget");
-            abTypeId = data.getStringExtra("abTypeId");
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, data.getStringExtra("abTypeId"));
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, data.getStringExtra("typeBudget"));
         }
     }
 
-    public void remove(View view) {
-        mHightLight.remove();
-    }
+//    public void remove(View view) {
+//    }
+//
+//    public void add(View view) {
+//    }
 
-    public void add(View view) {
-        mHightLight.show();
-    }
+//    /**
+//     * 动画加载水波纹进度
+//     */
+//    private int mysProgress;
 
-    /**
-     * 动画加载水波纹进度
-     */
-    private int mysProgress;
-
-    public void setGrade(final WaterWaveProgress watercircleview) {
-        final int progress = watercircleview.getProgress();
-        mysProgress = 1;
-        final Handler handler = new Handler() {
-            @Override
-            public void handleMessage(Message msg) {
-                if (msg.what == 0x1223) {
-                    watercircleview.setProgress(mysProgress * (1));
-                } else if (msg.what == 0x1224) {
-                    watercircleview.setProgress(progress);
-                }
-            }
-        };
-        new Timer().schedule(new TimerTask() {
-            @Override
-            public void run() {
-                Message msg = new Message();
-                if (mysProgress < progress) {
-                    msg.what = 0x1223;
-                    mysProgress++;
-                } else {
-                    msg.what = 0x1224;
-                    this.cancel();
-                }
-                handler.sendMessage(msg);
-            }
-        }, 0, 50);
-    }
+//    public void setGrade(final WaterWaveProgress watercircleview) {
+//        final int progress = watercircleview.getProgress();
+//        mysProgress = 1;
+//        final Handler handler = new Handler() {
+//            @Override
+//            public void handleMessage(Message msg) {
+//                if (msg.what == 0x1223) {
+//                    watercircleview.setProgress(mysProgress * (1));
+//                } else if (msg.what == 0x1224) {
+//                    watercircleview.setProgress(progress);
+//                }
+//            }
+//        };
+//        new Timer().schedule(new TimerTask() {
+//            @Override
+//            public void run() {
+//                Message msg = new Message();
+//                if (mysProgress < progress) {
+//                    msg.what = 0x1223;
+//                    mysProgress++;
+//                } else {
+//                    msg.what = 0x1224;
+//                    this.cancel();
+//                }
+//                handler.sendMessage(msg);
+//            }
+//        }, 0, 50);
+//    }
 
     private void setHasRed(String id, final int m) {
         //首页公告已读接口
@@ -1319,36 +1177,26 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                         new IndexCommonDialog(getActivity(), IndexFragement.this)
                                 .builder()
                                 .setMsg(windowPop.get(0).getImage())
-                                .setChaKan(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        popOnces = popOnces - 1;
-                                        setHasRed(id, 0);
-                                    }
+                                .setChaKan(view -> {
+                                    popOnces = popOnces - 1;
+                                    setHasRed(id, 0);
                                 })
-                                .setCancleButton(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        popOnces = popOnces - 1;
-                                        if (popOnces > 0) {
-                                            //继续弹窗
-                                            tanDialog(windowPop);
-                                        } else {
-                                            //是否要弹出好友推荐框
-                                            tanHaoYouDialog();
-                                        }
+                                .setCancleButton(view -> {
+                                    popOnces = popOnces - 1;
+                                    if (popOnces > 0) {  //继续弹窗
+                                        tanDialog(windowPop);
+                                    } else {  //是否要弹出好友推荐框
+                                        tanHaoYouDialog();
                                     }
                                 }).show();
                     } else {
                         tanHaoYouDialog();
                     }
                 }
-
             }
 
             @Override
             public void onError(String s) {
-
             }
         });
     }
@@ -1408,7 +1256,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     public void onClick(View view) {
                         popOnces = popOnces - 1;
                         setHasRed(id, tanci);
-
                     }
                 })
                 .setCancleButton(new View.OnClickListener() {

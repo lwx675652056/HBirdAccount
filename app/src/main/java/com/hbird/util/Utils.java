@@ -98,4 +98,10 @@ public class Utils {
         out.write(buffer);
         out.close();
     }
+
+    public static String getNumToNumber(Double d) {
+        java.text.NumberFormat NF = java.text.NumberFormat.getInstance();
+        NF.setGroupingUsed(false);//去掉科学计数法显示
+        return NF.format(d);
+    }
 }
