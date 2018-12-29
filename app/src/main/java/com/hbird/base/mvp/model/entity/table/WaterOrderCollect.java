@@ -127,16 +127,25 @@ public class WaterOrderCollect implements Comparable<WaterOrderCollect> {
     //所属账本名称
     public String abName;
 
-    @Generated(hash = 9002925)
+    //账户id
+    public Integer assetsId;
+    //账户名
+    public String assetsName;
+
+
+
+
+    @Generated(hash = 1721657412)
     public WaterOrderCollect(String id, Double money, Integer accountBookId,
-                             Integer orderType, Integer isStaged, Integer spendHappiness,
-                             Integer useDegree, String typePid, String typePname, String typeId,
-                             String typeName, Integer parentId, String pictureUrl, Date updateDate,
-                             Date createDate, Date chargeDate, Integer delflag, Date delDate,
-                             Integer createBy, String createName, Integer updateBy,
-                             String updateName, String remark, String icon,
-                             Integer userPrivateLabelId, String reporterAvatar,
-                             String reporterNickName, String abName) {
+            Integer orderType, Integer isStaged, Integer spendHappiness,
+            Integer useDegree, String typePid, String typePname, String typeId,
+            String typeName, Integer parentId, String pictureUrl, Date updateDate,
+            Date createDate, Date chargeDate, Integer delflag, Date delDate,
+            Integer createBy, String createName, Integer updateBy,
+            String updateName, String remark, String icon,
+            Integer userPrivateLabelId, String reporterAvatar,
+            String reporterNickName, String abName, Integer assetsId,
+            String assetsName) {
         this.id = id;
         this.money = money;
         this.accountBookId = accountBookId;
@@ -165,11 +174,16 @@ public class WaterOrderCollect implements Comparable<WaterOrderCollect> {
         this.reporterAvatar = reporterAvatar;
         this.reporterNickName = reporterNickName;
         this.abName = abName;
+        this.assetsId = assetsId;
+        this.assetsName = assetsName;
     }
 
     @Generated(hash = 1421556867)
     public WaterOrderCollect() {
     }
+
+
+
 
     public String getId() {
         return this.id;
@@ -393,6 +407,22 @@ public class WaterOrderCollect implements Comparable<WaterOrderCollect> {
 
     public void setAbName(String abName) {
         this.abName = abName;
+    }
+
+    public Integer getAssetsId() {
+        return assetsId;
+    }
+
+    public void setAssetsId(Integer assetsId) {
+        this.assetsId = assetsId;
+    }
+
+    public String getAssetsName() {
+        return assetsName;
+    }
+
+    public void setAssetsName(String assetsName) {
+        this.assetsName = assetsName;
     }
 
     @Override

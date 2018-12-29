@@ -369,6 +369,10 @@ public interface ApiService {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @GET("assets/android")
     Observable<ResponseBody> getAssets(@Header("X-AUTH-TOKEN") String token);
+
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("assets/android")
+    Observable<ResponseBody> getAssets1(@Header("X-AUTH-TOKEN") String token,@Query("flag") int flag);
     /**
      * 首页公告已读接口
      */
@@ -479,5 +483,19 @@ public interface ApiService {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("uploadCode/android")
     Observable<ResponseBody> uploadCode(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
+
+    /**
+     * 添加到记账默认账户接口
+     */
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("addAT2Mark/android")
+    Observable<ResponseBody> addAT2Mark(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
+
+    /**
+     * 删除默认记账账户接口
+     */
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("deleteAT2Mark/android")
+    Observable<ResponseBody> deleteAT2Mark(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
 
 }

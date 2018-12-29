@@ -1,19 +1,16 @@
 package com.hbird.base.mvc.activity;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.support.annotation.IdRes;
+import android.support.annotation.Nullable;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.BounceInterpolator;
@@ -29,6 +26,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.alibaba.fastjson.JSON;
 import com.bumptech.glide.Glide;
 import com.google.gson.Gson;
 import com.hbird.base.R;
@@ -41,10 +39,12 @@ import com.hbird.base.mvc.bean.ReturnBean.CommonList2Bean;
 import com.hbird.base.mvc.bean.ReturnBean.CommonListBean;
 import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
+import com.hbird.base.mvc.bean.ReturnBean.ZiChanInfoReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.global.modle.GlobalVariables;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.APDUserDateDialog;
+import com.hbird.base.mvc.view.dialog.ChooseAccountDialog;
 import com.hbird.base.mvc.widget.NewGuide2Pop;
 import com.hbird.base.mvc.widget.NewGuidePop;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
@@ -54,6 +54,9 @@ import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
+import com.hbird.bean.AssetsBean;
+import com.hbird.common.Constants;
+import com.hbird.ui.account.ActEditAccount;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.db.support.ITableManger;
 import com.ljy.devring.util.NetworkUtil;
@@ -66,9 +69,8 @@ import java.util.UUID;
 
 import butterknife.BindView;
 import sing.common.util.LogUtil;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.shape.BaseLightShape;
+import sing.common.util.StatusBarUtil;
+import sing.util.SharedPreferencesUtil;
 
 import static com.hbird.base.R.id.anime_date;
 
@@ -80,12 +82,9 @@ import static com.hbird.base.R.id.anime_date;
  */
 
 public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
-    @BindView(R.id.iv_backs)
-    ImageView mBack;
+
     @BindView(R.id.tv_center_title)
     TextView mCenterTitle;
-    @BindView(R.id.tv_right_title)
-    TextView mRight;
     @BindView(R.id.et_record)
     EditText mRecord;
     @BindView(R.id.tv_record_num)
@@ -93,7 +92,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     @BindView(R.id.btnMoodRadio)
     RadioGroup mRadioGroup;
     @BindView(R.id.bt_save_add)
-    LinearLayout mBtnSaveAdd;
+    TextView mBtnSaveAdd;
     @BindView(R.id.tv_up_num)
     TextView mUpNum;
     @BindView(R.id.tv_down_num)
@@ -131,6 +130,13 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     @BindView(R.id.ll_jianpan)
     LinearLayout mJianPan;
 
+    @BindView(R.id.iv_account_icon)
+    ImageView ivIcon;// 账户头像
+    @BindView(R.id.tv_temp)
+    TextView tvTemp;// "选择账户"
+    @BindView(R.id.tv_account)
+    TextView tvAccount;// 账户名称
+
     private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private boolean inputTag;
     private int isFirst = 1;
@@ -139,8 +145,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     private CommonList2Bean commonList2Bean;
     private String moneyString;
     private Integer happys;
-    private Long time=0L;
-    private HighLight mHightLight;
+    private Long time = 0L;
     private String encode;
     private String decode;
     private String mBeiZhu;
@@ -155,15 +160,17 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     private String p;
     private boolean b;
 
-
     @Override
     protected int getContentLayout() {
-        return R.layout.activity_charge_to_account;
+        StatusBarUtil.setStatusBarLightMode(getWindow());
+
+        return R.layout.act_charge_to_account;
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
         vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
+        initBarColor(Color.parseColor("#FFFFFF"), Color.parseColor("#FFFFFF"));
     }
 
     @Override
@@ -172,6 +179,9 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
 
         p = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
         accountId = Integer.parseInt(p);
+
+        token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+        getMyAccount();
     }
 
     private void setNew2Guide() {
@@ -182,13 +192,13 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 final NewGuide2Pop pops = new NewGuide2Pop(ChargeToAccount.this, mDate, "这里切换记账日期~", 1, new NewGuide2Pop.PopDismissListener() {
                     @Override
                     public void PopDismiss() {
-                        SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ,false);
+                        SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ, false);
                     }
                 });
                 pops.showPopWindow();
                 new android.os.Handler().postDelayed(new Runnable() {
                     public void run() {
-                        if(pops!=null){
+                        if (pops != null) {
                             pops.hidePopWindow();
                         }
                     }
@@ -203,7 +213,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         cv.post(new Runnable() {
             @Override
             public void run() {
-                //showNextKnownTipView();
                 final NewGuidePop pop = new NewGuidePop(ChargeToAccount.this, mRadioGroup, "记录每个瞬间的消费心情~", 1, new NewGuidePop.PopDismissListener() {
                     @Override
                     public void PopDismiss() {
@@ -214,7 +223,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 pop.showPopWindow();
                 new android.os.Handler().postDelayed(new Runnable() {
                     public void run() {
-                        if(pop!=null){
+                        if (pop != null) {
                             pop.hidePopWindow();
                         }
                     }
@@ -228,13 +237,13 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         final NewGuide2Pop pops = new NewGuide2Pop(ChargeToAccount.this, mDate, "这里切换记账日期~", 1, new NewGuide2Pop.PopDismissListener() {
             @Override
             public void PopDismiss() {
-                SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ,false);
+                SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ, false);
             }
         });
         pops.showPopWindow();
         new android.os.Handler().postDelayed(new Runnable() {
             public void run() {
-                if(pops!=null){
+                if (pops != null) {
                     pops.hidePopWindow();
                 }
             }
@@ -243,8 +252,10 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     }
 
     private void setDate() {
+        setAccount();
+
         tag = getIntent().getStringExtra("TAG");
-        if(TextUtils.equals(tag,"收入")){
+        if (TextUtils.equals(tag, "收入")) {
             mCenterTitle.setText("收入");
             mXinqing.setVisibility(View.GONE);
             mIconBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
@@ -252,10 +263,10 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             commonListBean = new Gson().fromJson(jsonstr, CommonListBean.class);
             mType.setText(commonListBean.getIncomeName());
             mUpNum.setTextColor(getResources().getColor(R.color.colorPrimary));
-            mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin2),null,null,null);
+            mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin2), null, null, null);
             mUpNum.setCompoundDrawablePadding(6);
             Glide.with(this).load(commonListBean.getIcon()).into(mImages);
-        }else {
+        } else {
             mCenterTitle.setText("支出");
             mXinqing.setVisibility(View.VISIBLE);
             mIconBg.setBackgroundResource(R.drawable.shape_cycle_blue);
@@ -263,28 +274,28 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             commonList2Bean = new Gson().fromJson(jsonstr, CommonList2Bean.class);
             mType.setText(commonList2Bean.getSpendName());
             mUpNum.setTextColor(getResources().getColor(R.color.text_333333));
-            mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin),null,null,null);
+            mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin), null, null, null);
             mUpNum.setCompoundDrawablePadding(6);
             Glide.with(this).load(commonList2Bean.getIcon()).into(mImages);
         }
         boolean firstCome = SPUtil.getPrefBoolean(this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ, true);
         //第一次进入
-        if(firstCome){
-            if(TextUtils.equals(tag,"收入")){
+        if (firstCome) {
+            if (TextUtils.equals(tag, "收入")) {
                 setNew2Guide();
-            }else {
+            } else {
                 setNewGuide();
             }
 
         }
-        mRight.setText("保存");
         mDownNum.setText("");
         mDownNum.setVisibility(View.GONE);
     }
+
     @Override
     protected void initEvent() {
-        mBack.setOnClickListener(this);
-        mRight.setOnClickListener(this);
+        findViewById(R.id.iv_backs).setOnClickListener(this);
+        findViewById(R.id.tv_right_title).setVisibility(View.GONE);
         mBtnSaveAdd.setOnClickListener(this);
         addFinishBtn.setOnClickListener(this);
         mClear.setOnClickListener(this);
@@ -306,6 +317,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         mDownNum.addTextChangedListener(numberWatcher);
         mRecord.addTextChangedListener(new TextWatcher() {
             private CharSequence temp;
+
             @Override
             public void beforeTextChanged(CharSequence s, int i, int i1, int i2) {
                 temp = s;
@@ -331,13 +343,8 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
-                switch (i){
-                    case R.id.btn_happy:
-                       /* if(isFirst==1){
-                            isFirst+=1;
-                            return;
-                        }*/
-                        //showMessage("开心");
+                switch (i) {
+                    case R.id.btn_happy:// 开心
                         playVoice(R.raw.changgui01);
                         happysFlag = true;
                         happys = 0;
@@ -347,8 +354,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                         setGif(happys);
 
                         break;
-                    case R.id.btn_normal:
-                        //showMessage("一般");
+                    case R.id.btn_normal: // 一般
                         playVoice(R.raw.changgui01);
                         happysFlag = true;
                         happys = 1;
@@ -358,8 +364,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                         setGif(happys);
 
                         break;
-                    case R.id.btn_unhappy:
-                        //showMessage("不开心");
+                    case R.id.btn_unhappy: // 不开心
                         playVoice(R.raw.changgui01);
                         happysFlag = true;
                         happys = 2;
@@ -371,23 +376,24 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 }
             }
         });
-        //默认不选中
-        //mRadioGroup.clearCheck();
 
+        ivIcon.setOnClickListener(v -> chooseAccount());
+        tvTemp.setOnClickListener(v -> chooseAccount());
+        tvAccount.setOnClickListener(v -> chooseAccount());
     }
 
     private void setGif(Integer happys) {
-        if(happys==0){
+        if (happys == 0) {
             Glide.with(ChargeToAccount.this)
                     .asGif()
                     .load(R.drawable.gif_happy)
                     .into(ivHappy);
-        }else if(happys==1){
+        } else if (happys == 1) {
             Glide.with(ChargeToAccount.this)
                     .asGif()
                     .load(R.drawable.gif_normal)
                     .into(ivNormal);
-        }else if(happys==2){
+        } else if (happys == 2) {
             Glide.with(ChargeToAccount.this)
                     .asGif()
                     .load(R.drawable.gif_unhappy)
@@ -395,48 +401,50 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         }
     }
 
-    private class numberWatcher implements TextWatcher{
-            private CharSequence temp;
-            private int selectionStart;
-            private int selectionEnd;
-            @Override
-            public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
-                temp=charSequence;
-            }
+    private class numberWatcher implements TextWatcher {
+        private CharSequence temp;
+        private int selectionStart;
+        private int selectionEnd;
 
-            @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int start, int count, int after) {
+            temp = charSequence;
+        }
 
-            }
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String ss = editable+"";
-                try {
-                    if(TextUtils.isEmpty(ss)){
-                        return;
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            String ss = editable + "";
+            try {
+                if (TextUtils.isEmpty(ss)) {
+                    return;
+                }
+                if (null != ss) {
+                    if (ss.startsWith("+") || ss.startsWith("-")) {
+                        ss = "0" + ss;
                     }
-                    if(null!=ss){
-                        if(ss.startsWith("+") || ss.startsWith("-")){
-                            ss="0"+ss;
-                        }
-                        setNumForResult(ss);
-                    }
-
-                }catch (Exception e){
-                    e.printStackTrace();
-                    showMessage("数字非法，请重新输入");
-                    calculatorClear();
+                    setNumForResult(ss);
                 }
 
-
+            } catch (Exception e) {
+                e.printStackTrace();
+                showMessage("数字非法，请重新输入");
+                calculatorClear();
             }
 
+
+        }
+
     }
+
     private void setNumForResult(String ss) {
         double sum = Utils.sum(ss);
         //支取小数点后两位数
-        DecimalFormat    df   = new DecimalFormat("######0.00");
+        DecimalFormat df = new DecimalFormat("######0.00");
         String format = df.format(sum);
         //对负数的处理
        /* if(sum<0){
@@ -456,7 +464,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_backs:
                 calculatorClear();
                 playVoice(R.raw.changgui02);
@@ -466,23 +474,12 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 playVoice(R.raw.changgui01);
                 mDownNum.setFocusable(false);
                 mDownNum.setFocusableInTouchMode(false);
-
-                break;
-            case R.id.tv_right_title:
-                //showMessage("保存");
-                playVoice(R.raw.jizhangfinish);
-                moneyString = mUpNum.getText().toString().trim();
-                if (moneyString.equals("0.00") || GlobalVariables.getmInputMoney().equals("")){
-                    showMessage("请输记账金额");
-                    return;
-                }
-                saveAndFinish(111);
                 break;
             case R.id.bt_save_add:
                 //showMessage("保存并继续添加");
                 playVoice(R.raw.jizhangfinish);
                 moneyString = mUpNum.getText().toString().trim();
-                if (moneyString.equals("0.00") || GlobalVariables.getmInputMoney().equals("")){
+                if (moneyString.equals("0.00") || GlobalVariables.getmInputMoney().equals("")) {
                     showMessage("请输记账金额");
                     return;
                 }
@@ -505,21 +502,21 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             case R.id.clear:
                 playVoice(R.raw.changgui01);
                 vibrator.vibrate(20);
-                if(inputTag){
+                if (inputTag) {
                     inputTag = false;
                 }
                 //如果是 点 那么则删除点
-                if(GlobalVariables.getmHasDot()){
+                if (GlobalVariables.getmHasDot()) {
                     //已经点过了
                     GlobalVariables.setHasDot(false);
                 }
-                if(TextUtils.isEmpty(mDownNum.getText().toString())){
+                if (TextUtils.isEmpty(mDownNum.getText().toString())) {
                     return;
                 }
                 String str = mDownNum.getText().toString().substring(0, mDownNum.length() - 1);
                 GlobalVariables.setmInputMoney(str);
                 mDownNum.setText(str);
-                if (TextUtils.isEmpty(str)){
+                if (TextUtils.isEmpty(str)) {
                     mUpNum.setText("0.00");
                     mDownNum.setVisibility(View.GONE);
                 }
@@ -528,7 +525,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             case R.id.anime_jian:
                 playVoice(R.raw.changgui01);
                 vibrator.vibrate(20);
-                if(inputTag){
+                if (inputTag) {
                     showMessage("已输入过");
                     return;
                 }
@@ -546,17 +543,17 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                     protected void onBtnOkClick(String year, String month, String day) {
                         //判断今天跟选取的年月日 是否为同一天
                         String days = DateUtils.getDays(System.currentTimeMillis());
-                        if(!TextUtils.isEmpty(days)){
-                            if(TextUtils.equals(year + "/" + month + "/" + day,days)){
+                        if (!TextUtils.isEmpty(days)) {
+                            if (TextUtils.equals(year + "/" + month + "/" + day, days)) {
                                 mDate.setText("今天");
-                            }else {
+                            } else {
                                 mDate.setText(year + "/" + month + "/" + day);
                             }
                         }
                         //mDate.setText(year + "/" + month + "/" + day);
                         mDate.setTextSize(14);
-                        mDate.setCompoundDrawables(null,null,null,null);
-                        mDate.setPadding(0,0,0,0);
+                        mDate.setCompoundDrawables(null, null, null, null);
+                        mDate.setPadding(0, 0, 0, 0);
                         time = DateUtil.dateToLong(mDate.getText().toString().trim());
                     }
                 }.show();
@@ -564,7 +561,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             case R.id.anime_add:
                 playVoice(R.raw.changgui01);
                 vibrator.vibrate(20);
-                if(inputTag){
+                if (inputTag) {
                     showMessage("已输入过");
                     return;
                 }
@@ -578,7 +575,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 showMessage("请在下方数字键盘上直接操作~");
                 //点击收起软键盘
                 InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-                if(imm != null){
+                if (imm != null) {
                     imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
                 }
                 BounceInterpolator bounceInterpolator = new BounceInterpolator();
@@ -586,6 +583,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 break;
         }
     }
+
     private void showTranslate(BounceInterpolator interpolator) {
         //创建平移动画对象
         TranslateAnimation translateAnimation = new TranslateAnimation(
@@ -606,11 +604,11 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         //设置动画
         mJianPan.startAnimation(translateAnimation);
     }
+
     private void saveAndFinish(final int resultCode) {
-        token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
         //调用记账接口
         JzAccountReq req = new JzAccountReq();
-        if(TextUtils.equals(tag,"收入")){
+        if (TextUtils.equals(tag, "收入")) {
             req.setTypeId(commonListBean.getId());
             req.setTypeName(commonListBean.getIncomeName());
             req.setTypePname(commonListBean.getParentName());
@@ -618,21 +616,21 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             req.setMoney(moneyString);
             req.setIsStaged(1);
             long times;
-            if(time==0){
+            if (time == 0) {
                 times = new Date().getTime();
-            }else {
-                times=time;
+            } else {
+                times = time;
             }
-            req.setChargeDate(times+"");
+            req.setChargeDate(times + "");
             req.setOrderType(2);
-            if(null!=encode){
+            if (null != encode) {
                 String decode = Utils.decode(encode).toString().trim();
                 req.setRemark(decode);
-            }else {
+            } else {
                 req.setRemark(mBeiZhu);
             }
             req.setSpendHappiness(-1);//收入没有心情
-        }else {
+        } else {
             req.setTypeId(commonList2Bean.getId());
             req.setTypeName(commonList2Bean.getSpendName());
             req.setTypePname(commonList2Bean.getParentName());
@@ -640,17 +638,17 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             req.setMoney(moneyString);
             req.setIsStaged(1);
             long times;
-            if(time==0){
+            if (time == 0) {
                 times = new Date().getTime();
-            }else {
-                times=time;
+            } else {
+                times = time;
             }
-            req.setChargeDate(times+"");
+            req.setChargeDate(times + "");
             req.setOrderType(1);
-            if(null!=encode){
+            if (null != encode) {
                 String decode = Utils.decode(encode).toString().trim();
                 req.setRemark(decode);
-            }else {
+            } else {
                 req.setRemark(mBeiZhu);
             }
 
@@ -661,24 +659,24 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         //本地数据库存储
         ITableManger mManger = DevRing.tableManager(WaterOrderCollect.class);
         WaterOrderCollect w = new WaterOrderCollect();
-        w.setId(UUID.randomUUID()+"");//流水记录号
+        w.setId(UUID.randomUUID() + "");//流水记录号
         w.setMoney(Double.parseDouble(req.getMoney()));//单笔记账金额
         w.setAccountBookId(accountId);//记账本id
-        if(TextUtils.equals(tag,"收入")){
+        if (TextUtils.equals(tag, "收入")) {
             w.setOrderType(2);//订单类型
-        }else {
+        } else {
             w.setOrderType(1);
         }
 
         w.setIsStaged(1);//付款方式
-        if(happysFlag){
+        if (happysFlag) {
             w.setSpendHappiness(happys);//愉悦度
         }
         w.setTypePid(req.getTypePid());//二级类目
         w.setTypePname(req.getTypePname());
         w.setTypeId(req.getTypeId());//三级条目
         w.setTypeName(req.getTypeName());
-        String da = System.currentTimeMillis() / 1000 +"000";
+        String da = System.currentTimeMillis() / 1000 + "000";
         long ss = Long.parseLong(da);
         w.setUpdateDate(new Date(ss));//更新时间
         w.setCreateDate(new Date(ss));//创建时间
@@ -698,12 +696,18 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         w.setReporterNickName(nickName);//记录人名字
         w.setReporterAvatar(headers);//记录人头像
         String icon = "";
-        if(TextUtils.equals(tag,"收入")){
+        if (TextUtils.equals(tag, "收入")) {
             icon = commonListBean.getIcon();
-        }else {
+        } else {
             icon = commonList2Bean.getIcon();
         }
         w.setIcon(icon);
+        String id = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
+        if (!TextUtils.isEmpty(id)) {
+            w.setAssetsId(Integer.parseInt(id));
+            String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
+            w.setAssetsName(accountName);
+        }
         b = mManger.insertOne(w);
         pullToSyncDate(resultCode);
     }
@@ -715,7 +719,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         }*/
         mDownNum.setVisibility(View.VISIBLE);
         String money = GlobalVariables.getmInputMoney();
-        if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length()>2) {
+        if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length() > 2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
             LogUtil.e("calculatorNumOnclick: " + dot);
             if (dot.equals(".")) {
@@ -728,37 +732,37 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         String[] positive = money.split("\\+");
         String endStr = null;
         for (String pos : positive) {
-            if(pos.contains("-")){
+            if (pos.contains("-")) {
                 String[] negative = pos.split("\\-");
                 Double temp = 0d;
                 for (int is = 0; is < negative.length; is++) {
                     endStr = negative[is];
                 }
                 //endStr = negative[0];
-            }else{
+            } else {
                 endStr = pos;
             }
         }
         //判断超过8位数不再继续输入
-        if(null!=endStr && endStr.contains(".")){
+        if (null != endStr && endStr.contains(".")) {
             String[] split = endStr.split("\\.");
-            if(null!=split && split.length>0){
-                if(split[0].length()>8){
+            if (null != split && split.length > 0) {
+                if (split[0].length() > 8) {
                     showMessage("您输入的位数过大");
                     return;
                 }
             }
 
-        }else {
-            if(!TextUtils.isEmpty(endStr)){
-                if(endStr.length()>=8){
+        } else {
+            if (!TextUtils.isEmpty(endStr)) {
+                if (endStr.length() >= 8) {
                     String sub = money.substring(money.length() - 1, money.length());
-                    if(TextUtils.equals(sub,"+") || TextUtils.equals(sub,"-")){
+                    if (TextUtils.equals(sub, "+") || TextUtils.equals(sub, "-")) {
 
-                    }else {
-                        if(TextUtils.equals(add,"+") || TextUtils.equals(add,"-") ){
+                    } else {
+                        if (TextUtils.equals(add, "+") || TextUtils.equals(add, "-")) {
 
-                        }else {
+                        } else {
                             showMessage("您输入的位数过大");
                             return;
                         }
@@ -767,7 +771,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             }
 
         }
-        GlobalVariables.setmInputMoney(money+add);
+        GlobalVariables.setmInputMoney(money + add);
         mDownNum.setText(GlobalVariables.getmInputMoney());
         mDownNum.setSelection(GlobalVariables.getmInputMoney().length());
     }
@@ -790,120 +794,15 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         vibrator.vibrate(20);
         setNumberKey(digit);
     }
+
     // 小数点处理工作
     public void calculatorPushDot(View view) {
         if (GlobalVariables.getmHasDot()) {
             Toast.makeText(getApplicationContext(), "已经输入过小数点了 ━ω━●", Toast.LENGTH_SHORT).show();
         } else {
-            GlobalVariables.setmInputMoney(GlobalVariables.getmInputMoney()+".");
+            GlobalVariables.setmInputMoney(GlobalVariables.getmInputMoney() + ".");
             GlobalVariables.setHasDot(true);
         }
-    }
-
-    private void showNextKnownTipView() {
-        mHightLight = new HighLight(this)//
-                .autoRemove(false)//设置背景点击高亮布局自动移除为false 默认为true
-                .intercept(false)//设置拦截属性为false 高亮布局不影响后面布局的滑动效果
-                .intercept(true)//拦截属性默认为true 使下方callback生效
-                .enableNext()//开启next模式并通过show方法显示 然后通过调用next()方法切换到下一个提示布局,直到移除自身
-                .setClickCallback(new HighLight.OnClickCallback() {
-                    @Override
-                    public void onClick() {
-                        //showMessage("移除一个了");
-                        if(mHightLight.isShowing()&& mHightLight.isNext()){//如果开启next模式
-                            mHightLight.next();
-                        }else{
-                            remove(null);
-                        }
-                    }
-                })
-                .anchor(findViewById(R.id.ll_choose_content))
-                //默认长方形框选
-                //.addHighLight(R.id.radioGroups,R.layout.info_down,new OnBottomPosCallback(25),new RectLightShape())
-                .addHighLight(R.id.ll_xinqing, R.layout.info_down3, new HighLight.OnPosCallback() {
-                    @Override
-                    public void getPos(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-                        //marginInfo.leftMargin = rectF.right - rectF.width()-20;
-                        marginInfo.leftMargin = rectF.width()/2-100;
-                        marginInfo.topMargin = 100;
-                    }
-                }, new BaseLightShape(-10,-30) {
-                    @Override
-                    protected void resetRectF4Shape(RectF viewPosInfoRectF, float dx, float dy) {
-                        //缩小高亮控件范围, 自定义图形框选.
-                        viewPosInfoRectF.inset(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                dx,getResources().getDisplayMetrics()),
-                                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dy,getResources().getDisplayMetrics()));
-                    }
-
-                    @Override
-                    protected void drawShape(Bitmap bitmap, HighLight.ViewPosInfo viewPosInfo) {
-                        //自定义高亮形状
-                        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_guide_kuang2, null);
-                        Canvas canvas = new Canvas(bitmap);
-                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                        paint.setDither(true);
-                        paint.setAntiAlias(true);
-                        paint.setMaskFilter(new BlurMaskFilter(15, BlurMaskFilter.Blur.SOLID));
-                        RectF rectF = viewPosInfo.rectF;
-                        //canvas.drawOval(rectF, paint);
-                        canvas.drawBitmap(b,null,rectF, paint);
-                    }
-                })
-                .addHighLight(R.id.anime_date, R.layout.info_down4, new HighLight.OnPosCallback() {
-                    @Override
-                    public void getPos(float rightMargin, float bottomMargin, RectF rectF, HighLight.MarginInfo marginInfo) {
-//                        marginInfo.leftMargin = rectF.right - rectF.width();
-                        marginInfo.leftMargin = rectF.width()/2+50;
-                        marginInfo.topMargin = rectF.bottom/2-150;
-                    }
-                }, new BaseLightShape(-10,-20) {
-                    @Override
-                    protected void resetRectF4Shape(RectF viewPosInfoRectF, float dx, float dy) {
-                        //缩小高亮控件范围, 自定义图形框选.
-                        viewPosInfoRectF.inset(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                dx,getResources().getDisplayMetrics()),
-                                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dy,getResources().getDisplayMetrics()));
-                    }
-
-                    @Override
-                    protected void drawShape(Bitmap bitmap, HighLight.ViewPosInfo viewPosInfo) {
-                        //自定义高亮形状
-                        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_guide_kuang2, null);
-                        Canvas canvas = new Canvas(bitmap);
-                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                        paint.setDither(true);
-                        paint.setAntiAlias(true);
-                        paint.setMaskFilter(new BlurMaskFilter(15, BlurMaskFilter.Blur.SOLID));
-                        RectF rectF = viewPosInfo.rectF;
-                        //canvas.drawOval(rectF, paint);
-                        canvas.drawBitmap(b,null,rectF, paint);
-                    }
-                })
-                //圆形框选
-                //.addHighLight(R.id.bt_btn3,R.layout.info_up,new OnTopPosCallback(),new CircleLightShape())
-                .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {
-                    //监听移除回调 intercept为true时生效,按钮三是在按钮顶部,圆形高亮
-                    @Override
-                    public void onRemove() {
-                        //showMessage("全部ok");
-                        SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN_ZZ,false);
-                    }
-                })
-                .setOnShowCallback(new HighLightInterface.OnShowCallback() {//监听显示回调 intercept为true时生效
-                    @Override
-                    public void onShow() {
-                        //showMessage("我出来了");
-                    }
-                });
-        mHightLight.show();
-    }
-    public void remove(View view) {
-        mHightLight.remove();
-    }
-
-    public void add(View view) {
-        mHightLight.show();
     }
 
     @Override
@@ -915,57 +814,51 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     private void pullToSyncDate(final int resultCode) {
         //判断当前网络状态
         boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(ChargeToAccount.this);
-        if(!netWorkAvailable){
-            if(b){
+        if (!netWorkAvailable) {
+            if (b) {
                 //创建成功
                 setResult(resultCode);
                 calculatorClear();
                 finish();
-            }else {
+            } else {
                 showMessage("创建失败");
             }
             return;
         }
-        token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
-        String mobileDevice =com.hbird.util.Utils.getDeviceInfo(ChargeToAccount.this);
+        String mobileDevice = com.hbird.util.Utils.getDeviceInfo(ChargeToAccount.this);
         comeInForLogin = SPUtil.getPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
-        NetWorkManager.getInstance().setContext(ChargeToAccount.this)
-                .postPullToSyncDate(mobileDevice, comeInForLogin, token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        PullSyncDateReturn b1 = (PullSyncDateReturn) b;
-                        String synDate = b1.getResult().getSynDate();
-                        long L=0;
-                        if(null!=synDate){
-                            try {
-                                L = Long.parseLong(synDate);
-                            }catch (Exception e){
-
-                            }
-                        }
-                        SPUtil.setPrefLong(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.SYNDATE,L);
-                        List<PullSyncDateReturn.ResultBean.SynDataBean> synData = b1.getResult().getSynData();
-                        //插入本地数据库
-                        DBUtil.insertLocalDB(synData);
-                        SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
-//                        List<WaterOrderCollect> list = DevRing.tableManager(WaterOrderCollect.class).loadAll();
-//                        showMessage(list.size() + "");
-                        pushOffLine(resultCode);
+        NetWorkManager.getInstance().setContext(ChargeToAccount.this).postPullToSyncDate(mobileDevice, comeInForLogin, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                PullSyncDateReturn b1 = (PullSyncDateReturn) b;
+                String synDate = b1.getResult().getSynDate();
+                long L = 0;
+                if (null != synDate) {
+                    try {
+                        L = Long.parseLong(synDate);
+                    } catch (Exception e) {
                     }
+                }
+                SPUtil.setPrefLong(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.SYNDATE, L);
+                List<PullSyncDateReturn.ResultBean.SynDataBean> synData = b1.getResult().getSynData();
+                //插入本地数据库
+                DBUtil.insertLocalDB(synData);
+                SPUtil.setPrefBoolean(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
+                pushOffLine(resultCode);
+            }
 
-                    @Override
-                    public void onError(String s) {
-                        //showMessage(s);
-                        if(b){
-                            //创建成功
-                            setResult(resultCode);
-                            calculatorClear();
-                            finish();
-                        }else {
-                            showMessage("创建失败");
-                        }
-                    }
-                });
+            @Override
+            public void onError(String s) {
+                if (b) {
+                    //创建成功
+                    setResult(resultCode);
+                    calculatorClear();
+                    finish();
+                } else {
+                    showMessage("创建失败");
+                }
+            }
+        });
     }
 
     private void pushOffLine(final int code) {
@@ -976,35 +869,40 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         String times = String.valueOf(time);
         req.setSynDate(times);
 
-        //本地数据库查找未上传数据 上传至服务器
-        //String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.ACCOUNT_BOOK_ID = " + accountId + " AND wo.UPDATE_DATE >= " + time;
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ACCOUNT_BOOK_ID = " + accountId + " AND UPDATE_DATE >= " + time;
+        // 本地数据库查找未上传数据 上传至服务器
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ACCOUNT_BOOK_ID= " + accountId + " AND UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
         myList.clear();
+
         if (null != cursor) {
-            myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+            try {
+                myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
+
         List<OffLine2Req.SynDataBean> myList2 = new ArrayList<>();
         myList2.clear();
         OffLine2Req req2 = new OffLine2Req();
         req2.setMobileDevice(req.getMobileDevice());
         req2.setSynDate(req.getSynDate());
-        if(myList!=null){
+        if (myList != null) {
             for (int i = 0; i < myList.size(); i++) {
                 OffLineReq.SynDataBean s1 = myList.get(i);
                 OffLine2Req.SynDataBean synDataBean = new OffLine2Req.SynDataBean();
                 synDataBean.setId(s1.getId());
                 synDataBean.setAccountBookId(s1.getAccountBookId());
-                if(s1.getChargeDate()!=null){
+                if (s1.getChargeDate() != null) {
                     synDataBean.setChargeDate(s1.getChargeDate().getTime());
                 }
                 synDataBean.setCreateBy(s1.getCreateBy());
-                if(s1.getCreateDate()!=null){
+                if (s1.getCreateDate() != null) {
                     synDataBean.setCreateDate(s1.getCreateDate().getTime());
                 }
                 synDataBean.setCreateName(s1.getCreateName());
-                if(s1.getDelDate()!=null){
+                if (s1.getDelDate() != null) {
                     synDataBean.setDelDate(s1.getDelDate().getTime());
                 }
 
@@ -1025,43 +923,164 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 synDataBean.setUseDegree(s1.getUseDegree());
                 synDataBean.setUpdateName(s1.getUpdateName());
                 synDataBean.setUserPrivateLabelId(s1.getUserPrivateLabelId());
+                synDataBean.setAssetsId(s1.getAssetsId());
+                synDataBean.setAssetsName(s1.getAssetsName());
                 myList2.add(synDataBean);
             }
             req2.setSynData(myList2);
         }
 
 
-        if(myList2!=null && myList2.size()>0){
+        if (myList2 != null && myList2.size() > 0) {
             req2.setSynData(myList2);
         }
         String jsonInfo = new Gson().toJson(req2);
+        NetWorkManager.getInstance().setContext(ChargeToAccount.this).pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b2) {
+                GloableReturn b1 = (GloableReturn) b2;
+                if (b) {
+                    //创建成功
+                    setResult(code);
+                    calculatorClear();
+                    finish();
+                } else {
+                    showMessage("创建失败");
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+                if (b) {
+                    //创建成功
+                    setResult(code);
+                    calculatorClear();
+                    finish();
+                } else {
+                    showMessage("创建失败");
+                }
+            }
+        });
+    }
+
+    private void getMyAccount() {
         NetWorkManager.getInstance().setContext(ChargeToAccount.this)
-                .pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
+                .getZiChanInfo(token, 1, new NetWorkManager.CallBack() {
                     @Override
                     public void onSuccess(BaseReturn b2) {
-                        GloableReturn b1 = (GloableReturn) b2;
-                        if(b){
-                            //创建成功
-                            setResult(code);
-                            calculatorClear();
-                            finish();
-                        }else {
-                            showMessage("创建失败");
+                        ZiChanInfoReturn bean = (ZiChanInfoReturn) b2;
+                        if (bean != null && bean.getResult().getAssets() != null && bean.getResult().getAssets().size() > 0) {
+                            List<AssetsBean> temp = bean.getResult().getAssets();
+                            if (temp != null && temp.size() > 0) {
+                                for (int i = 0; i < temp.size(); i++) {
+//                                    AssetsBean temp1 = temp.get(i);
+//                                    AssetsBean temp2 = getBean(temp.get(i).getAssetsType());
+//                                    temp1.setIcon(temp2.getIcon());
+//                                    temp1.setDesc(temp2.getDesc());
+                                }
+                            }
+                            String str = JSON.toJSONString(temp);
+                            SharedPreferencesUtil.put(Constants.MY_ACCOUNT, str);
                         }
                     }
 
                     @Override
                     public void onError(String s) {
-                        if(b){
-                            //创建成功
-                            setResult(code);
-                            calculatorClear();
-                            finish();
-                        }else {
-                            showMessage("创建失败");
-                        }
                     }
                 });
     }
 
+    private AssetsBean getBean(int assetsType) {
+//        switch (assetsType) {
+//            case 1:
+//                return new AssetsBean(1, 1, "现金", R.mipmap.icon_zcxianjin_normal, false);
+//            case 2:
+//                return new AssetsBean(2, 2, "支付宝", R.mipmap.icon_zczhifubao_normal, false);
+//            case 3:
+//                return new AssetsBean(3, 3, "微信", R.mipmap.icon_zcweixin_normal, false);
+//            case 4:
+//                return new AssetsBean(5, 4, "理财", R.mipmap.icon_zclicai_normal, false);
+//            case 5:
+//                return new AssetsBean(6, 5, "社保", R.mipmap.icon_zcshebao_normal, false);
+//            case 6:
+//                return new AssetsBean(8, 6, "借记/储蓄卡", R.mipmap.icon_zcyinhangka_normal, false);
+//            case 7:
+//                return new AssetsBean(9, 7, "公交/校园/等充值卡", R.mipmap.icon_zcgongjiaoka_normal, false);
+//            case 8:
+//                return new AssetsBean(10, 8, "出借待收", R.mipmap.icon_zcjiekuan_normal, false);
+//            case 9:
+//                return new AssetsBean(11, 9, "负债待还", R.mipmap.icon_zcqiankuan_normal, false);
+//            case 10:
+//                return new AssetsBean(12, 10, "其他账户", R.mipmap.icon_zcqita_normal, false);
+//            case 11:
+//                return new AssetsBean(7, 11, "公积金", R.mipmap.icon_zcgjj_normal, false);
+//            case 12:
+//                return new AssetsBean(4, 12, "信用卡", R.mipmap.icon_zcxyk_normal, false);
+//        }
+        return null;
+    }
+
+    // 选择账户
+    private void chooseAccount() {
+        ChooseAccountDialog dialog = new ChooseAccountDialog(this);
+        dialog.setListener((data, type) -> {
+            dialog.dismiss();
+            if (type == 0) {
+                Intent intent = new Intent(ChargeToAccount.this, ActEditAccount.class);
+                startActivityForResult(intent, 1000);
+            } else if (type == 1) {
+                if (data == null) {
+                    // 不选择账户
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, "");
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+                } else {
+                    AssetsBean bean = (AssetsBean) data;
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, String.valueOf(bean.assetsType));
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, bean.assetsName);
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, bean.icon);
+                }
+                setAccount();
+            }
+        });
+
+        dialog.show();
+    }
+
+    // 设置界面上账户的值
+    private void setAccount() {
+        String account = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
+        int icon = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+
+        Glide.with(ivIcon.getContext()).load(icon).into(ivIcon);
+        tvAccount.setText(account);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
+            chooseAccount();
+
+            // 判断最后一次选择的账户是否被删除，如果被删除，置为未选择
+            String str = (String) SharedPreferencesUtil.get(Constants.MY_ACCOUNT, "");
+            List<AssetsBean> temp = JSON.parseArray(str, AssetsBean.class);
+            if (!isExist(temp)) {
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, "");
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+                setAccount();
+            }
+        }
+    }
+
+    private boolean isExist(List<AssetsBean> temp) {
+        String id = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
+        for (int i = 0; i < temp.size(); i++) {
+//            if (id.equals(temp.get(i).getAssetsType())) {
+//                return true;
+//            }
+        }
+        return false;
+    }
 }

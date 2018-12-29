@@ -112,6 +112,8 @@ public class DBUtil {
             w.setReporterNickName(be.getReporterNickName());
             w.setReporterAvatar(be.getReporterAvatar());
             w.setAbName(be.getAbName());
+            w.setAssetsId(be.getAssetsId());
+            w.setAssetsName(be.getAssetsName());
             boolean b = DevRing.tableManager(WaterOrderCollect.class).insertOrReplaceOne(w);
         }
     }

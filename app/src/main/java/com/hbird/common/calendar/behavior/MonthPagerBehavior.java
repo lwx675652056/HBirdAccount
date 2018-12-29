@@ -39,57 +39,57 @@ public class MonthPagerBehavior extends CoordinatorLayout.Behavior<MonthPager> {
         switch (ev.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 break;
-            case MotionEvent.ACTION_MOVE:
-                if (isVerticalScroll) {
-                    if (ev.getY() > lastY) {
-                        Utils.setScrollToBottom(true);
-                        directionUpa = false;
-                    } else {
-                        Utils.setScrollToBottom(false);
-                        directionUpa = true;
-                    }
-
-                    if (lastTop < child.getViewHeight() / 2 + child.getCellHeight() / 2) {
-                        //这里表示本来是收缩状态
-                        if (ev.getY() - downY <= 0 || Utils.loadTop() >= child.getViewHeight()) {
-                            //向上滑或者已展开了
-                            lastY = ev.getY();
-                            return true;
-                        }
-                        if (ev.getY() - downY + child.getCellHeight() >= child.getViewHeight()) {
-                            //将要滑过头了
-                            saveTop(child.getViewHeight());
-                            Utils.scrollTo(parent, (RecyclerView) parent.getChildAt(1), child.getViewHeight(), 10);
-                            isVerticalScroll = false;
-                        } else {
-                            //正常下滑
-                            saveTop((int) (child.getCellHeight() + ((ev.getY() - downY))));
-                            Utils.scroll(parent.getChildAt(1), (int) (lastY - ev.getY()),
-                                    child.getCellHeight(), child.getViewHeight());
-                        }
-                    } else {
-                        if (ev.getY() - downY >= 0 || Utils.loadTop() <= child.getCellHeight()) {
-                            lastY = ev.getY();
-                            return true;
-                        }
-
-                        if (ev.getY() - downY + child.getViewHeight() <= child.getCellHeight()) {
-                            //将要滑过头了
-                            saveTop(child.getCellHeight());
-                            Utils.scrollTo(parent, (RecyclerView) parent.getChildAt(1), child.getCellHeight(), 10);
-                            isVerticalScroll = false;
-                        } else {
-                            //正常上滑
-                            saveTop((int) (child.getViewHeight() + ((ev.getY() - downY))));
-                            Utils.scroll(parent.getChildAt(1), (int) (lastY - ev.getY()),
-                                    child.getCellHeight(), child.getViewHeight());
-                        }
-                    }
-
-                    lastY = ev.getY();
-                    return true;
-                }
-                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (isVerticalScroll) {
+//                    if (ev.getY() > lastY) {
+//                        Utils.setScrollToBottom(true);
+//                        directionUpa = false;
+//                    } else {
+//                        Utils.setScrollToBottom(false);
+//                        directionUpa = true;
+//                    }
+//
+//                    if (lastTop < child.getViewHeight() / 2 + child.getCellHeight() / 2) {
+//                        //这里表示本来是收缩状态
+//                        if (ev.getY() - downY <= 0 || Utils.loadTop() >= child.getViewHeight()) {
+//                            //向上滑或者已展开了
+//                            lastY = ev.getY();
+//                            return true;
+//                        }
+//                        if (ev.getY() - downY + child.getCellHeight() >= child.getViewHeight()) {
+//                            //将要滑过头了
+//                            saveTop(child.getViewHeight());
+//                            Utils.scrollTo(parent, (RecyclerView) parent.getChildAt(1), child.getViewHeight(), 10);
+//                            isVerticalScroll = false;
+//                        } else {
+//                            //正常下滑
+//                            saveTop((int) (child.getCellHeight() + ((ev.getY() - downY))));
+//                            Utils.scroll(parent.getChildAt(1), (int) (lastY - ev.getY()),
+//                                    child.getCellHeight(), child.getViewHeight());
+//                        }
+//                    } else {
+//                        if (ev.getY() - downY >= 0 || Utils.loadTop() <= child.getCellHeight()) {
+//                            lastY = ev.getY();
+//                            return true;
+//                        }
+//
+//                        if (ev.getY() - downY + child.getViewHeight() <= child.getCellHeight()) {
+//                            //将要滑过头了
+//                            saveTop(child.getCellHeight());
+//                            Utils.scrollTo(parent, (RecyclerView) parent.getChildAt(1), child.getCellHeight(), 10);
+//                            isVerticalScroll = false;
+//                        } else {
+//                            //正常上滑
+//                            saveTop((int) (child.getViewHeight() + ((ev.getY() - downY))));
+//                            Utils.scroll(parent.getChildAt(1), (int) (lastY - ev.getY()),
+//                                    child.getCellHeight(), child.getViewHeight());
+//                        }
+//                    }
+//
+//                    lastY = ev.getY();
+//                    return true;
+//                }
+//                break;
             case MotionEvent.ACTION_UP:
                 if (isVerticalScroll) {
 
@@ -130,16 +130,16 @@ public class MonthPagerBehavior extends CoordinatorLayout.Behavior<MonthPager> {
                 lastTop = Utils.loadTop();
                 lastY = downY;
                 break;
-            case MotionEvent.ACTION_MOVE:
-                if (downY > lastTop) {
-                    return false;
-                }
-                if (Math.abs(ev.getY() - downY) > 25 && Math.abs(ev.getX() - downX) <= 25
-                        && !isVerticalScroll) {
-                    isVerticalScroll = true;
-                    return true;
-                }
-                break;
+//            case MotionEvent.ACTION_MOVE:
+//                if (downY > lastTop) {
+//                    return false;
+//                }
+//                if (Math.abs(ev.getY() - downY) > 25 && Math.abs(ev.getX() - downX) <= 25
+//                        && !isVerticalScroll) {
+//                    isVerticalScroll = true;
+//                    return true;
+//                }
+//                break;
             case MotionEvent.ACTION_UP:
                 if (isVerticalScroll) {
                     isVerticalScroll = false;

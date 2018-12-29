@@ -4,8 +4,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.hbird.base.mvc.base.BaseFragement;
-
 import java.util.ArrayList;
 
 import sing.common.util.LogUtil;
@@ -16,9 +14,9 @@ import sing.common.util.LogUtil;
 
 public class BaseFragementPagerAdapter extends FragmentPagerAdapter {
 
-    private ArrayList<BaseFragement> mFragments;
+    private ArrayList<Fragment> mFragments;
 
-    public BaseFragementPagerAdapter(FragmentManager fm, ArrayList<BaseFragement> fragments) {
+    public BaseFragementPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {
         super(fm);
         this.mFragments = new ArrayList<>();
         this.mFragments.addAll(fragments);

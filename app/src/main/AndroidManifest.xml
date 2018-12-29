@@ -71,6 +71,16 @@
             android:name="com.hbird.ui.calendar.ActCalendar"
             android:screenOrientation="portrait"/>
 
+        <!--编辑账户-->
+        <activity
+            android:name="com.hbird.ui.account.ActEditAccount"
+            android:screenOrientation="portrait"/>
+
+        <!--编辑账户值-->
+        <activity
+            android:name="com.hbird.ui.assets.ActEditAccountValue"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 

@@ -1,0 +1,87 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.assets.AssetsData"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.assets.FraAssets.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/colorPrimary"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/ic_tixing_normal"
+                android:drawablePadding="@dimen/dp_5_x"
+                android:onClick="@{listener.explain}"
+                android:text="当前预估净资产"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5_x"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical"
+                    android:text="@{@string/synchronized_time+data.time}"
+                    android:textColor="@color/white"
+                    android:textSize="12sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_bg_cz"
+                    android:onClick="@{listener.synchronizedTime}"
+                    android:paddingBottom="@dimen/dp_7_x"
+                    android:paddingEnd="@dimen/dp_10_x"
+                    android:paddingStart="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_7_x"
+                    android:text="设置同步时间"
+                    android:textColor="#D80200"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_10_x"
+                android:layout_marginTop="@dimen/dp_5_x"
+                android:text="@{@string/money+data.value}"
+                android:textColor="@color/white"
+                android:textSize="28sp"/>
+        </LinearLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </LinearLayout>
+</layout>

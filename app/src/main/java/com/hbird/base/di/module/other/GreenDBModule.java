@@ -60,7 +60,7 @@ public class GreenDBModule {
     @DBScope
     @Provides
     String dbName() {
-        return "greendao.db";
+        return "greendao1.db";
     }
 
     @GreenDB
@@ -75,8 +75,8 @@ public class GreenDBModule {
     @Provides
     Class<? extends AbstractDao<?, ?>>[] daoClasses() {
         //传入各数据表对应的Dao类
-        return new Class[]{MovieCollectDao.class,WaterOrderCollectDao.class, HbirdIncomeTypeDao.class
-                ,HbirdSpendTypeDao.class, HbirdUserCommUseIncomeDao.class, HbirdUserCommUseSpendDao.class
+        return new Class[]{MovieCollectDao.class, WaterOrderCollectDao.class, HbirdIncomeTypeDao.class
+                , HbirdSpendTypeDao.class, HbirdUserCommUseIncomeDao.class, HbirdUserCommUseSpendDao.class
                 , HbirdUserCommTypePriority.class};
     }
 
@@ -85,11 +85,13 @@ public class GreenDBModule {
     MovieGreenTableManager movieTableManager(DaoSession daoSession) {
         return new MovieGreenTableManager(daoSession);
     }
+
     @DBScope
     @Provides
     WaterOrderTableManager waterOrderTableManager(DaoSession daoSession) {
         return new WaterOrderTableManager(daoSession);
     }
+
     @DBScope
     @Provides
     HbirdIncomeTypeManager hbirdIncomeTypeManager(DaoSession daoSession) {
@@ -101,6 +103,7 @@ public class GreenDBModule {
     HbirdSpendTypeManager hbirdSpendTypeManager(DaoSession daoSession) {
         return new HbirdSpendTypeManager(daoSession);
     }
+
     @DBScope
     @Provides
     HbirdUserCommUseIncomManager hbirdUserCommUseIncomManager(DaoSession daoSession) {
@@ -112,6 +115,7 @@ public class GreenDBModule {
     HbirdUserCommUseSpendManager hbirdUserCommUseSpendManager(DaoSession daoSession) {
         return new HbirdUserCommUseSpendManager(daoSession);
     }
+
     @DBScope
     @Provides
     HbirdUserCommTypePriorityManager hbirdUserCommTypePriorityManager(DaoSession daoSession) {

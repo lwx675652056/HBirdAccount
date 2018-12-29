@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -181,17 +180,6 @@
 
     </LinearLayout>
 
-   <!-- <Button
-        android:id="@+id/bt_save_add"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80"
-        android:layout_marginLeft="@dimen/width_13_80"
-        android:layout_marginRight="@dimen/width_13_80"
-        android:layout_marginTop="@dimen/height_3_80"
-        android:background="@drawable/btn_bg_add"
-        android:text="保存并继续添加"
-        android:textSize="@dimen/text_size_4"
-        android:textColor="@drawable/btn_bg_text"/>-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -199,7 +187,4 @@
         android:layout_gravity="bottom">
         <include layout="@layout/item_soft_keys"/>
     </LinearLayout>
-
-
-
 </LinearLayout>

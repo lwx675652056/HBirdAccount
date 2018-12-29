@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
-    android:background="@color/white"
-    android:layout_width="@dimen/width_70_80"
-    android:layout_height="200dp">
-
-
+              android:layout_width="@dimen/width_70_80"
+              android:layout_height="200dp"
+              android:background="@color/white"
+              android:orientation="vertical">
 
     <LinearLayout
         android:id="@+id/lay_picker"
@@ -13,28 +11,27 @@
         android:layout_height="150dp"
         android:layout_alignParentBottom="true"
         android:background="#fff"
-        android:gravity="center"
-        >
+        android:gravity="center">
 
         <com.hbird.base.mvc.widget.PickerView
             android:id="@+id/pv_year"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <com.hbird.base.mvc.widget.PickerView
             android:id="@+id/pv_month"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
             android:layout_marginLeft="@dimen/my_common_margin_small"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
 
         <com.hbird.base.mvc.widget.PickerView
             android:id="@+id/pv_day"
             android:layout_width="wrap_content"
             android:layout_height="150dp"
             android:layout_marginLeft="@dimen/my_common_margin_small"
-            android:layout_weight="1" />
+            android:layout_weight="1"/>
     </LinearLayout>
 
     <LinearLayout
@@ -43,23 +40,21 @@
         android:orientation="horizontal">
 
         <Button
-            android:background="@null"
             android:id="@+id/btn_cancel"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
             android:gravity="center"
-            android:text="取消" />
-
+            android:text="取消"/>
 
         <Button
-            android:background="@null"
             android:id="@+id/btn_ok"
             android:layout_width="0dp"
-            android:layout_weight="1"
             android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@null"
             android:gravity="center"
-            android:text="确定" />
-
+            android:text="确定"/>
     </LinearLayout>
 </LinearLayout>

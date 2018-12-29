@@ -1,6 +1,7 @@
 package com.hbird.base.mvc.bean.ReturnBean;
 
 import com.hbird.base.mvc.bean.BaseReturn;
+import com.hbird.bean.AssetsBean;
 
 import java.util.List;
 
@@ -39,9 +40,18 @@ public class ZiChanInfoReturn extends BaseReturn {
     }
 
     public static class ResultBean {
-        private double netAssets;
-        private long initDate;
+        private double netAssets;// 资产值
+        private long initDate;// 同步时间
         private List<AssetsBean> assets;
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "netAssets:" + netAssets +
+                    ", initDate:" + initDate +
+                    ", assets:" + assets +
+                    '}';
+        }
 
         public double getNetAssets() {
             return netAssets;
@@ -65,45 +75,6 @@ public class ZiChanInfoReturn extends BaseReturn {
 
         public void setAssets(List<AssetsBean> assets) {
             this.assets = assets;
-        }
-
-        public static class AssetsBean {
-            private long updateDate;
-            private long createDate;
-            private double money;
-            private int assetsType;
-
-            public long getUpdateDate() {
-                return updateDate;
-            }
-
-            public void setUpdateDate(long updateDate) {
-                this.updateDate = updateDate;
-            }
-
-            public long getCreateDate() {
-                return createDate;
-            }
-
-            public void setCreateDate(long createDate) {
-                this.createDate = createDate;
-            }
-
-            public double getMoney() {
-                return money;
-            }
-
-            public void setMoney(double money) {
-                this.money = money;
-            }
-
-            public int getAssetsType() {
-                return assetsType;
-            }
-
-            public void setAssetsType(int assetsType) {
-                this.assetsType = assetsType;
-            }
         }
     }
 }

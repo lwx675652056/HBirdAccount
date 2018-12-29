@@ -1,0 +1,56 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.hbird.ui.account.EditAccountData"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.account.ActEditAccount.OnClick"/>
+
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/header_white_toolbar"/>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:onClick="@{listener.editAndDelete}"
+            android:layout_height="wrap_content"
+            android:background="@drawable/select_white_0px"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@{bean.isEdit?@drawable/icon_edit:@drawable/icon_delete}"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_15_x"
+                android:text="@{bean.isEdit?@string/edit:@string/delete}"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

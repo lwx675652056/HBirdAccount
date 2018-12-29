@@ -88,6 +88,24 @@ public class PullSyncDateReturn extends BaseReturn {
             private String reporterAvatar;
             private String reporterNickName;
             private String abName;
+            private int assetsId;// 账户id
+            private String assetsName;// 账户名
+
+            public int getAssetsId() {
+                return assetsId;
+            }
+
+            public void setAssetsId(int assetsId) {
+                this.assetsId = assetsId;
+            }
+
+            public String getAssetsName() {
+                return assetsName;
+            }
+
+            public void setAssetsName(String assetsName) {
+                this.assetsName = assetsName;
+            }
 
             public String getIcon() {
                 return icon;

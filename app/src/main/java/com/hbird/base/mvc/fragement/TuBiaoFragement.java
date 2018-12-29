@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.annotation.Px;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -13,6 +14,7 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.baseActivity.BaseFragementPagerAdapter;
+import com.hbird.ui.assets.FraAssets;
 
 import java.util.ArrayList;
 
@@ -53,10 +55,11 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
     TextView mRightTit;
 
 
-    private ArrayList<BaseFragement> fragements = new ArrayList<>();
+    private ArrayList<Fragment> fragements = new ArrayList<>();
     private ChartFragement chartFragement;
     private FenXiFragement fenXiFragement;
-    private ZiChanFragement ziChanFragement;
+//    private ZiChanFragement ziChanFragement;
+    private FraAssets ziChanFragement;
     private BaseFragementPagerAdapter pagerAdapter;
     private int firstCome=0;
     private int mm = 0;
@@ -70,7 +73,7 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
     public void initView() {
         chartFragement = new ChartFragement();
         fenXiFragement = new FenXiFragement();
-        ziChanFragement = new ZiChanFragement();
+        ziChanFragement = new FraAssets();
 
         fragements.add(chartFragement);
         fragements.add(fenXiFragement);
@@ -141,11 +144,9 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
         }else if(fenXiFragement.getUserVisibleHint()){
             fenXiFragement.loadDataForNet();
         }
-        if(ziChanFragement.getUserVisibleHint()){
-            ziChanFragement.loadData();
-        }
-
-
+//        if(ziChanFragement.getUserVisibleHint()){
+//            ziChanFragement.loadData();
+//        }
     }
 
     private void setView(int i) {

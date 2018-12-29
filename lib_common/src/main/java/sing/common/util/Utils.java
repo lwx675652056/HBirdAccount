@@ -20,6 +20,7 @@ import java.io.File;
 public class Utils {
 
     private static Context context;
+
     private Utils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
     }
@@ -115,7 +116,7 @@ public class Utils {
         return obj;
     }
 
-    public static void installApk(Context context,String localPath){
+    public static void installApk(Context context, String localPath) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             File apkfile = new File(localPath);
             Intent intent = new Intent(Intent.ACTION_VIEW);

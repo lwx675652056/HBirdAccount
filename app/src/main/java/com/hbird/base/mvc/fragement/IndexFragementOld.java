@@ -90,7 +90,6 @@ import java.util.concurrent.Executors;
 import butterknife.BindView;
 import sing.util.AppUtil;
 import sing.util.LogUtil;
-import zhy.com.highlight.HighLight;
 
 import static com.hbird.base.R.id.waterwave_day;
 import static com.hbird.base.app.constant.CommonTag.FIRST_COME_1_2_0;
@@ -173,7 +172,6 @@ public class IndexFragementOld extends BaseFragement implements View.OnClickList
     //代表第一次进入页面
     private int ii = 0;
     private String token;
-    private HighLight mHightLight;
     private String mMonth;
     private int currentYY;
     private int currentMM;
@@ -1437,14 +1435,6 @@ public class IndexFragementOld extends BaseFragement implements View.OnClickList
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, data.getStringExtra("abTypeId"));
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, data.getStringExtra("typeBudget"));
         }
-    }
-
-    public void remove(View view) {
-        mHightLight.remove();
-    }
-
-    public void add(View view) {
-        mHightLight.show();
     }
 
     private void setIpbValue(final int progress,

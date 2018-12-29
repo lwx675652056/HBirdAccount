@@ -166,7 +166,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         popOnces = 0;//重新执行则将其置为0
 
-        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick((AccountDetailedBean) data,type));
+        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
         binding.recyclerView1.setAdapter(adapter);
         binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -253,7 +253,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         // 日历
         public void calendar(View view) {
             Intent intent = new Intent(getActivity(), ActCalendar.class);
-            intent.putExtra("account_id",accountId);
+            intent.putExtra("account_id", accountId);
             startActivity(intent);
         }
 
@@ -341,12 +341,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         super.onResume();
 //        ii = ii + 1;
 //        if (ii > 1) {
-            getIndexInfo();
-            if (popOnces >= 0) {
-                //继续弹窗
-                tanDialog(windowPop);
-            }
-            loadDataForNet();
+        getIndexInfo();
+        if (popOnces >= 0) {
+            //继续弹窗
+            tanDialog(windowPop);
+        }
+        loadDataForNet();
 //        }
     }
 
@@ -604,16 +604,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     String substring = ids.substring(0, ids.length() - 1);
                     sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
                             ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                            ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+                            ", remark, USER_PRIVATE_LABEL_ID,ASSETS_NAME, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
                             " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")" + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
                 }
             }
         } else {
             sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
                     ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
                     " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -656,7 +655,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                         if (a <= 3) {
                             list.add(temp);
                         }
-                        if (a==3){
+                        if (a == 3) {
                             break;
                         }
                     }

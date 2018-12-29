@@ -19,6 +19,7 @@ import com.hbird.base.databinding.ActCalendarBinding;
 import com.hbird.base.mvc.activity.MingXiInfoActivity;
 import com.hbird.base.mvc.bean.dayListBean;
 import com.hbird.base.mvc.bean.indexBaseListBean;
+import com.hbird.base.mvc.view.dialog.APDUserDateDialog;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
@@ -98,6 +99,15 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         public void today(View view) {
             refreshMonthPager(new CalendarDate());
         }
+
+        public void chooseDate(View view) {
+            new APDUserDateDialog(view.getContext()) {
+                @Override
+                protected void onBtnOkClick(String year, String month, String day) {
+                    refreshMonthPager(new CalendarDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
+                }
+            }.show();
+        }
     }
 
     @Override
@@ -123,7 +133,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         binding.recyclerView.setHasFixedSize(true);
         //这里用线性显示 类似于listview
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new CalendarAdapter(this, list, R.layout.row_calendar, (position, data, type) -> onItemClick((AccountDetailedBean) data,type));
+        adapter = new CalendarAdapter(this, list, R.layout.row_calendar, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
         binding.recyclerView.setAdapter(adapter);
 
         initCalendarView();
@@ -185,7 +195,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                 onSelectDateListener,
                 CalendarAttr.WeekArrayType.Monday,
                 customDayView);
-        calendarAdapter.setOnCalendarTypeChangedListener(type -> binding.recyclerView.scrollToPosition(0));
+//        calendarAdapter.setOnCalendarTypeChangedListener(type -> binding.recyclerView.scrollToPosition(0));
         initMonthPager();
     }
 
@@ -252,8 +262,8 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         String MonthFirstDay = null;
         String MonthLastDay = null;
         try {
-            MonthFirstDay = DateUtil.dateToStamp1(day.getYear()+"-"+day.getMonth()+"-"+day.getDay());
-            MonthLastDay = DateUtil.dateToStamp1(day.getYear()+"-"+day.getMonth()+"-"+(day.getDay()+1));
+            MonthFirstDay = DateUtil.dateToStamp1(day.getYear() + "-" + day.getMonth() + "-" + day.getDay());
+            MonthLastDay = DateUtil.dateToStamp1(day.getYear() + "-" + day.getMonth() + "-" + (day.getDay() + 1));
         } catch (ParseException e) {
             e.printStackTrace();
             ToastUtil.showShort("时间转化异常");
@@ -308,7 +318,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
             if (bean != null) {
                 ArrayList<indexBaseListBean> dates = getDBDates(bean);
                 if (dates != null && dates.size() > 0) {
-                   list.clear();
+                    list.clear();
                     for (int i = 0; i < dates.size(); i++) {
                         AccountDetailedBean temp = new AccountDetailedBean();
                         temp.setBean(dates.get(i));

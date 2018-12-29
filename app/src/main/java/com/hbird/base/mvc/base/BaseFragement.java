@@ -16,7 +16,6 @@ import com.hbird.base.util.VoiceUtils;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
 import sing.common.util.LogUtil;
-import zhy.com.highlight.util.L;
 
 /**
  * Created by Liul on 2018/6/28.
@@ -126,7 +125,6 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     }
 
     private void lazyLoad() {
-        L.e("isPrepared" + isPrepared + isVisible + isFirstLoad);
         if (!isPrepared || !isVisible || !isFirstLoad) {
             return;
         }

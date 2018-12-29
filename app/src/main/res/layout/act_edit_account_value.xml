@@ -1,0 +1,145 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.hbird.bean.AssetsBean"/>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.assets.AssetsData"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.assets.ActEditAccountValue.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/header_white_toolbar"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <ImageView
+                android:layout_width="@dimen/dp_40_x"
+                android:layout_height="@dimen/dp_40_x"
+                android:layout_marginTop="@dimen/dp_15_x"
+                app:imageUrl="@{bean.icon}"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5_x"
+                android:gravity="center">
+
+                <EditText
+                    android:id="@+id/et_assets_name"
+                    requestFocus="@{data.edit}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@{data.edit?@color/bg_468de1:@color/white}"
+                    android:clickable="@{data.edit}"
+                    android:enabled="@{data.edit}"
+                    android:focusable="@{data.edit}"
+                    android:imeOptions="actionDone"
+                    android:textCursorDrawable="@null"
+                    android:minHeight="0dp"
+                    android:singleLine="true"
+                    android:text="@{bean.assetsName}"
+                    android:textColor="@{data.edit?@color/white:@color/text_333333}"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:layout_width="@dimen/dp_30_x"
+                    android:layout_height="@dimen/dp_30_x"
+                    android:onClick="@{listener.edit}"
+                    android:padding="@dimen/dp_8_x"
+                    android:src="@mipmap/ic_editors"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_15_x"
+                android:layout_marginEnd="@dimen/dp_30_x"
+                android:layout_marginStart="@dimen/dp_30_x"
+                android:layout_marginTop="@dimen/dp_15_x"
+                android:background="@drawable/shape_white_line_8px"
+                android:gravity="center"
+                android:onClick="@{listener.clickMoney}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{listener.clickMoney}"
+                    android:text="@string/money"
+                    android:textColor="#333333"
+                    android:textSize="20sp"/>
+
+                <EditText
+                    android:id="@+id/et_money"
+                    requestFocus="@{!data.edit}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:clickable="@{!data.edit}"
+                    android:digits="0.123456789-"
+                    android:enabled="@{!data.edit}"
+                    android:focusable="@{!data.edit}"
+                    android:inputType="number"
+                    android:onClick="@{listener.clickMoney}"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@{String.valueOf(bean.money)}"
+                    android:textColor="#333333"
+                    android:textSize="20sp"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_50_x"
+            android:layout_marginStart="@dimen/dp_50_x"
+            android:layout_marginTop="@dimen/dp_40_x"
+            android:background="@drawable/select_main_button"
+            android:gravity="center"
+            android:onClick="@{listener.save}"
+            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:text="@string/save"
+            android:textColor="@color/white"
+            android:textSize="16sp"
+            android:visibility="@{bean.assetsType==11?View.VISIBLE:View.INVISIBLE}"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_50_x"
+            android:layout_marginStart="@dimen/dp_50_x"
+            android:layout_marginTop="@dimen/dp_15_x"
+            android:background="@{bean.assetsType==11?@drawable/select_blue_button:@drawable/select_main_button}"
+            android:gravity="center"
+            android:onClick="@{bean.assetsType==11?listener.look:listener.save}"
+            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_10_x"
+            android:text="@{bean.assetsType==11?@string/accumulation:@string/save}"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+    </LinearLayout>
+</layout>

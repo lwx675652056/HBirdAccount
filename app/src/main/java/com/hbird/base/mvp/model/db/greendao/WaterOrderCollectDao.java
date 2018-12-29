@@ -52,6 +52,8 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
         public final static Property ReporterAvatar = new Property(25, String.class, "reporterAvatar", false, "REPORTER_AVATAR");
         public final static Property ReporterNickName = new Property(26, String.class, "reporterNickName", false, "REPORTER_NICK_NAME");
         public final static Property AbName = new Property(27, String.class, "abName", false, "AB_NAME");
+        public final static Property AssetsId = new Property(28, Integer.class, "assetsId", false, "ASSETS_ID");
+        public final static Property AssetsName = new Property(29, String.class, "assetsName", false, "ASSETS_NAME");
     }
 
 
@@ -94,7 +96,9 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
                 "\"USER_PRIVATE_LABEL_ID\" INTEGER," + // 24: userPrivateLabelId
                 "\"REPORTER_AVATAR\" TEXT," + // 25: reporterAvatar
                 "\"REPORTER_NICK_NAME\" TEXT," + // 26: reporterNickName
-                "\"AB_NAME\" TEXT);"); // 27: abName
+                "\"AB_NAME\" TEXT," + // 27: abName
+                "\"ASSETS_ID\" INTEGER," + // 28: assetsId
+                "\"ASSETS_NAME\" TEXT);"); // 29: assetsName
     }
 
     /** Drops the underlying database table. */
@@ -246,6 +250,16 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
         if (abName != null) {
             stmt.bindString(28, abName);
         }
+ 
+        Integer assetsId = entity.getAssetsId();
+        if (assetsId != null) {
+            stmt.bindLong(29, assetsId);
+        }
+ 
+        String assetsName = entity.getAssetsName();
+        if (assetsName != null) {
+            stmt.bindString(30, assetsName);
+        }
     }
 
     @Override
@@ -391,6 +405,16 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
         if (abName != null) {
             stmt.bindString(28, abName);
         }
+ 
+        Integer assetsId = entity.getAssetsId();
+        if (assetsId != null) {
+            stmt.bindLong(29, assetsId);
+        }
+ 
+        String assetsName = entity.getAssetsName();
+        if (assetsName != null) {
+            stmt.bindString(30, assetsName);
+        }
     }
 
     @Override
@@ -428,7 +452,9 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
             cursor.isNull(offset + 24) ? null : cursor.getInt(offset + 24), // userPrivateLabelId
             cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25), // reporterAvatar
             cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26), // reporterNickName
-            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27) // abName
+            cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27), // abName
+            cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28), // assetsId
+            cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29) // assetsName
         );
         return entity;
     }
@@ -463,6 +489,8 @@ public class WaterOrderCollectDao extends AbstractDao<WaterOrderCollect, String>
         entity.setReporterAvatar(cursor.isNull(offset + 25) ? null : cursor.getString(offset + 25));
         entity.setReporterNickName(cursor.isNull(offset + 26) ? null : cursor.getString(offset + 26));
         entity.setAbName(cursor.isNull(offset + 27) ? null : cursor.getString(offset + 27));
+        entity.setAssetsId(cursor.isNull(offset + 28) ? null : cursor.getInt(offset + 28));
+        entity.setAssetsName(cursor.isNull(offset + 29) ? null : cursor.getString(offset + 29));
      }
     
     @Override

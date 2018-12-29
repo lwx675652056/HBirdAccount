@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
+import com.hbird.common.Constants;
 import com.sobot.chat.SobotApi;
 import com.sobot.chat.SobotUIConfig;
 import com.sobot.chat.api.enumtype.SobotChatTitleDisplayMode;
@@ -12,6 +13,8 @@ import com.sobot.chat.api.model.Information;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
+
+import sing.util.SharedPreferencesUtil;
 
 /**
  * Created by Liul on 2018/10/12.
@@ -34,7 +37,6 @@ public class SobotUtils {
         info.setAppkey("615a726d25e941309939e5ce3a6d3d89");
 
 
-
         //用户编号
         //注意：uid为用户唯一标识，不能传入一样的值
         String deviceId = com.hbird.util.Utils.getDeviceInfo(context);
@@ -54,14 +56,15 @@ public class SobotUtils {
         info.setFace(img);
         //用户QQ，选填
         info.setQq("");
+        String fengfengId = (String) SharedPreferencesUtil.get(Constants.FENGFENG_ID, "");// 丰丰ID
         //用户备注，选填
-        info.setRemark("");
+        info.setRemark("丰丰ID：" + fengfengId);
         //访问着陆页标题，选填
         info.setVisitTitle("");
         //访问着陆页链接地址，选填
         info.setVisitUrl("");
-        Map<String,String> customInfo = new HashMap<String, String>();
-        customInfo.put("your key", "your value");
+        Map<String, String> customInfo = new HashMap<>();
+        customInfo.put("fengfeng_id", fengfengId);
         //自定义用户资料
         info.setCustomInfo(customInfo);
 
@@ -79,7 +82,7 @@ public class SobotUtils {
          *              SobotChatTitleDisplayMode.ShowCompanyName:显示console设置的企业名称
          * @param content 如果需要显示固定文本，需要传入此参数，其他模式可以不传
          */
-        SobotApi.setChatTitleDisplayMode(context, SobotChatTitleDisplayMode.Default,"");
+        SobotApi.setChatTitleDisplayMode(context, SobotChatTitleDisplayMode.Default, "");
 
         //默认false：显示转人工按钮。true：智能转人工
         info.setArtificialIntelligence(false);
@@ -145,7 +148,7 @@ public class SobotUtils {
          * @param context 上下文对象
          * @param flag true 表示释放会话  false  表示不释放会话
          */
-        SobotApi.setEvaluationCompletedExit(context,false);
+        SobotApi.setEvaluationCompletedExit(context, false);
 
         //设置标题显示模式
         SobotApi.setChatTitleDisplayMode(context,

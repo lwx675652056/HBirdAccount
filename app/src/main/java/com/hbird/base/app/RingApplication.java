@@ -1,6 +1,5 @@
 package com.hbird.base.app;
 
-import android.app.Application;
 import android.content.Context;
 import android.os.StrictMode;
 
@@ -26,10 +25,10 @@ import com.umeng.socialize.PlatformConfig;
 import com.xiaomi.mipush.sdk.MiPushClient;
 
 import java.io.File;
-import java.io.IOException;
 
 import cn.jpush.android.api.JPushInterface;
 import retrofit2.Retrofit;
+import sing.common.base.BaseApplication;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
@@ -42,7 +41,7 @@ import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
  * description: 做全局初始化操作
  */
 
-public class RingApplication extends Application {
+public class RingApplication extends BaseApplication {
 
     private static Context context;
 

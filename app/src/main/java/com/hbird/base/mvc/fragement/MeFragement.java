@@ -46,6 +46,7 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SobotUtils;
 import com.hbird.base.util.Util;
 import com.hbird.base.util.Utils;
+import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.image.support.GlideApp;
 import com.ljy.devring.util.FileUtil;
@@ -68,6 +69,7 @@ import butterknife.BindView;
 import butterknife.OnClick;
 import sing.common.util.DownLoadUtil;
 import sing.common.util.LogUtil;
+import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
 import static java.lang.Integer.parseInt;
@@ -245,6 +247,7 @@ public class MeFragement extends BaseFragement implements View.OnClickListener {
                             mWanShan.setText("完善度" + precent * 100 + "%");
                         }
                         mID.setText(b1.getResult().getId() + "");
+                        SharedPreferencesUtil.put(Constants.FENGFENG_ID,String.valueOf(b1.getResult().getId()));// 保存峰峰id
                         //保存id 极光推送需要用到
                         //JPushInterface.setAlias(getActivity(),1,b1.getResult().getId()+"");
                         SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.FENG_NIAO_ID, b1.getResult().getId() + "");
@@ -340,7 +343,12 @@ public class MeFragement extends BaseFragement implements View.OnClickListener {
             case R.id.ll_kefu:
                 playVoice(R.raw.changgui02);
                 //showMessage("联系客服");
-                SobotUtils.startSobot(getActivity());
+                String fengfengId = (String) SharedPreferencesUtil.get(Constants.FENGFENG_ID,"");
+                if (TextUtils.isEmpty(fengfengId)){
+                    ToastUtil.showShort("丰丰ID为空");
+                }else{
+                    SobotUtils.startSobot(getActivity());
+                }
                 /*Intent intent3 = new Intent();
                 intent3.setClass(getActivity(), KeFuActivity.class);
                 startActivity(intent3);*/

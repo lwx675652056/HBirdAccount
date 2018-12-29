@@ -1,7 +1,6 @@
 package com.hbird.base.mvc.bean.RequestBean;
 
 import com.hbird.base.mvc.bean.BaseBean;
-import com.hbird.base.util.DateUtils;
 
 import java.util.Date;
 import java.util.List;
@@ -74,6 +73,25 @@ public class OffLineReq extends BaseBean {
         public String reporterNickName;
         //所属账本名称
         public String abName;
+        public Integer assetsId;// 账户id
+        public String assetsName;// 账户名
+
+
+        public Integer getAssetsId() {
+            return assetsId;
+        }
+
+        public void setAssetsId(Integer assetsId) {
+            this.assetsId = assetsId;
+        }
+
+        public String getAssetsName() {
+            return assetsName;
+        }
+
+        public void setAssetsName(String assetsName) {
+            this.assetsName = assetsName;
+        }
 
         public void setIsStaged(Integer isStaged) {
             this.isStaged = isStaged;

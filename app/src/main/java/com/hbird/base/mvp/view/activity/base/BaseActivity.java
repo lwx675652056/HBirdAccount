@@ -63,29 +63,29 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
-        initBarColor();
+        initBarColor(mBlack,mColor);
         initView(savedInstanceState);
         initData(savedInstanceState);
         initEvent();
     }
 
-    private void initBarColor() {
+    public void initBarColor(int navColor,int statusColor) {
         ViewGroup parent = findViewById(android.R.id.content);
         if (parent.getChildAt(0) instanceof DrawerLayout) {
             ColorBar.newDrawerBuilder()
                     .applyNav(true)
-                    .navColor(mBlack)
+                    .navColor(navColor)
                     .navDepth(0)
-                    .statusColor(mColor)
+                    .statusColor(statusColor)
                     .statusDepth(0)
                     .build(this)
                     .apply();
         } else {
             ColorBar.newColorBuilder()
                     .applyNav(true)
-                    .navColor(mBlack)
+                    .navColor(navColor)
                     .navDepth(0)
-                    .statusColor(mColor)
+                    .statusColor(statusColor)
                     .statusDepth(0)
                     .build(this)
                     .apply();

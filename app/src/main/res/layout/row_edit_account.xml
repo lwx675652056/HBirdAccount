@@ -1,0 +1,98 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="bean"
+            type="com.hbird.bean.AssetsBean"/>
+
+        <variable
+            name="position"
+            type="int"/>
+
+        <variable
+            name="isDelete"
+            type="boolean"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#F6F6F6"
+        android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_15_x"
+            android:visibility="@{position==0?View.VISIBLE:View.GONE}"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <CheckBox
+                android:checked="@={bean.check}"
+                style="@style/CustomCheckBoxTheme"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:visibility="@{isDelete?(bean.exist?View.VISIBLE:View.GONE):View.GONE}"/>
+
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/cl_parent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:background="@drawable/select_white_8px">
+
+                <ImageView
+                    android:id="@+id/iv_temp1"
+                    android:layout_width="@dimen/dp_40_x"
+                    android:layout_height="@dimen/dp_40_x"
+                    android:layout_margin="@dimen/dp_15_x"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                   />
+                <!--app:resId="@{bean.icon}"-->
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@mipmap/bjzh_icon_zhyx_normal"
+                    android:visibility="@{bean.exist?View.VISIBLE:View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_temp1"
+                    app:layout_constraintEnd_toEndOf="@+id/iv_temp1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:text="@{bean.assetsName}"
+                    android:textColor="#333333"
+                    android:textSize="16sp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_temp1"
+                    app:layout_constraintStart_toEndOf="@+id/iv_temp1"
+                    app:layout_constraintTop_toTopOf="@+id/iv_temp1"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:rotation="180"
+                    android:src="@mipmap/nav_back_normal"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"/>
+            </android.support.constraint.ConstraintLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_15_x"/>
+    </LinearLayout>
+</layout>

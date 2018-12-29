@@ -1,16 +1,9 @@
 package com.hbird.base.mvc.activity;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.BlurMaskFilter;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RadioButton;
@@ -33,11 +26,6 @@ import com.hbird.base.util.SuperSelectManager;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import zhy.com.highlight.HighLight;
-import zhy.com.highlight.interfaces.HighLightInterface;
-import zhy.com.highlight.position.OnBottomPosCallback;
-import zhy.com.highlight.shape.BaseLightShape;
-
 
 /**
  * Created by Liul on 2018/7/2.
@@ -67,7 +55,6 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
     private BasePagerAdapter pagerAdapter;
     private String tag;
     private Bundle bundle;
-    private HighLight mHightLight;
     private final int FIRST_LENGHT = 4000;
 
 
@@ -122,7 +109,6 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
         cv.post(new Runnable() {
             @Override
             public void run() {
-                //showNextKnownTipView();
                 final NewGuidePop pop = new NewGuidePop(ChooseAccountTypeActivity.this, mRadioGroup, "这里切换记账类型~", 1, new NewGuidePop.PopDismissListener() {
                     @Override
                     public void PopDismiss() {
@@ -203,75 +189,4 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
             SuperSelectComeManager.getInstance().setnum(2,"收入完成");
         }
     }
-
-    private void showNextKnownTipView() {
-        mHightLight = new HighLight(this)//
-                .autoRemove(false)//设置背景点击高亮布局自动移除为false 默认为true
-                .intercept(false)//设置拦截属性为false 高亮布局不影响后面布局的滑动效果
-                .intercept(true)//拦截属性默认为true 使下方callback生效
-                .enableNext()//开启next模式并通过show方法显示 然后通过调用next()方法切换到下一个提示布局,直到移除自身
-                .setClickCallback(new HighLight.OnClickCallback() {
-                    @Override
-                    public void onClick() {
-                        //showMessage("移除一个了");
-                        if(mHightLight.isShowing()&& mHightLight.isNext()){//如果开启next模式
-                            mHightLight.next();
-                        }else{
-                            remove(null);
-                        }
-                    }
-                })
-                .anchor(findViewById(R.id.ll_contents))//如果是Activity上增加引导层,不需要设置anchor,container为根布局id,
-                //默认长方形框选
-                //.addHighLight(R.id.radioGroups,R.layout.info_down,new OnBottomPosCallback(25),new RectLightShape())
-                .addHighLight(R.id.radioGroups,R.layout.info_down2,new OnBottomPosCallback(40),new BaseLightShape(-10,-30) {
-                    @Override
-                    protected void resetRectF4Shape(RectF viewPosInfoRectF, float dx, float dy) {
-                        //缩小高亮控件范围, 自定义图形框选.
-                        viewPosInfoRectF.inset(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
-                                dx,getResources().getDisplayMetrics()),
-                                TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,dy,getResources().getDisplayMetrics()));
-                    }
-
-                    @Override
-                    protected void drawShape(Bitmap bitmap, HighLight.ViewPosInfo viewPosInfo) {
-                        //自定义高亮形状
-                        Bitmap b = BitmapFactory.decodeResource(getResources(), R.drawable.ic_guide_kuang2, null);
-                        Canvas canvas = new Canvas(bitmap);
-                        Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
-                        paint.setDither(true);
-                        paint.setAntiAlias(true);
-                        paint.setMaskFilter(new BlurMaskFilter(15, BlurMaskFilter.Blur.SOLID));
-                        RectF rectF = viewPosInfo.rectF;
-                        //canvas.drawOval(rectF, paint);
-                        canvas.drawBitmap(b,null,rectF, paint);
-
-                    }
-                })
-                //圆形框选
-                //.addHighLight(R.id.bt_btn3,R.layout.info_up,new OnTopPosCallback(),new CircleLightShape())
-                .setOnRemoveCallback(new HighLightInterface.OnRemoveCallback() {
-                    //监听移除回调 intercept为true时生效,按钮三是在按钮顶部,圆形高亮
-                    @Override
-                    public void onRemove() {
-                        //showMessage("全部ok");
-                        SPUtil.setPrefBoolean(ChooseAccountTypeActivity.this, CommonTag.APP_FIRST_ZHIYIN_ACCOUNT,false);
-                    }
-                })
-                .setOnShowCallback(new HighLightInterface.OnShowCallback() {//监听显示回调 intercept为true时生效
-                    @Override
-                    public void onShow() {
-                        //showMessage("我出来了");
-                    }
-                });
-        mHightLight.show();
-    }
-    public void remove(View view) {
-        mHightLight.remove();
-    }
-
-    public void add(View view) {
-        mHightLight.show();
-    }
-
 }

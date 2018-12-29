@@ -69,6 +69,11 @@
     <string name="hide_money">****</string>
     <string name="year_month_format">%1$s月 - %2$s年</string>
     <string name="no_money1">0.00</string>
+    <string name="edit">编辑</string>
+    <string name="delete">删除</string>
+    <string name="synchronized_time">个人余额同步时间:</string>
+    <string name="save">保存</string>
+    <string name="accumulation">查看公积金数据</string>
 
 
 </resources>

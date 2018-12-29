@@ -1,6 +1,5 @@
 package com.hbird.base.mvc.activity;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -12,7 +11,6 @@ import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
@@ -21,8 +19,6 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 
 import butterknife.BindView;
-
-import static com.umeng.socialize.utils.DeviceConfig.context;
 
 /**
  * Created by Liul on 2018/10/11.
