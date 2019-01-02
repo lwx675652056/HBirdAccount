@@ -1,0 +1,262 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.assets.AssetsDetailData"/>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.assets.ActAssetsDetail.OnClick"/>
+    </data>
+
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#F6F6F6"
+            android:orientation="vertical">
+
+            <include
+                android:id="@+id/toolbar"
+                layout="@layout/header_title_layout"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/colorPrimary"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingTop="@dimen/dp_10_x">
+
+                <android.support.constraint.ConstraintLayout
+                    android:id="@+id/choose_data"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{listener.chooseDate}"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingEnd="@dimen/space_15"
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_10_x">
+
+                    <TextView
+                        android:id="@+id/tv_year"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{String.valueOf(data.yyyy)+@string/year}"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_month"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:text="@{String.valueOf(data.mm)}"
+                        android:textColor="@color/white"
+                        android:textSize="20sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_year"
+                        app:layout_constraintTop_toBottomOf="@id/tv_year"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_5_x"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:drawableEnd="@mipmap/ic_down"
+                        android:drawablePadding="@dimen/dp_5_x"
+                        android:singleLine="true"
+                        android:text="月"
+                        android:textColor="@color/white"
+                        android:textSize="16sp"
+                        app:layout_constraintStart_toEndOf="@id/tv_month"
+                        app:layout_constraintTop_toTopOf="@id/tv_month"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <View
+                    android:layout_width="0.5dp"
+                    android:layout_height="@dimen/dp_40_x"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:background="@color/white"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{@string/income1+String.valueOf(data.inComeMoney)}"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <View
+                        android:id="@+id/v_income"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_4_x"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:background="@drawable/shape_ffffd666"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:text="@{@string/spend1+String.valueOf(data.spendingMoney)}"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/v_spend"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_4_x"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:background="@drawable/shape_ff52c41a"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:fillViewport="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:background="@drawable/shape_white_8px"
+                        android:orientation="vertical"
+                        android:paddingBottom="@dimen/dp_15_x"
+                        android:paddingEnd="0dp"
+                        android:paddingStart="@dimen/dp_15_x"
+                        android:paddingTop="@dimen/dp_15_x">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center_vertical"
+                            android:paddingEnd="@dimen/dp_15_x">
+
+                            <ImageView
+                                imageUrl="@{data.icon}"
+                                android:layout_width="@dimen/dp_40_x"
+                                android:layout_height="@dimen/dp_40_x"
+                                android:background="@mipmap/jzzhxz_icon_bxzh_normal"/>
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:layout_weight="1"
+                                android:singleLine="true"
+                                android:text="@{data.assetsName}"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="*基于个人记账数据统计"
+                                android:textColor="#BDBDBD"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_15_x"
+                            android:text="账户余额（元）"
+                            android:textColor="#808080"
+                            android:textSize="12sp"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:gravity="center_vertical">
+
+                            <TextView
+                                android:layout_width="0dp"
+                                android:layout_height="wrap_content"
+                                android:layout_weight="1"
+                                android:singleLine="true"
+                                android:text="@{String.valueOf(data.money)}"
+                                android:textColor="#333333"
+                                android:textSize="36sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:drawablePadding="@dimen/dp_5_x"
+                                android:drawableStart="@drawable/icon_edit"
+                                android:onClick="@{listener.edit}"
+                                android:padding="@dimen/space_15"
+                                android:text="编辑"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:descendantFocusability="blocksDescendants">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:overScrollMode="never"
+                            android:paddingEnd="@dimen/dp_15_x"
+                            android:paddingStart="@dimen/dp_15_x"
+                            android:scrollbars="none"/>
+
+                        <ImageView
+                            android:id="@+id/iv_no_data"
+                            android:layout_width="@dimen/dp_150_x"
+                            android:layout_height="@dimen/dp_150_x"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:layout_marginBottom="45dp"
+                            android:src="@mipmap/ic_normal_data"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/dp_60_x"
+            android:layout_height="@dimen/dp_60_x"
+            android:layout_gravity="end|bottom"
+            android:layout_margin="@dimen/dp_15_x"
+            android:background="@drawable/select_bookkeeping"
+            android:onClick="@{listener.add}"/>
+    </FrameLayout>
+</layout>

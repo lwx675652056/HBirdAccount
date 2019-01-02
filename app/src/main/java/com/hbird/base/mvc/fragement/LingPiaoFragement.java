@@ -198,6 +198,8 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
                 intent3.putExtra("YEAR", yyyy + "");
                 String money = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYMONEY, "");
                 intent3.putExtra("MONEY", money);
+                String accountBookId = SPUtil.getPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+                intent3.putExtra("accountBookId", accountBookId);
                 startActivity(intent3);
             }
         });

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/height_5_80"
     android:background="@color/colorPrimary">
@@ -9,24 +9,23 @@
         android:id="@+id/id_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="@dimen/width_2_80"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="10dp"
+        android:padding="@dimen/width_2_80"
         android:scaleType="fitXY"
-        android:src="@mipmap/ic_white_back" />
+        android:src="@mipmap/ic_white_back"/>
 
     <TextView
-        android:gravity="center"
         android:id="@+id/id_title"
         style="@style/title_text"
-        android:layout_toRightOf="@+id/id_back"
-        android:layout_marginRight="40dp"
-        android:singleLine="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        />
+        android:layout_marginRight="40dp"
+        android:layout_toRightOf="@+id/id_back"
+        android:gravity="center"
+        android:singleLine="true"/>
 
     <ImageView
         android:id="@+id/id_img_right"
@@ -34,21 +33,19 @@
         android:layout_height="30dp"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:layout_marginRight="10dp"
-         />
+        android:layout_marginRight="10dp"/>
 
     <TextView
-        android:clickable="true"
         android:id="@+id/id_text_right"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
+        android:layout_marginRight="20dp"
+        android:clickable="true"
         android:textColor="@color/white"
         android:textSize="@dimen/text_size_6"
-        android:layout_marginRight="20dp"
-        android:visibility="gone" />
-
+        android:visibility="gone"/>
 </RelativeLayout>
 
 

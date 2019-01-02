@@ -81,6 +81,11 @@
             android:name="com.hbird.ui.assets.ActEditAccountValue"
             android:screenOrientation="portrait"/>
 
+        <!--资产详情-->
+        <activity
+            android:name="com.hbird.ui.assets.ActAssetsDetail"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 

@@ -3,11 +3,9 @@ package com.hbird.ui.assets;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.Rect;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.TextView;
 
 import com.hbird.base.R;
@@ -136,6 +134,10 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
         try {
             money = Double.parseDouble(moneyS);
         } catch (Exception e) {
+            ToastUtil.showShort("请输入正确的金额");
+            return;
+        }
+        if (money == 0){
             ToastUtil.showShort("请输入正确的金额");
             return;
         }

@@ -64,6 +64,7 @@ import com.ljy.devring.util.NetworkUtil;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
@@ -702,12 +703,14 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             icon = commonList2Bean.getIcon();
         }
         w.setIcon(icon);
-        String id = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
-        if (!TextUtils.isEmpty(id)) {
-            w.setAssetsId(Integer.parseInt(id));
-            String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
-            w.setAssetsName(accountName);
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
+        if (id == -1) {
+            w.setAssetsId(-1);
+        } else {
+            w.setAssetsId(id);
         }
+        String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
+        w.setAssetsName(accountName);
         b = mManger.insertOne(w);
         pullToSyncDate(resultCode);
     }
@@ -964,60 +967,30 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     }
 
     private void getMyAccount() {
-        NetWorkManager.getInstance().setContext(ChargeToAccount.this)
-                .getZiChanInfo(token, 1, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b2) {
-                        ZiChanInfoReturn bean = (ZiChanInfoReturn) b2;
-                        if (bean != null && bean.getResult().getAssets() != null && bean.getResult().getAssets().size() > 0) {
-                            List<AssetsBean> temp = bean.getResult().getAssets();
-                            if (temp != null && temp.size() > 0) {
-                                for (int i = 0; i < temp.size(); i++) {
-//                                    AssetsBean temp1 = temp.get(i);
-//                                    AssetsBean temp2 = getBean(temp.get(i).getAssetsType());
-//                                    temp1.setIcon(temp2.getIcon());
-//                                    temp1.setDesc(temp2.getDesc());
-                                }
-                            }
-                            String str = JSON.toJSONString(temp);
-                            SharedPreferencesUtil.put(Constants.MY_ACCOUNT, str);
+        NetWorkManager.getInstance().setContext(ChargeToAccount.this).getZiChanInfo(token, 1, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b2) {
+                ZiChanInfoReturn bean = (ZiChanInfoReturn) b2;
+                if (bean != null && bean.getResult().getAssets() != null && bean.getResult().getAssets().size() > 0) {
+                    List<AssetsBean> temp = bean.getResult().getAssets();
+                    // mark 为1时是默认账户里的
+                    Iterator<AssetsBean> iter = temp.iterator();
+                    while (iter.hasNext()) {  //执行过程中会执行数据锁定，性能稍差，若在循环过程中要去掉某个元素只能调用iter.remove()方法。
+                        AssetsBean a = iter.next();
+                        if (a.mark != 1) {
+                            iter.remove();
                         }
                     }
+                    String str = JSON.toJSONString(temp);
+                    // 保存默认账户
+                    SharedPreferencesUtil.put(Constants.MY_ACCOUNT, str);
+                }
+            }
 
-                    @Override
-                    public void onError(String s) {
-                    }
-                });
-    }
-
-    private AssetsBean getBean(int assetsType) {
-//        switch (assetsType) {
-//            case 1:
-//                return new AssetsBean(1, 1, "现金", R.mipmap.icon_zcxianjin_normal, false);
-//            case 2:
-//                return new AssetsBean(2, 2, "支付宝", R.mipmap.icon_zczhifubao_normal, false);
-//            case 3:
-//                return new AssetsBean(3, 3, "微信", R.mipmap.icon_zcweixin_normal, false);
-//            case 4:
-//                return new AssetsBean(5, 4, "理财", R.mipmap.icon_zclicai_normal, false);
-//            case 5:
-//                return new AssetsBean(6, 5, "社保", R.mipmap.icon_zcshebao_normal, false);
-//            case 6:
-//                return new AssetsBean(8, 6, "借记/储蓄卡", R.mipmap.icon_zcyinhangka_normal, false);
-//            case 7:
-//                return new AssetsBean(9, 7, "公交/校园/等充值卡", R.mipmap.icon_zcgongjiaoka_normal, false);
-//            case 8:
-//                return new AssetsBean(10, 8, "出借待收", R.mipmap.icon_zcjiekuan_normal, false);
-//            case 9:
-//                return new AssetsBean(11, 9, "负债待还", R.mipmap.icon_zcqiankuan_normal, false);
-//            case 10:
-//                return new AssetsBean(12, 10, "其他账户", R.mipmap.icon_zcqita_normal, false);
-//            case 11:
-//                return new AssetsBean(7, 11, "公积金", R.mipmap.icon_zcgjj_normal, false);
-//            case 12:
-//                return new AssetsBean(4, 12, "信用卡", R.mipmap.icon_zcxyk_normal, false);
-//        }
-        return null;
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     // 选择账户
@@ -1029,14 +1002,13 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 Intent intent = new Intent(ChargeToAccount.this, ActEditAccount.class);
                 startActivityForResult(intent, 1000);
             } else if (type == 1) {
-                if (data == null) {
-                    // 不选择账户
-                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, "");
+                if (data == null) {     // 不选择账户
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
                     SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
-                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
                 } else {
                     AssetsBean bean = (AssetsBean) data;
-                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, String.valueOf(bean.assetsType));
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, bean.assetsType);
                     SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, bean.assetsName);
                     SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, bean.icon);
                 }
@@ -1050,9 +1022,12 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     // 设置界面上账户的值
     private void setAccount() {
         String account = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
-        int icon = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
-
-        Glide.with(ivIcon.getContext()).load(icon).into(ivIcon);
+        if ("未选择".equals(account)) {
+            Glide.with(ivIcon.getContext()).load(R.mipmap.jzzhxz_icon_bxzh_normal).into(ivIcon);
+        } else {
+            String icon = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ICON, "");
+            Glide.with(ivIcon.getContext()).load(icon).into(ivIcon);
+        }
         tvAccount.setText(account);
     }
 
@@ -1061,26 +1036,29 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             chooseAccount();
-
-            // 判断最后一次选择的账户是否被删除，如果被删除，置为未选择
-            String str = (String) SharedPreferencesUtil.get(Constants.MY_ACCOUNT, "");
-            List<AssetsBean> temp = JSON.parseArray(str, AssetsBean.class);
-            if (!isExist(temp)) {
-                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, "");
+            // 要更新UI，判断已选的账户是否被删除
+            if (!isExist()) {
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
                 SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
-                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
                 setAccount();
             }
         }
     }
 
-    private boolean isExist(List<AssetsBean> temp) {
-        String id = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
+    private boolean isExist() {
+        String str = (String) SharedPreferencesUtil.get(Constants.MY_ACCOUNT, "");
+        List<AssetsBean> temp = JSON.parseArray(str, AssetsBean.class);
+        if (temp == null || temp.size() < 1) {
+            return false;// 已删除，不存在
+        }
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
         for (int i = 0; i < temp.size(); i++) {
-//            if (id.equals(temp.get(i).getAssetsType())) {
-//                return true;
-//            }
+            if (id == temp.get(i).assetsType) {
+                return true;// 没有删，还存在
+            }
         }
         return false;
     }
+
 }

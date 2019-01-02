@@ -14,26 +14,15 @@ public class AssetsBean implements Serializable {
     public long updateDate;
     public long createDate;
     public String assetsName;// 账户名
-    public int mark;
+    public int mark;// 是否在默认账户  1为是
     public double money;
     public int assetsType;// 账户id
     public String priority;
 
-    public boolean exist;// 本地排序
-    public boolean isSetting = false;// 是否已设置过值
     public boolean check = false;// 删除的时候是否选择
 
     public AssetsBean() {
     }
-
-//    public AssetsBean(int order, int assetsType, String desc, int icon, boolean exist) {
-//        this.order = order;
-//        this.assetsType = assetsType;
-//        this.desc = desc;
-//        this.icon = icon;
-//        this.exist = exist;
-//    }
-
 
     @Override
     public String toString() {

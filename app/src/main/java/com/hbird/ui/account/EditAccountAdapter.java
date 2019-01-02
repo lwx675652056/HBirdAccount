@@ -2,13 +2,17 @@ package com.hbird.ui.account;
 
 import android.content.Context;
 
+import com.alibaba.fastjson.JSON;
 import com.hbird.base.databinding.RowEditAccountBinding;
 import com.hbird.base.listener.OnItemClickListener;
 import com.hbird.bean.AssetsBean;
+import com.hbird.common.Constants;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sing.common.base.BaseRecyclerAdapter;
+import sing.util.SharedPreferencesUtil;
 
 /**
  * @author: LiangYX
@@ -20,10 +24,21 @@ public class EditAccountAdapter extends BaseRecyclerAdapter<AssetsBean, RowEditA
 
     private OnItemClickListener listener;
     private boolean isDelete;// 是否为删除状态
+    private List<Integer> str;// 已添加的
 
     public EditAccountAdapter(Context context, List<AssetsBean> list, int layoutId, OnItemClickListener listener) {
         super(context, list, layoutId);
         this.listener = listener;
+
+        String temp2 = (String) SharedPreferencesUtil.get(Constants.MY_ACCOUNT, "");
+        List<AssetsBean> temp = JSON.parseArray(temp2, AssetsBean.class);// 缓存的已添加的账户
+
+        str = new ArrayList<>();
+        if (temp != null && temp.size() > 0) {
+            for (AssetsBean s : temp) {
+                str.add(s.assetsType);
+            }
+        }
     }
 
     public void setData(boolean isDelete) {
@@ -36,6 +51,6 @@ public class EditAccountAdapter extends BaseRecyclerAdapter<AssetsBean, RowEditA
         binding.setBean(data);
         binding.setPosition(position);
         binding.setIsDelete(isDelete);
-        binding.clParent.setOnClickListener(v -> listener.onClick(position,data,0));
+        binding.clParent.setOnClickListener(v -> listener.onClick(position, data, 0));
     }
 }

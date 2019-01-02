@@ -15,6 +15,15 @@ public class ZiChanInfoReturn extends BaseReturn {
     private String msg;
     private ResultBean result;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "code:'" + code + '\'' +
+                ", msg:'" + msg + '\'' +
+                ", result:" + result +
+                '}';
+    }
+
     public String getCode() {
         return code;
     }

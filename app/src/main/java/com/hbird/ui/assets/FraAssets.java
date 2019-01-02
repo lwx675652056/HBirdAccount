@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.alibaba.fastjson.JSON;
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.databinding.FraAssetsBinding;
@@ -76,12 +77,17 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
     // item点击
     private void onItemClick(AssetsBean data) {
         Utils.playVoice(getActivity(), R.raw.changgui02);
-
-        Intent intent = new Intent(getActivity(), ActEditAccountValue.class);
-        Bundle b = new Bundle();
-        b.putSerializable(Constants.START_INTENT_A, data);
-        intent.putExtras(b);
-        startActivityForResult(intent, 1000);
+        if (data.money<0||data.money>0){ // 资产详情页
+            Intent intent = new Intent(getActivity(), ActAssetsDetail.class);
+            intent.putExtra(Constants.START_INTENT_A, data);
+            startActivity(intent);
+        }else{ // 没有设置过值
+            Intent intent = new Intent(getActivity(), ActEditAccountValue.class);
+            Bundle b = new Bundle();
+            b.putSerializable(Constants.START_INTENT_A, data);
+            intent.putExtras(b);
+            startActivityForResult(intent, 1000);
+        }
     }
 
     @Override
@@ -90,7 +96,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
         if (requestCode == 1000 && resultCode == Activity.RESULT_OK && data != null) {
             AssetsBean bean = (AssetsBean) data.getExtras().getSerializable(Constants.START_INTENT_A);
             for (int i = 0, size = list.size(); i < size; i++) {
-                if (list.get(i).assetsType == bean.assetsType){
+                if (list.get(i).assetsType == bean.assetsType) {
                     list.get(i).assetsName = bean.assetsName;
                     list.get(i).money = bean.money;
                 }
@@ -139,6 +145,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
         if (isVisibleToUser) {
             LogUtil.e("setUserVisibleHint()");
             getNetWorkInfo();
+            setValue();
         }
     }
 
@@ -147,18 +154,9 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
             @Override
             public void onSuccess(BaseReturn b) {
                 ZiChanInfoReturn b1 = (ZiChanInfoReturn) b;
-
-                list.clear();
-                list.addAll(b1.getResult().getAssets());
-                adapter.notifyDataSetChanged();
                 // 保存的
-                SharedPreferencesUtil.put(Constants.CHOOSE_ASSETS, b1.getResult().toString());
-
-                long initDate = b1.getResult().getInitDate();
-                double netAssets = b1.getResult().getNetAssets();
-
-                data.setValue(String.valueOf(netAssets));
-                data.setTime(DateUtils.getYearMonthDay(initDate));
+                SharedPreferencesUtil.put(Constants.CHOOSE_ASSETS, b1.toString());
+                setValue();
             }
 
             @Override
@@ -166,6 +164,25 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
                 ToastUtil.showShort(s);
             }
         });
+    }
+
+    // 设置值
+    private void setValue() {
+        // 保存的
+        String str = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ASSETS, "");
+        ZiChanInfoReturn temp = JSON.parseObject(str, ZiChanInfoReturn.class);
+
+        if (temp != null && temp.getResult() != null) {
+            double netAssets = temp.getResult().getNetAssets();
+            data.setValue(String.valueOf(netAssets));
+
+            long initDate = temp.getResult().getInitDate();
+            data.setTime(DateUtils.getYearMonthDay(initDate));
+
+            list.clear();
+            list.addAll(temp.getResult().getAssets());
+            adapter.notifyDataSetChanged();
+        }
     }
 
     private void setNetWork2Time(long date, String time) {

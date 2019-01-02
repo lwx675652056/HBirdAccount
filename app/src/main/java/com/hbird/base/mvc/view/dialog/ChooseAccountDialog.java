@@ -4,7 +4,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -63,10 +62,10 @@ public class ChooseAccountDialog extends BaseDialog {
         ll.setLayoutParams(params);
 
         // 判断最后一次选择的账户是否被删除，如果被删除，置为未选择
-        if (!isExist(temp)){
-            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, "");
+        if (!isExist(temp)) {
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
             SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
-            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, R.mipmap.jzzhxz_icon_bxzh_normal);
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
         }
 
         List<AssetsBean> list = new ArrayList<>();
@@ -81,34 +80,34 @@ public class ChooseAccountDialog extends BaseDialog {
     }
 
     private boolean isExist(List<AssetsBean> temp) {
-        String id = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
         for (int i = 0; i < temp.size(); i++) {
-//            if (id.equals(temp.get(i).getAssetsType())){
-//                return true;
-//            }
+            if (id == temp.get(i).assetsType) {
+                return true;
+            }
         }
         return false;
     }
 
     class MyAdapter extends BaseAdapter<AssetsBean> {
 
-        private String accountId;
+        private int accountId;
 
         public MyAdapter(Context context, List<AssetsBean> list, int layoutId) {
             super(context, list, layoutId);
-            accountId = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, "");
+            accountId = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
         }
 
         @Override
         protected void bindData(BaseViewHolder holder, AssetsBean data, int position) {
             if (position == 0) {
-                holder.getView(R.id.iv_checked).setVisibility(TextUtils.isEmpty(accountId) ? View.VISIBLE : View.GONE);
+                holder.getView(R.id.iv_checked).setVisibility(accountId == -1 ? View.VISIBLE : View.GONE);
 
                 holder.setText(R.id.tv_title, "不选择账户")
                         .setImageResource(R.id.iv_bg, R.mipmap.jzzhxz_icon_bxzh_normal)
                         .setOnItemClickListener(v -> listener.onClick(data, 1));
             } else {
-                holder.getView(R.id.iv_checked).setVisibility(String.valueOf(data.assetsType).equals(accountId) ? View.VISIBLE : View.GONE);
+                holder.getView(R.id.iv_checked).setVisibility(data.assetsType == accountId ? View.VISIBLE : View.GONE);
 
                 holder.setText(R.id.tv_title, data.assetsName)
                         .setImageByUrl(R.id.iv_bg, new BaseViewHolder.HolderImageLoader(data.icon) {

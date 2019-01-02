@@ -34,13 +34,13 @@
             android:layout_height="wrap_content">
 
             <CheckBox
-                android:checked="@={bean.check}"
                 style="@style/CustomCheckBoxTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
                 android:layout_marginStart="@dimen/dp_15_x"
-                android:visibility="@{isDelete?(bean.exist?View.VISIBLE:View.GONE):View.GONE}"/>
+                android:checked="@={bean.check}"
+                android:visibility="@{isDelete?(bean.mark==1?View.VISIBLE:View.GONE):View.GONE}"/>
 
             <android.support.constraint.ConstraintLayout
                 android:id="@+id/cl_parent"
@@ -52,19 +52,19 @@
 
                 <ImageView
                     android:id="@+id/iv_temp1"
+                    imageUrl="@{bean.icon}"
                     android:layout_width="@dimen/dp_40_x"
                     android:layout_height="@dimen/dp_40_x"
                     android:layout_margin="@dimen/dp_15_x"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                   />
-                <!--app:resId="@{bean.icon}"-->
+                    app:layout_constraintTop_toTopOf="parent"/>
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:src="@mipmap/bjzh_icon_zhyx_normal"
-                    android:visibility="@{bean.exist?View.VISIBLE:View.GONE}"
+                    android:visibility="@{bean.mark==1?View.VISIBLE:View.GONE}"
                     app:layout_constraintBottom_toBottomOf="@+id/iv_temp1"
                     app:layout_constraintEnd_toEndOf="@+id/iv_temp1"/>
 
