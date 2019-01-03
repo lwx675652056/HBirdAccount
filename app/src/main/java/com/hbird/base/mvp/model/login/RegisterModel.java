@@ -12,8 +12,7 @@ import okhttp3.RequestBody;
 public class RegisterModel implements IRegisterModel {
 
     @Override
-    public Observable register(String mobile, String password, String verifycode
-            ,String mobileSystem,String mobileSystemVersion,String mobileDevice,String channelName,String mobileType) {
+    public Observable register(String mobile, String password, String verifycode,String mobileSystem,String mobileSystemVersion,String mobileDevice,String channelName,String mobileType) {
         String jsonInfo = "{\"mobile\":\"" + mobile + "\", \"password\":\"" + password + "\", \"verifycode\":\"" + verifycode + "\"" +
                 ", \"mobileSystem\":\"" + mobileSystem + "\", \"mobileSystemVersion\":\"" + mobileSystemVersion + "\"," +
                 " \"mobileDevice\":\"" + mobileDevice + "\", \"androidChannel\":\"" + channelName + "\" , \"mobileManufacturer\":\"" + mobileType + "\"}";

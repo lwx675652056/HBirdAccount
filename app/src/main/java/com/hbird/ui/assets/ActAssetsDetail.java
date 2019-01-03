@@ -60,6 +60,7 @@ import java.util.Set;
 
 import sing.common.base.BaseActivity;
 import sing.common.base.BaseViewModel;
+import sing.util.ScreenUtil;
 import sing.util.ToastUtil;
 
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
@@ -85,7 +86,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
     private List<AccountDetailedBean> list = new ArrayList<>();
 
     private CalendarDate currentDate;// 已选日期
-    private int width_50;
+    private int width_15;
+    private int maxWidth = -1;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -101,7 +103,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
     public void initData() {
         accountId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
         currentDate = new CalendarDate();
-        width_50 = getResources().getDimensionPixelSize(R.dimen.dp_50_x);
+        width_15 = getResources().getDimensionPixelSize(R.dimen.dp_15_x);
+        maxWidth = ScreenUtil.getScreenWidth(this) - width_15 * 6 - width_15 * 3 - width_15 / 15;
 
         findViewById(R.id.id_back).setOnClickListener(v -> finish());
         ((TextView) findViewById(R.id.id_title)).setText("资产详情");
@@ -231,23 +234,28 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                     data.setInComeMoney(monthIncomes);
                     data.setSpendingMoney(monthSpends);
                     // 设置流入、流出长度
-//                    android:id="@+id/v_income"
-//                    android:id="@+id/v_spend"
-
                     if (monthIncome > monthSpend) {// 收入大于支出
                         if (monthSpend == 0) { //
-
+                            setLength(width_15, monthIncome == 0 ? width_15 : maxWidth);
                         } else {
                             double scale = monthIncome / monthSpend;
                             if (scale > 10) {
-                                LinearLayout.LayoutParams params1 = binding.vIncome.getLayoutParams();
-                                LinearLayout.LayoutParams params2 = binding.vSspend.getLayoutParams();
+                                setLength(width_15,  maxWidth);
                             } else {
-
+                                setLength(width_15*2, (int) (width_15*2 * scale));
                             }
                         }
-                    } else {
-
+                    } else { // 支出大于等于收入
+                        if (monthIncome == 0) { //
+                            setLength(monthSpend == 0 ? width_15 : maxWidth, width_15);
+                        } else {
+                            double scale = monthSpend / monthIncome;
+                            if (scale > 10) {
+                                setLength(maxWidth, width_15);
+                            } else {
+                                setLength((int) (width_15 * 2 * scale), width_15 * 2);
+                            }
+                        }
                     }
 
                     list.clear();
@@ -272,6 +280,11 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             binding.ivNoData.setVisibility(View.VISIBLE);
             list.clear();
             adapter.notifyDataSetChanged();
+
+            data.setInComeMoney("0.00");
+            data.setSpendingMoney("0.00");
+
+            setLength(width_15, width_15);
         }
     }
 
@@ -281,6 +294,15 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         return NF.format(d);
     }
 
+    // 设置流入流出的进度条
+    private void setLength(int spendWidth, int incomeWidth) {
+        LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams) binding.vSpend.getLayoutParams();
+        params1.width = spendWidth;
+        binding.vSpend.setLayoutParams(params1);
+        LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams) binding.vIncome.getLayoutParams();
+        params2.width = incomeWidth;
+        binding.vIncome.setLayoutParams(params2);
+    }
 
     private Map<String, Object> getDBDate(List<WaterOrderCollect> list) {
         //获取到当月所有记录
