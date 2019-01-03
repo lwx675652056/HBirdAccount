@@ -473,4 +473,10 @@ public interface ApiService {
     @GET("getHadABType/android")
     Observable<ResponseBody> getHadABType(@Header("X-AUTH-TOKEN") String token);
 
+    /**
+     * 获取收入类型标签
+     */
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("bindInvite/android")
+    Observable<ResponseBody> bindInvite(@Header("X-AUTH-TOKEN") String token,@Body RequestBody body);
 }

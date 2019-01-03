@@ -22,6 +22,7 @@ import com.growingio.android.sdk.collection.GrowingIO;
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.app.RingApplication;
+import com.hbird.base.mvc.activity.ActFillInvitation;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.AccountZbBean;
@@ -368,6 +369,9 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                         SPUtil.setPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, avatarUrl);
                         String nickName = b1.getResult().getNickName();
                         SPUtil.setPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, nickName);
+
+                        SharedPreferencesUtil.put("user_id", String.valueOf(b1.getResult().getId()));// 用户id
+                        SharedPreferencesUtil.put("register_date", b1.getResult().getRegisterDate());// 注册时间
                     }
 
                     @Override
@@ -550,7 +554,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
 
 
                             String accountId = SPUtil.getPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-                            String abtypeId = SPUtil.getPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE,  "");
+                            String abtypeId = SPUtil.getPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, "");
                             if (b1.getResult() != null && b1.getResult().size() > 0) {
                                 if (TextUtils.isEmpty(accountId) || !set.contains(accountId) || TextUtils.isEmpty(abtypeId)) {
                                     AccountZbBean.ResultBean bean = b1.getResult().get(b1.getResult().size() - 1);// 默认显示最后一个，默认账本
@@ -588,7 +592,21 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                 //关闭手势密码开关（必须重新打开设置）
                 DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
             }
-            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+
+            String userId = (String) SharedPreferencesUtil.get("user_id", "");// 用户id
+            long currentData = System.currentTimeMillis();// 当前时间
+            long registerDate = (long) SharedPreferencesUtil.get("register_date", 0L);// 注册时间
+            boolean filledIn = (boolean) SharedPreferencesUtil.get(userId + "_filled_in", false);// 是否填写过邀请码
+
+            LogUtil.e("currentData = " + currentData);
+            LogUtil.e("registerDate = " + registerDate);
+            LogUtil.e("filledIn = " + filledIn);
+            LogUtil.e("currentData-registerDate = " + (currentData - registerDate));
+            if (currentData - registerDate > 180000 || filledIn) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
+                startActivity(new Intent(getApplicationContext(), homeActivity.class));
+            } else {
+                startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
+            }
             finish();
         }
     }

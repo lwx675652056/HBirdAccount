@@ -61,6 +61,8 @@
             </intent-filter>
         </activity>
 
+        <activity android:name=".mvc.activity.ActFillInvitation"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 

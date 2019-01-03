@@ -1,6 +1,5 @@
 package com.hbird.base.mvp.view.activity.login;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -8,54 +7,44 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
-import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
+import com.hbird.base.mvc.activity.ActFillInvitation;
 import com.hbird.base.mvc.activity.WebViewActivity;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
-import com.hbird.base.mvc.bean.ReturnBean.SystemParamsReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.model.login.RegisterModel;
-import com.hbird.base.mvp.model.login.loginModel;
-import com.hbird.base.mvp.presenter.login.loginPresenter;
-import com.hbird.base.mvp.view.activity.base.BaseActivity;
-
-import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.mvp.presenter.login.RegisterPresenter;
-
-import com.hbird.base.R;
+import com.hbird.base.mvp.view.activity.base.BaseActivity;
+import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import sing.util.LogUtil;
+import sing.util.SharedPreferencesUtil;
 
-import static com.hbird.base.R.id.iv_wx_login;
 import static com.hbird.base.R.id.userName;
 
 
@@ -69,8 +58,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     TextView mSubmit;
     @BindView(R.id.pwd)
     TextInputLayout mPwd;
-   /* @BindView(R.id.setpwd_view)
-    CheckBox mSetpwd;*/
+    /* @BindView(R.id.setpwd_view)
+     CheckBox mSetpwd;*/
     @BindView(R.id.tv_suggest)
     TextView mSuggest;
     @BindView(R.id.bt_my_login)
@@ -111,9 +100,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 String userName = mUserName.getEditText().getText().toString().trim();
                 String passWord = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getEditText().getText().toString().trim();
-                if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)){
+                if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)) {
                     mLogin.setBackgroundResource(R.drawable.btn_bg_login);
-                }else {
+                } else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
             }
@@ -134,9 +123,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 String userName = mUserName.getEditText().getText().toString().trim();
                 String passWord = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getEditText().getText().toString().trim();
-                if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)){
+                if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)) {
                     mLogin.setBackgroundResource(R.drawable.btn_bg_login);
-                }else {
+                } else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
             }
@@ -157,9 +146,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 String userName = mUserName.getEditText().getText().toString().trim();
                 String passWord = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getEditText().getText().toString().trim();
-                if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)){
+                if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(passWord) && !TextUtils.isEmpty(pwd)) {
                     mLogin.setBackgroundResource(R.drawable.btn_bg_login);
-                }else {
+                } else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
             }
@@ -172,6 +161,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
     }
 
     boolean bShowPassWord = false;
+
     @OnClick({R.id.et_yzm, R.id.bt_my_login, R.id.tv_submit, R.id.tv_suggest, R.id.ll_back})
     public void onClick(View view) {
         switch (view.getId()) {
@@ -202,16 +192,16 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 break;
             case R.id.tv_suggest: //注册即同意《蜂鸟记账使用协议》
                 Intent intent3 = new Intent(this, WebViewActivity.class);
-                intent3.putExtra("TYPE","xieyi");
+                intent3.putExtra("TYPE", "xieyi");
                 startActivity(intent3);
                 break;
         }
     }
 
-    private void doRegister(){
+    private void doRegister() {
         String strUserName = mUserName.getEditText().getText().toString();
-        String strPwd    = mPwd.getEditText().getText().toString();
-        String strYanZM    = mYanZM.getText().toString();
+        String strPwd = mPwd.getEditText().getText().toString();
+        String strYanZM = mYanZM.getText().toString();
         String channelName = getChannelName();
         String mobileType = android.os.Build.MODEL;
         mPresenter = new RegisterPresenter(this, new RegisterModel());
@@ -220,10 +210,10 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         //String deviceSoftwareVersion = telephonyManager.getDeviceSoftwareVersion();//操作系统版本
         //String deviceId = telephonyManager.getDeviceId();//手机唯一标识 ID
         String deviceId = Utils.getDeviceInfo(this);
-        mPresenter.register(strUserName, strPwd, strYanZM,"android","",deviceId,channelName,mobileType);
+        mPresenter.register(strUserName, strPwd, strYanZM, "android", "", deviceId, channelName, mobileType);
     }
 
-    private void dGetVerifyCode(){
+    private void dGetVerifyCode() {
         String strUserName = mUserName.getEditText().getText().toString();
         mPresenter = new RegisterPresenter(this, new RegisterModel());
         mPresenter.getRegisterVerifycode(strUserName);
@@ -255,35 +245,38 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         setCheckChargeType();
 
     }
+
     private void getUserInfos() {
-        NetWorkManager.getInstance().setContext(this)
-                .getPersionalInfos(token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GeRenInfoReturn b1 = (GeRenInfoReturn) b;
-                        String avatarUrl = b1.getResult().getAvatarUrl();
-                        SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER,avatarUrl);
-                        String nickName = b1.getResult().getNickName();
-                        SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME,nickName);
-                    }
+        NetWorkManager.getInstance().setContext(this).getPersionalInfos(token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                GeRenInfoReturn b1 = (GeRenInfoReturn) b;
+                String avatarUrl = b1.getResult().getAvatarUrl();
+                SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, avatarUrl);
+                String nickName = b1.getResult().getNickName();
+                SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, nickName);
 
-                    @Override
-                    public void onError(String s) {
+                SharedPreferencesUtil.put("user_id", String.valueOf(b1.getResult().getId()));// 用户id
+                SharedPreferencesUtil.put("register_date", b1.getResult().getRegisterDate());// 注册时间
+            }
 
-                    }
-                });
+            @Override
+            public void onError(String s) {
+
+            }
+        });
     }
 
     private void setCheckChargeType() {
         showProgress("");
         String lableVersion = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, "");
         NetWorkManager.getInstance().setContext(this)
-                .postCheckChargeType(lableVersion,token, new NetWorkManager.CallBack() {
+                .postCheckChargeType(lableVersion, token, new NetWorkManager.CallBack() {
                     @Override
                     public void onSuccess(BaseReturn b) {
                         SystemBiaoqReturn b1 = (SystemBiaoqReturn) b;
                         //获取到所有常用收入支出类目 （并插入到本地数据库）
-                        if(null!=b1 && b1.getResult()!=null){
+                        if (null != b1 && b1.getResult() != null) {
                             setTypesToLocalDB(b1);
                             hideProgress();
                             SPUtil.setPrefBoolean(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.FIRST_TO_ACCESS, false);
@@ -303,7 +296,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
      * 此处习惯性的设置为activity，实际上context就可以
      * 如果没有获取成功，那么返回值为空
      */
-    public  String getChannelName() {
+    public String getChannelName() {
         if (getApplicationContext() == null) {
             return null;
         }
@@ -341,46 +334,47 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         }
 
     }
+
     private void setTypesToLocalDB(SystemBiaoqReturn b1) {
         SystemBiaoqReturn.ResultBean result = b1.getResult();
         String labelVersion = result.getLabelVersion();
-        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION,labelVersion);
+        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, labelVersion);
         //系统标签类目
-        if(null != result.getLabel()){
+        if (null != result.getLabel()) {
             for (int i = 0; i < result.getLabel().size(); i++) {
                 //个人userInfo
                 Integer userInfoId = result.getLabel().get(0).getUserInfoId();
-                SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION,userInfoId+"");
+                SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, userInfoId + "");
                 List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> spendList = result.getLabel().get(i).getSpend();
                 Integer abTypeId = result.getLabel().get(i).getAbTypeId();
-                DBUtil.insertAllUserCommUseSpendToLocalDB(spendList,abTypeId,userInfoId);
+                DBUtil.insertAllUserCommUseSpendToLocalDB(spendList, abTypeId, userInfoId);
                 List<SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean> incomeList = result.getLabel().get(i).getIncome();
-                DBUtil.insertAllUserCommUseIncomeToLocalDB(incomeList,abTypeId,userInfoId);
+                DBUtil.insertAllUserCommUseIncomeToLocalDB(incomeList, abTypeId, userInfoId);
             }
         }
         //离线时间同步间隔 ( 单位 ms 1天 )--存储到本地SP
-        String synInterval = result.getSynInterval()+"";
-        SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.SYNINTERVAL,synInterval);
+        String synInterval = result.getSynInterval() + "";
+        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.SYNINTERVAL, synInterval);
         //个人账户账本id
         List<SystemBiaoqReturn.ResultBean.AbsBean> abs = result.getAbs();
         Set<String> set = new LinkedHashSet<String>();
         set.clear();
-        if(null != abs){
+        if (null != abs) {
             for (int i = 0; i < abs.size(); i++) {
-                String accountBookId = abs.get(i).getId()+"";
-                if(i==0){
+                String accountBookId = abs.get(i).getId() + "";
+                if (i == 0) {
                     //默认账本id
                     String s = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
                     boolean firstGuide = SPUtil.getPrefBoolean(this, com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, true);
-                    if(firstGuide){
-                        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID,accountBookId);
-                        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID,accountBookId);
-                        SPUtil.setPrefInt(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID,abs.get(i).getAbTypeId());
-                    }else {
-                        if(TextUtils.isEmpty(s)){
-                            SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID,accountBookId);
-                            SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID,accountBookId);
-                            SPUtil.setPrefInt(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID,abs.get(i).getAbTypeId());
+                    if (firstGuide) {
+                        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
+                        SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
+                        SPUtil.setPrefInt(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
+                    } else {
+                        if (TextUtils.isEmpty(s)) {
+                            SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
+                            SPUtil.setPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
+                            SPUtil.setPrefInt(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
                         }
                     }
                 }
@@ -388,8 +382,8 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
 
             }
         }
-        if(null!=set && set.size()>0){
-            SPUtil.setStringSet(this,com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL,set);
+        if (null != set && set.size() > 0) {
+            SPUtil.setStringSet(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
         }
 
 
@@ -404,10 +398,25 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
         //
         Intent intentNew = new Intent(RegisterActivity.this, CreateGestureActivity.class);
-        startActivity(new Intent(getApplicationContext(), homeActivity.class));
-        //
+
+        String userId = (String) SharedPreferencesUtil.get("user_id","");// 用户id
+        long currentData = System.currentTimeMillis();// 当前时间
+        long registerDate = (long) SharedPreferencesUtil.get("register_date", 0L);// 注册时间
+        boolean filledIn= (boolean) SharedPreferencesUtil.get(userId+"_filled_in",false);// 是否填写过邀请码
+
+        LogUtil.e("currentData = " + currentData);
+        LogUtil.e("registerDate = " + registerDate);
+        LogUtil.e("filledIn = " + filledIn);
+        LogUtil.e("currentData-registerDate = " + (currentData - registerDate));
+        if (currentData - registerDate > 180000 || filledIn) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
+            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+        } else {
+            startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
+        }
+
         DevRing.activityListManager().killActivity(loginActivity.class); //退出loginActivity
         finish();
+
        /* //系统收入类目：allSysIncomeType
         if(null!=result.getAllSysIncomeType()){
             String version01 = result.getAllSysIncomeType().getVersion();

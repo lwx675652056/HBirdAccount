@@ -18,8 +18,8 @@ android {
         applicationId "com.hbird.base"
         minSdkVersion build_versions.min_sdk
         targetSdkVersion build_versions.target_sdk
-        versionCode 10
-        versionName "1.2.1"
+        versionCode 11
+        versionName "1.2.2"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         manifestPlaceholders = [UMENG_CHANNEL_VALUE: "default_channel"]
         resValue("string", "growingio_project_id", "896f3ed1dd9d81de")
