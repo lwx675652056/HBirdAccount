@@ -39,7 +39,7 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.AssetsBean;
 import com.hbird.common.Constants;
-import com.hbird.common.calendar.model.CalendarDate;
+import com.hbird.common.calendar.utils.CalendarUtil;
 import com.hbird.ui.detailed.AccountDetailedAdapter;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
@@ -85,7 +85,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
     private AccountDetailedAdapter adapter;
     private List<AccountDetailedBean> list = new ArrayList<>();
 
-    private CalendarDate currentDate;// 已选日期
+    private int[] currentDate = CalendarUtil.getCurrentDate();
     private int width_15;
     private int maxWidth = -1;
 
@@ -102,7 +102,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
     @Override
     public void initData() {
         accountId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        currentDate = new CalendarDate();
+        currentDate = CalendarUtil.getCurrentDate();
         width_15 = getResources().getDimensionPixelSize(R.dimen.dp_15_x);
         maxWidth = ScreenUtil.getScreenWidth(this) - width_15 * 6 - width_15 * 3 - width_15 / 15;
 
@@ -125,8 +125,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         data.setAssetsName(bean.assetsName);
         data.setMoney(bean.money);
         data.setAssetsType(bean.assetsType);
-        data.setYyyy(currentDate.year);
-        data.setMm(currentDate.getMonth());
+        data.setYyyy(currentDate[0]);
+        data.setMm(currentDate[1]);
         data.setInComeMoney("0.00");
         data.setSpendingMoney("0.00");
 
@@ -174,9 +174,9 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 
 
     // 获取数据
-    private void getData(CalendarDate day) {
-        String MonthFirstDay = DateUtil.getMonthday2First(day.year, day.month);
-        String MonthLastDay = DateUtil.getMonthday2Last(day.year, day.month);
+    private void getData(int[] day) {
+        String MonthFirstDay = DateUtil.getMonthday2First(day[0], day[1]);
+        String MonthLastDay = DateUtil.getMonthday2Last(day[0], day[1]);
 
         String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
         String sql = "";
@@ -240,9 +240,9 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                         } else {
                             double scale = monthIncome / monthSpend;
                             if (scale > 10) {
-                                setLength(width_15,  maxWidth);
+                                setLength(width_15, maxWidth);
                             } else {
-                                setLength(width_15*2, (int) (width_15*2 * scale));
+                                setLength(width_15 * 2, (int) (width_15 * 2 * scale));
                             }
                         }
                     } else { // 支出大于等于收入
@@ -540,14 +540,14 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                 @Override
                 public void getYearList(String s) {
                     data.setYyyy(parseInt(s));
-                    currentDate.setYear(parseInt(s));
+                    currentDate[0] = parseInt(s);
                 }
 
                 @Override
                 public void getMonthList(String s) {
                     String[] ss = s.split("月份");
                     data.setMm(parseInt(ss[0]));
-                    currentDate.setMonth(parseInt(ss[0]));
+                    currentDate[1] = parseInt(ss[0]);
                 }
             }, new MyTimerPop.PopDismissListener() {
                 @Override

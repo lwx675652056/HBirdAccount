@@ -32,160 +32,123 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <LinearLayout
+            <ScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:fillViewport="true"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
-                    android:layout_marginTop="@dimen/dp_15_x"
-                    android:background="@drawable/shape_top_8px"
-                    android:gravity="center">
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{listener.left}"
-                        android:padding="@dimen/dp_15_x"
-                        android:src="@mipmap/icon_qdrileft_normal"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:onClick="@{listener.chooseDate}"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_40_x"
-                        android:layout_marginStart="@dimen/dp_40_x"
-                        android:layout_weight="1"
-                        android:background="@drawable/select_d80200_8px"
-                        android:gravity="center"
-                        android:paddingBottom="@dimen/dp_2_x"
-                        android:paddingTop="@dimen/dp_2_x"
-                        android:text="@{@string/year_month_format(bean.mm,bean.yyyy)}"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{listener.right}"
-                        android:padding="@dimen/dp_15_x"
-                        android:src="@mipmap/icon_qdrlright_normal"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
-                    android:background="@color/white"
-                    android:orientation="horizontal"
-                    android:paddingBottom="@dimen/dp_10_x"
-                    android:paddingTop="@dimen/dp_10_x">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Mon"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Tue"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Wed"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Thu"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Fri"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Sat"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:gravity="center"
-                        android:text="Sun"
-                        android:textColor="#BDBDBD"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <android.support.design.widget.CoordinatorLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x">
+                    android:orientation="vertical">
 
-                    <com.hbird.common.calendar.view.MonthPager
-                        android:id="@+id/calendar_view"
+                    <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="270dp"
-                        android:background="@drawable/select_bottom_white"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:background="@drawable/shape_top_8px"
+                        android:gravity="center">
 
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{listener.left}"
+                            android:padding="@dimen/dp_15_x"
+                            android:src="@mipmap/icon_qdrileft_normal"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_40_x"
+                            android:layout_marginStart="@dimen/dp_40_x"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_d80200_8px"
+                            android:gravity="center"
+                            android:onClick="@{listener.chooseDate}"
+                            android:paddingBottom="@dimen/dp_2_x"
+                            android:paddingTop="@dimen/dp_2_x"
+                            android:text="@{@string/year_month_format(bean.mm,bean.yyyy)}"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{listener.right}"
+                            android:padding="@dimen/dp_15_x"
+                            android:src="@mipmap/icon_qdrlright_normal"/>
+                    </LinearLayout>
+
+                    <com.hbird.common.calendar.weiget.WeekView
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_40_x"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        bind:week_color="#BDBDBD"
+                        bind:week_str="Sun.Mon.Tue.Wed.Thu.Fri.Sat"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/dp_10_x"
+                        android:paddingEnd="@dimen/dp_15_x"
+                        android:paddingStart="@dimen/dp_15_x">
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/line2"/>
+                    </LinearLayout>
+
+                    <com.hbird.common.calendar.weiget.CalendarView
+                        android:id="@+id/calendar"
+                        android:layout_width="match_parent"
+                        android:layout_height="220dp"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:background="@drawable/select_bottom_white"
+                        bind:choose_color="@color/white"
+                        bind:day_bg="@mipmap/calendar_bg_today_normal"
+                        bind:show_lunar="false"
+                        bind:solar_color="#333333"
+                        bind:switch_choose="false"/>
+
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_gravity="bottom"
-                        android:layout_marginBottom="45dp"
-                        android:clipChildren="false"
-                        android:clipToPadding="false"
-                        bind:layout_behavior="com.hbird.common.calendar.behavior.RecyclerViewBehavior"/>
+                        android:descendantFocusability="blocksDescendants">
 
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginEnd="@dimen/dp_15_x"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:background="@color/white"
+                            android:overScrollMode="never"
+                            android:scrollbars="none"/>
 
-                    <!-- paddingBottom或者magin距离必须是MonthPager高度的1/6-->
-                    <!-- RecyclerView的高度必须是MatchParent-->
-                    <!-- RecyclerView的background必须是非透明-->
+                        <!-- paddingBottom或者magin距离必须是MonthPager高度的1/6-->
+                        <!-- RecyclerView的高度必须是MatchParent-->
+                        <!-- RecyclerView的background必须是非透明-->
 
-                    <ImageView
-                        android:id="@+id/iv_no_data"
-                        android:layout_width="@dimen/dp_150_x"
-                        android:layout_height="@dimen/dp_150_x"
-                        android:layout_marginBottom="45dp"
-                        android:layout_gravity="bottom|center_horizontal"
-                        android:src="@mipmap/ic_normal_data"/>
-                </android.support.design.widget.CoordinatorLayout>
-            </LinearLayout>
+                        <ImageView
+                            android:id="@+id/iv_no_data"
+                            android:layout_width="@dimen/dp_150_x"
+                            android:layout_height="@dimen/dp_150_x"
+                            android:layout_centerHorizontal="true"
+                            android:layout_centerVertical="true"
+                            android:src="@mipmap/ic_normal_data"/>
+                    </RelativeLayout>
+                </LinearLayout>
+            </ScrollView>
 
             <TextView
                 android:layout_width="wrap_content"

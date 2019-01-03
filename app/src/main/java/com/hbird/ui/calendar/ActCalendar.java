@@ -1,10 +1,8 @@
 package com.hbird.ui.calendar;
 
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v4.view.ViewPager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
@@ -27,13 +25,7 @@ import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.TitleBean;
-import com.hbird.common.calendar.Utils;
-import com.hbird.common.calendar.component.CalendarAttr;
-import com.hbird.common.calendar.component.CalendarViewAdapter;
-import com.hbird.common.calendar.interf.OnSelectDateListener;
-import com.hbird.common.calendar.model.CalendarDate;
-import com.hbird.common.calendar.view.Calendar;
-import com.hbird.common.calendar.view.MonthPager;
+import com.hbird.common.calendar.utils.CalendarUtil;
 import com.ljy.devring.DevRing;
 
 import java.math.BigDecimal;
@@ -60,19 +52,11 @@ import sing.util.ToastUtil;
  */
 public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle> {
 
-    MonthPager monthPager;
-
-    private ArrayList<Calendar> currentCalendars = new ArrayList<>();
-    private CalendarViewAdapter calendarAdapter;
-    private OnSelectDateListener onSelectDateListener;
-    private Context context;
-    private boolean initiated = false;
-
     private CalendarData data;
-    private CalendarDate currentDate;// 已选日期
     private CalendarAdapter adapter;
     private List<AccountDetailedBean> list = new ArrayList<>();
     private String accountId;
+    private int[] currentDate = CalendarUtil.getCurrentDate();
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -87,24 +71,30 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
     public class OnClick {
         // 上个月
         public void left(View view) {
-            monthPager.setCurrentItem(monthPager.getCurrentPosition() - 1);
+            binding.calendar.lastMonth();
         }
 
         // 下个月
         public void right(View view) {
-            monthPager.setCurrentItem(monthPager.getCurrentPosition() + 1);
+            binding.calendar.nextMonth();
         }
 
         // 今天
         public void today(View view) {
-            refreshMonthPager(new CalendarDate());
+            binding.calendar.today();
+            currentDate = CalendarUtil.getCurrentDate();
+            getData(currentDate);
         }
 
         public void chooseDate(View view) {
             new APDUserDateDialog(view.getContext()) {
                 @Override
                 protected void onBtnOkClick(String year, String month, String day) {
-                    refreshMonthPager(new CalendarDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day)));
+                    binding.calendar.toSpecifyDate(Integer.parseInt(year), Integer.parseInt(month), Integer.parseInt(day));// 不然跨月的不选中
+                    currentDate[0] = Integer.parseInt(year);
+                    currentDate[1] = Integer.parseInt(month);
+                    currentDate[2] = Integer.parseInt(day);
+                    getData(currentDate);
                 }
             }.show();
         }
@@ -116,27 +106,42 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         binding.toolbar.ivBack.setOnClickListener(v -> finish());
         data = new CalendarData();
 
-        currentDate = new CalendarDate();
-        data.setYyyy(currentDate.getYear());
-        data.setMm(currentDate.getMonth());
+        currentDate = CalendarUtil.getCurrentDate();
+        data.setYyyy(currentDate[0]);
+        data.setMm(currentDate[1]);
 
         binding.setBean(data);
         binding.setListener(new OnClick());
 
         accountId = getIntent().getExtras().getString("account_id", "");
 
-        context = this;
-        monthPager = (MonthPager) findViewById(R.id.calendar_view);
-        //此处强行setViewHeight，毕竟你知道你的日历牌的高度
-        monthPager.setViewHeight(Utils.dpi2px(context, 270));
-
-        binding.recyclerView.setHasFixedSize(true);
-        //这里用线性显示 类似于listview
-        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         adapter = new CalendarAdapter(this, list, R.layout.row_calendar, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
         binding.recyclerView.setAdapter(adapter);
+        binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
 
-        initCalendarView();
+        //日历init，年月日之间用点号隔开
+        binding.calendar
+                .setInitDate(currentDate[0] + "." + currentDate[1])
+                .setSingleDate(currentDate[0] + "." + currentDate[1] + "." + currentDate[2])
+                .init();
+
+        binding.calendar.setOnPagerChangeListener(ints -> {
+            data.setYyyy(ints[0]);
+            data.setMm(ints[1]);
+        });
+
+        binding.calendar.setOnSingleChooseListener((view, date) -> {
+            binding.calendar.toSpecifyDate(date.getSolar()[0], date.getSolar()[1], date.getSolar()[2]);// 不然跨月的不选中
+            data.setYyyy(date.getSolar()[0]);
+            data.setMm(date.getSolar()[1]);
+            currentDate[0] = date.getSolar()[0];
+            currentDate[1] = date.getSolar()[1];
+            currentDate[2] = date.getSolar()[2];
+            getData(currentDate);
+        });
+
+        getData(currentDate);
     }
 
     // 点击记账的条目
@@ -172,98 +177,13 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                 }).show();
     }
 
-    /**
-     * onWindowFocusChanged回调时，将当前月的种子日期修改为今天
-     */
-    @Override
-    public void onWindowFocusChanged(boolean hasFocus) {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus && !initiated) {
-            refreshMonthPager(new CalendarDate());
-            initiated = true;
-        }
-    }
-
-    /**
-     * 初始化CustomDayView，并作为CalendarViewAdapter的参数传入
-     */
-    private void initCalendarView() {
-        initListener();
-        CustomDayView customDayView = new CustomDayView(context, R.layout.custom_day);
-        calendarAdapter = new CalendarViewAdapter(
-                context,
-                onSelectDateListener,
-                CalendarAttr.WeekArrayType.Monday,
-                customDayView);
-//        calendarAdapter.setOnCalendarTypeChangedListener(type -> binding.recyclerView.scrollToPosition(0));
-        initMonthPager();
-    }
-
-    private void initListener() {
-        onSelectDateListener = new OnSelectDateListener() {
-            @Override
-            public void onSelectDate(CalendarDate date) {
-                refreshMonthPager(date);
-            }
-
-            @Override
-            public void onSelectOtherMonth(int offset) {
-                //偏移量 -1表示刷新成上一个月数据 ， 1表示刷新成下一个月数据
-                monthPager.selectOtherMonth(offset);
-            }
-        };
-    }
-
-    /**
-     * 初始化monthPager，MonthPager继承自ViewPager
-     */
-    private void initMonthPager() {
-        monthPager.setAdapter(calendarAdapter);
-        monthPager.setCurrentItem(MonthPager.CURRENT_DAY_INDEX);
-        monthPager.setPageTransformer(false, new ViewPager.PageTransformer() {
-            @Override
-            public void transformPage(View page, float position) {
-                position = (float) Math.sqrt(1 - Math.abs(position));
-                page.setAlpha(position);
-            }
-        });
-        monthPager.addOnPageChangeListener(new MonthPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                currentCalendars = calendarAdapter.getPagers();
-                if (currentCalendars.get(position % currentCalendars.size()) != null) {
-                    CalendarDate date = currentCalendars.get(position % currentCalendars.size()).getSeedDate();
-                    data.setYyyy(date.getYear());
-                    data.setMm(date.getMonth());
-                }
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-    }
-
-    private void refreshMonthPager(CalendarDate day) {
-        calendarAdapter.notifyDataChanged(day);
-        data.setYyyy(day.getYear());
-        data.setMm(day.getMonth());
-        currentDate = day;
-
-        getData(day);
-    }
-
     // 获取数据
-    private void getData(CalendarDate day) {
+    private void getData(int[] day) {
         String MonthFirstDay = null;
         String MonthLastDay = null;
         try {
-            MonthFirstDay = DateUtil.dateToStamp1(day.getYear() + "-" + day.getMonth() + "-" + day.getDay());
-            MonthLastDay = DateUtil.dateToStamp1(day.getYear() + "-" + day.getMonth() + "-" + (day.getDay() + 1));
+            MonthFirstDay = DateUtil.dateToStamp1(day[0] + "-" + day[1] + "-" + day[2]);
+            MonthLastDay = DateUtil.dateToStamp1(day[0] + "-" + day[1] + "-" + (day[2] + 1));
         } catch (ParseException e) {
             e.printStackTrace();
             ToastUtil.showShort("时间转化异常");
