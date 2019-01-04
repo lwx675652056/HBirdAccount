@@ -2434,8 +2434,7 @@ public class NetWorkManager {
 
             @Override
             public void onError(HttpThrowable httpThrowable) {
-                String message = httpThrowable.message;
-                LogUtil.e(message);
+                LogUtil.e(httpThrowable.message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
@@ -2470,13 +2469,44 @@ public class NetWorkManager {
 
             @Override
             public void onError(HttpThrowable httpThrowable) {
-                String message = httpThrowable.message;
-                LogUtil.e(message);
+                LogUtil.e(httpThrowable.message);
                 callBack.onError("失败");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
+    // 提交邀请码
+    public void bindInvite(String token, String inviteCode, final CallBack callBack) {
+        String jsonInfo = "{\"inviteCode\":\""+inviteCode+"\"}";
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonInfo);
 
+        Observable<ResponseBody> observable = DevRing.httpManager().getService(ApiService.class).bindInvite(token, body);
+        DevRing.httpManager().commonRequest(observable, new CommonObserver<ResponseBody>() {
+            @Override
+            public void onResult(ResponseBody result) {
+                try {
+                    String json = result.string();
+                    LogUtil.e(json);
+                    if (checkInterCode.isSuccess(json)) {
+                        BaseReturn bean = JSON.parseObject(json, BaseReturn.class);
+                        callBack.onSuccess(bean);
+                    } else {
+                        callBack.onError(checkInterCode.MSG);
+                        tokenSetting(json);
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    callBack.onError("解析错误");
+                }
+            }
+
+            @Override
+            public void onError(HttpThrowable httpThrowable) {
+                LogUtil.e(httpThrowable.message);
+                callBack.onError("失败");
+            }
+        }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
+    }
     public interface CallBack {
         void onSuccess(BaseReturn b);
         void onError(String s);

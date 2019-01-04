@@ -86,6 +86,11 @@
             android:name="com.hbird.ui.assets.ActAssetsDetail"
             android:screenOrientation="portrait"/>
 
+        <!--填写邀请码-->
+        <activity
+            android:name="com.hbird.ui.fill_invitation.ActFillInvitation"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 

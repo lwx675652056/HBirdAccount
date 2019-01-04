@@ -37,6 +37,8 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.iview.login.IloginView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
+import com.hbird.common.Constants;
+import com.hbird.ui.fill_invitation.ActFillInvitation;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -367,6 +369,9 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                         SPUtil.setPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, avatarUrl);
                         String nickName = b1.getResult().getNickName();
                         SPUtil.setPrefString(loginActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, nickName);
+
+                        SharedPreferencesUtil.put(Constants.USER_ID, String.valueOf(b1.getResult().getId()));// 用户id
+                        SharedPreferencesUtil.put(Constants.REGISTER_DATE, b1.getResult().getRegisterDate());// 注册时间
                     }
 
                     @Override
@@ -587,7 +592,21 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                 //关闭手势密码开关（必须重新打开设置）
                 DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
             }
-            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+
+            String userId = (String) SharedPreferencesUtil.get(Constants.USER_ID, "");// 用户id
+            long currentData = System.currentTimeMillis();// 当前时间
+            long registerDate = (long) SharedPreferencesUtil.get(Constants.REGISTER_DATE, 0L);// 注册时间
+            boolean filledIn = (boolean) SharedPreferencesUtil.get(userId + Constants._FILLED_IN, false);// 是否填写过邀请码
+
+            LogUtil.e("currentData = " + currentData);
+            LogUtil.e("registerDate = " + registerDate);
+            LogUtil.e("filledIn = " + filledIn);
+            LogUtil.e("currentData-registerDate = " + (currentData - registerDate));
+            if (currentData - registerDate > 180000 || filledIn) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
+                startActivity(new Intent(getApplicationContext(), homeActivity.class));
+            } else {
+                startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
+            }
             finish();
         }
     }

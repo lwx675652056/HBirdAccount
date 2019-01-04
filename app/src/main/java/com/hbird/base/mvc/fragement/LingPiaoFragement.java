@@ -34,6 +34,7 @@ import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.Html5Date;
 import com.hbird.base.mvc.bean.ReturnBean.SaveMoney2Return;
 import com.hbird.base.mvc.net.NetWorkManager;
+import com.hbird.base.mvc.view.dialog.InvitationDialog;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Util;
@@ -153,14 +154,15 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
         webView.loadUrl(url);
 
-
+        // 邀请好友
         webView.registerHandler("inviteFriends", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
                 playVoice(R.raw.changgui02);
-                ids = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYIDS, "");
-                name = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYNAME, "");
-                inviteYou();
+//                ids = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYIDS, "");
+//                name = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYNAME, "");
+//                inviteYou();
+                showDialog();
             }
         });
         webView.registerHandler("writeANote", new BridgeHandler() {
@@ -411,6 +413,12 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     @Override
     public void loadData() {
 
+    }
+
+    // 邀请码弹框
+    private void showDialog() {
+        InvitationDialog dialog = new InvitationDialog(getActivity());
+        dialog.show();
     }
 
     @Override

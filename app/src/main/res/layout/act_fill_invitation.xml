@@ -1,0 +1,88 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.fill_invitation.FillInvitationData"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.fill_invitation.ActFillInvitation.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#F6F6F6"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/header_title_layout"/>
+
+        <ScrollView
+            android:fillViewport="true"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:paddingBottom="@dimen/dp_20_x">
+
+                <EditText
+                    android:id="@+id/et_code"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/dp_15_x"
+                    android:background="@drawable/shape_bgs_normal"
+                    android:digits="0123456789"
+                    android:gravity="center"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:hint="请输入邀请码"
+                    android:inputType="number"
+                    android:letterSpacing="1.1"
+                    android:maxLength="8"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@={data.code}"
+                    android:textColor="#333333"
+                    android:textSize="18sp">
+                    <requestFocus/>
+                </EditText>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="注意：一旦点击跳过，不再显示填写入口"
+                    android:textColor="#808080"
+                    android:textSize="14sp"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/dp_30_x"
+                    android:layout_marginStart="@dimen/dp_30_x"
+                    android:layout_marginTop="@dimen/dp_20_x"
+                    android:background="@{data.isSkip?@drawable/select_skip:@drawable/select_ok}"
+                    android:gravity="center"
+                    android:onClick="@{data.skip?listener.skip:listener.ok}"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@{data.skip?@string/skip:@string/ok}"
+                    android:textColor="@{data.isSkip?@color/colorPrimary:@color/white}"
+                    android:textSize="18sp"/>
+            </LinearLayout>
+        </ScrollView>
+    </LinearLayout>
+</layout>

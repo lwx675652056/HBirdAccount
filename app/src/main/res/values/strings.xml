@@ -77,5 +77,6 @@
     <string name="save">保存</string>
     <string name="accumulation">查看公积金数据</string>
 
-
+    <string name="skip">跳过</string>
+    <string name="ok">完成</string>
 </resources>

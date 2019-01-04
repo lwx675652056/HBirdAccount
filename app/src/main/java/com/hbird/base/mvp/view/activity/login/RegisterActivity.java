@@ -31,6 +31,8 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
+import com.hbird.common.Constants;
+import com.hbird.ui.fill_invitation.ActFillInvitation;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
@@ -41,6 +43,8 @@ import java.util.Set;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import sing.util.LogUtil;
+import sing.util.SharedPreferencesUtil;
 
 import static com.hbird.base.R.id.userName;
 
@@ -247,6 +251,9 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                         SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, avatarUrl);
                         String nickName = b1.getResult().getNickName();
                         SPUtil.setPrefString(RegisterActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, nickName);
+
+                        SharedPreferencesUtil.put(Constants.USER_ID, String.valueOf(b1.getResult().getId()));// 用户id
+                        SharedPreferencesUtil.put(Constants.REGISTER_DATE, b1.getResult().getRegisterDate());// 注册时间
                     }
 
                     @Override
@@ -385,52 +392,23 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
                 put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
         //
         Intent intentNew = new Intent(RegisterActivity.this, CreateGestureActivity.class);
-        startActivity(new Intent(getApplicationContext(), homeActivity.class));
-        //
+
+        String userId = (String) SharedPreferencesUtil.get("user_id","");// 用户id
+        long currentData = System.currentTimeMillis();// 当前时间
+        long registerDate = (long) SharedPreferencesUtil.get("register_date", 0L);// 注册时间
+        boolean filledIn= (boolean) SharedPreferencesUtil.get(userId+"_filled_in",false);// 是否填写过邀请码
+
+        LogUtil.e("currentData = " + currentData);
+        LogUtil.e("registerDate = " + registerDate);
+        LogUtil.e("filledIn = " + filledIn);
+        LogUtil.e("currentData-registerDate = " + (currentData - registerDate));
+        if (currentData - registerDate > 180000 || filledIn) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
+            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+        } else {
+            startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
+        }
+
         DevRing.activityListManager().killActivity(loginActivity.class); //退出loginActivity
         finish();
-       /* //系统收入类目：allSysIncomeType
-        if(null!=result.getAllSysIncomeType()){
-            String version01 = result.getAllSysIncomeType().getVersion();
-            List<SystemParamsReturn.ResultBean.AllSysIncomeTypeBean.AllSysIncomeTypeArraysBean> allSysIncomeTypeArrays = result.getAllSysIncomeType().getAllSysIncomeTypeArrays();
-            DBUtil.insertSysIcomeTypeToLocalDB(allSysIncomeTypeArrays);
-            SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.ALL_SYS_INCOME_TYPE,version01);
-        }
-
-        //系统支出类目allSysSpendType
-        if(null!=result.getAllSysSpendType()){
-            String version02 = result.getAllSysSpendType().getVersion();
-            List<SystemParamsReturn.ResultBean.AllSysSpendTypeBean.AllSysSpendTypeArraysBean> allSysSpendTypeArrays = result.getAllSysSpendType().getAllSysSpendTypeArrays();
-            DBUtil.insertSysSpendTypeToLocalDB(allSysSpendTypeArrays);
-            SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.ALL_SYS_SPEND_TYPE,version02);
-        }
-
-        //用户常用支出类目allUserCommUseSpendType
-        if(null!=result.getAllUserCommUseSpendType()){
-            String version03 = result.getAllUserCommUseSpendType().getVersion();
-            List<SystemParamsReturn.ResultBean.AllUserCommUseSpendTypeBean.AllUserCommUseSpendTypeArraysBean> allUserCommUseSpendType = result.getAllUserCommUseSpendType().getAllUserCommUseSpendTypeArrays();
-            DBUtil.insertAllUserCommUseSpendToLocalDB(allUserCommUseSpendType);
-            SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.ALL_USER_COMM_USE_SPEND_TYPE,version03);
-        }
-
-        //用户常用收入类目allUserCommUseIncomeType
-        if(null!=result.getAllUserCommUseIncomeType()){
-            String version04 = result.getAllUserCommUseIncomeType().getVersion();
-            List<SystemParamsReturn.ResultBean.AllUserCommUseIncomeTypeBean.AllUserCommUseIncomeTypeArraysBean> allUserCommUseIncomeType = result.getAllUserCommUseIncomeType().getAllUserCommUseIncomeTypeArrays();
-            DBUtil.insertAllUserCommUseIncomeToLocalDB(allUserCommUseIncomeType);
-            SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.ALL_USER_COMM_USE_INCOME_TYPE,version04);
-        }
-        //离线时间同步间隔 ( 单位 ms 1天 )--存储到本地SP
-        String synInterval = result.getSynInterval();
-        SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.SYNINTERVAL,synInterval);
-        //个人账户账本id
-        String accountBookId = result.getAccountBookId();
-        SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID,accountBookId);
-        //个人userInfo
-        String userInfo = result.getUserInfoId();
-        SPUtil.setPrefString(this,com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION,userInfo);*/
-
-
     }
-
 }

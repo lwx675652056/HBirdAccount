@@ -498,4 +498,10 @@ public interface ApiService {
     @POST("deleteAT2Mark/android")
     Observable<ResponseBody> deleteAT2Mark(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
 
+    /**
+     * 填写邀请码
+     */
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("bindInvite/android")
+    Observable<ResponseBody> bindInvite(@Header("X-AUTH-TOKEN") String token,@Body RequestBody body);
 }

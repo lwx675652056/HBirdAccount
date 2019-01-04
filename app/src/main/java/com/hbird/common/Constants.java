@@ -18,4 +18,9 @@ public class Constants {
     public static final String START_INTENT_A = "start_intent_a";
 
     public static final String ASSETS_TIME = "assets_time";// 资产重置时间
+
+    public static final String  USER_ID = "user_id";// 用户id
+    public static final String  REGISTER_DATE = "register_date";// 注册时间
+    public static final String  _FILLED_IN = "_filled_in";// 是否填写过邀请码
+
 }
