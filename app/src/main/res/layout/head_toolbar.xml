@@ -1,7 +1,9 @@
-<?xml version="1.0" encoding="utf-8"?>
 <layout>
 
     <data>
+
+        <import type="android.view.View"/>
+
         <variable
             name="title"
             type="com.hbird.bean.TitleBean"/>
@@ -12,7 +14,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_5_80"
+        android:layout_height="@dimen/dp_45_x"
         android:background="@color/colorPrimary"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
@@ -20,8 +22,9 @@
 
         <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fl_parent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/dp_45_x"
             android:background="@color/colorPrimary">
 
             <TextView
@@ -37,10 +40,20 @@
                 android:id="@+id/iv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_gravity="left"
+                android:layout_gravity="start"
                 android:paddingEnd="@dimen/dp_15_x"
                 android:paddingStart="@dimen/dp_15_x"
-                android:src="@mipmap/ic_white_back"/>
+                android:src="@mipmap/ic_white_back"
+                android:visibility="@{title.goneBack?View.GONE:View.VISIBLE}"/>
+
+            <ImageView
+                android:id="@+id/iv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                app:resId="@{title.rightResId}"/>
         </FrameLayout>
     </android.support.v7.widget.Toolbar>
 </layout>

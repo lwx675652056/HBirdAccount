@@ -57,6 +57,49 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/ll_shoushi"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/item_selector_hint"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/width_4_80"
+        android:paddingRight="@dimen/width_4_80">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_7_80"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+            <!-- <ImageView
+                 android:layout_width="wrap_content"
+                 android:layout_height="wrap_content"
+                 android:src="@mipmap/icon_me_account_safe"/>-->
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="手势密码"
+                android:textColor="@color/text_333333"/>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:src="@mipmap/ic_me_arrow"/>
+            </RelativeLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line2"/>
+
+    </LinearLayout>
+
+    <LinearLayout
         android:id="@+id/ll_voice"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

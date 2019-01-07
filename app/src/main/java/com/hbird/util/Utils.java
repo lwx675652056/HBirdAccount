@@ -1,6 +1,7 @@
 package com.hbird.util;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
@@ -11,6 +12,7 @@ import android.util.Base64;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.VoiceUtils;
+import com.ljy.devring.util.ColorBar;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
@@ -103,5 +105,38 @@ public class Utils {
         java.text.NumberFormat NF = java.text.NumberFormat.getInstance();
         NF.setGroupingUsed(false);//去掉科学计数法显示
         return NF.format(d);
+    }
+
+
+    public static void initColor(Activity activity, int color) {
+        ColorBar.newColorBuilder()
+                .applyNav(true)
+                .navColor(color)
+                .navDepth(0)
+                .statusColor(color)
+                .statusDepth(0)
+                .build(activity)
+                .apply();
+    }
+
+    /**
+     * 将手机号中间4到7位用星号代替
+     */
+    public static String getHiddenPhone(String userName){
+        if(!TextUtils.isEmpty(userName) && userName.length() > 6 ){
+            StringBuilder sb  =new StringBuilder();
+            for (int i = 0; i < userName.length(); i++) {
+                char c = userName.charAt(i);
+                if (i >= 3 && i <= 6) {
+                    sb.append('*');
+                } else {
+                    sb.append(c);
+                }
+            }
+
+            return sb.toString();
+        }else{
+            return userName;
+        }
     }
 }

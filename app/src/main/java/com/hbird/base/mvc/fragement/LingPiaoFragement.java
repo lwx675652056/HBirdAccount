@@ -4,14 +4,13 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
-import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -56,6 +55,7 @@ import java.io.File;
 import java.util.Date;
 
 import butterknife.BindView;
+import sing.common.util.StatusBarUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
@@ -116,15 +116,16 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         super.onResume();
     }
 
-    public class A extends WebViewClient {
-        @Override
-        public boolean shouldOverrideUrlLoading(WebView view, String url) {
-            if (view.canGoBack()) {
-                ToastUtil.showShort("1");
-            } else {
-                ToastUtil.showShort("2");
-            }
-            return super.shouldOverrideUrlLoading(view, url);
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            activity.setBottomDH2Visiable();
+            aaa = true;
+
+            Utils.initColor(getActivity(), Color.rgb(241, 92, 60));
+            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
         }
     }
 
@@ -393,15 +394,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
             ToastUtil.showShort("分享取消");
         }
     };
-
-    @Override
-    public void setUserVisibleHint(boolean isVisibleToUser) {
-        super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser) {
-            activity.setBottomDH2Visiable();
-            aaa = true;
-        }
-    }
 
     @Override
     public void initListener() {

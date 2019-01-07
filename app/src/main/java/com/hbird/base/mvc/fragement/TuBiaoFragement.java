@@ -1,6 +1,7 @@
 package com.hbird.base.mvc.fragement;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.os.Handler;
 import android.support.annotation.Px;
@@ -15,10 +16,12 @@ import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.baseActivity.BaseFragementPagerAdapter;
 import com.hbird.ui.assets.FraAssets;
+import com.hbird.util.Utils;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import sing.common.util.StatusBarUtil;
 
 /**
  * Created by Liul on 2018/8/8.
@@ -92,6 +95,16 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
     public void initData() {
 
     }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser){
+            Utils.initColor(getActivity(),Color.rgb(241, 92, 60));
+            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+        }
+    }
+
     public void setH5TiaoZhuan(final int m){
         Handler handler = new Handler();
         handler.postDelayed(new Runnable() {

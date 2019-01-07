@@ -33,14 +33,16 @@ public class Utils {
         float scale = context.getResources().getDisplayMetrics().density;
         return (int) (px / scale + 0.5f);
     }
+
     /**
      * 将手机号中间4到7位用星号代替
+     *
      * @param userName
      * @return
      */
-    public static String getHiddenPhone(String userName){
-        if(!TextUtils.isEmpty(userName) && userName.length() > 6 ){
-            StringBuilder sb  =new StringBuilder();
+    public static String getHiddenPhone(String userName) {
+        if (!TextUtils.isEmpty(userName) && userName.length() > 6) {
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < userName.length(); i++) {
                 char c = userName.charAt(i);
                 if (i >= 3 && i <= 6) {
@@ -51,14 +53,13 @@ public class Utils {
             }
 
             return sb.toString();
-        }else{
+        } else {
             return userName;
         }
-
     }
 
 
-        //防止点击速度过快
+    //防止点击速度过快
     public static boolean isFastClick() {
         boolean flag = false;
         long curClickTime = System.currentTimeMillis();
@@ -68,6 +69,7 @@ public class Utils {
         lastClickTime = curClickTime;
         return flag;
     }
+
     //防止点击速度过快
     public static boolean isFast2Click() {
         boolean flag = false;
@@ -78,20 +80,21 @@ public class Utils {
         lastClickTime = curClickTime;
         return flag;
     }
+
     /* 加减法计算器 */
-    public static double sum(String str){
+    public static double sum(String str) {
         String[] positive = str.split("\\+");
         double posSum = 0;
         double negSum = 0;
         for (String pos : positive) {
-            if(pos.contains("-")){
+            if (pos.contains("-")) {
                 String[] negative = pos.split("\\-");
                 Double temp = 0d;
                 for (int i = 1; i < negative.length; i++) {
                     temp -= Double.parseDouble(negative[i]);
                 }
                 negSum += Double.parseDouble(negative[0]) + temp;
-            }else{
+            } else {
                 posSum += Double.parseDouble(pos);
             }
         }
@@ -124,19 +127,20 @@ public class Utils {
     }
 
     //获取版本号
-        public static String getVersion(Context context) {
-             try {
-                     PackageManager manager = context.getPackageManager();
-                     PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
-                     String version = info.versionName;
-                     return version;
-                 } catch (Exception e) {
-                     e.printStackTrace();
-                    return "";
-                }
+    public static String getVersion(Context context) {
+        try {
+            PackageManager manager = context.getPackageManager();
+            PackageInfo info = manager.getPackageInfo(context.getPackageName(), 0);
+            String version = info.versionName;
+            return version;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "";
         }
+    }
+
     //获取一年中总共有几周
-    public static int getYearToWeek(){
+    public static int getYearToWeek() {
         Date date = new Date();
         Calendar c = new GregorianCalendar();
         c.setFirstDayOfWeek(Calendar.MONDAY);
@@ -145,7 +149,8 @@ public class Utils {
 
         return c.get(Calendar.WEEK_OF_YEAR);
     }
-    public static int getWeeks(Date date){
+
+    public static int getWeeks(Date date) {
         Calendar cal = Calendar.getInstance();
         cal.setFirstDayOfWeek(Calendar.MONDAY);//设置周一为一周的第一天
         cal.setTime(date);
@@ -156,23 +161,25 @@ public class Utils {
     /**
      * 根据周数获取日期 （传第几周过来 算出是哪几天 区间）
      */
-    public static String getDateByWeeks(int weeks){
+    public static String getDateByWeeks(int weeks) {
         Calendar cal = Calendar.getInstance();
         cal.set(Calendar.WEEK_OF_YEAR, weeks); // 设置周数
         cal.set(Calendar.DAY_OF_WEEK, 2); // 1表示周日，2表示周一，7表示周六
         Date begin = cal.getTime();
         //Map<String,String> map = new HashMap<>();
-        DateFormat fmt =new SimpleDateFormat("MM/dd");
+        DateFormat fmt = new SimpleDateFormat("MM/dd");
         String begins = fmt.format(begin);
         //map.put("beginTime",begins);
-        cal.add(Calendar.DATE,6);
+        cal.add(Calendar.DATE, 6);
         Date end = cal.getTime();
         String ends = fmt.format(end);
         //map.put("endTime",ends);
-        return begins+"-"+ends;
+        return begins + "-" + ends;
     }
+
     /**
      * 根据具体年份周数获取日期范围
+     *
      * @param year
      * @param week
      * @param targetNum
@@ -192,8 +199,8 @@ public class Utils {
             week += targetNum;
         }*/
 
-        SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd");
-        Calendar cal=Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
 
         // 设置每周的开始日期
         cal.setFirstDayOfWeek(Calendar.SUNDAY);
@@ -212,8 +219,10 @@ public class Utils {
 
 
     //处理表情符号时的编解码方式（editorText）
+
     /**
      * 将输入的内容编码
+     *
      * @param content
      * @return
      */
@@ -232,8 +241,10 @@ public class Utils {
         }
         return sb.toString();
     }
+
     /**
      * 将取出内容解码
+     *
      * @param content
      * @return
      */

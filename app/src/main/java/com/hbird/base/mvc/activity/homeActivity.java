@@ -6,6 +6,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
@@ -26,7 +27,6 @@ import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.fragement.LingPiaoFragement;
-import com.hbird.base.mvc.fragement.MeFragement;
 import com.hbird.base.mvc.fragement.TuBiaoFragement;
 import com.hbird.base.mvc.widget.NoScrollViewPager;
 import com.hbird.base.mvc.widget.TabRadioButton;
@@ -34,6 +34,7 @@ import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.ui.index.IndexFragement;
+import com.hbird.ui.me.FragMe;
 import com.ljy.devring.DevRing;
 import com.sobot.chat.utils.ZhiChiConstant;
 import com.umeng.socialize.UMShareAPI;
@@ -43,6 +44,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import sing.common.util.LogUtil;
+import sing.common.util.StatusBarUtil;
 
 /**
  * Created by Liul(245904552@qq.com) on 2018/6/28.
@@ -74,7 +76,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
     private BasePagerAdapter pagerAdapter;
     private IndexFragement indexFragement;
     private ChartFragement chartFragement;
-    private MeFragement meFragement;
+    private FragMe meFragement;
     private TuBiaoFragement tuBiaoFragement;
     private LingPiaoFragement lpFragement;
     private Long lastClickTime = 0L;
@@ -95,11 +97,14 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
     @SuppressLint("NewApi")
     @Override
     protected void initData(Bundle savedInstanceState) {
+        initBarColor(Color.rgb(246, 246, 246),Color.rgb(246, 246, 246));
+        StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
+
         indexFragement = new IndexFragement();
         //chartFragement = new ChartFragement();
         tuBiaoFragement = new TuBiaoFragement();
         lpFragement = new LingPiaoFragement();
-        meFragement = new MeFragement();
+        meFragement = new FragMe();
 
         fragements.add(indexFragement);
         fragements.add(tuBiaoFragement);
@@ -109,7 +114,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
         pagerAdapter = new BasePagerAdapter(getSupportFragmentManager(), fragements);
 
         viewPager.setAdapter(pagerAdapter);
-        viewPager.setOffscreenPageLimit(2);
+        viewPager.setOffscreenPageLimit(4);
         viewPager.setCurrentItem(0);
         mImgFilter.setVisibility(View.GONE);
         //setView(0);
@@ -128,25 +133,25 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 switch (i) {
-                    case R.id.button_mingxi:
+                    case R.id.button_mingxi:// 账本首页
                         mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_mingxi);
                         viewPager.setCurrentItem(0);
                         playVoice(R.raw.jizhang);
                         break;
-                    case R.id.button_tubiao:
-                        playVoice(R.raw.jizhang);
+                    case R.id.button_tubiao:// 图标
                         mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_tubiao);
                         viewPager.setCurrentItem(1);
+                        playVoice(R.raw.jizhang);
                         break;
-                    case R.id.button_lingpp:
+                    case R.id.button_lingpp:// 领票票
                         mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_lingpp);
                         viewPager.setCurrentItem(2);
                         playVoice(R.raw.jizhang);
                         break;
-                    case R.id.button_wo:
+                    case R.id.button_wo:// 我的
                         mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_wo);
                         viewPager.setCurrentItem(3);

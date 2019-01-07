@@ -1,0 +1,138 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbird.common.dialog.ChooseAddressDialogData"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:layout_weight="1"
+                android:text="配送至"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/cancel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="@dimen/dp_15_x"
+                android:src="@mipmap/ic_close_normal"/>
+        </LinearLayout>
+
+        <LinearLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <LinearLayout
+                android:id="@+id/ll_province"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_5_x">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/dp_5_x"
+                    android:paddingStart="@dimen/dp_5_x"
+                    android:text="@{data.province}"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/dp_5_x"
+                    android:background="@color/colorPrimary"
+                    android:visibility="@{data.pos==0?View.VISIBLE:View.GONE}"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_city"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_5_x"
+                android:visibility="@{data.choose>=2?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/dp_5_x"
+                    android:paddingStart="@dimen/dp_5_x"
+                    android:text="@{data.city}"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/dp_5_x"
+                    android:background="@color/colorPrimary"
+                    android:visibility="@{data.pos==1?View.VISIBLE:View.GONE}"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_county"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="@dimen/dp_15_x"
+                android:paddingTop="@dimen/dp_5_x"
+                android:visibility="@{data.choose==3?View.VISIBLE:View.GONE}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingEnd="@dimen/dp_5_x"
+                    android:paddingStart="@dimen/dp_5_x"
+                    android:text="@{data.county}"
+                    android:textColor="#333333"
+                    android:textSize="14sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="0.5dp"
+                    android:layout_marginTop="@dimen/dp_5_x"
+                    android:background="@color/colorPrimary"
+                    android:visibility="@{data.pos==2?View.VISIBLE:View.GONE}"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/line2"/>
+
+        <android.support.v4.view.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:overScrollMode="never"
+            android:scrollbars="none"/>
+    </LinearLayout>
+</layout>

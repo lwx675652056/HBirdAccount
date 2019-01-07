@@ -79,4 +79,8 @@
 
     <string name="skip">跳过</string>
     <string name="ok">完成</string>
+    <string name="fengniaoId">ID:</string>
+    <string name="empty">&#160;&#160;</string>
+    <string name="empty1"/>
+    <string name="noChoose">未选择</string>
 </resources>

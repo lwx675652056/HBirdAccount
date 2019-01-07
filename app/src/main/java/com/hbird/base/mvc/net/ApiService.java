@@ -504,4 +504,5 @@ public interface ApiService {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @POST("bindInvite/android")
     Observable<ResponseBody> bindInvite(@Header("X-AUTH-TOKEN") String token,@Body RequestBody body);
+
 }

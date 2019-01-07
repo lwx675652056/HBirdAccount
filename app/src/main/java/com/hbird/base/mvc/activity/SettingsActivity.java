@@ -10,6 +10,7 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.widget.IosLikeToggleButton;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
+import com.hbird.base.mvp.view.activity.login.ShouShiPasswordActivity;
 import com.hbird.base.util.SPUtil;
 
 import butterknife.BindView;
@@ -20,7 +21,7 @@ import butterknife.OnClick;
  * 设置
  */
 
-public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener{
+public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
     @BindView(R.id.iv_back)
     ImageView mBack;
     @BindView(R.id.center_title)
@@ -48,11 +49,11 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
     @Override
     protected void initData(Bundle savedInstanceState) {
         //根据sp中存的值 显示是否打开
-        boolean isOpen = SPUtil.getPrefBoolean(this, com.hbird.base.app.constant.CommonTag.VOICE_KEY,true);
-        if(isOpen){
+        boolean isOpen = SPUtil.getPrefBoolean(this, com.hbird.base.app.constant.CommonTag.VOICE_KEY, true);
+        if (isOpen) {
             //mVoiceImg.setBackgroundResource(R.mipmap.icon_btn_open);
             mToggleButton.setChecked(true);
-        }else {
+        } else {
             //mVoiceImg.setBackgroundResource(R.mipmap.icon_btn_close);
             mToggleButton.setChecked(false);
         }
@@ -68,7 +69,7 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
             @Override
             public void onCheckedChanged(IosLikeToggleButton buttonView, boolean isChecked) {
                 boolean checked = mToggleButton.isChecked();//获取开关状态
-                if(!checked){
+                if (!checked) {
                     playVoice(R.raw.changgui02);
                 }
                 SPUtil.setPrefBoolean(SettingsActivity.this, com.hbird.base.app.constant.CommonTag.VOICE_KEY, checked);
@@ -76,10 +77,10 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
         });
     }
 
-    @OnClick({R.id.ll_account_safe ,R.id.ll_usefo,R.id.ll_about_us ,R.id.ll_voice})
+    @OnClick({R.id.ll_account_safe, R.id.ll_usefo, R.id.ll_about_us, R.id.ll_voice, R.id.ll_shoushi})
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
                 finish();
@@ -88,22 +89,26 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
                 //showMessage("账户安全");
                 playVoice(R.raw.changgui02);
                 Intent intent3 = new Intent();
-                intent3.setClass(this,AccountSafeActivity.class);
-                intent3.putExtra("PHONE",phones);
-                intent3.putExtra("WEIXIN",weiXin);
+                intent3.setClass(this, AccountSafeActivity.class);
+                intent3.putExtra("PHONE", phones);
+                intent3.putExtra("WEIXIN", weiXin);
                 startActivity(intent3);
+                break;
+            case R.id.ll_shoushi:
+                playVoice(R.raw.changgui02);
+                startActivity(new Intent(this, ShouShiPasswordActivity.class));
                 break;
             case R.id.ll_usefo:
                 //showMessage("使用手册");
                 playVoice(R.raw.changgui02);
                 Intent intent2 = new Intent(this, WebViewActivity.class);
-                intent2.putExtra("TYPE","shouce");
+                intent2.putExtra("TYPE", "shouce");
                 startActivity(intent2);
                 break;
             case R.id.ll_about_us:
                 //showMessage("关于我们");
                 playVoice(R.raw.changgui02);
-                startActivity(new Intent(this,AboutOursActivity.class));
+                startActivity(new Intent(this, AboutOursActivity.class));
                 break;
         }
     }

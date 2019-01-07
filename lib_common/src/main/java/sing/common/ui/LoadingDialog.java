@@ -5,6 +5,9 @@ import android.content.Context;
 import android.view.Gravity;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
+
+import com.bumptech.glide.Glide;
 
 import sing.common.R;
 
@@ -16,7 +19,7 @@ public class LoadingDialog {
     private Dialog dialog;
 
     public LoadingDialog(Context context) {
-        dialog = new Dialog(context, R.style.ProgressDialogTheme);
+        dialog = new Dialog(context, R.style.AlertDialogStyle);
 
         Window window = dialog.getWindow();
         WindowManager.LayoutParams params = window.getAttributes();
@@ -24,6 +27,11 @@ public class LoadingDialog {
         window.setAttributes(params);
 
         dialog.setContentView(R.layout.progress_dialog);
+
+        Glide.with(context)
+                .asGif()
+                .load(R.drawable.loading)
+                .into((ImageView) dialog.findViewById(R.id.iv));
     }
 
     public void show() {

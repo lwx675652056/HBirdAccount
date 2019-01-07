@@ -13,6 +13,7 @@ public interface UrlConstants {
 //    String BASE_H5_URL ="https://api.fengniaojizhang.com/h5/index.html?token=";//正式领票H5
 
     String PLATFORM_CONFIG_URL = "https://api.galaxyhouse.cn/rest/api/v1/";//测试环境
+//    String PLATFORM_CONFIG_URL = "http://192.168.3.221:8080/jeecg/rest/api/v1/";//测试环境
     String BASE_H5_URL ="http://api.galaxyhouse.cn:8203?token=";//测试 领票H5
 //    String PLATFORM_CONFIG_URL = "https://wxa.galaxyhouse.cn/rest/api/v1/";//测试环境
 //    String BASE_H5_URL ="http://192.168.2.112:8085?token=";//测试 领票H5

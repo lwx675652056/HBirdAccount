@@ -673,6 +673,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         if (happysFlag) {
             w.setSpendHappiness(happys);//愉悦度
         }
+        w.setUserPrivateLabelId(Integer.parseInt(req.getTypeId()));
         w.setTypePid(req.getTypePid());//二级类目
         w.setTypePname(req.getTypePname());
         w.setTypeId(req.getTypeId());//三级条目

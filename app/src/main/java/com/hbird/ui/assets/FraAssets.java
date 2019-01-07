@@ -72,6 +72,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
         adapter = new AssetsAdapter(getContext(), list, R.layout.row_assets, (position, data, type) -> onItemClick((AssetsBean) data));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
     }
 
     // item点击

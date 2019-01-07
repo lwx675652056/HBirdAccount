@@ -26,11 +26,12 @@ public final class ViewAdapter {
 
     @BindingAdapter(value = {"resId", "placeholderRes"}, requireAll = false)
     public static void setImageUri(ImageView imageView, int resId, int placeholderRes) {
-        //使用Glide框架加载图片
-        Glide.with(imageView.getContext())
-                .load(resId)
-                .apply(new RequestOptions().placeholder(placeholderRes))
-                .into(imageView);
+        imageView.setImageResource(resId);
+//        //使用Glide框架加载图片
+//        Glide.with(imageView.getContext())
+//                .load(resId)
+//                .apply(new RequestOptions().placeholder(placeholderRes))
+//                .into(imageView);
     }
 }
 

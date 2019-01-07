@@ -2,6 +2,7 @@ package com.hbird.ui.index;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -77,6 +78,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sing.common.base.BaseFragment;
+import sing.common.util.StatusBarUtil;
 import sing.util.AppUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
@@ -327,6 +329,11 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
+
+            Utils.initColor(getActivity(),Color.rgb(246, 246, 246));
+            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
+
+
             getIndexInfo();
             if (popOnces >= 0) {
                 //继续弹窗

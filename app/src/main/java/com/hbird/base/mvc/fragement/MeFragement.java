@@ -659,8 +659,6 @@ public class MeFragement extends BaseFragement implements View.OnClickListener {
         });
     }
 
-
-
     private void getMessage() {
         String userinfoid = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
         NetWorkManager.getInstance().setContext(getActivity())
@@ -685,5 +683,4 @@ public class MeFragement extends BaseFragement implements View.OnClickListener {
                     }
                 });
     }
-
 }

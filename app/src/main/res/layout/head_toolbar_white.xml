@@ -1,0 +1,72 @@
+<layout>
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="title"
+            type="com.hbird.bean.TitleBean"/>
+    </data>
+
+    <!--<android.support.v7.widget.Toolbar-->
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45_x"
+        app:contentInsetLeft="0dp"
+        app:contentInsetStart="0dp"
+        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+        <FrameLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/fl_parent"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@color/white">
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="@{title.title}"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:id="@+id/iv_back"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="start"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:src="@mipmap/ic_back"
+                android:visibility="@{title.goneBack?View.GONE:View.VISIBLE}"/>
+
+            <ImageView
+                android:id="@+id/iv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                app:resId="@{title.rightResId}"/>
+
+            <TextView
+                android:id="@+id/tv_right"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:gravity="center"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:text="@{title.rightTxt}"
+                android:textColor="@{title.rightColor}"
+                android:textSize="16sp"/>
+        </FrameLayout>
+    </LinearLayout>
+</layout>

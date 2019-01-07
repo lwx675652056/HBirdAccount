@@ -4,7 +4,8 @@
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.VIBRATE"/>
+    <!--允许程序震动-->
+    <uses-permission android:name="android.permission.android.permission.VIBRATE"/>
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
     <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
 
@@ -91,7 +92,13 @@
             android:name="com.hbird.ui.fill_invitation.ActFillInvitation"
             android:screenOrientation="portrait"/>
 
+        <!--修改地址-->
+        <activity
+            android:name="com.hbird.ui.address.ActEditAddress"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
+
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>
 
 

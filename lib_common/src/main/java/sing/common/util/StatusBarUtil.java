@@ -103,7 +103,7 @@ public class StatusBarUtil {
     /**
      * 清除MIUI或flyme或6.0以上版本状态栏黑色字体
      */
-    public static void StatusBarDarkMode(Window window) {
+    public static void clearStatusBarDarkMode(Window window) {
         int type = getStatusBarLightMode(window);
         if (type == 1) {
             MIUISetStatusBarLightMode(window, false);
