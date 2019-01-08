@@ -97,6 +97,11 @@
             android:name="com.hbird.ui.address.ActEditAddress"
             android:screenOrientation="portrait"/>
 
+        <!--注册-->
+        <activity
+            android:name="com.hbird.ui.login_register.ActRegister"
+            android:screenOrientation="portrait"/>
+
         <!--我的 - 选择账本类型 MVVM -->
 
         <activity android:name="com.hbird.ui.ActChooseAccountType"/>

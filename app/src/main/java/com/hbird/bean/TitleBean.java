@@ -2,6 +2,7 @@ package com.hbird.bean;
 
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
+import android.graphics.drawable.Drawable;
 
 import com.android.databinding.library.baseAdapters.BR;
 
@@ -11,7 +12,9 @@ public class TitleBean extends BaseObservable {
     private int rightResId;
     private boolean goneBack = false;//  是否隐藏返回键
     private String rightTxt;// 右侧文字
-    private int rightColor;// 右侧文字
+    private int rightColor = -1;// 右侧文字颜色
+    private int bg_color = -1;// 背景颜色
+    private Drawable backIcon;// 返回图标
 
     public TitleBean() {
     }
@@ -76,6 +79,7 @@ public class TitleBean extends BaseObservable {
         this.rightTxt = rightTxt;
         notifyPropertyChanged(BR.rightTxt);
     }
+
     @Bindable
     public int getRightColor() {
         return rightColor;
@@ -84,5 +88,25 @@ public class TitleBean extends BaseObservable {
     public void setRightColor(int rightColor) {
         this.rightColor = rightColor;
         notifyPropertyChanged(BR.rightColor);
+    }
+
+    @Bindable
+    public int getBg_color() {
+        return bg_color;
+    }
+
+    public void setBg_color(int bg_color) {
+        this.bg_color = bg_color;
+        notifyPropertyChanged(BR.bg_color);
+    }
+
+    @Bindable
+    public Drawable getBackIcon() {
+        return backIcon;
+    }
+
+    public void setBackIcon(Drawable backIcon) {
+        this.backIcon = backIcon;
+        notifyPropertyChanged(BR.backIcon);
     }
 }

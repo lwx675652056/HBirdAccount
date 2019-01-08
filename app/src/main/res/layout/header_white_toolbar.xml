@@ -38,8 +38,8 @@
             android:layout_gravity="center_vertical"
             android:gravity="center"
             android:text="选择类别"
-            android:textColor="@color/black"
-            android:textSize="18sp"/>
+            android:textColor="@color/text_333333"
+            android:textSize="20sp"/>
 
         <TextView
             android:id="@+id/tv_right_title"

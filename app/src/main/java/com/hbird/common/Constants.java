@@ -23,4 +23,7 @@ public class Constants {
     public static final String  REGISTER_DATE = "register_date";// 注册时间
     public static final String  _FILLED_IN = "_filled_in";// 是否填写过邀请码
 
+    public static final String USER_HEAD = "account_user_header";// 个人信息  头像
+    public static final String USER_NICKNAME = "account_user_nick_name";// 个人信息  昵称
+
 }

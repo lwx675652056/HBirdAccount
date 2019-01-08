@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="@dimen/height_2_80"
-        android:src="@mipmap/ic_white_back"/>
+        android:src="@drawable/ic_white_back"/>
 
     <TextView
         android:id="@+id/center_title"

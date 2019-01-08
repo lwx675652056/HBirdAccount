@@ -1,0 +1,172 @@
+<layout xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.login_register.RegisterData"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.login_register.ActRegister.OnClick"/>
+
+        <variable
+            name="title"
+            type="com.hbird.bean.TitleBean"/>
+
+        <import type="android.view.View"/>
+
+        <import type="android.text.TextUtils"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/head_toolbar"
+            bind:setTitle="@{title}"/>
+
+        <View style="@style/horizontal_line"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/dp_50_x"
+            android:paddingStart="@dimen/dp_50_x"
+            android:paddingTop="@dimen/dp_30_x">
+
+            <EditText
+                android:id="@+id/et_phone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                android:digits="0123456789"
+                android:hint="请输入手机号"
+                android:maxLength="13"
+                android:inputType="phone"
+                android:paddingBottom="@dimen/dp_5_x"
+                android:paddingTop="@dimen/dp_10_x"
+                android:text="@={data.phone1}"
+                android:textColor="#333333"
+                android:textSize="16sp"/>
+
+            <View style="@style/horizontal_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15_x">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:digits="0123456789"
+                    android:hint="请输入验证码"
+                    android:inputType="phone"
+                    android:paddingBottom="@dimen/dp_5_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@={data.code}"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10_x"
+                    android:background="@null"
+                    android:onClick="@{listener.getCode}"
+                    android:paddingBottom="@dimen/dp_5_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:clickable="@{data.clickable}"
+                    android:text="@{data.time}"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+
+            <View style="@style/horizontal_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15_x"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="设置登录密码"
+                    android:inputType="textPassword"
+                    android:paddingBottom="@dimen/dp_5_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@={data.password}"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:id="@+id/tv_hint"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10_x"
+                    android:background="@null"
+                    android:onClick="@{listener.onFocus}"
+                    android:paddingBottom="@dimen/dp_5_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="(6位以上数字、英文)"
+                    android:textColor="#CDCDCD"
+                    android:textSize="12sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{listener.showPassword}"
+                    android:padding="@dimen/dp_10_x"
+                    android:src="@{data.showPassword?@drawable/icon_mmkj_normal:@drawable/icon_mmbkj_normal}"
+                    android:visibility="@{TextUtils.isEmpty(data.password)?View.GONE:View.VISIBLE}"/>
+            </LinearLayout>
+
+            <View style="@style/horizontal_line"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15_x"
+                android:background="@null"
+                android:onClick="@{listener.agreement}"
+                android:paddingBottom="@dimen/dp_5_x"
+                android:paddingTop="@dimen/dp_10_x"
+                android:text="@{data.agreement}"
+                android:textColor="#CDCDCD"
+                android:textSize="14sp"/>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_50_x"
+                android:background="@drawable/select_main_button"
+                android:gravity="center"
+                android:onClick="@{listener.register}"
+                android:paddingBottom="@dimen/dp_10_x"
+                android:paddingTop="@dimen/dp_10_x"
+                android:text="注册并登录"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</layout>

@@ -326,7 +326,6 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         if (time != null) {
             time.cancel();//取消倒计时
         }
-
     }
 
     private void setTypesToLocalDB(SystemBiaoqReturn b1) {

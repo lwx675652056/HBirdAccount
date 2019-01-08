@@ -43,6 +43,7 @@
         <item name="android:windowEnterAnimation">@anim/push_bottom_in</item>
         <item name="android:windowExitAnimation">@anim/push_bottom_out</item>
     </style>
+
     <style name="radio_head_bg">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -64,6 +65,7 @@
         <item name="android:textColor">@drawable/radio_head_res</item>
         <item name="android:textSize">@dimen/text_size_6</item>
     </style>
+
     <style name="radio_mood_bg">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
@@ -90,14 +92,17 @@
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/text_333333</item>
     </style>
+
     <style name="text_19_black_white">
         <item name="android:textSize">19sp</item>
         <item name="android:textColor">@color/text_333333</item>
     </style>
+
     <style name="text_19_black">
         <item name="android:textSize">19sp</item>
         <item name="android:textColor">@color/text_333333</item>
     </style>
+
     <style name="text_15_gray">
         <item name="android:textSize">15sp</item>
         <item name="android:textColor">@color/text_333333</item>
@@ -109,6 +114,7 @@
         <item name="android:windowExitAnimation">@anim/popu_hiden_from_top</item>
 
     </style>
+
     <style name="title_text">
 
         <item name="android:textSize">18sp</item>
@@ -123,6 +129,7 @@
         <item name="android:windowIsFloating">true</item>
         <item name="android:windowContentOverlay">@null</item>
     </style>
+
     <style name="picker_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowFrame">@null</item>
         <item name="android:windowIsFloating">true</item>
@@ -150,15 +157,15 @@
         <item name="android:maxHeight">@dimen/space_48</item>
     </style>
 
-   <!-- <style name="Widget.ProgressBar.IndicatorProgressBarStyleFirst">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/indicator_progress_bar_first</item>
-        <item name="android:indeterminateDrawable">
-            @android:drawable/progress_indeterminate_horizontal
-        </item>
-        <item name="android:minHeight">@dimen/space_1</item>
-        <item name="android:maxHeight">@dimen/space_48</item>
-    </style>-->
+    <!-- <style name="Widget.ProgressBar.IndicatorProgressBarStyleFirst">
+         <item name="android:indeterminateOnly">false</item>
+         <item name="android:progressDrawable">@drawable/indicator_progress_bar_first</item>
+         <item name="android:indeterminateDrawable">
+             @android:drawable/progress_indeterminate_horizontal
+         </item>
+         <item name="android:minHeight">@dimen/space_1</item>
+         <item name="android:maxHeight">@dimen/space_48</item>
+     </style>-->
 
     <style name="Widget.ProgressBar.IndicatorProgressBarStyleSecond">
         <item name="android:indeterminateOnly">false</item>
@@ -169,10 +176,12 @@
         <item name="android:minHeight">@dimen/space_1</item>
         <item name="android:maxHeight">@dimen/space_48</item>
     </style>
+
     <style name="Theme_dialog" parent="@android:style/Theme.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+
     <style name="FullScreenDialog" parent="android:Theme.Dialog">
 
         <!-- 窗口设为无标题 -->
@@ -197,31 +206,32 @@
         <!-- 全屏 -->
         <item name="android:windowFullscreen">false</item>
     </style>
+
     <style name="horizontal_line_style">
         <item name="android:background">@color/line2</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
     </style>
-   <!-- <style name="Widget.ProgressBar.IndicatorProgressBarStyleThird">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/indicator_progress_bar_third</item>
-        <item name="android:indeterminateDrawable">
-            @android:drawable/progress_indeterminate_horizontal
-        </item>
-        <item name="android:minHeight">@dimen/space_1</item>
-        <item name="android:maxHeight">@dimen/space_48</item>
-    </style>
+    <!-- <style name="Widget.ProgressBar.IndicatorProgressBarStyleThird">
+         <item name="android:indeterminateOnly">false</item>
+         <item name="android:progressDrawable">@drawable/indicator_progress_bar_third</item>
+         <item name="android:indeterminateDrawable">
+             @android:drawable/progress_indeterminate_horizontal
+         </item>
+         <item name="android:minHeight">@dimen/space_1</item>
+         <item name="android:maxHeight">@dimen/space_48</item>
+     </style>
 
-    <style name="Widget.ProgressBar.IndicatorProgressBarStyleOther">
-        <item name="android:indeterminateOnly">false</item>
-        <item name="android:progressDrawable">@drawable/indicator_progress_bar_other</item>
-        <item name="android:indeterminateDrawable">
-            @android:drawable/progress_indeterminate_horizontal
-        </item>
-        <item name="android:minHeight">1dip</item>
-        <item name="android:maxHeight">10dip</item>
-    </style>
--->
+     <style name="Widget.ProgressBar.IndicatorProgressBarStyleOther">
+         <item name="android:indeterminateOnly">false</item>
+         <item name="android:progressDrawable">@drawable/indicator_progress_bar_other</item>
+         <item name="android:indeterminateDrawable">
+             @android:drawable/progress_indeterminate_horizontal
+         </item>
+         <item name="android:minHeight">1dip</item>
+         <item name="android:maxHeight">10dip</item>
+     </style>
+ -->
     <style name="TitleStyle">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">50dp</item>
@@ -236,6 +246,7 @@
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@null</item>
     </style>
+
     <style name="TabRadioButtonWithText">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -247,14 +258,17 @@
         <item name="android:textColor">@drawable/tab_text_color_selector</item>
         <item name="android:drawablePadding">2dp</item>
     </style>
+
     <style name="take_photo_anim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/pop_enter_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_anim</item>
     </style>
+
     <style name="new_guide_down_anim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/pop_enter_guide_down_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_guide_down_anim</item>
     </style>
+
     <style name="new_guide_up_anim" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/pop_enter_guide_up_anim</item>
         <item name="android:windowExitAnimation">@anim/pop_exit_guide_up_anim</item>
@@ -262,6 +276,12 @@
     <!--复选框样式-->
     <style name="CustomCheckBoxTheme" parent="@android:style/Widget.CompoundButton.CheckBox">
         <item name="android:button">@drawable/checkbox_style</item>
+    </style>
+
+    <style name="horizontal_line">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">1dp</item>
+        <item name="android:background">@color/line2</item>
     </style>
 
 </resources>

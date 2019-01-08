@@ -17,7 +17,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="@dimen/height_2_80"
-            android:src="@mipmap/ic_white_back"/>
+            android:src="@drawable/ic_white_back"/>
 
         <TextView
             android:id="@+id/tv_left_title"

@@ -15,7 +15,6 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_45_x"
-        android:background="@color/colorPrimary"
         app:contentInsetLeft="0dp"
         app:contentInsetStart="0dp"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
@@ -25,16 +24,17 @@
             android:id="@+id/fl_parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45_x"
-            android:background="@color/colorPrimary">
+            android:background="@{title.rightColor==-1?@color/colorPrimary:@color/white}">
 
             <TextView
                 android:id="@+id/tv_title"
-                style="@style/title_text"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:singleLine="true"
-                android:text="@{title.title}"/>
+                android:text="@{title.title}"
+                android:textColor="@{title.rightColor==-1?@color/white:title.rightColor}"
+                android:textSize="20sp"/>
 
             <ImageView
                 android:id="@+id/iv_back"
@@ -43,7 +43,7 @@
                 android:layout_gravity="start"
                 android:paddingEnd="@dimen/dp_15_x"
                 android:paddingStart="@dimen/dp_15_x"
-                android:src="@mipmap/ic_white_back"
+                android:src="@{title.backIcon==null?@drawable/ic_white_back:title.backIcon}"
                 android:visibility="@{title.goneBack?View.GONE:View.VISIBLE}"/>
 
             <ImageView

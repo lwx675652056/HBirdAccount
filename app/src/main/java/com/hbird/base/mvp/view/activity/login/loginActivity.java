@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.annotation.IdRes;
@@ -39,6 +40,8 @@ import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.common.Constants;
 import com.hbird.ui.fill_invitation.ActFillInvitation;
+import com.hbird.ui.login_register.ActRegister;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -54,6 +57,7 @@ import java.util.regex.Pattern;
 
 import butterknife.BindView;
 import butterknife.OnClick;
+import sing.common.util.StatusBarUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 
@@ -132,6 +136,12 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
 
     @Override
     protected void initView(Bundle bundle) {
+        Utils.initColor(this, Color.rgb(255, 255,255));
+        StatusBarUtil.setStatusBarLightMode(getWindow());
+
+        findViewById(R.id.iv_backs).setVisibility(View.GONE);
+        ((TextView)findViewById(R.id.tv_center_title)).setText("登录蜂鸟记账");
+
         //默认手机号密码登录
         mbPasswordLogin = true;
         mRadioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -146,6 +156,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                         phoneNumbers = mRightPhone.getEditText().getText().toString().trim();
                         isLeft = true;
                         initEvent();
+
                         mRightPhone.getEditText().setText(phoneNumbers);
                         phoneNum.setText(phoneNumbers);
                         phoneNum.setSelection(phoneNumbers.length());
@@ -185,7 +196,8 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
             //注册
             case R.id.tv_register:
             case R.id.tv_right_register:
-                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+//                startActivity(new Intent(getApplicationContext(), RegisterActivity.class));
+                startActivity(new Intent(this, ActRegister.class));
                 break;
             //找回密码
             case R.id.tv_find_password:
@@ -272,7 +284,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                     String userName = phoneNum.getText().toString().trim();
                     String password = mPassword.getEditText().getText().toString().trim();
                     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
-                        mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                        mLogin.setBackgroundResource(R.drawable.select_main_button);
                     } else {
                         mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                     }
@@ -293,7 +305,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                     String userName = phoneNum.getText().toString().trim();
                     String password = mPassword.getEditText().getText().toString().trim();
                     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
-                        mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                        mLogin.setBackgroundResource(R.drawable.select_main_button);
                     } else {
                         mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                     }
@@ -315,7 +327,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                     String userName = mRightPhone.getEditText().getText().toString().trim();
                     String password = mRightPassword.getEditText().getText().toString().trim();
                     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
-                        mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                        mLogin.setBackgroundResource(R.drawable.select_main_button);
                     } else {
                         mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                     }
@@ -336,7 +348,7 @@ public class loginActivity extends BaseActivity<loginPresenter> implements Ilogi
                     String userName = mRightPhone.getEditText().getText().toString().trim();
                     String password = mRightPassword.getEditText().getText().toString().trim();
                     if (!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(password)) {
-                        mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                        mLogin.setBackgroundResource(R.drawable.select_main_button);
                     } else {
                         mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                     }

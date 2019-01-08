@@ -19,7 +19,7 @@
 
         <View
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10_x"
+            android:layout_height="@dimen/dp_15_x"
             android:background="#F5F5F5"
             android:visibility="@{bean.tag==0?View.VISIBLE:View.GONE}"/>
 
@@ -198,7 +198,7 @@
         <View
             android:id="@+id/bottom_view"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_10_x"
+            android:layout_height="@dimen/dp_15_x"
             android:background="#F5F5F5" />
     </LinearLayout>
 </layout>
