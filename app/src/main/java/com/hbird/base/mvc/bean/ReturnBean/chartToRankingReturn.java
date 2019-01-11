@@ -1,6 +1,7 @@
 package com.hbird.base.mvc.bean.ReturnBean;
 
 import com.hbird.base.mvc.bean.BaseReturn;
+import com.hbird.bean.StatisticsSpendTopArraysBean;
 
 import java.util.List;
 
@@ -112,46 +113,6 @@ public class chartToRankingReturn extends BaseReturn {
 
             public void setSpendHappiness(Integer spendHappiness) {
                 this.spendHappiness = spendHappiness;
-            }
-        }
-
-        public static class StatisticsSpendTopArraysBean {
-            public double money;
-            public String icon;
-            public String typeName;
-            public boolean isFrist = true;
-
-
-            public boolean isFrist() {
-                return isFrist;
-            }
-
-            public void setFrist(boolean frist) {
-                isFrist = frist;
-            }
-
-            public String getIcon() {
-                return icon;
-            }
-
-            public void setIcon(String icon) {
-                this.icon = icon;
-            }
-
-            public double getMoney() {
-                return money;
-            }
-
-            public void setMoney(double money) {
-                this.money = money;
-            }
-
-            public String getTypeName() {
-                return typeName;
-            }
-
-            public void setTypeName(String typeName) {
-                this.typeName = typeName;
             }
         }
     }

@@ -21,11 +21,11 @@ import com.hbird.base.mvc.bean.ReturnBean.CommonListBean;
 import com.hbird.base.mvc.bean.ReturnBean.ShouRuTagReturnNew;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.mvc.global.CommonUserIInfo;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
+import com.hbird.common.Constants;
 import com.ljy.devring.util.NetworkUtil;
 
 import java.util.ArrayList;
@@ -281,8 +281,8 @@ public class AccountComeFragementNew1 extends BaseFragement{
         commonList.addAll(tempList);
 
         SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean temp1 = new SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean();
-        temp1.setIncomeName("添加");
-        temp1.setIcon(CommonUserIInfo.account_add_url);
+        temp1.setIncomeName("更多");
+        temp1.setIcon(Constants.ACCOUNT_ADD_URL);
         commonList.add(temp1);
 
         myAdapter.setDatas(commonList, "1");

@@ -1,25 +1,31 @@
 package com.hbird.ui.index;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.alibaba.fastjson.serializer.SerializerFeature;
+import com.github.mikephil.chart_3_0_1v.charts.PieChart;
+import com.github.mikephil.chart_3_0_1v.data.Entry;
+import com.github.mikephil.chart_3_0_1v.data.PieData;
+import com.github.mikephil.chart_3_0_1v.data.PieDataSet;
+import com.github.mikephil.chart_3_0_1v.data.PieEntry;
+import com.github.mikephil.chart_3_0_1v.highlight.Highlight;
+import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
+import com.github.mikephil.charting.animation.Easing;
 import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.databinding.FragementIndexBinding;
@@ -41,7 +47,6 @@ import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
 import com.hbird.base.mvc.bean.ReturnBean.WindowPopReturn;
 import com.hbird.base.mvc.bean.ReturnBean.indexDatasReturn;
-import com.hbird.base.mvc.bean.dayListBean;
 import com.hbird.base.mvc.bean.indexBaseListBean;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
@@ -49,32 +54,26 @@ import com.hbird.base.mvc.view.dialog.DialogToGig;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvc.view.dialog.IndexCommonDialog;
 import com.hbird.base.mvc.view.dialog.InvitationFirendDialog;
-import com.hbird.base.mvc.widget.HeaderViewPager;
 import com.hbird.base.mvc.widget.NewGuidePop;
 import com.hbird.base.mvc.widget.TabRadioButton;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
-import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
+import com.hbird.bean.StatisticsSpendTopArraysBean;
+import com.hbird.common.Constants;
 import com.hbird.ui.calendar.ActCalendar;
 import com.hbird.ui.detailed.ActAccountDetailed;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
 
-import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import sing.common.base.BaseFragment;
@@ -96,14 +95,10 @@ import static java.lang.Integer.parseInt;
  */
 public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFragementModle> {
 
-    ImageView mNoData;
-    LinearLayout mNets;
-    HeaderViewPager scrollableLayout;
     TextView mMoRen;
 
     private ArrayList<String> dataY;
     private ArrayList<String> dataM;
-    private int yyyy = 2018;
 
     private ArrayList<indexBaseListBean> dates = new ArrayList<>();
     //代表第一次进入页面
@@ -126,6 +121,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private String zhangbenId = "";
 
     private String deviceId;// 设备唯一标识
+    private int yyyy = 2018;
     private int mm = 12; // 当前月
     private IndexFragmentData data;
 
@@ -134,6 +130,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     private IndexAdapter adapter;
     private List<AccountDetailedBean> list = new ArrayList<>();
+
+    private List<WaterOrderCollect> pieChatList = new ArrayList<>();
+    private PieChatAdapter pieChatAdapter;
 
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -150,6 +149,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void initData() {
         data = new IndexFragmentData();
         binding.setBean(data);
+        data.setComparison("相比上月支出 --%");
+
         binding.setListener(new OnClick());
 
         deviceId = Utils.getDeviceInfo(getActivity());
@@ -158,9 +159,10 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.recyclerView.setAdapter(memberAdapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
 
-        mNoData = binding.ivNoData;
-        mNets = binding.llNets;
-        scrollableLayout = binding.scrollableLayout;
+        pieChatAdapter = new PieChatAdapter(getActivity(), pieChatList, R.layout.row_piechat, (position, data, type) -> onItemClick(((WaterOrderCollect) data).getId(), type));
+        binding.recyclerView2.setAdapter(pieChatAdapter);
+        binding.recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
+
         mMoRen = binding.abMoren;
 
         //数据库相关操作
@@ -168,7 +170,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         popOnces = 0;//重新执行则将其置为0
 
-        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
+        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick(((AccountDetailedBean) data).getId(), type));
         binding.recyclerView1.setAdapter(adapter);
         binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -189,6 +191,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         String s = mMonth.substring(0, 2);
         mm = parseInt(s);
 
+        data.setYyyy(yyyy);
         data.setMm(mm);
         data.setShow(true);
 
@@ -226,18 +229,21 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         if (getUserVisibleHint()) {
             setHomePage();
         }
+
+        getIndexInfo();
+        loadDataForNet();
     }
 
     // 点击记账的条目
-    private void onItemClick(AccountDetailedBean data, int type) {
+    private void onItemClick(String id, int type) {
         if (type == 0) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent = new Intent(getActivity(), MingXiInfoActivity.class);
-            intent.putExtra("ID", data.getId());
+            intent.putExtra("ID", id);
             startActivityForResult(intent, 101);
         } else if (type == 1) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            alertDialog(data);
+            alertDialog(id);
         }
     }
 
@@ -289,6 +295,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         // 暂时隐藏金额
         public void showMoney(View view) {
             data.setShowMoney(!data.isShowMoney());
+            if (data.isShowMoney()) {
+                mChart.setCenterText("总支出\n-" + data.getSpendingMoney()); //设置中心文本
+            } else {
+                mChart.setCenterText("总支出\n****"); //设置中心文本
+            }
+            mChart.postInvalidate();
         }
 
         // 编辑预算
@@ -330,31 +342,24 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
 
-            Utils.initColor(getActivity(),Color.rgb(246, 246, 246));
+            Utils.initColor(getActivity(), Color.rgb(246, 246, 246));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
 
-
-            getIndexInfo();
             if (popOnces >= 0) {
                 //继续弹窗
                 tanDialog(windowPop);
             }
-            loadDataForNet();
         }
     }
 
     @Override
     public void onResume() {
         super.onResume();
-//        ii = ii + 1;
-//        if (ii > 1) {
         getIndexInfo();
         if (popOnces >= 0) {
-            //继续弹窗
             tanDialog(windowPop);
         }
         loadDataForNet();
-//        }
     }
 
 
@@ -410,7 +415,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private void pullToSyncDate() {
         //判断当前网络状态
         boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(getActivity());
-        setCurrentNets();
         if (!netWorkAvailable) {
             return;
         }
@@ -576,83 +580,18 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         });
     }
 
-//    @Override
-//    public void onClick(View view) {
-//        switch (view.getId()) {
-//
-//            case R.id.rl_top_btn: //来记一笔
-//                Utils.playVoice(getActivity(), R.raw.jizhang);
-//                LogUtil.e("11");
-//                startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
-//                LogUtil.e("22");
-//                break;
-//        }
-//    }
-
     private void getIndexInfo() {
-        //查询指定月份记录
-        String MonthFirstDay = DateUtil.getMonthday2First(yyyy, mm);
-        String MonthLastDay = DateUtil.getMonthday2Last(yyyy, mm);
-        String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
-        String sql = "";
-        accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-        zhangbenId = accountId;
-        if (TextUtils.isEmpty(accountId)) {
-            Set<String> set = new LinkedHashSet<>();
-            Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
-            if (prefSet != null) {
-                String ids = "";
-                Iterator<String> iterator = prefSet.iterator();
-                while (iterator.hasNext()) {
-                    String s = iterator.next();
-                    ids += s + ",";
-                }
-                if (!TextUtils.isEmpty(ids)) {
-                    String substring = ids.substring(0, ids.length() - 1);
-                    sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                            ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                            ", remark, USER_PRIVATE_LABEL_ID,ASSETS_NAME, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-                            " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")" + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-                }
-            }
-        } else {
-            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-                    " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-        }
+        Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
+        viewModel.getMonthData(data.getYyyy(), data.getMm(), accountId, prefSet, new IndexFragementModle.OnMonthCallBack() {
 
-        Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+            @Override
+            public void result(double spend, double income, ArrayList<indexBaseListBean> list1) {
+                if (list1 != null && list1.size() > 0) {
+                    dates.clear();
+                    dates.addAll(list1);
 
-        List<WaterOrderCollect> dbList = new ArrayList<>();
-        dbList.clear();
-        if (null != cursor) {
-            try {
-                dbList = DBUtil.changeToList(cursor, dbList, WaterOrderCollect.class);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-
-        if (null != dbList && dbList.size() > 0) {
-            Collections.sort(dbList);
-            Map<String, Object> dbDate = getDBDate(dbList);
-            String json = new Gson().toJson(dbDate);
-            dayListBean.ResultBean bean = new Gson().fromJson(json, dayListBean.ResultBean.class);
-
-            if (bean != null) {
-                dates = getDBDates(bean);
-                if (dates != null && dates.size() > 0) {
-                    double monthIncome = bean.getMonthIncome();
-                    double monthSpend = bean.getMonthSpend();
-                    String monthIncomes = getNumToNumber(monthIncome);
-                    String monthSpends = getNumToNumber(monthSpend);
-
-                    data.setSpendingMoney(monthSpends);// 支出
-                    data.setInComeMoney(monthIncomes);// 收入
-
+                    int a = 0;// 只记录3条数据
                     list.clear();
-                    int a = 0;// 只记录3天数据
                     for (int i = 0; i < dates.size(); i++) {
                         AccountDetailedBean temp = new AccountDetailedBean();
                         temp.setBean(dates.get(i));
@@ -666,23 +605,17 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                             break;
                         }
                     }
-//                    Collections.sort(list);
-                    adapter.notifyDataSetChanged();
-                } else {
-                    data.setSpendingMoney("0.00");// 支出
-                    data.setInComeMoney("0.00");// 收入
 
-                    list.clear();
                     adapter.notifyDataSetChanged();
                 }
-            }
-        } else {
-            data.setSpendingMoney("0.00");// 支出
-            data.setInComeMoney("0.00");// 收入
 
-            list.clear();
-            adapter.notifyDataSetChanged();
-        }
+                data.setSpendingMoney(String.valueOf(spend));// 支出
+                data.setInComeMoney(String.valueOf(income));// 收入
+
+                setChart();
+            }
+        });
+
         getHeadNetInfo();
         //获取账本内组员情况 --->首页展示
         if (!TextUtils.isEmpty(zhangbenId)) {
@@ -748,197 +681,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 });
     }
 
-    private String getNumToNumber(Double d) {
-        java.text.NumberFormat NF = java.text.NumberFormat.getInstance();
-        NF.setGroupingUsed(false);//去掉科学计数法显示
-        return NF.format(d);
-    }
-
-    private Map<String, Object> getDBDate(List<WaterOrderCollect> list) {
-        //获取到当月所有记录
-        Map<Date, Object> map = new LinkedHashMap<>();
-        for (Iterator<WaterOrderCollect> it = list.iterator(); it.hasNext(); ) {
-            WaterOrderCollect warter = it.next();
-            //判断是否包含日期
-            Date chargeDate = warter.getChargeDate();
-            Date day = DateUtil.getDay(chargeDate);
-            if (map.containsKey(day)) {
-                ((ArrayList) map.get(day)).add(warter);
-            } else {
-                List<WaterOrderCollect> lists = new ArrayList<>();
-                lists.add(warter);
-                map.put(day, lists);
-            }
-        }
-        Map<String, Object> ja = new HashMap();
-        if (map.size() > 0) {
-            //Map<Date, Object> resultMap = sortMapByKey(map);
-            JSONArray array = new JSONArray();
-            JSONArray array2 = new JSONArray();
-            for (Map.Entry<Date, Object> entry : map.entrySet()) {
-                //封装成key value格式
-                JSONObject obj = new JSONObject();
-                if (!TextUtils.equals(entry.getKey() + "", "dayTime")) {
-                    obj.put("dayTime", entry.getKey());
-                }
-
-                if (!TextUtils.equals(entry.getKey() + "", "dayTime")) {
-                    obj.put("dayArrays", entry.getValue());
-                }
-                array.add(JSONObject.toJSONString(obj, SerializerFeature.WriteMapNullValue));
-            }
-            //获取日统计
-            for (int i = 0; i < array.size(); i++) {
-                JSONObject jsonObject = JSON.parseObject((String) array.get(i));
-                if (!TextUtils.isEmpty(jsonObject.getString("dayArrays"))) {
-                    BigDecimal dayIncome = new BigDecimal(0);
-                    BigDecimal daySpend = new BigDecimal(0);
-                    List lists = JSONArray.parseArray(jsonObject.getString("dayArrays"));
-                    for (int j = 0; j < lists.size(); j++) {
-                        //支出
-                        WaterOrderCollect warter = JSONObject.parseObject(JSONObject.toJSONString(lists.get(j)), WaterOrderCollect.class);
-                        if (warter.getOrderType() == 1) {
-                            daySpend = daySpend.add(new BigDecimal(warter.getMoney()));
-                        }
-                        if (warter.getOrderType() == 2) {
-                            dayIncome = dayIncome.add(new BigDecimal(warter.getMoney()));
-                        }
-                    }
-                    jsonObject.put("dayIncome", dayIncome);
-                    jsonObject.put("daySpend", daySpend);
-                    array2.add(jsonObject);
-                    //jsonObject转json
-                }
-            }
-            //获取月份统计数据
-            if (!TextUtils.isEmpty(accountId)) {
-                Map<String, BigDecimal> account = getAccount(Integer.parseInt(accountId));
-                ja.put("arrays", array2);
-                ja.put("monthSpend", account.get("spend"));
-                ja.put("monthIncome", account.get("income"));
-                return ja;
-            } else {
-                Map<String, BigDecimal> account = getAccounts();
-                ja.put("arrays", array2);
-                ja.put("monthSpend", account.get("spend"));
-                ja.put("monthIncome", account.get("income"));
-                return ja;
-            }
-
-        }
-        return ja;
-    }
-
-    public Map<String, BigDecimal> getAccount(int accountBookId) {
-        Map<String, BigDecimal> listBySql = new HashMap<>();
-        listBySql.clear();
-        String MonthFirstDay = DateUtil.getMonthday2First(yyyy, mm);
-        String MonthLastDay = DateUtil.getMonthday2Last(yyyy, mm);
-        long l = System.currentTimeMillis();
-        Date date = new Date(l);
-        String sql = "SELECT SUM( CASE WHEN order_type = 1 THEN money ELSE 0 END) AS spend," +
-                "SUM( CASE WHEN order_type = 2 THEN money ELSE 0 END) AS income FROM `WATER_ORDER_COLLECT`" +
-                " WHERE charge_date >= '" + MonthFirstDay + "' and charge_date <= '" + MonthLastDay + "'" +
-                " AND account_book_id = '" + accountBookId + "' AND delflag = 0;";
-        Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
-        if (cursor != null) {
-            int count = cursor.getCount();
-            if (cursor.moveToFirst()) {
-                String spend = cursor.getString(0);
-                listBySql.put("spend", new BigDecimal(spend));
-                String income = cursor.getString(1);
-                listBySql.put("income", new BigDecimal(income));
-            }
-        }
-        return listBySql;
-    }
-
-    public Map<String, BigDecimal> getAccounts() {
-        Map<String, BigDecimal> listBySql = new HashMap<>();
-        listBySql.clear();
-        String MonthFirstDay = DateUtil.getMonthday2First(yyyy, mm);
-        String MonthLastDay = DateUtil.getMonthday2Last(yyyy, mm);
-        long l = System.currentTimeMillis();
-        Date date = new Date(l);
-        Set<String> sets = new LinkedHashSet<>();
-        Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, sets);
-        String sql = "";
-        Cursor cursor = null;
-        if (prefSet != null) {
-            String ids = "";
-            Iterator<String> iterator = prefSet.iterator();
-            while (iterator.hasNext()) {
-                String s = iterator.next();
-                ids += s + ",";
-            }
-            String substring = ids.substring(0, ids.length() - 1);
-            sql = "SELECT SUM( CASE WHEN order_type = 1 THEN money ELSE 0 END) AS spend," +
-                    "SUM( CASE WHEN order_type = 2 THEN money ELSE 0 END) AS income FROM `WATER_ORDER_COLLECT`" +
-                    " WHERE charge_date >= '" + MonthFirstDay + "' and charge_date <= '" + MonthLastDay + "'" +
-                    " AND account_book_id in " + "(" + substring + ")" + " AND delflag = 0;";
-            cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
-        }
-
-
-        if (cursor != null) {
-            int count = cursor.getCount();
-            if (cursor.moveToFirst()) {
-                String spend = cursor.getString(0);
-                listBySql.put("spend", new BigDecimal(spend));
-                String income = cursor.getString(1);
-                listBySql.put("income", new BigDecimal(income));
-            }
-        }
-        return listBySql;
-    }
-
-    private ArrayList<indexBaseListBean> getDBDates(dayListBean.ResultBean bean) {
-        List<dayListBean.ResultBean.ArraysBean> arrays = bean.getArrays();
-        if (arrays == null) return null;
-        //数据处理 抽取到同一个集合indexBeans中去
-        ArrayList<indexBaseListBean> been = new ArrayList<>();
-        for (int i = 0; i < arrays.size(); i++) {
-            List<dayListBean.ResultBean.ArraysBean.DayArraysBean> dayArrays = arrays.get(i).getDayArrays();
-            indexBaseListBean indexBeans = new indexBaseListBean();
-            if (dayArrays != null && dayArrays.size() > 0) {
-                ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, "");
-                indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
-                xBean.setDayIncome(arrays.get(i).getDayIncome());
-                xBean.setDaySpend(arrays.get(i).getDaySpend());
-                xBean.setDayTime(arrays.get(i).getDayTime());
-                iBeen.add(xBean);
-                indexBeans.setIndexBeen(iBeen);
-                been.add(indexBeans);
-            }
-            for (int j = 0; j < dayArrays.size(); j++) {
-                indexBaseListBean indexBeans2 = new indexBaseListBean();
-                dayListBean.ResultBean.ArraysBean.DayArraysBean dates = dayArrays.get(j);
-                indexBeans2.setTag(1);//1为数据条目 （自定义标签）
-                indexBeans2.setOrderType(dates.getOrderType());
-                indexBeans2.setIcon(dates.getIcon());
-                indexBeans2.setTypeName(dates.getTypeName());
-                indexBeans2.setIsStaged(dates.getIsStaged());
-                indexBeans2.setRemark(dates.getRemark());
-                if (null != dates.getSpendHappiness()) {
-                    indexBeans2.setSpendHappiness(dates.getSpendHappiness());
-                }
-                indexBeans2.setMoney(dates.getMoney());
-                indexBeans2.setTypePid(dates.getTypePid());
-                indexBeans2.setTypeId(dates.getTypeId());
-                indexBeans2.setId(dates.getId());
-                indexBeans2.setAccountBookId(dates.getAccountBookId());
-                indexBeans2.setChargeDate(dates.getChargeDate());
-                indexBeans2.setCreateDate(dates.getCreateDate());
-                indexBeans2.setTypeName(dates.getTypeName());
-                indexBeans2.setReporterAvatar(dates.getReporterAvatar());
-                indexBeans2.setReporterNickName(dates.getReporterNickName());
-                been.add(indexBeans2);
-            }
-        }
-        return been;
-    }
-
     //初始化 年（2010-2050），月（1-12）
     private void setInitData() {
         dataY = new ArrayList<>();
@@ -954,7 +696,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         }
     }
 
-    private void alertDialog(final AccountDetailedBean data) {
+    private void alertDialog(final String id) {
         new DialogUtils(getActivity())
                 .builder()
                 .setTitle("温馨提示")
@@ -962,7 +704,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 .setCancleButton("取消", view -> {
                 })
                 .setSureButton("删除", view -> {
-                    String id = data.getId();
                     //数据库的操作 （删除显示的是 数据库的更新）
                     Boolean b = DBUtil.updateOneDate(id, accountId);
                     if (b) {
@@ -973,13 +714,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     }
                 }).show();
     }
-
-//    @Override
-//    public void onRefresh() {
-//        getIndexInfo();
-//        pullToSyncDate();
-//        onLoad();
-//    }
 
     private void pushOffLine() {
         OffLineReq req = new OffLineReq();
@@ -1048,48 +782,17 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             req2.setSynData(myList2);
         }
         String jsonInfo = new Gson().toJson(req2);
-        setCurrentNets();
-        NetWorkManager.getInstance().setContext(getActivity())
-                .pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GloableReturn b1 = (GloableReturn) b;
-                        //更新同步成功 调用预算接口
-                        getHeadNetInfo();
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                    }
-                });
-    }
-
-    private void setCurrentNets() {
-        //判断当前网络状态
-        boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(getActivity());
-        if (!netWorkAvailable) {
-            //网络不可用  添加一下判断的原因看下面
-            if (null != mNets) {
-                mNets.setVisibility(View.VISIBLE);
+        NetWorkManager.getInstance().setContext(getActivity()).pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                getIndexInfo();
             }
-        } else {
-            //莫名其妙这个地方会报空指针异常 ？ 只能加此判断先（也只能是mNets可能为空了）
-            if (null != mNets) {
-                mNets.setVisibility(View.GONE);
+
+            @Override
+            public void onError(String s) {
             }
-        }
+        });
     }
-
-//    @Override
-//    public void onLoadMore() {
-//
-//    }
-
-//    private void onLoad() {
-//        String time = DateUtil.formatDate("HH:mm", new Date());
-//        lv.setRefreshTime("今天:" + time);
-//        lv.stopRefresh();
-//    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1107,46 +810,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, data.getStringExtra("typeBudget"));
         }
     }
-
-//    public void remove(View view) {
-//    }
-//
-//    public void add(View view) {
-//    }
-
-//    /**
-//     * 动画加载水波纹进度
-//     */
-//    private int mysProgress;
-
-//    public void setGrade(final WaterWaveProgress watercircleview) {
-//        final int progress = watercircleview.getProgress();
-//        mysProgress = 1;
-//        final Handler handler = new Handler() {
-//            @Override
-//            public void handleMessage(Message msg) {
-//                if (msg.what == 0x1223) {
-//                    watercircleview.setProgress(mysProgress * (1));
-//                } else if (msg.what == 0x1224) {
-//                    watercircleview.setProgress(progress);
-//                }
-//            }
-//        };
-//        new Timer().schedule(new TimerTask() {
-//            @Override
-//            public void run() {
-//                Message msg = new Message();
-//                if (mysProgress < progress) {
-//                    msg.what = 0x1223;
-//                    mysProgress++;
-//                } else {
-//                    msg.what = 0x1224;
-//                    this.cancel();
-//                }
-//                handler.sendMessage(msg);
-//            }
-//        }, 0, 50);
-//    }
 
     private void setHasRed(String id, final int m) {
         //首页公告已读接口
@@ -1331,5 +994,200 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             intent.putExtra("SHARECONTENT", shareContent);
             startActivity(intent);
         }
+    }
+
+    private PieChart mChart;
+
+    private void initChart() {
+        mChart = binding.pieChart;
+
+        //mChart的半径是根据整体的控件大小来动态计算的，设置外边距等都会影响到圆的半径
+        mChart.getDescription().setEnabled(false);
+        mChart.getLegend().setEnabled(false);  //禁止显示图例
+        mChart.setCenterTextSize(14f); //设置文本字号
+        mChart.setHoleRadius(50f); //设置中心孔半径占总圆的百分比
+        mChart.setRotationAngle(90); //初始旋转角度
+        mChart.setData(generatePieData()); //设置数据源
+        mChart.setRotationEnabled(false);
+        mChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                float[] mDrawAngles = mChart.getDrawAngles();
+                float[] mAbsoluteAngles = mChart.getAbsoluteAngles();
+                float start = mChart.getRotationAngle();
+                int i = (int) h.getX();
+                float offset = mDrawAngles[i] / 2;
+                float end = 90 - (mAbsoluteAngles[i] - offset);
+
+                if (end < 0) {
+                    end = 360 + end;
+                }
+
+                if (data.getSize() > 0) {
+                    data.setSelect(i);
+                }
+
+                spin(start, end, i);
+            }
+
+            @Override
+            public void onNothingSelected() {
+                data.setSelect(-1);// 没有选择任何
+                binding.setPiechat(null);
+                data.setSelestStr("");
+            }
+        });
+    }
+
+    private boolean first = true;// 第一次需要初始化饼图，之后不再初始化只设置值
+
+    private void setChart() {
+        if (first) {
+            initChart();
+            first = false;
+        } else {
+            mChart.setData(generatePieData()); //设置数据源
+        }
+
+        Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
+        double spend1 = Double.parseDouble(data.getSpendingMoney());
+        viewModel.getLastMonthData(data.getYyyy(), data.getMm(), accountId, prefSet, (spend2, income, list) -> {
+            if (spend2 == 0 || spend1 == 0) {
+                data.setComparison("相比上月支出 --%");
+            } else {  // 设置比例
+                String s;// 比例结果
+                if (spend1 - spend2 > 0) {
+                    s = "+" + Utils.to2Digit((spend1 - spend2) / spend2) + "%";
+                } else {
+                    s = "-" + Utils.to2Digit((spend2 - spend1) / spend2) + "%";
+                }
+                data.setComparison("相比上月支出 " + s);
+            }
+        });
+        mChart.setCenterText("总支出\n-" + spend1); //设置中心文本
+    }
+
+    private void spin(float fromangle, float toangle, final int i) {
+        mChart.setRotationAngle(fromangle);
+        ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(mChart, "rotationAngle", fromangle, toangle);
+        spinAnimator.setDuration(500);
+        spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(Easing.EasingOption.EaseInOutQuad));
+
+        spinAnimator.addUpdateListener(animation -> mChart.postInvalidate());
+        spinAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                pieChatList.clear();
+                if (pieList.size() > i) {
+                    binding.setPiechat(pieList.get(i));
+                    data.setSelestStr(pieList.get(i).typeName);
+
+
+                    if (i == 4) {// 其它
+                        List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeId(), pieList.get(1).getTypeId(), pieList.get(2).getTypeId(), pieList.get(3).getTypeId(), data.getYyyy(), data.getMm(), accountId);
+                        pieChatList.addAll(temp);
+                    } else {
+                        List<WaterOrderCollect> temp = viewModel.getTypeRanking(pieList.get(i).getTypeId(), data.getYyyy(), data.getMm(), accountId);
+                        pieChatList.addAll(temp);
+                    }
+                }
+                pieChatAdapter.notifyDataSetChanged();
+            }
+        });
+        spinAnimator.start();
+    }
+
+    // 生成数据,将数据有由到小排列
+    List<StatisticsSpendTopArraysBean> pieList = new ArrayList<>();
+
+    protected PieData generatePieData() {
+        data.setStr1("--");// 清空数据
+        data.setCop1("");
+        data.setStr2("--");
+        data.setCop2("");
+        data.setStr3("--");
+        data.setCop3("");
+        data.setStr4("--");
+        data.setCop4("");
+        data.setStr5("--");
+        data.setCop5("");
+        data.setSelect(-1);// 没有选择任何
+        binding.setPiechat(null);
+        data.setSelestStr("");
+
+        List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId);
+        pieList.clear();
+        data.setSize(temp == null ? 0 : temp.size());
+        ArrayList<PieEntry> entries1 = new ArrayList<>();
+
+        if (data.getSize() == 0) {
+            entries1.add(new PieEntry((float) (100), ""));
+        }
+
+        double a1 = 0;
+        if (data.getSize() > 0) {// 至少有一条
+            pieList.add(temp.get(0));
+
+            data.setStr1(pieList.get(0).typeName);
+            a1 = pieList.get(0).money / Double.parseDouble(data.getSpendingMoney());
+            entries1.add(new PieEntry((float) Utils.to4Digit(a1), ""));
+            data.setCop1(Utils.to2Digit(a1 * 100) + "%");
+        }
+        double a2 = 0;
+        if (data.getSize() > 1) {// 至少有两条
+            pieList.add(temp.get(1));
+
+            data.setStr2(pieList.get(1).typeName);
+            a2 = pieList.get(1).money / Double.parseDouble(data.getSpendingMoney());
+            entries1.add(new PieEntry((float) Utils.to4Digit(a2), ""));
+            data.setCop2(Utils.to2Digit(a2 * 100) + "%");
+        }
+        double a3 = 0;
+        if (data.getSize() > 2) {// 至少有三条
+            pieList.add(temp.get(2));
+
+            data.setStr3(pieList.get(2).typeName);
+            a3 = pieList.get(2).money / Double.parseDouble(data.getSpendingMoney());
+            entries1.add(new PieEntry((float) Utils.to4Digit(a3), ""));
+            data.setCop3(Utils.to2Digit(a3 * 100) + "%");
+        }
+        double a4 = 0;
+        if (data.getSize() > 3) {// 至少有四条
+            pieList.add(temp.get(3));
+
+            data.setStr4(pieList.get(3).typeName);
+            a4 = pieList.get(3).money / Double.parseDouble(data.getSpendingMoney());
+            entries1.add(new PieEntry((float) Utils.to4Digit(a4), ""));
+            data.setCop4(Utils.to2Digit(a4 * 100) + "%");
+        }
+        if (data.getSize() > 4) {// 至少有五条以上
+            data.setStr5("其它");
+            double a5 = 1 - a1 - a2 - a3 - a4;
+            entries1.add(new PieEntry((float) Utils.to4Digit(a5), ""));
+            data.setCop5(Utils.to2Digit(a5 * 100) + "%");
+
+            StatisticsSpendTopArraysBean t = new StatisticsSpendTopArraysBean();
+            t.setIcon(Constants.ICON_OTHER);
+            t.setMoney(Utils.to4Digit(Double.parseDouble(data.getSpendingMoney()) * a5));
+            t.setTypeName("其它");
+            pieList.add(t);
+        }
+
+        PieDataSet ds1 = new PieDataSet(entries1, "");
+
+        if (data.getSize() == 0) {
+            ds1.setColors(Color.parseColor("#BDBDBD")); //添加默认的颜色组
+        } else {
+            ds1.setColors(ContextCompat.getColor(getActivity(), R.color.index_1),
+                    ContextCompat.getColor(getActivity(), R.color.index_2),
+                    ContextCompat.getColor(getActivity(), R.color.index_3),
+                    ContextCompat.getColor(getActivity(), R.color.index_4),
+                    ContextCompat.getColor(getActivity(), R.color.index_5)); //添加默认的颜色组
+        }
+        ds1.setSliceSpace(1f); //饼块之间的间隙
+        ds1.setDrawValues(false);  //将饼状图上的默认百分比子去掉
+        ds1.setHighlightEnabled(true); // 允许突出显示饼块
+
+        return new PieData(ds1);
     }
 }

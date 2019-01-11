@@ -12,12 +12,12 @@ import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SystemParamsReturn;
 import com.hbird.base.mvc.bean.ReturnBean.ZhiChuTagReturn;
 import com.hbird.base.mvc.bean.ReturnBean.chartToBarReturn;
-import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvp.model.entity.table.HbirdIncomeType;
 import com.hbird.base.mvp.model.entity.table.HbirdSpendType;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseIncome;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseSpend;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
+import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.ljy.devring.DevRing;
 
 import java.lang.reflect.Field;
@@ -573,10 +573,10 @@ public class DBUtil {
         return null;
     }
     //从数据库中查出 组合为集合的形式返回(日月年的统计)
-    public static List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> changeToListTJ(Cursor cursor, List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> modules, Class<?> moduleClass) {
+    public static List<StatisticsSpendTopArraysBean> changeToListTJ(Cursor cursor, List<StatisticsSpendTopArraysBean> modules, Class<?> moduleClass) {
         // 取出所有的列名
         int count = cursor.getCount();
-        chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean module;
+        StatisticsSpendTopArraysBean module;
         cursor.moveToFirst();
         synchronized (DBUtil.class) {
             try {
@@ -604,16 +604,16 @@ public class DBUtil {
             return null;
         }
     }
-    public static chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean changeToModuleTJ(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
+    public static StatisticsSpendTopArraysBean changeToModuleTJ(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
             // 取出所有的列名
             String[] columnNames = cursor.getColumnNames();
             int columncount = columnNames.length;
             Field field;
-            chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean module = null;
+            StatisticsSpendTopArraysBean module = null;
             try {
-                module = (chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean) moduleClass.newInstance();
+                module = (StatisticsSpendTopArraysBean) moduleClass.newInstance();
             } catch (java.lang.InstantiationException e) {
                 e.printStackTrace();
             }

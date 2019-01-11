@@ -21,11 +21,11 @@ import com.hbird.base.mvc.bean.ReturnBean.CommonList2Bean;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.bean.ReturnBean.ZhiChuTagReturnNew;
 import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.mvc.global.CommonUserIInfo;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectManager;
+import com.hbird.common.Constants;
 import com.ljy.devring.util.NetworkUtil;
 
 import java.util.ArrayList;
@@ -284,15 +284,6 @@ public class AccountOutFragementNew1 extends BaseFragement {
     public void loadDataForNet() {
         super.loadDataForNet();
 
-//        if (!NetworkUtil.isNetWorkAvailable(getActivity())) {// 没有网络取本地
-//            String temp = (String) SharedPreferencesUtil.get("userId_" + userInfoId + "abTypeId_" + abTypeId + "type_spend", "");
-//            List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> list = JSON.parseArray(temp, SystemBiaoqReturn.ResultBean.LabelBean.SpendBean.class);
-//
-//            addData(list);
-//        }else{
-//            getData(userInfoId, Integer.parseInt(abTypeId));
-//        }
-
         String temp = (String) SharedPreferencesUtil.get("userId_" + userInfoId + "abTypeId_" + abTypeId + "type_spend", "");
         List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> list = JSON.parseArray(temp, SystemBiaoqReturn.ResultBean.LabelBean.SpendBean.class);
 
@@ -331,8 +322,8 @@ public class AccountOutFragementNew1 extends BaseFragement {
         commonList.addAll(tempList);
 
         SystemBiaoqReturn.ResultBean.LabelBean.SpendBean temp1 = new SystemBiaoqReturn.ResultBean.LabelBean.SpendBean();
-        temp1.setSpendName("添加");
-        temp1.setIcon(CommonUserIInfo.account_add_url);
+        temp1.setSpendName("更多");
+        temp1.setIcon(Constants.ACCOUNT_ADD_URL);
         commonList.add(temp1);
 
         myAdapter.setDatas(commonList, "1");

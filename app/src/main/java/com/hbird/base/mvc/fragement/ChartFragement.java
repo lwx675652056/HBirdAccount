@@ -49,6 +49,7 @@ import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.StringUtils;
 import com.hbird.base.util.Utils;
+import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.ljy.devring.DevRing;
 
 import java.text.DecimalFormat;
@@ -359,7 +360,7 @@ public class ChartFragement extends BaseFragement {
 
         } else if (TextUtils.equals(flag, "2")) {
             //周支出收入排行榜 年 - 周
-            String weekTime = "2018-" + weeks;
+            String weekTime = years + "-" + weeks;
             sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.account_book_id= '" + accountId + "' AND wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_id order by money DESC LIMIT 5;";
             //周支出情绪消费排行榜
             spendHappnessSql = "select sum(wo.spend_happiness is not null and wo.spend_happiness != -1 ) as spend_happiness_count ,sum(wo.spend_happiness = 0 ) as happy ,sum(wo.spend_happiness = 1 ) as normal ,sum(wo.spend_happiness = 2 ) as sad from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT where 1=1 ) as wo where wo.order_type = " + orderType + " AND ACCOUNT_BOOK_ID=" + accountId + " AND delflag = 0 AND strftime('%Y-%W', charge_date2) = '" + weekTime + "';";
@@ -369,7 +370,7 @@ public class ChartFragement extends BaseFragement {
             if (monthCurrent.length() == 1) {
                 monthCurrent = "0" + monthCurrent;
             }
-            String monthTime = "2018-" + monthCurrent;
+            String monthTime = years + "-" + monthCurrent;
             sql = "select sum(money) money,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.account_book_id= '" + accountId + "' AND wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_id order by money DESC LIMIT 5;";
             //月支出情绪消费排行榜
             spendHappnessSql = "select sum(wo.spend_happiness is not null and wo.spend_happiness != -1 ) as spend_happiness_count ,sum(wo.spend_happiness = 0 ) as happy ,sum(wo.spend_happiness = 1 ) as normal ,sum(wo.spend_happiness = 2 ) as sad from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT where 1=1 ) as wo where wo.order_type = " + orderType + " AND ACCOUNT_BOOK_ID=" + accountId + " AND delflag = 0 AND strftime('%Y-%m', charge_date2) = '" + monthTime + "';";
@@ -377,10 +378,10 @@ public class ChartFragement extends BaseFragement {
         }
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
         if (cursor != null) {
-            List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> list = new ArrayList<>();
+            List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
             list.clear();
             if (null != cursor) {
-                list = DBUtil.changeToListTJ(cursor, list, chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean.class);
+                list = DBUtil.changeToListTJ(cursor, list, StatisticsSpendTopArraysBean.class);
             }
             if (TextUtils.isEmpty(topMoney.getText().toString())) {
                 maxMoney = 0;
@@ -500,7 +501,7 @@ public class ChartFragement extends BaseFragement {
         mEmpty.setVisibility(View.GONE);
     }
 
-    private void setXiaoFeiDate(List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> lists, Double money) {
+    private void setXiaoFeiDate(List<StatisticsSpendTopArraysBean> lists, Double money) {
         mAdapter = new barChartAdapter(getActivity(), ChartFragement.this, lists, true, money);
         mAdapter.setDate2(true);
         listview.setAdapter(mAdapter);

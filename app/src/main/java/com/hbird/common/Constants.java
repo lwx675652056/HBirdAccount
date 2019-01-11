@@ -26,4 +26,9 @@ public class Constants {
     public static final String USER_HEAD = "account_user_header";// 个人信息  头像
     public static final String USER_NICKNAME = "account_user_nick_name";// 个人信息  昵称
 
+    public static final String ICON_OTHER = "http://label.image.fengniaojizhang.cn/1547100835791_icon_qita_normal@3x.png";// 首页饼图“其它”的图标
+    //选择类别 收入支出界面的添加图标
+    public static final String ACCOUNT_ADD_URL = "http://label.image.fengniaojizhang.cn/1534921692082_其他_30px@3x.png";
+
+
 }

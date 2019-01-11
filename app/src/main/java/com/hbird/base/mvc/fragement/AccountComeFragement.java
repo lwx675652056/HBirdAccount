@@ -19,13 +19,13 @@ import com.hbird.base.mvc.bean.ReturnBean.AccountTypes;
 import com.hbird.base.mvc.bean.ReturnBean.BiaoQianReturn;
 import com.hbird.base.mvc.bean.ReturnBean.ShouRuTagReturn;
 import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.mvc.global.CommonUserIInfo;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseIncome;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
+import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
 
@@ -239,8 +239,8 @@ public class AccountComeFragement extends BaseFragement{
             commonList = DBUtil.changeToListTyp(cursor, commonList, ShouRuTagReturn.ResultBean.CommonListBean.class);
         }
         ShouRuTagReturn.ResultBean.CommonListBean commonListBean = new ShouRuTagReturn.ResultBean.CommonListBean();
-        commonListBean.setIncomeName("添加");
-        commonListBean.setIcon(CommonUserIInfo.account_add_url);
+        commonListBean.setIncomeName("更多");
+        commonListBean.setIcon(Constants.ACCOUNT_ADD_URL);
         commonList.add(commonListBean);
         myAdapter.setDatas(commonList, "1");
 

@@ -88,10 +88,8 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
     RadioGroup mRadio;
     @BindView(R.id.radioGroup_down)
     RadioGroup mRadioDown;
-    @BindView(R.id.ll_choose_time)
-    LinearLayout mChooseMonth;
-    @BindView(R.id.tv_month)
-    TextView mMonth;
+
+    TextView tvMonth;// 顶部选择的年月
     @BindView(R.id.ll_center_fg)
     LinearLayout mCenterFg;
     @BindView(R.id.listview)
@@ -162,13 +160,14 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
 
     @Override
     public void initView() {
+        tvMonth = getActivity().findViewById(R.id.tv_month);
         //当前年
         yyyy = Integer.parseInt(DateUtils.getCurYear("yyyy"));
         //当前月
         String m = DateUtils.date2Str(new Date(), "MM");
         String currentMonth = m.substring(0, 2);
         mm = Integer.parseInt(currentMonth);
-        mMonth.setText(yyyy + "年" + currentMonth + "月");
+        tvMonth.setText(yyyy + "年" + currentMonth + "月");
         xiaoLvList = new ArrayList<>();
         yuSuanFinishList = new ArrayList<>();
 
@@ -800,7 +799,7 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
     public void initListener() {
         mEditors.setOnClickListener(this);
         mExpenseBtn.setOnClickListener(this);
-        mChooseMonth.setOnClickListener(this);
+        tvMonth.setOnClickListener(this);
         mSettingKzp.setOnClickListener(this);
         mSettingYs.setOnClickListener(this);
         mChooseZb.setOnClickListener(this);
@@ -1190,13 +1189,13 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                 intent3.putExtra("endTime", "- - 年 - - 月 - - 日");
                 startActivityForResult(intent3, 1000);
                 break;
-            case R.id.ll_choose_time:
+            case R.id.tv_month:
                 playVoice(R.raw.changgui02);
-                new MyTimer2Pop(getActivity(), mChooseMonth, dataM, mm - 1, new MyTimer2Pop.OnDateListener() {
+                new MyTimer2Pop(getActivity(), tvMonth, dataM, mm - 1, new MyTimer2Pop.OnDateListener() {
                     @Override
                     public void getMonthList(String s) {
                         String[] ss = s.split("月份");
-                        mMonth.setText(2018 + "年" + ss[0] + "月");
+                        tvMonth.setText(2018 + "年" + ss[0] + "月");
                         mm = Integer.parseInt(ss[0]);
                         loadDataForNet();
                     }
@@ -1288,11 +1287,10 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
          * 这里切换平滑曲线或者折现图
          */
 //        lineChartEntity.setLineMode(LineDataSet.Mode.CUBIC_BEZIER); LINEAR, STEPPED,
-        lineChartEntity.setLineMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        lineChartEntity.setLineMode(LineDataSet.Mode.LINEAR);
         lineChartEntity.initLegend(Legend.LegendForm.CIRCLE, 12f, Color.parseColor("#999999"));
         lineChartEntity.updateLegendOrientation(Legend.LegendVerticalAlignment.TOP, Legend.LegendHorizontalAlignment.RIGHT, Legend.LegendOrientation.HORIZONTAL);
-        lineChartEntity.setAxisFormatter(
-                new IAxisValueFormatter() {
+        lineChartEntity.setAxisFormatter(  new IAxisValueFormatter() {
                     @Override
                     public String getFormattedValue(float value, AxisBase axis) {
                         //设置折线图最底部月份显示
@@ -1321,7 +1319,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                         } else {
                             return monthStr;
                         }
-//                        return mMonthFormat.format(value);
                     }
                 },
                 new IAxisValueFormatter() {
@@ -1537,7 +1534,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                         } else {
                             return monthStr;
                         }
-//                        return mMonthFormat.format(value);
                     }
                 },
                 new IAxisValueFormatter() {

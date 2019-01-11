@@ -2,6 +2,7 @@ package com.hbird.base.mvc.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -91,6 +92,7 @@ public class MyTypeAdapterNew extends BaseAdapter implements DragAdapterInterfac
             holder.iconImg = (ImageView) convertView.findViewById(R.id.icon_img);
             holder.nameTv = (TextView) convertView.findViewById(R.id.name_tv);
             holder.container = (RelativeLayout) convertView.findViewById(R.id.item_container);
+            holder.rlParent = (RelativeLayout) convertView.findViewById(R.id.rl_parent);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -98,13 +100,15 @@ public class MyTypeAdapterNew extends BaseAdapter implements DragAdapterInterfac
 
         if (datas.size() - 1 < position) return convertView;
         SystemBiaoqReturn.ResultBean.LabelBean.SpendBean bean = datas.get(position);
-        if (!TextUtils.equals(bean.getSpendName(), "添加")) {
+        if (!TextUtils.equals(bean.getSpendName(), "更多")) {
+            holder.rlParent.setBackground(ContextCompat.getDrawable(context,R.drawable.gray_circle));
             if ("1".equals(showType)) {
                 holder.deleteImg.setVisibility(View.GONE);
             } else {
                 holder.deleteImg.setVisibility(View.VISIBLE);
             }
         } else {
+            holder.rlParent.setBackground(ContextCompat.getDrawable(context,R.drawable.blue_circle));
             if (TextUtils.equals("1", showType)) {
                 holder.deleteImg.setVisibility(View.GONE);
                 holder.container.setVisibility(View.VISIBLE);
@@ -139,6 +143,7 @@ public class MyTypeAdapterNew extends BaseAdapter implements DragAdapterInterfac
         public ImageView iconImg;
         public TextView nameTv;
         public RelativeLayout container;
+        public RelativeLayout rlParent;
     }
 
 

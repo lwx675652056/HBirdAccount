@@ -7,6 +7,7 @@ import com.android.databinding.library.baseAdapters.BR;
 
 public class IndexFragmentData extends BaseObservable {
 
+    private int yyyy = 12;// 当前年
     private int mm = 12;// 当前月
     private String spendingMoney = "0.00";// 支出的钱
     private String inComeMoney = "0.00";// 收入的钱
@@ -16,6 +17,13 @@ public class IndexFragmentData extends BaseObservable {
     private boolean showArrow = false;// 显示下拉三角箭头
     private boolean showMember = false;// 显示账本内成员
     private boolean showMemberSeting = false;// 显示成员设置
+    private String comparison = "";// 相比上月支出+4.5%
+
+    private int size = 0;// 饼图数据条数
+    private String selestStr = "";// 饼图选择的类别
+    private int select = -1;// 选中的第几个饼图
+    private String str1 = "--", str2 = "--", str3 = "--", str4 = "--", str5 = "--";// 饼图的5个类别
+    private String cop1, cop2, cop3, cop4, cop5;// 饼图的5个比例
 
 
     @Bindable
@@ -26,6 +34,16 @@ public class IndexFragmentData extends BaseObservable {
     public void setMm(int mm) {
         this.mm = mm;
         notifyPropertyChanged(BR.mm);
+    }
+
+    @Bindable
+    public int getYyyy() {
+        return yyyy;
+    }
+
+    public void setYyyy(int yyyy) {
+        this.yyyy = yyyy;
+        notifyPropertyChanged(BR.yyyy);
     }
 
     @Bindable
@@ -77,6 +95,7 @@ public class IndexFragmentData extends BaseObservable {
         this.show = show;
         notifyPropertyChanged(BR.show);
     }
+
     @Bindable
     public boolean isShowArrow() {
         return showArrow;
@@ -86,6 +105,7 @@ public class IndexFragmentData extends BaseObservable {
         this.showArrow = showArrow;
         notifyPropertyChanged(BR.showArrow);
     }
+
     @Bindable
     public boolean isShowMember() {
         return showMember;
@@ -95,6 +115,7 @@ public class IndexFragmentData extends BaseObservable {
         this.showMember = showMember;
         notifyPropertyChanged(BR.showMember);
     }
+
     @Bindable
     public boolean isShowMemberSeting() {
         return showMemberSeting;
@@ -103,5 +124,145 @@ public class IndexFragmentData extends BaseObservable {
     public void setShowMemberSeting(boolean showMemberSeting) {
         this.showMemberSeting = showMemberSeting;
         notifyPropertyChanged(BR.showMemberSeting);
+    }
+
+    @Bindable
+    public String getComparison() {
+        return comparison;
+    }
+
+    public void setComparison(String comparison) {
+        this.comparison = comparison;
+        notifyPropertyChanged(BR.comparison);
+    }
+
+    @Bindable
+    public int getSize() {
+        return size;
+    }
+
+    public void setSize(int size) {
+        this.size = size;
+        notifyPropertyChanged(BR.size);
+    }
+
+    @Bindable
+    public int getSelect() {
+        return select;
+    }
+
+    public void setSelect(int select) {
+        this.select = select;
+        notifyPropertyChanged(BR.select);
+    }
+
+    @Bindable
+    public String getStr1() {
+        return str1;
+    }
+
+    public void setStr1(String str1) {
+        this.str1 = str1;
+        notifyPropertyChanged(BR.str1);
+    }
+
+    @Bindable
+    public String getStr2() {
+        return str2;
+    }
+
+    public void setStr2(String str2) {
+        this.str2 = str2;
+        notifyPropertyChanged(BR.str2);
+    }
+
+    @Bindable
+    public String getStr3() {
+        return str3;
+    }
+
+    public void setStr3(String str3) {
+        this.str3 = str3;
+        notifyPropertyChanged(BR.str3);
+    }
+
+    @Bindable
+    public String getStr4() {
+        return str4;
+    }
+
+    public void setStr4(String str4) {
+        this.str4 = str4;
+        notifyPropertyChanged(BR.str4);
+    }
+
+    @Bindable
+    public String getStr5() {
+        return str5;
+    }
+
+    public void setStr5(String str5) {
+        this.str5 = str5;
+        notifyPropertyChanged(BR.str5);
+    }
+
+    @Bindable
+    public String getCop1() {
+        return cop1;
+    }
+
+    public void setCop1(String cop1) {
+        this.cop1 = cop1;
+        notifyPropertyChanged(BR.cop1);
+    }
+
+    @Bindable
+    public String getCop2() {
+        return cop2;
+    }
+
+    public void setCop2(String cop2) {
+        this.cop2 = cop2;
+        notifyPropertyChanged(BR.cop2);
+    }
+
+    @Bindable
+    public String getCop3() {
+        return cop3;
+    }
+
+    public void setCop3(String cop3) {
+        this.cop3 = cop3;
+        notifyPropertyChanged(BR.cop3);
+    }
+
+    @Bindable
+    public String getCop4() {
+        return cop4;
+    }
+
+    public void setCop4(String cop4) {
+        this.cop4 = cop4;
+        notifyPropertyChanged(BR.cop4);
+    }
+
+    @Bindable
+    public String getCop5() {
+        return cop5;
+    }
+
+    public void setCop5(String cop5) {
+        this.cop5 = cop5;
+        notifyPropertyChanged(BR.cop5);
+    }
+
+    @Bindable
+    public String getSelestStr() {
+        return selestStr;
+    }
+
+    public void setSelestStr(String selestStr) {
+        this.selestStr = selestStr;
+        notifyPropertyChanged(BR.selestStr);
     }
 }

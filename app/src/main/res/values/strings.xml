@@ -76,11 +76,14 @@
     <string name="synchronized_time">个人余额同步时间:</string>
     <string name="save">保存</string>
     <string name="accumulation">查看公积金数据</string>
-
     <string name="skip">跳过</string>
     <string name="ok">完成</string>
     <string name="fengniaoId">ID:</string>
     <string name="empty">&#160;&#160;</string>
     <string name="empty1"/>
     <string name="noChoose">未选择</string>
+    <string name="money_spend_type">月消费类型统计</string>
+    <string name="total_spend">总支出\n-</string>
+    <string name="asterisk">*</string>
+    <string name="ranking">单笔消费排行榜</string>
 </resources>

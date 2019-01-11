@@ -12,9 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hbird.base.R;
-import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.widget.IndicatorProgressBar;
+import com.hbird.bean.StatisticsSpendTopArraysBean;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -28,14 +28,14 @@ import java.util.concurrent.Executors;
 public class barChartAdapter extends BaseAdapter {
     private Context context;
     private ChartFragement mContext;
-    private List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> accountDateList = new ArrayList<>();
+    private List<StatisticsSpendTopArraysBean> accountDateList = new ArrayList<>();
 
     private double Max = 0;
     private boolean isShow = true;
     private boolean isProvinceShow = true;
     private String formatNum;
 
-    public barChartAdapter(Context context, ChartFragement mContext, List<chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean> accountDateList
+    public barChartAdapter(Context context, ChartFragement mContext, List<StatisticsSpendTopArraysBean> accountDateList
             , boolean isProvinceShow,Double maxMoney){
         this.context = context;
         this.mContext = mContext;
@@ -60,7 +60,7 @@ public class barChartAdapter extends BaseAdapter {
 
     public void setDate2(boolean isShow){
         this.isShow = isShow;
-        for (chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean p: accountDateList){
+        for (StatisticsSpendTopArraysBean p: accountDateList){
             p.setFrist(true);
         }
     }
@@ -95,7 +95,7 @@ public class barChartAdapter extends BaseAdapter {
                 imageAnmins.setVisibility(View.GONE);
             }
         }
-        chartToRankingReturn.ResultBean.StatisticsSpendTopArraysBean bean = accountDateList.get(position);
+        StatisticsSpendTopArraysBean bean = accountDateList.get(position);
 
         double preTotalRegisterNum = bean.getMoney();
         java.text.NumberFormat NF = java.text.NumberFormat.getInstance();

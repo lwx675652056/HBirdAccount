@@ -22,9 +22,10 @@
             android:orientation="vertical"
             >
             <RelativeLayout
+                android:id="@+id/rl_parent"
                 android:layout_width="@dimen/width_10_80"
                 android:layout_height="@dimen/width_10_80"
-                android:background="@mipmap/icon_bg_zc">
+                android:background="@drawable/gray_circle">
                 <ImageView
                     android:id="@+id/icon_img"
                     android:layout_width="@dimen/width_6_80"

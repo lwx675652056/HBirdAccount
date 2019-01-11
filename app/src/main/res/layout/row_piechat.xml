@@ -1,0 +1,101 @@
+<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.hbird.base.mvp.model.entity.table.WaterOrderCollect"/>
+
+        <variable
+            name="pos"
+            type="int"/>
+
+        <variable
+            name="time"
+            type="String"/>
+
+        <variable
+            name="lastPos"
+            type="boolean"/>
+
+        <import type="android.text.TextUtils"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/select_white_0px"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:paddingStart="@dimen/dp_15_x">
+
+        <TextView
+            android:id="@+id/tv_temp1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/dp_15_x"
+            android:layout_marginTop="@dimen/dp_15_x"
+            android:text="@{String.valueOf(pos+1)}"
+            android:textColor="#333333"
+            android:textSize="30sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/tv_temp2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:text="·"
+            android:textColor="#333333"
+            android:textSize="40sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/tv_temp1"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="@id/tv_temp1"
+            app:layout_constraintStart_toEndOf="@id/tv_temp2"
+            app:layout_constraintTop_toTopOf="@id/tv_temp1">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{TextUtils.isEmpty(bean.remark)?bean.typeName:bean.remark}"
+                android:textColor="#333333"
+                android:textSize="16sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5_x"
+                android:text="@{time}"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{@string/subtraction+String.valueOf(bean.money)}"
+            android:textColor="#2F54EB"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <View
+            style="@style/horizontal_line"
+            android:visibility="@{lastPos?View.GONE:View.VISIBLE}"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+    </android.support.constraint.ConstraintLayout>
+</layout>

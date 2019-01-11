@@ -180,6 +180,13 @@ public class DateUtils {
         return res;
     }
 
+    public static String stampToString(Date s,String pattern){
+        String res="";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(pattern);
+        res = simpleDateFormat.format(s);
+        return res;
+    }
+
     public static Date str2Date(String str) {
         return str2Date(str, null);
     }

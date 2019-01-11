@@ -19,13 +19,13 @@ import com.hbird.base.mvc.bean.ReturnBean.AccountTypes;
 import com.hbird.base.mvc.bean.ReturnBean.BiaoQianReturn;
 import com.hbird.base.mvc.bean.ReturnBean.ZhiChuTagReturn;
 import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.mvc.global.CommonUserIInfo;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.DragGridView;
 import com.hbird.base.mvp.model.entity.table.HbirdUserCommUseSpend;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectManager;
+import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
 
@@ -370,8 +370,8 @@ public class AccountOutFragement extends BaseFragement{
         }
 
         ZhiChuTagReturn.ResultBean.CommonListBean commonListBean = new ZhiChuTagReturn.ResultBean.CommonListBean();
-        commonListBean.setSpendName("添加");
-        commonListBean.setIcon(CommonUserIInfo.account_add_url);
+        commonListBean.setSpendName("更多");
+        commonListBean.setIcon(Constants.ACCOUNT_ADD_URL);
         commonList.add(commonListBean);
         myAdapter.setDatas(commonList, "1");
 

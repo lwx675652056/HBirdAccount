@@ -17,6 +17,7 @@ import com.ljy.devring.util.ColorBar;
 
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
 
 public class Utils {
 
@@ -94,7 +95,7 @@ public class Utils {
     }
 
 
-    public static void decoderBase64File(String base64Code,String savePath) throws Exception {
+    public static void decoderBase64File(String base64Code, String savePath) throws Exception {
         base64Code = base64Code.split(",")[1];// 去掉前面的 data:image/png;base64,xxxxxxxxxxxxxxx
         byte[] buffer = Base64.decode(base64Code, Base64.DEFAULT);
         FileOutputStream out = new FileOutputStream(savePath);
@@ -123,9 +124,9 @@ public class Utils {
     /**
      * 将手机号中间4到7位用星号代替
      */
-    public static String getHiddenPhone(String userName){
-        if(!TextUtils.isEmpty(userName) && userName.length() > 6 ){
-            StringBuilder sb  =new StringBuilder();
+    public static String getHiddenPhone(String userName) {
+        if (!TextUtils.isEmpty(userName) && userName.length() > 6) {
+            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < userName.length(); i++) {
                 char c = userName.charAt(i);
                 if (i >= 3 && i <= 6) {
@@ -136,7 +137,7 @@ public class Utils {
             }
 
             return sb.toString();
-        }else{
+        } else {
             return userName;
         }
     }
@@ -160,5 +161,22 @@ public class Utils {
             e.printStackTrace();
         }
         return channelName;
+    }
+
+    public static double to2Digit(double f) {
+        BigDecimal bg = new BigDecimal(f);
+        double a = bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return a;
+    }
+
+    public static double to4Digit(double f) {
+        BigDecimal bg = new BigDecimal(f);
+        double a = bg.setScale(4, BigDecimal.ROUND_HALF_UP).doubleValue();
+        return a;
+    }
+
+    public static String to2DigitString(double f) {
+        BigDecimal bg = new BigDecimal(f);
+        return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"";
     }
 }

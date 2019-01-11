@@ -81,4 +81,11 @@
     <color name="key_ok_color">#1280FA</color>
     <color name="key_ok_color_pressed">#0174f2</color>
 
+    <!-- 首页的饼图信息-->
+    <color name="index_1">#FE3939</color>
+    <color name="index_2">#FADB14</color>
+    <color name="index_3">#2F54EB</color>
+    <color name="index_4">#52C41A</color>
+    <color name="index_5">#B37FEB</color>
+
 </resources>

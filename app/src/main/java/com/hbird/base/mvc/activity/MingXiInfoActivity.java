@@ -186,7 +186,7 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         mLeiXing.setText(leixing);
         tvAccount.setText(waterOrderCollect.getAssetsName());
         if (null == remark) {
-            mBeiZhu.setText("无");
+            mBeiZhu.setText("");
         } else {
             mBeiZhu.setText(remark);
         }

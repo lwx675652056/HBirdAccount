@@ -11,6 +11,10 @@
         <variable
             name="listener"
             type="com.hbird.ui.index.IndexFragement.OnClick"/>
+
+        <variable
+            name="piechat"
+            type="com.hbird.bean.StatisticsSpendTopArraysBean"/>
     </data>
 
     <LinearLayout
@@ -51,9 +55,15 @@
                 android:src="@mipmap/nav_icon_calendar_normal"/>
         </LinearLayout>
 
-        <ScrollView
+        <View style="@style/horizontal_line"/>
+
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:overScrollMode="never"
+            android:scrollbars="none">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -63,8 +73,6 @@
                 <android.support.constraint.ConstraintLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
                     android:layout_marginTop="@dimen/dp_15_x"
                     android:background="@mipmap/home_bg_tbsjzs_disabled">
 
@@ -190,8 +198,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
                     android:layout_marginTop="@dimen/dp_15_x"
                     android:gravity="center_vertical"
                     android:visibility="@{bean.show?View.VISIBLE:View.GONE}">
@@ -219,13 +225,10 @@
                     android:onClick="@{listener.open}"
                     android:visibility="@{bean.showArrow?View.VISIBLE:View.GONE}"/>
 
-
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
                     android:gravity="center_vertical"
                     android:paddingTop="@dimen/dp_10_x"
                     android:visibility="@{bean.showMember?View.VISIBLE:bean.showMemberSeting?View.VISIBLE:View.GONE}">
@@ -250,8 +253,6 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
                     android:layout_marginTop="@dimen/dp_10_x"
                     android:background="@drawable/select_white_8px"
                     android:orientation="vertical">
@@ -287,55 +288,308 @@
                     </LinearLayout>
                 </LinearLayout>
 
-
-                <com.hbird.base.mvc.widget.HeaderViewPager
-                    android:id="@+id/scrollableLayout"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    app:hvp_topOffset="0dp">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_15_x"
+                    android:background="@drawable/select_top_white"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal"
+                    android:padding="@dimen/dp_10_x">
+
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@{bean.mm+@string/money_spend_type}"
+                        android:textColor="#333333"
+                        android:textSize="18sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@{bean.comparison}"
+                        android:textColor="#333333"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <View style="@style/horizontal_line"/>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:paddingBottom="@dimen/dp_15_x"
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <LinearLayout
-                        android:id="@+id/ll_nets"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/dp_20_x">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@{bean.select==0?@color/index_1:@color/white}"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="@dimen/dp_3_x"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dp_2_x"
+                                android:layout_marginTop="@dimen/dp_2_x"
+                                android:background="@color/index_1"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.str1}"
+                                android:textColor="@{bean.select==0?@color/white:@color/text_333333}"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.cop1}"
+                                android:textColor="@{bean.select==0?@color/white:@color/text_808080}"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:background="@{bean.select==1?@color/index_2:@color/white}"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="@dimen/dp_3_x"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dp_2_x"
+                                android:layout_marginTop="@dimen/dp_2_x"
+                                android:background="@color/index_2"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.str2}"
+                                android:textColor="@{bean.select==1?@color/white:@color/text_333333}"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.cop2}"
+                                android:textColor="@{bean.select==1?@color/white:@color/text_808080}"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:background="@{bean.select==2?@color/index_3:@color/white}"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="@dimen/dp_3_x"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dp_2_x"
+                                android:layout_marginTop="@dimen/dp_2_x"
+                                android:background="@color/index_3"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.str3}"
+                                android:textColor="@{bean.select==2?@color/white:@color/text_333333}"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.cop3}"
+                                android:textColor="@{bean.select==2?@color/white:@color/text_808080}"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:background="@{bean.select==3?@color/index_4:@color/white}"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="@dimen/dp_3_x"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dp_2_x"
+                                android:layout_marginTop="@dimen/dp_2_x"
+                                android:background="@color/index_4"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.str4}"
+                                android:textColor="@{bean.select==3?@color/white:@color/text_333333}"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.cop4}"
+                                android:textColor="@{bean.select==3?@color/white:@color/text_808080}"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:background="@{bean.select==4?@color/index_5:@color/white}"
+                            android:gravity="center_vertical">
+
+                            <View
+                                android:layout_width="@dimen/dp_3_x"
+                                android:layout_height="match_parent"
+                                android:layout_marginBottom="@dimen/dp_2_x"
+                                android:layout_marginTop="@dimen/dp_2_x"
+                                android:background="@color/index_5"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.str5}"
+                                android:textColor="@{bean.select==4?@color/white:@color/text_333333}"
+                                android:textSize="14sp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_10_x"
+                                android:text="@{bean.cop5}"
+                                android:textColor="@{bean.select==4?@color/white:@color/text_808080}"
+                                android:textSize="12sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <com.github.mikephil.chart_3_0_1v.charts.PieChart
+                        android:id="@+id/pie_chart"
+                        android:layout_width="@dimen/dp_150_x"
+                        android:layout_height="@dimen/dp_150_x"/>
+                </LinearLayout>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:orientation="vertical"
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:visibility="@{piechat==null?View.GONE:View.VISIBLE}">
+
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/height_4_80"
-                        android:background="@color/text_468DE1"
-                        android:orientation="horizontal"
-                        android:visibility="gone">
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:background="@mipmap/home_icon_btqxzk_disabled"
+                        android:padding="@dimen/dp_15_x">
+
+                        <View
+                            android:id="@+id/v_temp"
+                            android:layout_width="@dimen/dp_40_x"
+                            android:layout_height="@dimen/dp_40_x"
+                            android:background="@drawable/circle_333333"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
                         <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/width_4_80"
-                            android:src="@mipmap/ic_net_action"/>
+                            android:id="@+id/iv_icon"
+                            imageUrl="@{piechat.icon}"
+                            android:layout_width="@dimen/dp_15_x"
+                            android:layout_height="@dimen/dp_15_x"
+                            app:layout_constraintBottom_toBottomOf="@+id/v_temp"
+                            app:layout_constraintEnd_toEndOf="@+id/v_temp"
+                            app:layout_constraintStart_toStartOf="@+id/v_temp"
+                            app:layout_constraintTop_toTopOf="@+id/v_temp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_vertical"
-                            android:layout_marginLeft="@dimen/width_2_80"
-                            android:text="当前网络不可用，请检查您的网络"
-                            android:textColor="@color/white"
-                            android:textSize="@dimen/text_size_2"/>
-                    </LinearLayout>
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent">
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:text="@{piechat.typeName}"
+                            android:textColor="#333333"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/v_temp"
+                            app:layout_constraintStart_toEndOf="@+id/v_temp"
+                            app:layout_constraintTop_toTopOf="@+id/v_temp"/>
 
                         <ImageView
-                            android:id="@+id/iv_no_data"
+                            android:id="@+id/iv_temp1"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_gravity="center_horizontal"
-                            android:layout_marginTop="@dimen/height_6_80"
-                            android:src="@mipmap/ic_normal_data"
-                            android:visibility="gone"/>
+                            android:src="@mipmap/homebt_icon_jinru_normal"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
-                    </FrameLayout>
-                </com.hbird.base.mvc.widget.HeaderViewPager>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_10_x"
+                            android:text="@{String.valueOf(piechat.money)}"
+                            android:textColor="#2F54EB"
+                            android:textSize="14sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toStartOf="@+id/iv_temp1"
+                            app:layout_constraintTop_toTopOf="parent"/>
+                    </android.support.constraint.ConstraintLayout>
+
+                    <ImageView
+                        android:id="@+id/iv_temp"
+                        android:layout_width="@dimen/dp_150_x"
+                        android:layout_height="@dimen/dp_7_x"
+                        android:layout_gravity="end"
+                        android:src="@mipmap/home_icon_btqxzj_disabled1"/>
+                </FrameLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:padding="@dimen/dp_15_x"
+                    android:text="@{@string/asterisk+bean.selestStr+@string/ranking}"
+                    android:textColor="#808080"
+                    android:textSize="12sp"
+                    android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view2"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30_x"/>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
     </LinearLayout>
 </layout>
