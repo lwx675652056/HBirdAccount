@@ -191,22 +191,12 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
         Integer spendHappiness = event.getSpendHappiness();
         happiness = spendHappiness;
         if (null != spendHappiness) {
-            if (spendHappiness == 0) {
-                //开心
-               /* mRadioGroup.check(mHappy.getId());
-                mHappy.setBackgroundResource(R.mipmap.icon_mood_happy_blue);*/
+            if (spendHappiness == 0) { //开心
                 setGif(happiness);
-
-            } else if (spendHappiness == 1) {
-                //一般
-               /* mRadioGroup.check(mNormal.getId());
-                mNormal.setBackgroundResource(R.mipmap.icon_mood_normal_blue);*/
+            } else if (spendHappiness == 1) { //一般
                 setGif(happiness);
             } else {
-                /*mRadioGroup.check(mUnHappy.getId());
-                mUnHappy.setBackgroundResource(R.mipmap.icon_mood_blue);*/
                 setGif(happiness);
-
             }
         } else {
         }
@@ -323,10 +313,6 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
         //支取小数点后两位数
         DecimalFormat df = new DecimalFormat("######0.00");
         String format = df.format(sum);
-       /* if(sum<0){
-            reset();
-            return;
-        }*/
         mUpNum.setText(format);
     }
 
@@ -523,23 +509,39 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
 
         String persionId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
 
-        String sql = "update WATER_ORDER_COLLECT set" +
-                " MONEY = " + Double.parseDouble(money)
-                + " , SPEND_HAPPINESS = '" + happiness
-                + " ' , TYPE_NAME = '" + typeName
-                + "' , ORDER_TYPE = " + orderType
-                + " , REMARK = '" + remark
-                + "' , TYPE_ID = '" + typeId
-                + "' , TYPE_PID = '" + typePid
-                + "' , TYPE_PNAME = '" + typePname
-                + "' , CHARGE_DATE = '" + time
-                + "' , UPDATE_DATE = '" + ss
-                + "', UPDATE_BY = " + Integer.valueOf(persionId)
-                + ", ASSETS_ID = " + event.getAssetsId()
-                + ", ASSETS_NAME = '" + event.getAssetsName()
-                + "' where ID = '" + event.getId() + "'";
+        event .setSpendHappiness(happiness);
+        event.setMoney(Double.parseDouble(money));
+        event.setTypeName(typeName);
+        event.setOrderType(orderType);
+        event.setRemark(remark);
+        event.setTypeId(typeId);
+        event.setTypePid(typePid);
+        event.setTypePname(typePname);
+        event.setChargeDate(new Date(time));
+        event.setUpdateDate(new Date(ss));
+        event.setUpdateBy(Integer.valueOf(persionId));
+        event.setAssetsId(event.getAssetsId());
+        event.setAssetsName(event.getAssetsName());
 
-        b = DevRing.tableManager(WaterOrderCollect.class).execSQL(sql);
+        b = DevRing.tableManager(WaterOrderCollect.class).updateOne(event);
+
+//        String sql = "update WATER_ORDER_COLLECT set" +
+//                " MONEY = " + Double.parseDouble(money)
+//                + " , SPEND_HAPPINESS = '" + happiness
+//                + " ' , TYPE_NAME = '" + typeName
+//                + "' , ORDER_TYPE = " + orderType
+//                + " , REMARK = '" + remark
+//                + "' , TYPE_ID = '" + typeId
+//                + "' , TYPE_PID = '" + typePid
+//                + "' , TYPE_PNAME = '" + typePname
+//                + "' , CHARGE_DATE = '" + time
+//                + "' , UPDATE_DATE = '" + ss
+//                + "', UPDATE_BY = " + Integer.valueOf(persionId)
+//                + ", ASSETS_ID = " + event.getAssetsId()
+//                + ", ASSETS_NAME = '" + event.getAssetsName()
+//                + "' where ID = '" + event.getId() + "'";
+//
+//        b = DevRing.tableManager(WaterOrderCollect.class).execSQL(sql);
         if (b) {
             pullToSyncDate();
         } else {
@@ -792,14 +794,55 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
         req.setSynDate(times);
 
         //本地数据库查找未上传数据 上传至服务器
-        String account = SPUtil.getPrefString(MingXiEditorActivity.this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ACCOUNT_BOOK_ID= " + account + " AND UPDATE_DATE >= " + time;
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+
+        List<WaterOrderCollect> l = new ArrayList<>();
+        if (null != cursor) {
+            l = DBUtil.changeToList(cursor, l, WaterOrderCollect.class);
+        }
+
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
         myList.clear();
-        if (null != cursor) {
-            myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+        if (l != null && l.size() > 0) {
+            for (int i = 0; i < l.size(); i++) {
+                OffLineReq.SynDataBean t = new OffLineReq.SynDataBean();
+                WaterOrderCollect w = l.get(i);
+                t.setTypeName(w.typeName);
+                t.setId(w.id);
+                t.setIsStaged(w.isStaged);
+                t.setUseDegree(w.useDegree);
+                t.setPictureUrl(w.getPictureUrl());
+                t.setParentId(String.valueOf(w.getParentId()));
+                t.setRemark(w.getRemark());
+                t.setAccountBookId(w.getAccountBookId());
+                t.setOrderType(w.getOrderType());
+                t.setMoney(w.getMoney());
+                t.setCreateDate(w.getCreateDate());
+                t.setCreateName(w.getCreateName());
+                t.setTypeId(w.getTypeId());
+                t.setTypeName(w.getTypeName());
+                t.setSpendHappiness(w.getSpendHappiness());
+                t.setChargeDate(w.getChargeDate());
+                t.setTypePid(w.getTypePid());
+                t.setTypePname(w.getTypePname());
+                t.setUpdateDate(w.getUpdateDate());
+                t.setDelflag(w.getDelflag());
+                t.setCreateBy(w.getCreateBy());
+                t.setDelDate(w.getDelDate());
+                t.setUpdateBy(w.getUpdateBy());
+                t.setUpdateName(w.getUpdateName());
+                t.setIcon(w.getIcon());
+                t.setUserPrivateLabelId(w.getUserPrivateLabelId());
+                t.setReporterAvatar(w.getReporterAvatar());
+                t.setReporterNickName(w.getReporterNickName());
+                t.setAbName(w.getAbName());
+                t.setAssetsId(w.getAssetsId());
+                t.setAssetsName(w.getAssetsName());
+                myList.add(t);
+            }
         }
+
         List<OffLine2Req.SynDataBean> myList2 = new ArrayList<>();
         myList2.clear();
         OffLine2Req req2 = new OffLine2Req();

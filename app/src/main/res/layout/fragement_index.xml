@@ -57,542 +57,551 @@
 
         <View style="@style/horizontal_line"/>
 
-        <android.support.v4.widget.NestedScrollView
+        <sing.SmartRefreshLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/refresh"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginEnd="@dimen/dp_15_x"
-            android:layout_marginStart="@dimen/dp_15_x"
-            android:overScrollMode="never"
-            android:scrollbars="none">
+            android:layout_height="match_parent">
 
-            <LinearLayout
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_15_x"
-                    android:background="@mipmap/home_bg_tbsjzs_disabled">
-
-                    <TextView
-                        android:id="@+id/tv_spend"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_15_x"
-                        android:layout_marginTop="@dimen/dp_15_x"
-                        android:text="@{bean.mm+@string/money_spend}"
-                        android:textColor="@color/white"
-                        android:textSize="14sp"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-
-                    <TextView
-                        android:id="@+id/tv_spend_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10_x"
-                        android:text="@{@string/money+(bean.showMoney?bean.spendingMoney:@string/hide_money)}"
-                        android:textColor="@color/white"
-                        android:textSize="24sp"
-                        app:layout_constraintStart_toStartOf="@id/tv_spend"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_spend"/>
-
-                    <ImageView
-                        android:id="@+id/line1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginEnd="@dimen/dp_15_x"
-                        android:layout_marginStart="@dimen/dp_15_x"
-                        android:layout_marginTop="@dimen/dp_10_x"
-                        android:background="@mipmap/home_icon_kpcx_disabled"
-                        app:layout_constraintStart_toStartOf="@id/tv_spend"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_spend_money"/>
-
-                    <TextView
-                        android:id="@+id/tv_budget"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_10_x"
-                        android:text="@{bean.mm+@string/money_budget}"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@id/tv_spend"
-                        app:layout_constraintTop_toBottomOf="@+id/line1"/>
-
-                    <TextView
-                        android:id="@+id/tv_budget_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_15_x"
-                        android:layout_marginTop="@dimen/dp_10_x"
-                        android:maxLength="9"
-                        android:text="@{@string/money+(bean.showMoney?bean.budget:@string/hide_money)}"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/tv_spend"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_budget"/>
-
-                    <TextView
-                        android:id="@+id/tv_editor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_10_x"
-                        android:drawablePadding="@dimen/dp_3_x"
-                        android:drawableStart="@mipmap/icon_editor"
-                        android:onClick="@{listener.editor}"
-                        android:text="编辑"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintBottom_toBottomOf="@+id/tv_budget_money"
-                        app:layout_constraintStart_toEndOf="@+id/tv_budget_money"
-                        app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
-
-                    <ImageView
-                        android:id="@+id/line2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:src="@mipmap/home_icon_kpdx_disabled"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintTop_toBottomOf="@+id/line1"/>
-
-                    <TextView
-                        android:id="@+id/tv_income"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_15_x"
-                        android:text="@{bean.mm+@string/money_income}"
-                        android:textColor="@color/white"
-                        android:textSize="12sp"
-                        app:layout_constraintStart_toEndOf="@+id/line2"
-                        app:layout_constraintTop_toTopOf="@+id/tv_budget"/>
-
-                    <TextView
-                        android:id="@+id/tv_income_money"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_15_x"
-                        android:maxLength="9"
-                        android:text="@{@string/money+(bean.showMoney?bean.inComeMoney:@string/hide_money)}"
-                        android:textColor="@color/white"
-                        android:textSize="16sp"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintStart_toStartOf="@id/tv_income"
-                        app:layout_constraintTop_toBottomOf="@+id/tv_budget"
-                        app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
-
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:onClick="@{listener.showMoney}"
-                        android:padding="@dimen/dp_5_x"
-                        android:src="@{bean.showMoney?@drawable/home_icon_chakan_normal:@drawable/home_icon_yincang_normal}"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
-                </android.support.constraint.ConstraintLayout>
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"
+                android:overScrollMode="never"
+                android:scrollbars="none">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_15_x"
-                    android:gravity="center_vertical"
-                    android:visibility="@{bean.show?View.VISIBLE:View.GONE}">
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:background="@drawable/select_home"
-                        android:gravity="center"
-                        android:onClick="@{listener.invitation}"
-                        android:text="邀请记账"
-                        android:textColor="@color/white"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/select_retract"
-                        android:onClick="@{listener.retract}"/>
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:background="@drawable/select_zankai"
-                    android:onClick="@{listener.open}"
-                    android:visibility="@{bean.showArrow?View.VISIBLE:View.GONE}"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_vertical"
-                    android:gravity="center_vertical"
-                    android:paddingTop="@dimen/dp_10_x"
-                    android:visibility="@{bean.showMember?View.VISIBLE:bean.showMemberSeting?View.VISIBLE:View.GONE}">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:visibility="@{bean.showMember?View.VISIBLE:View.GONE}"/>
-
-                    <ImageView
-                        android:id="@+id/iv_index_setting"
-                        android:layout_width="@dimen/dp_40_x"
-                        android:layout_height="@dimen/dp_40_x"
-                        android:layout_marginStart="@dimen/dp_15_x"
-                        android:onClick="@{listener.setMemberSetting}"
-                        android:src="@mipmap/icon_sysz_normal"
-                        android:visibility="@{bean.showMemberSeting?View.VISIBLE:View.GONE}"/>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10_x"
-                    android:background="@drawable/select_white_8px"
+                    android:layout_height="match_parent"
                     android:orientation="vertical">
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/recycler_view1"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:overScrollMode="never"
-                        android:scrollbars="none"/>
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line"/>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/select_bottom_white"
-                        android:gravity="center"
-                        android:onClick="@{listener.more}">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:drawableEnd="@drawable/home_icon_ckqbjr_normal"
-                            android:drawablePadding="@dimen/dp_5_x"
-                            android:padding="@dimen/dp_10_x"
-                            android:text="查看全部"
-                            android:textColor="#333333"
-                            android:textSize="16sp"/>
-                    </LinearLayout>
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_15_x"
-                    android:background="@drawable/select_top_white"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:padding="@dimen/dp_10_x">
-
-
-                    <TextView
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:text="@{bean.mm+@string/money_spend_type}"
-                        android:textColor="#333333"
-                        android:textSize="18sp"/>
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@{bean.comparison}"
-                        android:textColor="#333333"
-                        android:textSize="12sp"/>
-                </LinearLayout>
-
-                <View style="@style/horizontal_line"/>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:paddingBottom="@dimen/dp_15_x"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x"
-                    android:paddingTop="@dimen/dp_15_x">
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:paddingEnd="@dimen/dp_20_x">
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@{bean.select==0?@color/index_1:@color/white}"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/dp_3_x"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/dp_2_x"
-                                android:layout_marginTop="@dimen/dp_2_x"
-                                android:background="@color/index_1"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.str1}"
-                                android:textColor="@{bean.select==0?@color/white:@color/text_333333}"
-                                android:textSize="14sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.cop1}"
-                                android:textColor="@{bean.select==0?@color/white:@color/text_808080}"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10_x"
-                            android:background="@{bean.select==1?@color/index_2:@color/white}"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/dp_3_x"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/dp_2_x"
-                                android:layout_marginTop="@dimen/dp_2_x"
-                                android:background="@color/index_2"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.str2}"
-                                android:textColor="@{bean.select==1?@color/white:@color/text_333333}"
-                                android:textSize="14sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.cop2}"
-                                android:textColor="@{bean.select==1?@color/white:@color/text_808080}"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10_x"
-                            android:background="@{bean.select==2?@color/index_3:@color/white}"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/dp_3_x"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/dp_2_x"
-                                android:layout_marginTop="@dimen/dp_2_x"
-                                android:background="@color/index_3"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.str3}"
-                                android:textColor="@{bean.select==2?@color/white:@color/text_333333}"
-                                android:textSize="14sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.cop3}"
-                                android:textColor="@{bean.select==2?@color/white:@color/text_808080}"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10_x"
-                            android:background="@{bean.select==3?@color/index_4:@color/white}"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/dp_3_x"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/dp_2_x"
-                                android:layout_marginTop="@dimen/dp_2_x"
-                                android:background="@color/index_4"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.str4}"
-                                android:textColor="@{bean.select==3?@color/white:@color/text_333333}"
-                                android:textSize="14sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.cop4}"
-                                android:textColor="@{bean.select==3?@color/white:@color/text_808080}"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginTop="@dimen/dp_10_x"
-                            android:background="@{bean.select==4?@color/index_5:@color/white}"
-                            android:gravity="center_vertical">
-
-                            <View
-                                android:layout_width="@dimen/dp_3_x"
-                                android:layout_height="match_parent"
-                                android:layout_marginBottom="@dimen/dp_2_x"
-                                android:layout_marginTop="@dimen/dp_2_x"
-                                android:background="@color/index_5"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.str5}"
-                                android:textColor="@{bean.select==4?@color/white:@color/text_333333}"
-                                android:textSize="14sp"/>
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:layout_marginStart="@dimen/dp_10_x"
-                                android:text="@{bean.cop5}"
-                                android:textColor="@{bean.select==4?@color/white:@color/text_808080}"
-                                android:textSize="12sp"/>
-                        </LinearLayout>
-                    </LinearLayout>
-
-                    <com.github.mikephil.chart_3_0_1v.charts.PieChart
-                        android:id="@+id/pie_chart"
-                        android:layout_width="@dimen/dp_150_x"
-                        android:layout_height="@dimen/dp_150_x"/>
-                </LinearLayout>
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:orientation="vertical"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x"
-                    android:visibility="@{piechat==null?View.GONE:View.VISIBLE}">
 
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/dp_5_x"
-                        android:background="@mipmap/home_icon_btqxzk_disabled"
-                        android:padding="@dimen/dp_15_x">
-
-                        <View
-                            android:id="@+id/v_temp"
-                            android:layout_width="@dimen/dp_40_x"
-                            android:layout_height="@dimen/dp_40_x"
-                            android:background="@drawable/circle_333333"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintStart_toStartOf="parent"
-                            app:layout_constraintTop_toTopOf="parent"/>
-
-                        <ImageView
-                            android:id="@+id/iv_icon"
-                            imageUrl="@{piechat.icon}"
-                            android:layout_width="@dimen/dp_15_x"
-                            android:layout_height="@dimen/dp_15_x"
-                            app:layout_constraintBottom_toBottomOf="@+id/v_temp"
-                            app:layout_constraintEnd_toEndOf="@+id/v_temp"
-                            app:layout_constraintStart_toStartOf="@+id/v_temp"
-                            app:layout_constraintTop_toTopOf="@+id/v_temp"/>
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:background="@mipmap/home_bg_tbsjzs_disabled">
 
                         <TextView
+                            android:id="@+id/tv_spend"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginStart="@dimen/dp_15_x"
-                            android:text="@{piechat.typeName}"
-                            android:textColor="#333333"
+                            android:layout_marginTop="@dimen/dp_15_x"
+                            android:text="@{bean.mm+@string/money_spend}"
+                            android:textColor="@color/white"
                             android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/v_temp"
-                            app:layout_constraintStart_toEndOf="@+id/v_temp"
-                            app:layout_constraintTop_toTopOf="@+id/v_temp"/>
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent"/>
 
-                        <ImageView
-                            android:id="@+id/iv_temp1"
+                        <TextView
+                            android:id="@+id/tv_spend_money"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:src="@mipmap/homebt_icon_jinru_normal"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:text="@{@string/money+(bean.showMoney?bean.spendingMoney:@string/hide_money)}"
+                            android:textColor="@color/white"
+                            android:textSize="24sp"
+                            app:layout_constraintStart_toStartOf="@id/tv_spend"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_spend"/>
+
+                        <ImageView
+                            android:id="@+id/line1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_15_x"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:background="@mipmap/home_icon_kpcx_disabled"
+                            app:layout_constraintStart_toStartOf="@id/tv_spend"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_spend_money"/>
+
+                        <TextView
+                            android:id="@+id/tv_budget"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:text="@{bean.mm+@string/money_budget}"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toStartOf="@id/tv_spend"
+                            app:layout_constraintTop_toBottomOf="@+id/line1"/>
+
+                        <TextView
+                            android:id="@+id/tv_budget_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dp_15_x"
+                            android:layout_marginTop="@dimen/dp_10_x"
+                            android:maxLength="9"
+                            android:text="@{@string/money+(bean.showMoney?bean.budget:@string/hide_money)}"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/tv_spend"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_budget"/>
+
+                        <TextView
+                            android:id="@+id/tv_editor"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_10_x"
+                            android:drawablePadding="@dimen/dp_3_x"
+                            android:drawableStart="@mipmap/icon_editor"
+                            android:onClick="@{listener.editor}"
+                            android:text="编辑"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_budget_money"
+                            app:layout_constraintStart_toEndOf="@+id/tv_budget_money"
+                            app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+
+                        <ImageView
+                            android:id="@+id/line2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:src="@mipmap/home_icon_kpdx_disabled"
                             app:layout_constraintBottom_toBottomOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toBottomOf="@+id/line1"/>
+
+                        <TextView
+                            android:id="@+id/tv_income"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:text="@{bean.mm+@string/money_income}"
+                            android:textColor="@color/white"
+                            android:textSize="12sp"
+                            app:layout_constraintStart_toEndOf="@+id/line2"
+                            app:layout_constraintTop_toTopOf="@+id/tv_budget"/>
+
+                        <TextView
+                            android:id="@+id/tv_income_money"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginBottom="@dimen/dp_15_x"
+                            android:maxLength="9"
+                            android:text="@{@string/money+(bean.showMoney?bean.inComeMoney:@string/hide_money)}"
+                            android:textColor="@color/white"
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintStart_toStartOf="@id/tv_income"
+                            app:layout_constraintTop_toBottomOf="@+id/tv_budget"
+                            app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:onClick="@{listener.showMoney}"
+                            android:padding="@dimen/dp_5_x"
+                            android:src="@{bean.showMoney?@drawable/home_icon_chakan_normal:@drawable/home_icon_yincang_normal}"
+                            app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toTopOf="parent"/>
+                    </android.support.constraint.ConstraintLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:gravity="center_vertical"
+                        android:visibility="@{bean.show?View.VISIBLE:View.GONE}">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@drawable/select_home"
+                            android:gravity="center"
+                            android:onClick="@{listener.invitation}"
+                            android:text="邀请记账"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginEnd="@dimen/dp_10_x"
-                            android:text="@{String.valueOf(piechat.money)}"
-                            android:textColor="#2F54EB"
-                            android:textSize="14sp"
-                            app:layout_constraintBottom_toBottomOf="parent"
-                            app:layout_constraintEnd_toStartOf="@+id/iv_temp1"
-                            app:layout_constraintTop_toTopOf="parent"/>
-                    </android.support.constraint.ConstraintLayout>
+                            android:background="@drawable/select_retract"
+                            android:onClick="@{listener.retract}"/>
+                    </LinearLayout>
 
                     <ImageView
-                        android:id="@+id/iv_temp"
-                        android:layout_width="@dimen/dp_150_x"
-                        android:layout_height="@dimen/dp_7_x"
-                        android:layout_gravity="end"
-                        android:src="@mipmap/home_icon_btqxzj_disabled1"/>
-                </FrameLayout>
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:background="@drawable/select_zankai"
+                        android:onClick="@{listener.open}"
+                        android:visibility="@{bean.showArrow?View.VISIBLE:View.GONE}"/>
 
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/white"
-                    android:padding="@dimen/dp_15_x"
-                    android:text="@{@string/asterisk+bean.selestStr+@string/ranking}"
-                    android:textColor="#808080"
-                    android:textSize="12sp"
-                    android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_vertical"
+                        android:paddingTop="@dimen/dp_10_x"
+                        android:visibility="@{bean.showMember?View.VISIBLE:bean.showMemberSeting?View.VISIBLE:View.GONE}">
 
-                <android.support.v7.widget.RecyclerView
-                    android:id="@+id/recycler_view2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:overScrollMode="never"
-                    android:scrollbars="none"
-                    android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:visibility="@{bean.showMember?View.VISIBLE:View.GONE}"/>
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_30_x"/>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+                        <ImageView
+                            android:id="@+id/iv_index_setting"
+                            android:layout_width="@dimen/dp_40_x"
+                            android:layout_height="@dimen/dp_40_x"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:onClick="@{listener.setMemberSetting}"
+                            android:src="@mipmap/icon_sysz_normal"
+                            android:visibility="@{bean.showMemberSeting?View.VISIBLE:View.GONE}"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_10_x"
+                        android:background="@drawable/select_white_8px"
+                        android:orientation="vertical">
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/recycler_view1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:overScrollMode="never"
+                            android:scrollbars="none"/>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/line"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/select_bottom_white"
+                            android:gravity="center"
+                            android:onClick="@{listener.more}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/home_icon_ckqbjr_normal"
+                                android:drawablePadding="@dimen/dp_5_x"
+                                android:padding="@dimen/dp_10_x"
+                                android:text="查看全部"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:background="@drawable/select_top_white"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal"
+                        android:padding="@dimen/dp_10_x">
+
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@{bean.mm+@string/money_spend_type}"
+                            android:textColor="#333333"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@{bean.comparison}"
+                            android:textColor="#333333"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <View style="@style/horizontal_line"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:paddingBottom="@dimen/dp_15_x"
+                        android:paddingEnd="@dimen/dp_15_x"
+                        android:paddingStart="@dimen/dp_15_x"
+                        android:paddingTop="@dimen/dp_15_x">
+
+                        <LinearLayout
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:orientation="vertical"
+                            android:paddingEnd="@dimen/dp_20_x">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="@{bean.select==0?@color/index_1:@color/white}"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/dp_3_x"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/dp_2_x"
+                                    android:layout_marginTop="@dimen/dp_2_x"
+                                    android:background="@color/index_1"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.str1}"
+                                    android:textColor="@{bean.select==0?@color/white:@color/text_333333}"
+                                    android:textSize="14sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.cop1}"
+                                    android:textColor="@{bean.select==0?@color/white:@color/text_808080}"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_10_x"
+                                android:background="@{bean.select==1?@color/index_2:@color/white}"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/dp_3_x"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/dp_2_x"
+                                    android:layout_marginTop="@dimen/dp_2_x"
+                                    android:background="@color/index_2"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.str2}"
+                                    android:textColor="@{bean.select==1?@color/white:@color/text_333333}"
+                                    android:textSize="14sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.cop2}"
+                                    android:textColor="@{bean.select==1?@color/white:@color/text_808080}"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_10_x"
+                                android:background="@{bean.select==2?@color/index_3:@color/white}"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/dp_3_x"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/dp_2_x"
+                                    android:layout_marginTop="@dimen/dp_2_x"
+                                    android:background="@color/index_3"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.str3}"
+                                    android:textColor="@{bean.select==2?@color/white:@color/text_333333}"
+                                    android:textSize="14sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.cop3}"
+                                    android:textColor="@{bean.select==2?@color/white:@color/text_808080}"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_10_x"
+                                android:background="@{bean.select==3?@color/index_4:@color/white}"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/dp_3_x"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/dp_2_x"
+                                    android:layout_marginTop="@dimen/dp_2_x"
+                                    android:background="@color/index_4"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.str4}"
+                                    android:textColor="@{bean.select==3?@color/white:@color/text_333333}"
+                                    android:textSize="14sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.cop4}"
+                                    android:textColor="@{bean.select==3?@color/white:@color/text_808080}"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_10_x"
+                                android:background="@{bean.select==4?@color/index_5:@color/white}"
+                                android:gravity="center_vertical">
+
+                                <View
+                                    android:layout_width="@dimen/dp_3_x"
+                                    android:layout_height="match_parent"
+                                    android:layout_marginBottom="@dimen/dp_2_x"
+                                    android:layout_marginTop="@dimen/dp_2_x"
+                                    android:background="@color/index_5"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.str5}"
+                                    android:textColor="@{bean.select==4?@color/white:@color/text_333333}"
+                                    android:textSize="14sp"/>
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:text="@{bean.cop5}"
+                                    android:textColor="@{bean.select==4?@color/white:@color/text_808080}"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+                        </LinearLayout>
+
+                        <com.github.mikephil.chart_3_0_1v.charts.PieChart
+                            android:id="@+id/pie_chart"
+                            android:layout_width="@dimen/dp_150_x"
+                            android:layout_height="@dimen/dp_150_x"/>
+                    </LinearLayout>
+
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:orientation="vertical"
+                        android:paddingEnd="@dimen/dp_15_x"
+                        android:paddingStart="@dimen/dp_15_x"
+                        android:visibility="@{piechat==null?View.GONE:View.VISIBLE}">
+
+                        <android.support.constraint.ConstraintLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="@dimen/dp_5_x"
+                            android:background="@mipmap/home_icon_btqxzk_disabled"
+                            android:padding="@dimen/dp_15_x">
+
+                            <View
+                                android:id="@+id/v_temp"
+                                android:layout_width="@dimen/dp_40_x"
+                                android:layout_height="@dimen/dp_40_x"
+                                android:background="@drawable/circle_333333"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintStart_toStartOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <ImageView
+                                android:id="@+id/iv_icon"
+                                imageUrl="@{piechat.icon}"
+                                android:layout_width="@dimen/dp_15_x"
+                                android:layout_height="@dimen/dp_15_x"
+                                app:layout_constraintBottom_toBottomOf="@+id/v_temp"
+                                app:layout_constraintEnd_toEndOf="@+id/v_temp"
+                                app:layout_constraintStart_toStartOf="@+id/v_temp"
+                                app:layout_constraintTop_toTopOf="@+id/v_temp"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/dp_15_x"
+                                android:text="@{piechat.typeName}"
+                                android:textColor="#333333"
+                                android:textSize="14sp"
+                                app:layout_constraintBottom_toBottomOf="@+id/v_temp"
+                                app:layout_constraintStart_toEndOf="@+id/v_temp"
+                                app:layout_constraintTop_toTopOf="@+id/v_temp"/>
+
+                            <ImageView
+                                android:id="@+id/iv_temp1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:src="@mipmap/homebt_icon_jinru_normal"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toEndOf="parent"
+                                app:layout_constraintTop_toTopOf="parent"/>
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginEnd="@dimen/dp_10_x"
+                                android:text="@{String.valueOf(piechat.money)}"
+                                android:textColor="#2F54EB"
+                                android:textSize="14sp"
+                                app:layout_constraintBottom_toBottomOf="parent"
+                                app:layout_constraintEnd_toStartOf="@+id/iv_temp1"
+                                app:layout_constraintTop_toTopOf="parent"/>
+                        </android.support.constraint.ConstraintLayout>
+
+                        <ImageView
+                            android:id="@+id/iv_temp"
+                            android:layout_width="@dimen/dp_150_x"
+                            android:layout_height="@dimen/dp_7_x"
+                            android:layout_gravity="end"
+                            android:src="@mipmap/home_icon_btqxzj_disabled1"/>
+                    </FrameLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@color/white"
+                        android:padding="@dimen/dp_15_x"
+                        android:text="@{@string/asterisk+bean.selestStr+@string/ranking}"
+                        android:textColor="#808080"
+                        android:textSize="12sp"
+                        android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view2"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        android:visibility="@{bean.select==-1?View.GONE:View.VISIBLE}"/>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_30_x"/>
+                </LinearLayout>
+            </android.support.v4.widget.NestedScrollView>
+
+        </sing.SmartRefreshLayout>
     </LinearLayout>
 </layout>

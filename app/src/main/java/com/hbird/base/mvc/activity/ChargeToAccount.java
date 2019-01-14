@@ -867,6 +867,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         req.setSynDate(times);
 
         // 本地数据库查找未上传数据 上传至服务器
+//        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ACCOUNT_BOOK_ID= " + accountId + " AND UPDATE_DATE >= " + time;
         String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
 

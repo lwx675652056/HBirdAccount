@@ -10,6 +10,7 @@ import org.greenrobot.greendao.annotation.Generated;
 import org.greenrobot.greendao.annotation.Id;
 import org.greenrobot.greendao.annotation.Unique;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
@@ -17,8 +18,9 @@ import java.util.Date;
  * 支出收入流水表
  */
 @Entity
-public class WaterOrderCollect implements Comparable<WaterOrderCollect> {
+public class WaterOrderCollect implements Comparable<WaterOrderCollect>,Serializable {
 
+    private static final long serialVersionUID = -5577759924185765694L;
     /**
      * 流水记录号
      */

@@ -155,6 +155,9 @@
         <!--首页记账-->
         <activity android:name=".mvc.activity.NotificationMessageActivity"/>
         <activity
+            android:name="com.hbird.ui.charge.ActEditCharge"
+            android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <activity
             android:name=".mvc.activity.AccountAlertActivity"
             android:launchMode="singleInstance"/>
         <activity

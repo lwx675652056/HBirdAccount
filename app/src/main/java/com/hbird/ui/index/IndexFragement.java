@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -63,6 +64,7 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.hbird.common.Constants;
+import com.hbird.common.RefreshHeader;
 import com.hbird.ui.calendar.ActCalendar;
 import com.hbird.ui.detailed.ActAccountDetailed;
 import com.hbird.util.Utils;
@@ -76,8 +78,11 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
+import sing.SmartRefreshLayout;
 import sing.common.base.BaseFragment;
 import sing.common.util.StatusBarUtil;
+import sing.refreshlayout.api.RefreshLayout;
+import sing.refreshlayout.listener.OnRefreshListener;
 import sing.util.AppUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
@@ -232,15 +237,29 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         getIndexInfo();
         loadDataForNet();
+
+
+        SmartRefreshLayout materialRefreshLayout = binding.refresh;
+        materialRefreshLayout.setEnableLoadMore(false);
+        materialRefreshLayout.setRefreshHeader(new RefreshHeader(getActivity()));
+        materialRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                timeB = true;
+                getIndexInfo();
+                loadDataForNet();
+                refreshLayout.finishRefresh();
+            }
+        });
     }
 
     // 点击记账的条目
     private void onItemClick(Object obj, int type) {
         Utils.playVoice(getActivity(), R.raw.changgui02);
         WaterOrderCollect bean;
-        if (obj instanceof WaterOrderCollect){
+        if (obj instanceof WaterOrderCollect) {
             bean = (WaterOrderCollect) obj;
-        }else if (obj instanceof AccountDetailedBean){
+        } else if (obj instanceof AccountDetailedBean) {
             AccountDetailedBean data = (AccountDetailedBean) obj;
             bean = new WaterOrderCollect();
             bean.setId(data.getId());
@@ -267,7 +286,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             bean.setAbName(data.getAbName());//所属账本名称
             bean.setAssetsId(data.getAssetsId());
             bean.setAssetsName(data.getAssetsName());
-        }else{
+        } else {
             return;
         }
 
@@ -675,19 +694,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                         List<String> members = b1.getResult().getMembers();
                         LogUtil.e("空代表是管理員：" + owner);
 
-                        memberList.clear();
-                        if (yourSelf != null) {
-                            memberList.add(yourSelf);
-                        } else {
-                            memberList.add("");// 你没有头像
-                        }
-
-                        if (members != null) {
-                            memberList.addAll(members);
-                        }
-
-                        memberAdapter.notifyDataSetChanged();
-
                         if (null != owner) {//不是管理员  显示成员头像，不显示邀请，不显示设置
                             members.add(owner);
                             SharedPreferencesUtil.put("index_is_show", false);
@@ -709,6 +715,20 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                                 SharedPreferencesUtil.put("index_is_show_member_seting", true);
                             }
                         }
+
+                        memberList.clear();
+                        if (yourSelf != null) {
+                            memberList.add(yourSelf);
+                        } else {
+                            memberList.add("");// 你没有头像
+                        }
+
+                        if (members != null) {
+                            memberList.addAll(members);
+                        }
+
+                        memberAdapter.notifyDataSetChanged();
+
                     }
 
                     @Override

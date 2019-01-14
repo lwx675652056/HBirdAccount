@@ -123,24 +123,28 @@ public class RegisterModle extends BaseViewModel {
                         dismissDialog();
                         LogUtil.e(value.toString());
 
-                        //登录成功保存Token及过期时间
-                        String strExpire = value.getValueByKey("expire").toString();
-                        String strToken = value.getValueByKey("X-AUTH-TOKEN").toString();
+                        if (value.code == 200){
+                            //登录成功保存Token及过期时间
+                            String strExpire = value.getValueByKey("expire").toString();
+                            String strToken = value.getValueByKey("X-AUTH-TOKEN").toString();
 
 //                        DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.app.constant.CommonTag.GLOABLE_TOKEN, strToken);
 //                        DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(com.hbird.base.app.constant.CommonTag.GLOABLE_TOKEN_EXPIRE, strExpire);
 
-                        SPUtil.setPrefString(getApplication(), CommonTag.GLOABLE_TOKEN, strToken);
-                        SPUtil.setPrefString(getApplication(), CommonTag.GLOABLE_TOKEN_EXPIRE, strExpire);
+                            SPUtil.setPrefString(getApplication(), CommonTag.GLOABLE_TOKEN, strToken);
+                            SPUtil.setPrefString(getApplication(), CommonTag.GLOABLE_TOKEN_EXPIRE, strExpire);
 
-                        //统计用户时以设备为标准 统计应用自身的账号
-                        MobclickAgent.onProfileSignIn("手机注册登录", phone);
-                        // 设置登录用户ID API（GrowingIO统计）
-                        GrowingIO.getInstance().setUserId(phone);
+                            //统计用户时以设备为标准 统计应用自身的账号
+                            MobclickAgent.onProfileSignIn("手机注册登录", phone);
+                            // 设置登录用户ID API（GrowingIO统计）
+                            GrowingIO.getInstance().setUserId(phone);
 
-                        // 获取个人信息
-                        getUserInfo(strToken);
-                        setCheckChargeType(strToken,callBack);
+                            // 获取个人信息
+                            getUserInfo(strToken);
+                            setCheckChargeType(strToken,callBack);
+                        }else{
+                            ToastUtil.showShort(value.msg);
+                        }
                     }
 
                     @Override

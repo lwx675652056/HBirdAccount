@@ -309,6 +309,13 @@ public class DateUtils {
     }
 
     /**
+     * @return 当前的天
+     */
+    public static String getTody() {
+        return new SimpleDateFormat("yyyy/MM/dd").format(new Date().getTime());
+    }
+
+    /**
      * @param time 当前的时间
      * @return 当前的天
      */

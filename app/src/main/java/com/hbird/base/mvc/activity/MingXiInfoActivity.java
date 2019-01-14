@@ -18,8 +18,6 @@ import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.OffLine2Req;
 import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
 import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
-import com.hbird.base.mvc.bean.ReturnBean.SingleReturn;
-import com.hbird.base.mvc.bean.indexBaseListBean;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
@@ -29,12 +27,11 @@ import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
+import com.hbird.common.Constants;
+import com.hbird.ui.charge.ActEditCharge;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.NetworkUtil;
-
-import org.greenrobot.eventbus.Subscribe;
-import org.greenrobot.eventbus.ThreadMode;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -92,7 +89,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
     @BindView(R.id.tv_account)
     TextView tvAccount;
 
-    private SingleReturn bean;
     private WaterOrderCollect waterOrderCollect;
     private boolean comeInForLogin;
     private String accountId;
@@ -109,11 +105,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         accountId = SPUtil.getPrefString(MingXiInfoActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
     }
 
-    @Subscribe(threadMode = ThreadMode.MAIN) //在ui线程执行
-    public void onDataSynEvent(indexBaseListBean event) {
-
-    }
-
     @Override
     protected void initData(Bundle savedInstanceState) {
         mCenterTitle.setText("明细详情");
@@ -123,13 +114,7 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
     }
 
     private void setDates(String id) {
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT " +
-                " where ID = '" + id + "'";
-
-//        String sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-//                ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-//                ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR,ASSETS_NAME, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-//                " where ID = '" + id + "'";
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ID = '" + id + "'";
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
         List<WaterOrderCollect> dbList = new ArrayList<>();
@@ -202,7 +187,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         mBack.setOnClickListener(this);
         mEditor.setOnClickListener(this);
         mDelete.setOnClickListener(this);
-
     }
 
     @Override
@@ -224,13 +208,15 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
                     finish();
                 }
                 break;
-            case R.id.tv_editor:
-                //showMessage("编辑");
+            case R.id.tv_editor:// 编辑
                 playVoice(R.raw.changgui02);
-                Intent intent = new Intent();
-                intent.setClass(this, MingXiEditorActivity.class);
-                intent.putExtra("JSONBEAN", new Gson().toJson(waterOrderCollect));
-                startActivityForResult(intent, 103);
+//                Intent intent = new Intent();
+//                intent.setClass(this, MingXiEditorActivity.class);
+//                intent.putExtra("JSONBEAN", new Gson().toJson(waterOrderCollect));
+//                startActivityForResult(intent, 103);
+                Intent intent = new Intent(this, ActEditCharge.class);
+                intent.putExtra(Constants.START_INTENT_A, waterOrderCollect);
+                startActivityForResult(intent,103);
                 break;
         }
     }
@@ -296,7 +282,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
 
         //本地数据库查找未上传数据 上传至服务器
         String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
-
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
 
         List<WaterOrderCollect> l = new ArrayList<>();
