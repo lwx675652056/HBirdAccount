@@ -17,7 +17,6 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.OffLine2Req;
 import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
-import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SingleReturn;
 import com.hbird.base.mvc.bean.indexBaseListBean;
@@ -42,6 +41,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.util.ToastUtil;
 
 /**
  * Created by Liul on 2018/7/9.
@@ -123,10 +123,13 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
     }
 
     private void setDates(String id) {
-        String sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR,ASSETS_NAME, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                 " where ID = '" + id + "'";
+
+//        String sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+//                ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+//                ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR,ASSETS_NAME, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//                " where ID = '" + id + "'";
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
         List<WaterOrderCollect> dbList = new ArrayList<>();
@@ -212,10 +215,14 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
             case R.id.tv_delete:
                 //调用接口的删除
                 playVoice(R.raw.changgui02);
-                String accoutBookId = SPUtil.getPrefString(MingXiInfoActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-                a = DBUtil.deleteOnesDate(id, accoutBookId);
-                //刪除完 同步
-                pullToSyncDate();
+                a = DBUtil.updateOneDate(waterOrderCollect);
+                if (a) {
+                    //刪除完 同步
+                    pullToSyncDate();
+                } else {
+                    setResult(102);
+                    finish();
+                }
                 break;
             case R.id.tv_editor:
                 //showMessage("编辑");
@@ -241,16 +248,14 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         //判断当前网络状态
         boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(MingXiInfoActivity.this);
         if (!netWorkAvailable) {
-            if (a) {
-                setResult(102);
-                finish();
-            }
+            setResult(102);
+            finish();
             return;
         }
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
-        String mobileDevice = Utils.getDeviceInfo(MingXiInfoActivity.this);
+        String deviceId = Utils.getDeviceInfo(MingXiInfoActivity.this);
         comeInForLogin = SPUtil.getPrefBoolean(MingXiInfoActivity.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN, false);
-        NetWorkManager.getInstance().setContext(MingXiInfoActivity.this).postPullToSyncDate(mobileDevice, comeInForLogin, token, new NetWorkManager.CallBack() {
+        NetWorkManager.getInstance().setContext(MingXiInfoActivity.this).postPullToSyncDate(deviceId, comeInForLogin, token, new NetWorkManager.CallBack() {
             @Override
             public void onSuccess(BaseReturn b) {
                 PullSyncDateReturn b1 = (PullSyncDateReturn) b;
@@ -268,19 +273,17 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
                 //插入本地数据库
                 DBUtil.insertLocalDB(synData);
                 SPUtil.setPrefBoolean(MingXiInfoActivity.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
+
                 pushOffLine();
             }
 
             @Override
             public void onError(String s) {
-                //showMessage(s);
-                if (a) {
-                    setResult(102);
-                    finish();
-                }
+                ToastUtil.showShort(s);
             }
         });
     }
+
 
     private void pushOffLine() {
         OffLineReq req = new OffLineReq();
@@ -290,14 +293,60 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         String times = String.valueOf(time);
         req.setSynDate(times);
 
+
         //本地数据库查找未上传数据 上传至服务器
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.ACCOUNT_BOOK_ID = " + accountId + " AND wo.UPDATE_DATE >= " + time;
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
+
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+
+        List<WaterOrderCollect> l = new ArrayList<>();
+        if (null != cursor) {
+            l = DBUtil.changeToList(cursor, l, WaterOrderCollect.class);
+        }
+
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
         myList.clear();
-        if (null != cursor) {
-            myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+
+        if (l != null && l.size() > 0) {
+            for (int i = 0; i < l.size(); i++) {
+                OffLineReq.SynDataBean t = new OffLineReq.SynDataBean();
+                WaterOrderCollect w = l.get(i);
+                t.setTypeName(w.typeName);
+                t.setId(w.id);
+                t.setIsStaged(w.isStaged);
+                t.setUseDegree(w.useDegree);
+                t.setPictureUrl(w.getPictureUrl());
+                t.setParentId(String.valueOf(w.getParentId()));
+                t.setRemark(w.getRemark());
+                t.setAccountBookId(w.getAccountBookId());
+                t.setOrderType(w.getOrderType());
+                t.setMoney(w.getMoney());
+                t.setCreateDate(w.getCreateDate());
+                t.setCreateName(w.getCreateName());
+                t.setTypeId(w.getTypeId());
+                t.setTypeName(w.getTypeName());
+                t.setSpendHappiness(w.getSpendHappiness());
+                t.setChargeDate(w.getChargeDate());
+                t.setTypePid(w.getTypePid());
+                t.setTypePname(w.getTypePname());
+                t.setUpdateDate(w.getUpdateDate());
+                t.setDelflag(w.getDelflag());
+                t.setCreateBy(w.getCreateBy());
+                t.setDelDate(w.getDelDate());
+                t.setUpdateBy(w.getUpdateBy());
+                t.setUpdateName(w.getUpdateName());
+                t.setIcon(w.getIcon());
+                t.setUserPrivateLabelId(w.getUserPrivateLabelId());
+                t.setReporterAvatar(w.getReporterAvatar());
+                t.setReporterNickName(w.getReporterNickName());
+                t.setAbName(w.getAbName());
+                t.setAssetsId(w.getAssetsId());
+                t.setAssetsName(w.getAssetsName());
+                myList.add(t);
+            }
         }
+
+        //本地数据库查找未上传数据 上传至服务器
         List<OffLine2Req.SynDataBean> myList2 = new ArrayList<>();
         myList2.clear();
         OffLine2Req req2 = new OffLine2Req();
@@ -340,34 +389,28 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
                 synDataBean.setUseDegree(s1.getUseDegree());
                 synDataBean.setUpdateName(s1.getUpdateName());
                 synDataBean.setUserPrivateLabelId(s1.getUserPrivateLabelId());
+                synDataBean.setAssetsId(s1.getAssetsId());
+                synDataBean.setAssetsName(s1.getAssetsName());
                 myList2.add(synDataBean);
             }
             req2.setSynData(myList2);
         }
 
 
-        if (myList2 != null && myList2.size() > 0) {
+        if (myList2.size() > 0) {
             req2.setSynData(myList2);
         }
         String jsonInfo = new Gson().toJson(req2);
-        NetWorkManager.getInstance().setContext(MingXiInfoActivity.this)
-                .pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GloableReturn b1 = (GloableReturn) b;
-                        if (a) {
-                            setResult(102);
-                            finish();
-                        }
-                    }
+        NetWorkManager.getInstance().setContext(MingXiInfoActivity.this).pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                ToastUtil.showShort("删除成功");
+                finish();
+            }
 
-                    @Override
-                    public void onError(String s) {
-                        if (a) {
-                            setResult(102);
-                            finish();
-                        }
-                    }
-                });
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 }

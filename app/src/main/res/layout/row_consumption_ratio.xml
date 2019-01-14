@@ -1,0 +1,90 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.hbird.bean.ConsumptionRatioBean"/>
+
+        <variable
+            name="time"
+            type="String"/>
+
+        <variable
+            name="ratio"
+            type="String"/>
+
+        <variable
+            name="noData"
+            type="Boolean"/>
+
+        <import type="android.view.View"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:layout_marginTop="@dimen/dp_15_x"
+        android:background="@mipmap/ic_bg_xiaozi"
+        android:gravity="end|center_vertical"
+        android:orientation="vertical"
+        android:paddingEnd="@dimen/dp_15_x">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@{time}"
+            android:textColor="@color/white"
+            android:textSize="16sp"/>
+
+        <LinearLayout
+            android:visibility="@{noData?View.GONE:View.VISIBLE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end|bottom"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_item_precent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{ratio}"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="非食物支出占总支出的比值"
+                android:textColor="@color/white"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:visibility="@{noData?View.VISIBLE:View.GONE}"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="end|bottom"
+            android:orientation="vertical" >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:visibility="invisible"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="暂无数据"
+                android:textColor="@color/white"
+                android:textSize="32sp"
+                android:textStyle="bold"/>
+        </LinearLayout>
+    </LinearLayout>
+</layout>

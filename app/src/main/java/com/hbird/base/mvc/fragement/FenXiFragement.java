@@ -75,7 +75,7 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
     @BindView(R.id.recycler_view)
     RecyclerView mRecycleView;
     @BindView(R.id.tv_editors)
-    TextView mEditors;
+    TextView tvEditors;
     @BindView(R.id.ll_expense_content)
     LinearLayout mExpenseContent;
     @BindView(R.id.rl_expense_btn)
@@ -173,21 +173,18 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
 
         listAdapter = new XiaoFeiBiAdapter(getActivity());
         lv.setAdapter(listAdapter);
-    }
 
-    @Override
-    public void initData() {
-        setInitData();
-    }
-
-    private void setInitData() {
-        LogUtil.e("setInitData()");
         dataM = new ArrayList<>();
         dataM.clear();
         String temp = "月份";
         for (int i = 1; i < 13; i++) {
             dataM.add(i + temp);
         }
+    }
+
+    @Override
+    public void initData() {
+
     }
 
     @Override
@@ -214,15 +211,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
         }
     }
 
-    @Override
-    public void loadDate() {
-        super.loadDate();
-        LogUtil.e("loadDate()");
-        if (firstCome > 0) {
-            loadDataForNet();
-        }
-    }
-
     private void getXiaoLvNet(String token) {
         LogUtil.e("getXiaoLvNet()");
         NetWorkManager.getInstance().setContext(getActivity())
@@ -231,7 +219,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                     public void onSuccess(BaseReturn b) {
                         SaveMoney2Return b1 = (SaveMoney2Return) b;
                         setSaveMoneyDate(b1);
-
                     }
 
                     @Override
@@ -262,7 +249,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                             mExpenseContent.setVisibility(View.VISIBLE);
                             lv.setVisibility(View.GONE);
                         }
-
                     }
 
                     @Override
@@ -729,13 +715,13 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
             mViewChosse.setVisibility(View.GONE);
             xiaoLvs = true;
             mViewContents.setVisibility(View.GONE);
-            mEditors.setVisibility(View.GONE);
+            tvEditors.setVisibility(View.GONE);
         } else {
             mViewChosse.setVisibility(View.VISIBLE);
             xiaoLvs = false;
             mViewKzp.setVisibility(View.GONE);
             mViewContents.setVisibility(View.VISIBLE);
-            mEditors.setVisibility(View.VISIBLE);
+            tvEditors.setVisibility(View.VISIBLE);
         }
         //如果 返回对应月数集合数 不对 则手动处理数据
         for (int i = 0; i < type; i++) {
@@ -797,7 +783,7 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
 
     @Override
     public void initListener() {
-        mEditors.setOnClickListener(this);
+        tvEditors.setOnClickListener(this);
         mExpenseBtn.setOnClickListener(this);
         tvMonth.setOnClickListener(this);
         mSettingKzp.setOnClickListener(this);
@@ -879,6 +865,11 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
         });
     }
 
+    @Override
+    public void loadData() {
+
+    }
+
     private void setDates(int num) {
         LogUtil.e("setDates()");
         xiaoLvList.clear();
@@ -922,17 +913,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
             xiaoLvList.add(bean);
         }
 
-       /* for(int i=0;i<num;i++){
-            YearAndMonthBean bean = new YearAndMonthBean();
-            bean.setmDate((i+1)+"月");
-            if(i==6 || i==9 ||i==1 ||i==11){
-                bean.setMoney(-50);
-            }else {
-                bean.setMoney(20+4*i);
-                //bean.setMoney(50);
-            }
-            xiaoLvList.add(bean);
-        }*/
         //如果type=12  调整分割虚线
         boolean flages = true;
         if (xiaoLvList != null && xiaoLvList.size() > 0) {
@@ -944,60 +924,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
             }
         }
 
-       /* if(type==12){
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mFxFgDown.getLayoutParams();
-            int margins = (int) getActivity().getResources().getDimension(R.dimen.height_0_80);
-            lp.setMargins(0,0,0,margins);
-            mFxFgDown.setLayoutParams(lp);
-            FrameLayout.LayoutParams lps =(FrameLayout.LayoutParams) mViewGroupLine.getLayoutParams();
-            lps.setMargins(0,0,0,0);
-            mViewGroupLine.setLayoutParams(lps);
-            if(flages){
-                //表示没有负值
-                mFxFgDown.setVisibility(View.GONE);
-                mCenterFg.setVisibility(View.GONE);
-                mCenterFgsss.setVisibility(View.VISIBLE);
-            }else {
-                mFxFgDown.setVisibility(View.VISIBLE);
-                mCenterFg.setVisibility(View.VISIBLE);
-                mCenterFgsss.setVisibility(View.GONE);
-                FrameLayout.LayoutParams lpes = (FrameLayout.LayoutParams)mCenterFg.getLayoutParams();
-                int margines = (int) getActivity().getResources().getDimension(R.dimen.height_3_80);
-                lpes.setMargins(0,margines,0,0);
-                mCenterFg.setLayoutParams(lpes);
-            }
-
-        }else {
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)mFxFgDown.getLayoutParams();
-            int margins = (int) getActivity().getResources().getDimension(R.dimen.height_0_80);
-            lp.setMargins(0,0,0,margins);
-            mFxFgDown.setLayoutParams(lp);
-            FrameLayout.LayoutParams lps =(FrameLayout.LayoutParams) mViewGroupLine.getLayoutParams();
-            lps.setMargins(0,0,0,0);
-            mViewGroupLine.setLayoutParams(lps);
-            if(flages){
-                //表示没有负值
-                mFxFgDown.setVisibility(View.GONE);
-                mCenterFg.setVisibility(View.GONE);
-                mCenterFgsss.setVisibility(View.VISIBLE);
-            }else {
-                mCenterFg.setVisibility(View.VISIBLE);
-                mCenterFgsss.setVisibility(View.GONE);
-                FrameLayout.LayoutParams lpes = (FrameLayout.LayoutParams)mCenterFg.getLayoutParams();
-                int margines = (int) getActivity().getResources().getDimension(R.dimen.height_3_80);
-                lpes.setMargins(0,margines,0,0);
-                mCenterFg.setLayoutParams(lpes);
-            }
-
-        }*/
-        //柱状图显示 布局中记得显示出来
-       /* adapter = new XiaoLvRecyclerViewAdapter(getActivity(), xiaoLvList, maxNum,type);
-        mRecycleView.setLayoutManager(mLayoutManager);
-        mRecycleView.setAdapter(adapter);
-        if(type==12){
-            mRecycleView.scrollToPosition(11);
-        }
-        mRecycleView.setFocusable(false);*/
         //曲线图
         xlList = new ArrayList<>();
         xlList.clear();
@@ -1147,11 +1073,6 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
     }
 
     @Override
-    public void loadData() {
-
-    }
-
-    @Override
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.rl_setting_kzp:
@@ -1195,7 +1116,7 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
                     @Override
                     public void getMonthList(String s) {
                         String[] ss = s.split("月份");
-                        tvMonth.setText(2018 + "年" + ss[0] + "月");
+                        tvMonth.setText(yyyy + "年" + ss[0] + "月");
                         mm = Integer.parseInt(ss[0]);
                         loadDataForNet();
                     }
@@ -1582,5 +1503,4 @@ public class FenXiFragement extends BaseFragement implements View.OnClickListene
         lineChartEntity.setMarkView(markerView);
         lineChart.getData().setDrawValues(false);
     }
-
 }

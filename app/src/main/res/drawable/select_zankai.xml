@@ -2,5 +2,5 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@mipmap/home_btn_yqhyzk_pressed" android:state_pressed="true"/>
 
-    <item android:drawable="@mipmap/home_btn_yqhyzk_pressed"/>
+    <item android:drawable="@mipmap/home_btn_yqhyzk_normal"/>
 </selector>

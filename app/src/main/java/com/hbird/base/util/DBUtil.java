@@ -35,47 +35,23 @@ import sing.util.LogUtil;
 
 public class DBUtil {
 
-    //删除，并非直接从本地数据库删除 而是更新数据库中id所对应数据的状态（插入或替换其中的一条数据）
-    public static Boolean deleteOneDate(String id){
-        WaterOrderCollect waterOrderCollect = new WaterOrderCollect();
-        waterOrderCollect.setDelflag(1);
-        waterOrderCollect.setId(id);
-        String s = System.currentTimeMillis() / 1000 + "000";
-        long l = Long.parseLong(s);
-        waterOrderCollect.setUpdateDate(new Date(l));
-        boolean b = DevRing.tableManager(WaterOrderCollect.class).insertOrReplaceOne(waterOrderCollect);
-        return b;
-    }
-    //删除，并非直接从本地数据库删除 而是更新数据库中id所对应数据的状态（插入或替换其中的一条数据）
-    public static Boolean deleteOnesDate(String id,String accountId){
-        WaterOrderCollect waterOrderCollect = new WaterOrderCollect();
-        waterOrderCollect.setDelflag(1);
-        waterOrderCollect.setId(id);
-        waterOrderCollect.setAccountBookId(Integer.parseInt(accountId));
-        String s = System.currentTimeMillis() / 1000 + "000";
-        long l = Long.parseLong(s);
-        waterOrderCollect.setUpdateDate(new Date(l));
-        boolean b = DevRing.tableManager(WaterOrderCollect.class).insertOrReplaceOne(waterOrderCollect);
-        return b;
-    }
     //删除，并非直接从本地数据库删除 而是更新数据库中id所对应数据的状态
-    public static boolean updateOneDate(String id,String accountId){
-        WaterOrderCollect waterOrderCollect = new WaterOrderCollect();
-        waterOrderCollect.setDelflag(1);
-        waterOrderCollect.setId(id);
-        waterOrderCollect.setAccountBookId(Integer.parseInt(accountId));
+    public static boolean updateOneDate(WaterOrderCollect bean) {
+        bean.setDelflag(1);
         String s = System.currentTimeMillis() / 1000 + "000";
         long l = Long.parseLong(s);
-        waterOrderCollect.setUpdateDate(new Date(l));
-        boolean b = DevRing.tableManager(WaterOrderCollect.class).updateOne(waterOrderCollect);
+        bean.setUpdateDate(new Date(l));
+        bean.setDelDate(new Date(l));
+        boolean b = DevRing.tableManager(WaterOrderCollect.class).updateOne(bean);
         return b;
     }
+
     //插入本地数据库(首页明细相关数据)
-    public static void insertLocalDB(List<PullSyncDateReturn.ResultBean.SynDataBean> synData){
-        if(null==synData){
+    public static void insertLocalDB(List<PullSyncDateReturn.ResultBean.SynDataBean> synData) {
+        if (null == synData) {
             return;
         }
-        for(int i=0;i<synData.size();i++){
+        for (int i = 0; i < synData.size(); i++) {
             //现根据主键 删除表中该条数据 再重新插入
             PullSyncDateReturn.ResultBean.SynDataBean be = synData.get(i);
 
@@ -97,9 +73,9 @@ public class DBUtil {
             w.setOrderType(be.getOrderType());
             w.setParentId(be.getParentId());
             w.setPictureUrl(be.getPictureUrl());
-            if(null==be.getSpendHappiness() || TextUtils.isEmpty(be.getSpendHappiness()+"")){
+            if (null == be.getSpendHappiness() || TextUtils.isEmpty(be.getSpendHappiness() + "")) {
                 w.setSpendHappiness(-1);
-            }else {
+            } else {
                 w.setSpendHappiness(be.getSpendHappiness());
             }
             w.setTypeId(be.getTypeId());
@@ -117,9 +93,10 @@ public class DBUtil {
             boolean b = DevRing.tableManager(WaterOrderCollect.class).insertOrReplaceOne(w);
         }
     }
+
     //插入本地数据库(系统收入类目) -- 对应数据表为：HbirdIncomeType
-    public static void insertSysIcomeTypeToLocalDB(List<SystemParamsReturn.ResultBean.AllSysIncomeTypeBean.AllSysIncomeTypeArraysBean> data){
-        for(int i=0;i<data.size();i++){
+    public static void insertSysIcomeTypeToLocalDB(List<SystemParamsReturn.ResultBean.AllSysIncomeTypeBean.AllSysIncomeTypeArraysBean> data) {
+        for (int i = 0; i < data.size(); i++) {
             SystemParamsReturn.ResultBean.AllSysIncomeTypeBean.AllSysIncomeTypeArraysBean be = data.get(i);
             HbirdIncomeType w = new HbirdIncomeType();
             w.setId(be.getId());
@@ -136,9 +113,10 @@ public class DBUtil {
             DevRing.tableManager(HbirdIncomeType.class).insertOne(w);
         }
     }
+
     //插入本地数据库(系统支出类目) -- 对应数据表为：HbirdSpendType
-    public static void insertSysSpendTypeToLocalDB(List<SystemParamsReturn.ResultBean.AllSysSpendTypeBean.AllSysSpendTypeArraysBean>  data){
-        for(int i=0;i<data.size();i++){
+    public static void insertSysSpendTypeToLocalDB(List<SystemParamsReturn.ResultBean.AllSysSpendTypeBean.AllSysSpendTypeArraysBean> data) {
+        for (int i = 0; i < data.size(); i++) {
             SystemParamsReturn.ResultBean.AllSysSpendTypeBean.AllSysSpendTypeArraysBean be = data.get(i);
             HbirdSpendType w = new HbirdSpendType();
             w.setId(be.getId());
@@ -157,14 +135,14 @@ public class DBUtil {
     }
 
     //插入本地数据库(用户常用支出类目) -- 对应数据表为：HbirdUserCommUseSpend
-    public static void insertAllUserCommUseSpendToLocalDB(List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean>  data,Integer abTypeId,int userInfoId){
-        if(null == data){
+    public static void insertAllUserCommUseSpendToLocalDB(List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> data, Integer abTypeId, int userInfoId) {
+        if (null == data) {
             return;
         }
-        for(int i=0;i<data.size();i++){
+        for (int i = 0; i < data.size(); i++) {
             SystemBiaoqReturn.ResultBean.LabelBean.SpendBean b = data.get(i);
             HbirdUserCommUseSpend w = new HbirdUserCommUseSpend();
-            w.setId(b.getId()+"");
+            w.setId(b.getId() + "");
             w.setPriority(b.getPriority());
             w.setIcon(b.getIcon());
             w.setSpendName(b.getSpendName());
@@ -173,15 +151,16 @@ public class DBUtil {
             DevRing.tableManager(HbirdUserCommUseSpend.class).insertOne(w);
         }
     }
+
     //插入本地数据库(根据不同的账本 插入不同的标签)
-    public static void insertSpendToLocalDB(List<CreatAccountReturn.ResultBean.SpendBean> data, String abTypeId, String userInfoId){
-        if(null == data){
+    public static void insertSpendToLocalDB(List<CreatAccountReturn.ResultBean.SpendBean> data, String abTypeId, String userInfoId) {
+        if (null == data) {
             return;
         }
-        for(int i=0;i<data.size();i++){
+        for (int i = 0; i < data.size(); i++) {
             CreatAccountReturn.ResultBean.SpendBean b = data.get(i);
             HbirdUserCommUseSpend w = new HbirdUserCommUseSpend();
-            w.setId(b.getId()+"");
+            w.setId(b.getId() + "");
             w.setPriority(b.getPriority());
             w.setIcon(b.getIcon());
             w.setSpendName(b.getSpendName());
@@ -190,12 +169,13 @@ public class DBUtil {
             DevRing.tableManager(HbirdUserCommUseSpend.class).insertOne(w);
         }
     }
+
     //插入本地数据库(根据不同的账本 插入不同的标签)
-    public static void insertIncomeToLocalDB(List<CreatAccountReturn.ResultBean.IncomeBean> data,String id,String userInfoId){
-        for(int i=0;i<data.size();i++){
+    public static void insertIncomeToLocalDB(List<CreatAccountReturn.ResultBean.IncomeBean> data, String id, String userInfoId) {
+        for (int i = 0; i < data.size(); i++) {
             CreatAccountReturn.ResultBean.IncomeBean b = data.get(i);
             HbirdUserCommUseIncome w = new HbirdUserCommUseIncome();
-            w.setId(b.getId()+"");
+            w.setId(b.getId() + "");
             w.setPriority(b.getPriority());
             w.setIcon(b.getIcon());
             w.setIncomeName(b.getIncomeName());
@@ -204,13 +184,14 @@ public class DBUtil {
             DevRing.tableManager(HbirdUserCommUseIncome.class).insertOne(w);
         }
     }
+
     //插入本地数据库(用户常用收入类目) -- 对应数据表为：HbirdUserCommUseIncome
-    public static void insertAllUserCommUseIncomeToLocalDB(List<SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean> data,Integer id,int userInfoId){
-        if (data == null)return;
-        for(int i=0;i<data.size();i++){
+    public static void insertAllUserCommUseIncomeToLocalDB(List<SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean> data, Integer id, int userInfoId) {
+        if (data == null) return;
+        for (int i = 0; i < data.size(); i++) {
             SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean b = data.get(i);
             HbirdUserCommUseIncome w = new HbirdUserCommUseIncome();
-            w.setId(b.getId()+"");
+            w.setId(b.getId() + "");
             w.setPriority(b.getPriority());
             w.setIcon(b.getIcon());
             w.setIncomeName(b.getIncomeName());
@@ -298,15 +279,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -316,9 +297,9 @@ public class DBUtil {
                     if (filedValue != null) {
                         Date date = null;
                         try {
-                            if(filedValue.contains("GMT")){
+                            if (filedValue.contains("GMT")) {
                                 date = DateUtil.dateTode(filedValue);
-                            }else {
+                            } else {
                                 date = DateUtil.dateToStamp(filedValue);
                             }
 
@@ -366,6 +347,7 @@ public class DBUtil {
             return null;
         }
     }
+
     public static OffLineReq.SynDataBean changeToModulePull(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
@@ -398,27 +380,27 @@ public class DBUtil {
 
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else if(TextUtils.equals("USE_DEGREE",cursor.getColumnName(j))){
+                    } else if (TextUtils.equals("USE_DEGREE", cursor.getColumnName(j))) {
                         String filedValue = cursor.getString(j);
-                        if(!TextUtils.isEmpty(filedValue)){
+                        if (!TextUtils.isEmpty(filedValue)) {
                             field.set(module, filedValue);
                         }
-                    }else if(TextUtils.equals("UPDATE_BY",cursor.getColumnName(j))){
+                    } else if (TextUtils.equals("UPDATE_BY", cursor.getColumnName(j))) {
                         String filedValue = cursor.getString(j);
-                        if(!TextUtils.isEmpty(filedValue)){
-                            if(!TextUtils.equals(filedValue,"0")){
+                        if (!TextUtils.isEmpty(filedValue)) {
+                            if (!TextUtils.equals(filedValue, "0")) {
                                 field.set(module, Integer.parseInt(filedValue));
                             }
                         }
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -428,32 +410,47 @@ public class DBUtil {
                     if (filedValue != null) {
                         Date date = null;
                         try {
-                            //date = DateUtil.dateToStamp(filedValue);
-                            if(TextUtils.equals("CREATE_DATE",cursor.getColumnName(j))){
-                                field.set(module, new Date(Long.parseLong(filedValue)));
-                            }else {
-                                if(!TextUtils.equals(filedValue,"0")){
-                                    Date date1 = new Date(Long.parseLong(filedValue));
-                                    field.set(module, date1);
-                                }
+                            if (filedValue.contains("GMT")) {
+                                date = DateUtil.dateTode(filedValue);
+                            } else {
+                                date = DateUtil.dateToStamp(filedValue);
                             }
-                        } catch (Exception e) {
+
+                        } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        //field.set(module, date);
+                        field.set(module, date);
                     }
-                }else if (TextUtils.equals(s, "long")) {
+//                    String filedValue = cursor.getString(j);
+//                    if (filedValue != null) {
+//                        Date date = null;
+//                        try {
+//                            //date = DateUtil.dateToStamp(filedValue);
+//                            if (TextUtils.equals("CREATE_DATE", cursor.getColumnName(j))||TextUtils.equals("UPDATE_DATE", cursor.getColumnName(j))||TextUtils.equals("DEL_DATE", cursor.getColumnName(j))) {
+//                                field.set(module, new Date(Long.parseLong(filedValue)));
+//                            } else {
+//                                if (!TextUtils.equals(filedValue, "0")) {
+//                                    Date date1 = new Date(Long.parseLong(filedValue));
+//                                    field.set(module, date1);
+//                                }
+//                            }
+//                        } catch (Exception e) {
+//                            e.printStackTrace();
+//                        }
+//                        //field.set(module, date);
+//                    }
+                } else if (TextUtils.equals(s, "long")) {
                     String filedValue = cursor.getString(j);
                     long l = Long.parseLong(filedValue);
                     if (filedValue != null) {
                         field.set(module, new Date(l));
                     }
-                }else if(TextUtils.equals(s,"int")){
-                    if("ACCOUNT_BOOK_ID".equals(columnNames[j])){
+                } else if (TextUtils.equals(s, "int")) {
+                    if ("ACCOUNT_BOOK_ID".equals(columnNames[j])) {
                         String filedValue = cursor.getString(j);
                         int i = Integer.parseInt(filedValue);
-                        field.set(module,i);
-                    }else if("IS_STAGED".equals(columnNames[j])){
+                        field.set(module, i);
+                    } else if ("IS_STAGED".equals(columnNames[j])) {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -496,6 +493,7 @@ public class DBUtil {
             return null;
         }
     }
+
     public static chartToBarReturn.ResultBean.ArraysBean changeToModuleDYY(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
@@ -527,15 +525,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -551,7 +549,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);
@@ -564,14 +562,13 @@ public class DBUtil {
     }
 
 
-
-
-    public static  <T> T get(Class<T> clz,Object o){
-        if(clz.isInstance(o)){
+    public static <T> T get(Class<T> clz, Object o) {
+        if (clz.isInstance(o)) {
             return clz.cast(o);
         }
         return null;
     }
+
     //从数据库中查出 组合为集合的形式返回(日月年的统计)
     public static List<StatisticsSpendTopArraysBean> changeToListTJ(Cursor cursor, List<StatisticsSpendTopArraysBean> modules, Class<?> moduleClass) {
         // 取出所有的列名
@@ -604,6 +601,7 @@ public class DBUtil {
             return null;
         }
     }
+
     public static StatisticsSpendTopArraysBean changeToModuleTJ(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
@@ -635,15 +633,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -659,7 +657,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);
@@ -703,6 +701,7 @@ public class DBUtil {
             return null;
         }
     }
+
     public static HappynessReturn changeToModuleHappy(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
@@ -734,15 +733,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -758,7 +757,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);
@@ -820,7 +819,7 @@ public class DBUtil {
                 }
                 return modules;
             } catch (Exception e) {
-               LogUtil.e("数据库异常");
+                LogUtil.e("数据库异常");
             } finally {
                 cursor.close();
             }
@@ -859,15 +858,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -883,7 +882,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);
@@ -927,15 +926,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -951,7 +950,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);
@@ -995,6 +994,7 @@ public class DBUtil {
             return null;
         }
     }
+
     public static ShouRuTagReturn.ResultBean.CommonListBean changeToModuleTyp(Cursor cursor, Class<?> moduleClass) throws IllegalAccessException,
             InstantiationException, SecurityException, NoSuchFieldException {
         synchronized (DBUtil.class) {
@@ -1026,15 +1026,15 @@ public class DBUtil {
                     }
                 } else if (TextUtils.equals(s, "class java.lang.Integer")) {
 
-                    if(TextUtils.equals(cursor.getColumnName(j),"SPEND_HAPPINESS") ){
+                    if (TextUtils.equals(cursor.getColumnName(j), "SPEND_HAPPINESS")) {
                         String s2 = cursor.getString(j);
-                        if(s2!=null && s2!=""){
+                        if (s2 != null && s2 != "") {
                             field.set(module, Integer.parseInt(s2));
-                        }else {
+                        } else {
                             field.set(module, -1);
                         }
 
-                    }else {
+                    } else {
                         int filedValue = cursor.getInt(j);
                         field.set(module, filedValue);
                     }
@@ -1050,7 +1050,7 @@ public class DBUtil {
                         }
                         field.set(module, date);
                     }
-                }else if(TextUtils.equals(s,"double")){
+                } else if (TextUtils.equals(s, "double")) {
                     Double filedValue = cursor.getDouble(j);
                     if (filedValue != null) {
                         field.set(module, filedValue);

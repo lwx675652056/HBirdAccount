@@ -246,7 +246,6 @@ public class ChooseAddressDialog {
         if (scroll) {// viewpager滑动的
         } else if (isClick) {
             viewPager.setCurrentItem(currentPos);
-            data.setChoose(pos+1);
         } else {
             viewAdapter.setCurrentPos(currentPos);
             viewPager.setCurrentItem(currentPos);

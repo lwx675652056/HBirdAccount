@@ -86,4 +86,6 @@
     <string name="total_spend">总支出\n-</string>
     <string name="asterisk">*</string>
     <string name="ranking">单笔消费排行榜</string>
+    <string name="all_account">全部账本数据</string>
+    <string name="my_account">我的个人数据</string>
 </resources>

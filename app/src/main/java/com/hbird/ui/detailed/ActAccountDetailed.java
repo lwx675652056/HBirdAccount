@@ -110,11 +110,36 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
             startActivityForResult(intent, 101);
         } else if (type == 1) {
             Utils.playVoice(this, R.raw.changgui02);
-            alertDialog(data.getId());
+            WaterOrderCollect bean = new WaterOrderCollect();
+            bean.setId(data.getId());
+            bean.setMoney(data.getMoney());
+            bean.setAccountBookId(data.getAccountBookId());
+            bean.setOrderType(data.getOrderType());
+            bean.setIsStaged(data.getIsStaged());
+            bean.setSpendHappiness(data.getSpendHappiness());
+            bean.setTypePid(data.getTypePid());
+            bean.setTypePname(data.getTypePname());
+            bean.setTypeId(data.getTypeId());
+            bean.setTypeName(data.getTypeName());
+            bean.setCreateDate(new Date(data.getCreateDate()));
+            bean.setChargeDate(new Date(data.getChargeDate()));
+            bean.setCreateBy(data.getCreateBy());
+            bean.setCreateName(data.getCreateName());
+            bean.setUpdateBy(data.getUpdateBy());
+            bean.setUpdateName(data.getUpdateName());
+            bean.setRemark(data.getRemark());
+            bean.setIcon(data.getIcon());
+            bean.setUserPrivateLabelId(data.getUserPrivateLabelId());
+            bean.setReporterAvatar(data.getReporterAvatar());
+            bean.setReporterNickName(data.getReporterNickName());
+            bean.setAbName(data.getAbName());//所属账本名称
+            bean.setAssetsId(data.getAssetsId());
+            bean.setAssetsName(data.getAssetsName());
+            alertDialog(bean);
         }
     }
 
-    private void alertDialog(String id) {
+    private void alertDialog(WaterOrderCollect bean) {
         new DialogUtils(this)
                 .builder()
                 .setTitle("温馨提示")
@@ -125,7 +150,7 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
                     @Override
                     public void onClick(View view) {
                         //数据库的操作 （删除显示的是 数据库的更新）
-                        Boolean b = DBUtil.updateOneDate(id, accountId);
+                        Boolean b = DBUtil.updateOneDate(bean);
                         if (b) {
                             //刷新界面数据
                             getData();

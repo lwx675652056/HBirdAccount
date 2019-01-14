@@ -1282,17 +1282,17 @@ public class IndexFragementOld extends BaseFragement implements View.OnClickList
                 .setSureButton("删除", new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        String id = dates.get(position - 2).getId();
-//                        dates.get(position-1).get
-
-                        //数据库的操作 （删除显示的是 数据库的更新）
-                        Boolean b = DBUtil.updateOneDate(id, accountId);
-                        if (b) {
-                            //刷新界面数据
-                            getIndexInfo();
-                            //删除 并同步上传到服务器
-                            pullToSyncDate();
-                        }
+//                        String id = dates.get(position - 2).getId();
+////                        dates.get(position-1).get
+//
+//                        //数据库的操作 （删除显示的是 数据库的更新）
+//                        Boolean b = DBUtil.updateOneDate(id, accountId);
+//                        if (b) {
+//                            //刷新界面数据
+//                            getIndexInfo();
+//                            //删除 并同步上传到服务器
+//                            pullToSyncDate();
+//                        }
                     }
                 }).show();
     }

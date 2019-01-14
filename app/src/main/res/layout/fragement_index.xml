@@ -208,12 +208,15 @@
                         android:layout_weight="1"
                         android:background="@drawable/select_home"
                         android:gravity="center"
-                        android:onClick="@{listener.invitation}"/>
+                        android:onClick="@{listener.invitation}"
+                        android:text="邀请记账"
+                        android:textColor="@color/white"
+                        android:textSize="18sp"/>
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@mipmap/home_btn_shouqi_pressed"
+                        android:background="@drawable/select_retract"
                         android:onClick="@{listener.retract}"/>
                 </LinearLayout>
 

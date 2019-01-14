@@ -1,0 +1,435 @@
+<layout>
+
+    <data>
+        <import type="android.view.View"/>
+        <variable
+            name="data"
+            type="com.hbird.ui.analysis.AnalysisData"/>
+        <variable
+            name="listener"
+            type="com.hbird.ui.analysis.FragAnalysis.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tv_month"
+                   android:onClick="@{listener.chooseMonth}"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableEnd="@mipmap/icon_shouhui_normal"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:padding="@dimen/dp_15_x"
+                    android:text="@{data.yyyy+@string/year+data.mm+@string/mouth}"
+                    android:textColor="#D80200"
+                    android:textSize="14sp"/>
+
+                <View
+                    style="@style/horizontal_line"
+                    android:layout_marginStart="@dimen/dp_15_x"/>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="@dimen/dp_15_x">
+
+                    <View
+                        android:layout_width="@dimen/dp_3_x"
+                        android:layout_height="@dimen/dp_38_x"
+                        android:background="@drawable/shape_main_button"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_temp1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:text="存钱效率"
+                        android:textColor="#333333"
+                        android:textSize="18sp"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+
+                    <TextView
+                        android:id="@+id/tv_temp2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:text="(余额占可支配金额比)"
+                        android:textColor="#BDBDBD"
+                        android:textSize="12sp"
+                        app:layout_constraintStart_toStartOf="@id/tv_temp1"
+                        app:layout_constraintTop_toBottomOf="@id/tv_temp1"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:drawablePadding="@dimen/dp_5_x"
+                        android:drawableStart="@mipmap/icon_fenxi_bianji_normal"
+                        android:text="编辑"
+                        android:onClick="@{listener.editor}"
+                        android:textColor="#D80200"
+                        android:visibility="@{data.showEdit?View.VISIBLE:View.GONE}"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="@id/tv_temp1"
+                        app:layout_constraintStart_toEndOf="@id/tv_temp1"
+                        app:layout_constraintTop_toTopOf="@id/tv_temp1"/>
+
+                    <TextView
+                        android:id="@+id/tv_change_efficiency"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerVertical="true"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:drawablePadding="@dimen/dp_5_x"
+                        android:drawableStart="@drawable/shuju_icon_qiehuanquanbu_normal"
+                        android:text="全部账本数据"
+                        android:textColor="#2F54EB"
+                        android:textSize="14sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"/>
+                </android.support.constraint.ConstraintLayout>
+
+                <!--没有设置可支配金额-->
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/dp_10_x"
+                    android:background="@drawable/btn_bg_chart"
+                    android:drawableEnd="@mipmap/ic_add"
+                    android:onClick="@{listener.editor}"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:visibility="@{data.showEdit?View.GONE:View.VISIBLE}"
+                    android:padding="@dimen/dp_5_x"
+                    android:text="设置可支配金额"
+                    android:textColor="@color/white"
+                    android:textSize="14sp"/>
+
+                <LinearLayout
+                    android:id="@+id/ll_view_choose"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:orientation="vertical">
+
+                    <RadioGroup
+                        android:id="@+id/radioGroup"
+                        android:layout_width="@dimen/dp_170_x"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:gravity="center_horizontal"
+                        android:orientation="horizontal">
+
+                        <RadioButton
+                            android:id="@+id/radio_left"
+                            style="@style/radio_head_bg"
+                            android:background="@drawable/radio_head_btn_bg_left"
+                            android:checked="true"
+                            android:paddingBottom="@dimen/dp_5_x"
+                            android:paddingTop="@dimen/dp_5_x"
+                            android:text="3个月"
+                            android:textSize="14sp"/>
+
+                        <RadioButton
+                            android:id="@+id/radio_middle"
+                            style="@style/radio_head_bg"
+                            android:background="@drawable/radio_head_btn_bg_middle"
+                            android:paddingBottom="@dimen/dp_5_x"
+                            android:paddingTop="@dimen/dp_5_x"
+                            android:text="6个月"
+                            android:textSize="14sp"/>
+
+                        <RadioButton
+                            android:id="@+id/radio_right"
+                            style="@style/radio_head_bg"
+                            android:background="@drawable/radio_head_btn_bg_right"
+                            android:paddingBottom="@dimen/dp_5_x"
+                            android:paddingTop="@dimen/dp_5_x"
+                            android:text="12个月"
+                            android:textSize="14sp"/>
+                    </RadioGroup>
+
+                </LinearLayout>
+
+                <com.hbird.common.chart.LineChartInViewPager
+                    android:id="@+id/xl_lineChart"
+                    android:layout_width="match_parent"
+                    android:layout_height="250dp"
+                    android:layout_marginEnd="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginTop="@dimen/dp_15_x"
+                    android:visibility="gone"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_margin="@dimen/dp_15_x"
+                    android:text="*保持存钱效率的正值稳定，代表存下了该存的钱"
+                    android:textColor="#BDBDBD"
+                    android:textSize="12sp"/>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_5_x"
+                    android:background="#F0F0F0"/>
+
+                <!--消费结构比-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_15_x">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:gravity="center_vertical">
+
+                        <View
+                            android:layout_width="@dimen/dp_3_x"
+                            android:layout_height="@dimen/dp_20_x"
+                            android:background="@drawable/shape_main_button"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_12_x"
+                            android:layout_weight="1"
+                            android:text="消费结构比"
+                            android:textColor="#333333"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:onClick="@{listener.changeRatio}"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:drawablePadding="@dimen/dp_5_x"
+                            android:drawableStart="@{data.ratioAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                            android:text="@{data.ratioAll?@string/my_account:@string/all_account}"
+                            android:textColor="@{data.ratioAll?@color/color_D80200:@color/index_3}"
+                            android:textSize="14sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_ratio_no_data"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/tv_expense_btn"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:background="@drawable/btn_bg_login"
+                            android:drawableEnd="@mipmap/ic_add"
+                            android:drawablePadding="@dimen/dp_5_x"
+                            android:padding="@dimen/dp_5_x"
+                            android:text="记一笔"
+                            android:textColor="@color/white"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="@dimen/dp_15_x"
+                            android:text="暂无数据，记账数据越多，越精准哦~"
+                            android:textColor="#808080"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/recycler_view"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        android:visibility="gone"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_5_x"
+                    android:background="#F0F0F0"/>
+                <!--预算完成率-->
+                <LinearLayout
+                    android:visibility="@{data.isTotalAccount?View.GONE:View.VISIBLE}"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/dp_15_x">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:gravity="center_vertical">
+
+                        <View
+                            android:layout_width="@dimen/dp_3_x"
+                            android:layout_height="@dimen/dp_20_x"
+                            android:background="@drawable/shape_main_button"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/dp_12_x"
+                            android:layout_weight="1"
+                            android:text="预算完成率"
+                            android:textColor="#333333"
+                            android:textSize="18sp"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/ll_view_lls"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_choose_zb"
+                            android:layout_width="@dimen/dp_100_x"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginEnd="@dimen/dp_15_x"
+                            android:layout_marginStart="@dimen/dp_15_x"
+                            android:background="@drawable/shape_btn_choose_zhangb"
+                            android:drawableEnd="@mipmap/ic_choose_jz_normal"
+                            android:drawablePadding="@dimen/dp_5_x"
+                            android:ellipsize="end"
+                            android:gravity="center"
+                            android:maxLength="4"
+                            android:paddingBottom="@dimen/dp_5_x"
+                            android:paddingEnd="@dimen/dp_15_x"
+                            android:paddingStart="@dimen/dp_15_x"
+                            android:paddingTop="@dimen/dp_5_x"
+                            android:singleLine="true"
+                            android:text="默认账本默认账本"
+                            android:textColor="@color/colorPrimary"
+                            android:textSize="14sp"/>
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"/>
+
+                        <RadioGroup
+                            android:id="@+id/radioGroup_down"
+                            android:layout_width="@dimen/dp_170_x"
+                            android:layout_height="wrap_content"
+                            android:layout_marginEnd="@dimen/dp_15_x"
+                            android:orientation="horizontal">
+
+                            <RadioButton
+                                android:id="@+id/radio_d_left"
+                                style="@style/radio_head_bg"
+                                android:background="@drawable/radio_head_btn_bg_left"
+                                android:checked="true"
+                                android:paddingBottom="@dimen/dp_5_x"
+                                android:paddingTop="@dimen/dp_5_x"
+                                android:text="3个月"
+                                android:textSize="14sp"/>
+
+                            <RadioButton
+                                android:id="@+id/radio_d_middle"
+                                style="@style/radio_head_bg"
+                                android:background="@drawable/radio_head_btn_bg_middle"
+                                android:paddingBottom="@dimen/dp_5_x"
+                                android:paddingTop="@dimen/dp_5_x"
+                                android:text="6个月"
+                                android:textSize="14sp"/>
+
+                            <RadioButton
+                                android:id="@+id/radio_d_right"
+                                style="@style/radio_head_bg"
+                                android:background="@drawable/radio_head_btn_bg_right"
+                                android:paddingBottom="@dimen/dp_5_x"
+                                android:paddingTop="@dimen/dp_5_x"
+                                android:text="12个月"
+                                android:textSize="14sp"/>
+                        </RadioGroup>
+                    </LinearLayout>
+
+
+                    <TextView
+                        android:id="@+id/tv_setting_ys"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:background="@drawable/btn_bg_chart"
+                        android:drawableEnd="@mipmap/ic_add"
+                        android:drawablePadding="@dimen/dp_5_x"
+                        android:padding="@dimen/dp_5_x"
+                        android:text="设置预算"
+                        android:textColor="@color/white"
+                        android:textSize="14sp"/>
+
+                    <com.hbird.common.chart.LineChartInViewPager
+                        android:id="@+id/new_lineChart"
+                        android:layout_width="match_parent"
+                        android:layout_height="250dp"
+                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"/>
+
+                    <TextView
+                        android:id="@+id/tv_yusuan_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:padding="@dimen/dp_5_x"
+                        android:textColor="#808080"
+                        android:textSize="12sp"
+                        android:visibility="gone"/>
+
+                    <TextView
+                        android:id="@+id/tv_text_des"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="@dimen/dp_15_x"
+                        android:text="*设置并持续优化自己的预算，利于把控钱财。"
+                        android:textColor="#BDBDBD"
+                        android:textSize="12sp"/>
+                </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30_x"
+                    android:background="#F0F0F0"/>
+            </LinearLayout>
+        </android.support.v4.widget.NestedScrollView>
+    </LinearLayout>
+</layout>

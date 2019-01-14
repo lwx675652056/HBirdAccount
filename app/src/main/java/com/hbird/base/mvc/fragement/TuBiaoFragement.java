@@ -15,6 +15,7 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.baseActivity.BaseFragementPagerAdapter;
+import com.hbird.ui.analysis.FragAnalysis;
 import com.hbird.ui.assets.FraAssets;
 import com.hbird.util.Utils;
 
@@ -29,8 +30,7 @@ import sing.common.util.StatusBarUtil;
  */
 
 public class TuBiaoFragement extends BaseFragement implements View.OnClickListener{
-   /* @BindView(R.id.view_pager)
-    NoScrollViewPager viewPager;*/
+
     @BindView(R.id.view_pager)
    ViewPager viewPagers;
 
@@ -60,8 +60,8 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
 
     private ArrayList<Fragment> fragements = new ArrayList<>();
     private ChartFragement chartFragement;
-    private FenXiFragement fenXiFragement;
-//    private ZiChanFragement ziChanFragement;
+//    private FenXiFragement fenXiFragement;
+    private FragAnalysis fenXiFragement;
     private FraAssets ziChanFragement;
     private BaseFragementPagerAdapter pagerAdapter;
     private int firstCome=0;
@@ -75,7 +75,7 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
     @Override
     public void initView() {
         chartFragement = new ChartFragement();
-        fenXiFragement = new FenXiFragement();
+        fenXiFragement = new FragAnalysis();
         ziChanFragement = new FraAssets();
 
         fragements.add(chartFragement);

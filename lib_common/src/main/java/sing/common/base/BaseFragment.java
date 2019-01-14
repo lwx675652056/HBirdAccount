@@ -113,7 +113,7 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         viewModel.getUC().getShowDialogEvent().observe(this, new Observer<String>() {
             @Override
             public void onChanged(@Nullable String title) {
-                showDialog(title);
+                showDialog();
             }
         });
         //加载对话框消失
@@ -157,11 +157,11 @@ public abstract class BaseFragment<V extends ViewDataBinding, VM extends BaseVie
         });
     }
 
-    public void showDialog(String title) {
+    public void showDialog() {
         if (dialog != null) {
             dialog.show();
         } else {
-            LoadingDialog dialog = new LoadingDialog(getActivity());
+            dialog = new LoadingDialog(getActivity());
             dialog.show();
         }
     }

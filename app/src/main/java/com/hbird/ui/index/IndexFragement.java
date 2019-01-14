@@ -159,7 +159,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.recyclerView.setAdapter(memberAdapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
 
-        pieChatAdapter = new PieChatAdapter(getActivity(), pieChatList, R.layout.row_piechat, (position, data, type) -> onItemClick(((WaterOrderCollect) data).getId(), type));
+        pieChatAdapter = new PieChatAdapter(getActivity(), pieChatList, R.layout.row_piechat, (position, data, type) -> onItemClick(data, type));
         binding.recyclerView2.setAdapter(pieChatAdapter);
         binding.recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -170,7 +170,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         popOnces = 0;//重新执行则将其置为0
 
-        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick(((AccountDetailedBean) data).getId(), type));
+        adapter = new IndexAdapter(getActivity(), list, R.layout.row_index, (position, data, type) -> onItemClick(data, type));
         binding.recyclerView1.setAdapter(adapter);
         binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
 
@@ -235,15 +235,49 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     // 点击记账的条目
-    private void onItemClick(String id, int type) {
+    private void onItemClick(Object obj, int type) {
+        Utils.playVoice(getActivity(), R.raw.changgui02);
+        WaterOrderCollect bean;
+        if (obj instanceof WaterOrderCollect){
+            bean = (WaterOrderCollect) obj;
+        }else if (obj instanceof AccountDetailedBean){
+            AccountDetailedBean data = (AccountDetailedBean) obj;
+            bean = new WaterOrderCollect();
+            bean.setId(data.getId());
+            bean.setMoney(data.getMoney());
+            bean.setAccountBookId(data.getAccountBookId());
+            bean.setOrderType(data.getOrderType());
+            bean.setIsStaged(data.getIsStaged());
+            bean.setSpendHappiness(data.getSpendHappiness());
+            bean.setTypePid(data.getTypePid());
+            bean.setTypePname(data.getTypePname());
+            bean.setTypeId(data.getTypeId());
+            bean.setTypeName(data.getTypeName());
+            bean.setCreateDate(new Date(data.getCreateDate()));
+            bean.setChargeDate(new Date(data.getChargeDate()));
+            bean.setCreateBy(data.getCreateBy());
+            bean.setCreateName(data.getCreateName());
+            bean.setUpdateBy(data.getUpdateBy());
+            bean.setUpdateName(data.getUpdateName());
+            bean.setRemark(data.getRemark());
+            bean.setIcon(data.getIcon());
+            bean.setUserPrivateLabelId(data.getUserPrivateLabelId());
+            bean.setReporterAvatar(data.getReporterAvatar());
+            bean.setReporterNickName(data.getReporterNickName());
+            bean.setAbName(data.getAbName());//所属账本名称
+            bean.setAssetsId(data.getAssetsId());
+            bean.setAssetsName(data.getAssetsName());
+        }else{
+            return;
+        }
+
         if (type == 0) {
-            Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent = new Intent(getActivity(), MingXiInfoActivity.class);
-            intent.putExtra("ID", id);
+            intent.putExtra("ID", bean.id);
             startActivityForResult(intent, 101);
         } else if (type == 1) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            alertDialog(id);
+            alertDialog(bean);
         }
     }
 
@@ -342,7 +376,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
 
-            Utils.initColor(getActivity(), Color.rgb(246, 246, 246));
+            Utils.initColor(getActivity(), Color.rgb(255, 255, 255));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
 
             if (popOnces >= 0) {
@@ -532,6 +566,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             data.setShowArrow((Boolean) SharedPreferencesUtil.get("index_is_show_arrow", false));
             data.setShowMember((Boolean) SharedPreferencesUtil.get("index_is_show_member", false));
             data.setShowMemberSeting((Boolean) SharedPreferencesUtil.get("index_is_show_member_seting", false));
+
+            if (data.isShow() && !data.isShowArrow()) {// 如果显示为邀请，则修改为默认显示三角
+                data.setShow(false);
+                data.setShowArrow(true);
+            }
+
             if (TextUtils.equals(typeBudget, "1")) {
                 setWaveDate(indexResult);
             } else {
@@ -696,7 +736,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         }
     }
 
-    private void alertDialog(final String id) {
+    private void alertDialog(final WaterOrderCollect temp) {
         new DialogUtils(getActivity())
                 .builder()
                 .setTitle("温馨提示")
@@ -704,8 +744,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 .setCancleButton("取消", view -> {
                 })
                 .setSureButton("删除", view -> {
-                    //数据库的操作 （删除显示的是 数据库的更新）
-                    Boolean b = DBUtil.updateOneDate(id, accountId);
+                    Boolean b = DBUtil.updateOneDate(temp);
                     if (b) {
                         //刷新界面数据
                         getIndexInfo();
@@ -772,6 +811,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 synDataBean.setUseDegree(s1.getUseDegree());
                 synDataBean.setUpdateName(s1.getUpdateName());
                 synDataBean.setUserPrivateLabelId(s1.getUserPrivateLabelId());
+                synDataBean.setAssetsId(s1.getAssetsId());
+                synDataBean.setAssetsName(s1.getAssetsName());
                 myList2.add(synDataBean);
             }
             req2.setSynData(myList2);
@@ -1084,10 +1125,10 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
 
                     if (i == 4) {// 其它
-                        List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeId(), pieList.get(1).getTypeId(), pieList.get(2).getTypeId(), pieList.get(3).getTypeId(), data.getYyyy(), data.getMm(), accountId);
+                        List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeName(), pieList.get(1).getTypeName(), pieList.get(2).getTypeName(), pieList.get(3).getTypeName(), data.getYyyy(), data.getMm(), accountId);
                         pieChatList.addAll(temp);
                     } else {
-                        List<WaterOrderCollect> temp = viewModel.getTypeRanking(pieList.get(i).getTypeId(), data.getYyyy(), data.getMm(), accountId);
+                        List<WaterOrderCollect> temp = viewModel.getTypeRanking(pieList.get(i).getTypeName(), data.getYyyy(), data.getMm(), accountId);
                         pieChatList.addAll(temp);
                     }
                 }

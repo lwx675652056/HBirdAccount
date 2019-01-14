@@ -11,6 +11,7 @@ public class StatisticsSpendTopArraysBean extends BaseBean {
     public String icon;// 分类图标
     public String typeName;// 分类名称
     public String typeId;// 分类id
+    public String userPrivateLabelId;// 分类id
     public boolean isFrist = true;
 
     public boolean isFrist() {
@@ -51,5 +52,13 @@ public class StatisticsSpendTopArraysBean extends BaseBean {
 
     public void setTypeId(String typeId) {
         this.typeId = typeId;
+    }
+
+    public String getUserPrivateLabelId() {
+        return userPrivateLabelId;
+    }
+
+    public void setUserPrivateLabelId(String userPrivateLabelId) {
+        this.userPrivateLabelId = userPrivateLabelId;
     }
 }

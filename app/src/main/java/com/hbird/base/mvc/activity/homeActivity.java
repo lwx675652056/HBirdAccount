@@ -17,7 +17,6 @@ import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import android.widget.Toast;
@@ -25,7 +24,6 @@ import android.widget.Toast;
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.base.BasePagerAdapter;
-import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.fragement.LingPiaoFragement;
 import com.hbird.base.mvc.fragement.TuBiaoFragement;
 import com.hbird.base.mvc.widget.NoScrollViewPager;
@@ -35,6 +33,7 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.ui.index.IndexFragement;
 import com.hbird.ui.me.FragMe;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.sobot.chat.utils.ZhiChiConstant;
 import com.umeng.socialize.UMShareAPI;
@@ -51,22 +50,15 @@ import sing.common.util.StatusBarUtil;
  * 主页面
  */
 
-public class homeActivity extends BaseActivity<BasePresenter> implements View.OnClickListener {
+public class homeActivity extends BaseActivity<BasePresenter> {
     @BindView(R.id.rg_top)
     RadioGroup rg;
 
     @BindView(R.id.viewpager)
     NoScrollViewPager viewPager;
-    /*@BindView(R.id.left_title)
-    TextView mLeftTitle;
-    @BindView(R.id.center_title)
-    TextView mCenterTitle;
-    @BindView(R.id.right_title)
-    TextView mRightTitle;*/
+
     @BindView(R.id.ll_home_view)
     LinearLayout mHomeView;
-    @BindView(R.id.index_fragment_img_filter)
-    ImageView mImgFilter;
     @BindView(R.id.btn_jizhang)
     TabRadioButton btnJz;
     @BindView(R.id.ll_bottom_dh)
@@ -75,7 +67,6 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
     private ArrayList<Fragment> fragements = new ArrayList<>();
     private BasePagerAdapter pagerAdapter;
     private IndexFragement indexFragement;
-    private ChartFragement chartFragement;
     private FragMe meFragement;
     private TuBiaoFragement tuBiaoFragement;
     private LingPiaoFragement lpFragement;
@@ -97,7 +88,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
     @SuppressLint("NewApi")
     @Override
     protected void initData(Bundle savedInstanceState) {
-        initBarColor(Color.rgb(246, 246, 246),Color.rgb(246, 246, 246));
+        Utils.initColor(this, Color.rgb(255, 255, 255));
         StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
 
         indexFragement = new IndexFragement();
@@ -116,7 +107,6 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(4);
         viewPager.setCurrentItem(0);
-        mImgFilter.setVisibility(View.GONE);
         //setView(0);
         /*mMingxi.setImageView(R.mipmap.ic_mingxi);
         mMingxi.setTextColor(getResources().getColor(R.color.colorPrimary));*/
@@ -134,36 +124,26 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
                 switch (i) {
                     case R.id.button_mingxi:// 账本首页
-                        mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_mingxi);
                         viewPager.setCurrentItem(0);
                         playVoice(R.raw.jizhang);
                         break;
                     case R.id.button_tubiao:// 图标
-                        mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_tubiao);
                         viewPager.setCurrentItem(1);
                         playVoice(R.raw.jizhang);
                         break;
                     case R.id.button_lingpp:// 领票票
-                        mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_lingpp);
                         viewPager.setCurrentItem(2);
                         playVoice(R.raw.jizhang);
                         break;
                     case R.id.button_wo:// 我的
-                        mImgFilter.setVisibility(View.GONE);
                         rg.check(R.id.button_wo);
                         viewPager.setCurrentItem(3);
                         playVoice(R.raw.jizhang);
                         break;
                 }
-            }
-        });
-        mImgFilter.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                openJiZhang();
             }
         });
         btnJz.setOnClickListener(new View.OnClickListener() {
@@ -226,7 +206,7 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
         btnJz.setVisibility(View.VISIBLE);
         mBottomDh.setVisibility(View.VISIBLE);
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) viewPager.getLayoutParams();
-        int margins = (int) getResources().getDimension(R.dimen.height_7_80);
+        int margins = (int) getResources().getDimension(R.dimen.dp_50_x);
         lp.setMargins(0, 0, 0, margins);
         viewPager.setLayoutParams(lp);
     }
@@ -237,13 +217,6 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
         FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams) viewPager.getLayoutParams();
         lp.setMargins(0, 0, 0, 0);
         viewPager.setLayoutParams(lp);
-    }
-
-    @Override
-    public void onClick(View view) {
-        switch (view.getId()) {
-
-        }
     }
 
     @Override
@@ -318,20 +291,11 @@ public class homeActivity extends BaseActivity<BasePresenter> implements View.On
                     if (!TextUtils.isEmpty(extras)) {
                         showMsg.append(KEY_EXTRAS + " : " + extras + "\n");
                     }
-                    //L.liul(showMsg.toString());
-
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-    }
-
-    private void setCostomMsg(String msg) {
-       /* if (null != msgText) {
-            msgText.setText(msg);
-            msgText.setVisibility(android.view.View.VISIBLE);
-        }*/
     }
 
     @Override

@@ -73,9 +73,6 @@ import sing.common.util.LogUtil;
 import sing.common.util.StatusBarUtil;
 import sing.util.SharedPreferencesUtil;
 
-import static com.hbird.base.R.id.anime_date;
-
-
 /**
  * Created by Liul on 2018/7/2.
  * 支出 收入  （记账的录入界面）
@@ -106,7 +103,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     TextView mAdd;
     @BindView(R.id.anime_jian)
     TextView mJian;
-    @BindView(anime_date)
+    @BindView(R.id.anime_date)
     TextView mDate;
     @BindView(R.id.rl_background)
     RelativeLayout mIconBg;
@@ -133,8 +130,8 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
 
     @BindView(R.id.iv_account_icon)
     ImageView ivIcon;// 账户头像
-    @BindView(R.id.tv_temp)
-    TextView tvTemp;// "选择账户"
+    @BindView(R.id.ll_choose_account)
+    LinearLayout llChooseAccount;// "选择账户"
     @BindView(R.id.tv_account)
     TextView tvAccount;// 账户名称
 
@@ -379,8 +376,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         });
 
         ivIcon.setOnClickListener(v -> chooseAccount());
-        tvTemp.setOnClickListener(v -> chooseAccount());
-        tvAccount.setOnClickListener(v -> chooseAccount());
+        llChooseAccount.setOnClickListener(v -> chooseAccount());
     }
 
     private void setGif(Integer happys) {
@@ -535,7 +531,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 GlobalVariables.setHasDot(false);
                 setNumberKey(jian);
                 break;
-            case anime_date:
+            case R.id.anime_date:
                 playVoice(R.raw.changgui01);
                 vibrator.vibrate(20);
                 //开始时间
@@ -551,10 +547,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                                 mDate.setText(year + "/" + month + "/" + day);
                             }
                         }
-                        //mDate.setText(year + "/" + month + "/" + day);
-                        mDate.setTextSize(14);
-                        mDate.setCompoundDrawables(null, null, null, null);
-                        mDate.setPadding(0, 0, 0, 0);
+
                         time = DateUtil.dateToLong(mDate.getText().toString().trim());
                     }
                 }.show();
@@ -676,7 +669,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         w.setUserPrivateLabelId(Integer.parseInt(req.getTypeId()));
         w.setTypePid(req.getTypePid());//二级类目
         w.setTypePname(req.getTypePname());
-        w.setTypeId(req.getTypeId());//三级条目
+//        w.setTypeId(req.getTypeId());//三级条目 这个不用客户端上传
         w.setTypeName(req.getTypeName());
         String da = System.currentTimeMillis() / 1000 + "000";
         long ss = Long.parseLong(da);
@@ -704,9 +697,9 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             icon = commonList2Bean.getIcon();
         }
         w.setIcon(icon);
-        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
-        if (id == -1) {
-            w.setAssetsId(-1);
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, 0);
+        if (id == 0) {
+            w.setAssetsId(0);
         } else {
             w.setAssetsId(id);
         }
@@ -874,18 +867,62 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         req.setSynDate(times);
 
         // 本地数据库查找未上传数据 上传至服务器
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT where ACCOUNT_BOOK_ID= " + accountId + " AND UPDATE_DATE >= " + time;
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+
+        List<WaterOrderCollect> l = new ArrayList<>();
+        if (null != cursor) {
+            l = DBUtil.changeToList(cursor, l, WaterOrderCollect.class);
+        }
+
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
         myList.clear();
 
-        if (null != cursor) {
-            try {
-                myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
-            } catch (Exception e) {
-                e.printStackTrace();
+        if (l != null && l.size()>0){
+            for (int i = 0; i < l.size(); i++) {
+                OffLineReq.SynDataBean t = new OffLineReq.SynDataBean();
+                WaterOrderCollect w = l.get(i);
+                t.setTypeName(w.typeName);
+                t.setId(w.id);
+                t.setIsStaged(w.isStaged);
+                t.setUseDegree(w.useDegree);
+                t.setPictureUrl(w.getPictureUrl());
+                t.setParentId(String.valueOf(w.getParentId()));
+                t.setRemark(w.getRemark());
+                t.setAccountBookId(w.getAccountBookId());
+                t.setOrderType(w.getOrderType());
+                t.setMoney(w.getMoney());
+                t.setCreateDate(w.getCreateDate());
+                t.setCreateName(w.getCreateName());
+                t.setTypeId(w.getTypeId());
+                t.setTypeName(w.getTypeName());
+                t.setSpendHappiness(w.getSpendHappiness());
+                t.setChargeDate(w.getChargeDate());
+                t.setTypePid(w.getTypePid());
+                t.setTypePname(w.getTypePname());
+                t.setUpdateDate(w.getUpdateDate());
+                t.setDelflag(w.getDelflag());
+                t.setCreateBy(w.getCreateBy());
+                t.setDelDate(w.getDelDate());
+                t.setUpdateBy(w.getUpdateBy());
+                t.setUpdateName(w.getUpdateName());
+                t.setIcon(w.getIcon());
+                t.setUserPrivateLabelId(w.getUserPrivateLabelId());
+                t.setReporterAvatar(w.getReporterAvatar());
+                t.setReporterNickName(w.getReporterNickName());
+                t.setAbName(w.getAbName());
+                t.setAssetsId(w.getAssetsId());
+                t.setAssetsName(w.getAssetsName());
+                myList.add(t);
             }
         }
+//        if (null != cursor) {
+//            try {
+//                myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+//            } catch (Exception e) {
+//                e.printStackTrace();
+//            }
+//        }
 
         List<OffLine2Req.SynDataBean> myList2 = new ArrayList<>();
         myList2.clear();
@@ -921,7 +958,9 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 synDataBean.setSpendHappiness(s1.getSpendHappiness());
                 synDataBean.setTypeId(s1.getTypeId());
                 synDataBean.setTypeName(s1.getTypeName());
-                synDataBean.setUpdateDate(s1.getUpdateDate().getTime());
+                if (s1.getUpdateDate() != null) {
+                    synDataBean.setUpdateDate(s1.getUpdateDate().getTime());
+                }
                 synDataBean.setTypePname(s1.getTypePname());
                 synDataBean.setUpdateBy(s1.getCreateBy());
                 synDataBean.setUseDegree(s1.getUseDegree());
@@ -1004,7 +1043,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 startActivityForResult(intent, 1000);
             } else if (type == 1) {
                 if (data == null) {     // 不选择账户
-                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
+                    SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, 0);
                     SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
                     SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
                 } else {
@@ -1039,7 +1078,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             chooseAccount();
             // 要更新UI，判断已选的账户是否被删除
             if (!isExist()) {
-                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
+                SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, 0);
                 SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
                 SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
                 setAccount();
@@ -1053,7 +1092,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         if (temp == null || temp.size() < 1) {
             return false;// 已删除，不存在
         }
-        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, 0);
         for (int i = 0; i < temp.size(); i++) {
             if (id == temp.get(i).assetsType) {
                 return true;// 没有删，还存在

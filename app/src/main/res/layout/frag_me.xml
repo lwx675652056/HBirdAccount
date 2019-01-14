@@ -278,13 +278,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_48_x">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--记账提醒-->
@@ -324,13 +320,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    android:paddingStart="@dimen/dp_48_x">
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--丰丰通知-->
@@ -384,13 +375,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_48_x">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--联系客服-->
@@ -430,13 +417,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    android:paddingStart="@dimen/dp_48_x">
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--收货信息-->
@@ -512,13 +494,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
-
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    android:paddingStart="@dimen/dp_48_x">
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--意见反馈-->
@@ -558,13 +535,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_48_x">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--检查更新-->
@@ -604,13 +577,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_48_x">
 
-                    <View
-                        android:layout_width="match_parent"
-                        android:layout_height="0.5dp"
-                        android:background="@color/line2"/>
+                    <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
                 <!--关注蜂鸟记账公众号-->
@@ -650,7 +619,6 @@
                    android:onClick="@{listener.followWX}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="@dimen/dp_20_x"
                     android:layout_marginTop="@dimen/dp_20_x"
                     android:orientation="vertical">
 
@@ -686,6 +654,10 @@
                             android:textSize="13sp"/>
                     </LinearLayout>
                 </LinearLayout>
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30_x"/>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
     </LinearLayout>

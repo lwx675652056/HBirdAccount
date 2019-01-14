@@ -1,9 +1,12 @@
 package com.hbird.http.service;
 
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
+import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.EditAddressBean;
 import com.hbird.bean.UserInfo;
 import com.hbird.http.HttpResult;
+
+import java.util.List;
 
 import io.reactivex.Observable;
 import okhttp3.RequestBody;
@@ -12,6 +15,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.Query;
 
 
 public interface GankDataService {
@@ -49,14 +53,22 @@ public interface GankDataService {
     @POST("checkSystemParamv2/android")
     Observable<HttpResult<SystemBiaoqReturn.ResultBean>> postCheckChargeTypes(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
 
+
+    // 分接口-获取消费结构比
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("getconsumptionstructureratiov2/android")
+    Observable<HttpResult<List<ConsumptionRatioBean>>> getConsumptionStructureRatio(@Header("X-AUTH-TOKEN") String token, @Query("month") String month, @Query("abId") Object abId);
+
+
+
+
+
+
+
+
+
     // 获取收入类型标签
     @GET("getHadABType/android")
     Observable<String> getHadABType(@Header("X-AUTH-TOKEN") String token);
-
-//    @GET("api/data/福利/{size}/{index}")
-//    Observable<GirlsData> getFuliData(@Path("size") String size, @Path("index") String index);
-//
-//    @GET("api/data/Android/{size}/{index}")
-//    Observable<NewsData> getAndroidData(@Path("size") String size, @Path("index") String index);
 
 }

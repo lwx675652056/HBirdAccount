@@ -15,8 +15,14 @@ import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.databinding.ActCalendarBinding;
 import com.hbird.base.mvc.activity.MingXiInfoActivity;
+import com.hbird.base.mvc.bean.BaseReturn;
+import com.hbird.base.mvc.bean.RequestBean.OffLine2Req;
+import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
+import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
 import com.hbird.base.mvc.bean.dayListBean;
 import com.hbird.base.mvc.bean.indexBaseListBean;
+import com.hbird.base.mvc.global.CommonTag;
+import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.APDUserDateDialog;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
@@ -26,7 +32,9 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.TitleBean;
 import com.hbird.common.calendar.utils.CalendarUtil;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.util.NetworkUtil;
 
 import java.math.BigDecimal;
 import java.text.ParseException;
@@ -43,6 +51,8 @@ import java.util.Set;
 
 import sing.common.base.BaseActivity;
 import sing.util.ToastUtil;
+
+import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
 
 /**
  * @author: LiangYX
@@ -165,14 +175,38 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                 .setCancleButton("取消", view -> {
                 })
                 .setSureButton("删除", view -> {
-                    String id = data.getId();
-                    //数据库的操作 （删除显示的是 数据库的更新）
-                    Boolean b = DBUtil.updateOneDate(id, accountId);
+                    WaterOrderCollect bean = new WaterOrderCollect();
+                    bean.setId(data.getId());
+                    bean.setMoney(data.getMoney());
+                    bean.setAccountBookId(data.getAccountBookId());
+                    bean.setOrderType(data.getOrderType());
+                    bean.setIsStaged(data.getIsStaged());
+                    bean.setSpendHappiness(data.getSpendHappiness());
+                    bean.setTypePid(data.getTypePid());
+                    bean.setTypePname(data.getTypePname());
+                    bean.setTypeId(data.getTypeId());
+                    bean.setTypeName(data.getTypeName());
+                    bean.setCreateDate(new Date(data.getCreateDate()));
+                    bean.setChargeDate(new Date(data.getChargeDate()));
+                    bean.setCreateBy(data.getCreateBy());
+                    bean.setCreateName(data.getCreateName());
+                    bean.setUpdateBy(data.getUpdateBy());
+                    bean.setUpdateName(data.getUpdateName());
+                    bean.setRemark(data.getRemark());
+                    bean.setIcon(data.getIcon());
+                    bean.setUserPrivateLabelId(data.getUserPrivateLabelId());
+                    bean.setReporterAvatar(data.getReporterAvatar());
+                    bean.setReporterNickName(data.getReporterNickName());
+                    bean.setAbName(data.getAbName());//所属账本名称
+                    bean.setAssetsId(data.getAssetsId());
+                    bean.setAssetsName(data.getAssetsName());
+
+                    Boolean b = DBUtil.updateOneDate(bean);
                     if (b) {
                         //刷新界面数据
                         getData(currentDate);
                         //删除 并同步上传到服务器
-//                        pullToSyncDate();
+                        pullToSyncDate();
                     }
                 }).show();
     }
@@ -244,7 +278,6 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                         temp.setBean(dates.get(i));
                         list.add(temp);
                     }
-//                    Collections.sort(list);
                     binding.recyclerView.setVisibility(View.VISIBLE);
                     binding.ivNoData.setVisibility(View.GONE);
                     adapter.notifyDataSetChanged();
@@ -447,5 +480,125 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
             }
         }
         return listBySql;
+    }
+
+    private void pullToSyncDate() {
+        //判断当前网络状态
+        boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(this);
+        if (!netWorkAvailable) {
+            return;
+        }
+        String deviceId = Utils.getDeviceInfo(this);
+        String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+        NetWorkManager.getInstance().setContext(this).postPullToSyncDate(deviceId, false, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                PullSyncDateReturn b1 = (PullSyncDateReturn) b;
+                String synDate = b1.getResult().getSynDate();
+                long L = 0;
+                if (null != synDate) {
+                    try {
+                        L = Long.parseLong(synDate);
+                    } catch (Exception e) {
+
+                    }
+                }
+                SPUtil.setPrefLong(ActCalendar.this, com.hbird.base.app.constant.CommonTag.SYNDATE, L);
+                List<PullSyncDateReturn.ResultBean.SynDataBean> synData = b1.getResult().getSynData();
+                //插入本地数据库
+                DBUtil.insertLocalDB(synData);
+                SPUtil.setPrefBoolean(ActCalendar.this, com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
+
+                pushOffLine();
+
+                SPUtil.setPrefBoolean(ActCalendar.this, OFFLINEPULL_FIRST_LOGIN, false);
+            }
+
+            @Override
+            public void onError(String s) {
+                ToastUtil.showShort(s);
+            }
+        });
+    }
+
+    private void pushOffLine() {
+        String deviceId = Utils.getDeviceInfo(this);
+        String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+
+        OffLineReq req = new OffLineReq();
+        req.setMobileDevice(deviceId);
+        Long time = SPUtil.getPrefLong(ActCalendar.this, com.hbird.base.app.constant.CommonTag.SYNDATE, new Date().getTime());
+        String times = String.valueOf(time);
+        req.setSynDate(times);
+        String zhangbenId = SPUtil.getPrefString(ActCalendar.this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+        //本地数据库查找未上传数据 上传至服务器
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.ACCOUNT_BOOK_ID = " + zhangbenId + " AND wo.UPDATE_DATE >= " + time;
+        Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+        List<OffLineReq.SynDataBean> myList = new ArrayList<>();
+        myList.clear();
+        if (null != cursor) {
+            myList = DBUtil.changeToListPull(cursor, myList, OffLineReq.SynDataBean.class);
+        }
+        List<OffLine2Req.SynDataBean> myList2 = new ArrayList<>();
+        myList2.clear();
+        OffLine2Req req2 = new OffLine2Req();
+        req2.setMobileDevice(req.getMobileDevice());
+        req2.setSynDate(req.getSynDate());
+        if (myList != null) {
+            for (int i = 0; i < myList.size(); i++) {
+                OffLineReq.SynDataBean s1 = myList.get(i);
+                OffLine2Req.SynDataBean synDataBean = new OffLine2Req.SynDataBean();
+                synDataBean.setId(s1.getId());
+                synDataBean.setAccountBookId(s1.getAccountBookId());
+                if (s1.getChargeDate() != null) {
+                    synDataBean.setChargeDate(s1.getChargeDate().getTime());
+                }
+                synDataBean.setCreateBy(s1.getCreateBy());
+                if (s1.getCreateDate() != null) {
+                    synDataBean.setCreateDate(s1.getCreateDate().getTime());
+                }
+                synDataBean.setCreateName(s1.getCreateName());
+                if (s1.getDelDate() != null) {
+                    synDataBean.setDelDate(s1.getDelDate().getTime());
+                }
+
+                synDataBean.setDelflag(s1.getDelflag());
+                synDataBean.setIcon(s1.getIcon());
+                synDataBean.setIsStaged(s1.getIsStaged());
+                synDataBean.setMoney(s1.getMoney());
+                synDataBean.setOrderType(s1.getOrderType());
+                synDataBean.setParentId(s1.getParentId());
+                synDataBean.setPictureUrl(s1.getPictureUrl());
+                synDataBean.setRemark(s1.getRemark());
+                synDataBean.setSpendHappiness(s1.getSpendHappiness());
+                synDataBean.setTypeId(s1.getTypeId());
+                synDataBean.setTypeName(s1.getTypeName());
+                if (s1.getUpdateDate() != null) {
+                    synDataBean.setUpdateDate(s1.getUpdateDate().getTime());
+                }
+                synDataBean.setTypePname(s1.getTypePname());
+                synDataBean.setUpdateBy(s1.getUpdateBy());
+                synDataBean.setUseDegree(s1.getUseDegree());
+                synDataBean.setUpdateName(s1.getUpdateName());
+                synDataBean.setUserPrivateLabelId(s1.getUserPrivateLabelId());
+                myList2.add(synDataBean);
+            }
+            req2.setSynData(myList2);
+        }
+
+
+        if (myList2 != null && myList2.size() > 0) {
+            req2.setSynData(myList2);
+        }
+        String jsonInfo = new Gson().toJson(req2);
+        NetWorkManager.getInstance().setContext(ActCalendar.this).pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+            }
+
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 }

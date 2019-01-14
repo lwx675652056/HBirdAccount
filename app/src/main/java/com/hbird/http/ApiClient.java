@@ -24,6 +24,7 @@ import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import sing.common.http.fastjsonconverter.FastJsonConverterFactory;
+import sing.common.util.LogUtil;
 
 /**
  * @author Sing
@@ -111,8 +112,9 @@ public class ApiClient {
                                 FormBody body = (FormBody) request.body();
 
                                 StringBuffer sb = new StringBuffer();
-                                for (int i = 0; i < body.size(); i++) {
+                                for (int i = 0, size = body.size(); i < size; i++) {
                                     sb.append(body.encodedName(i) + "=" + body.encodedValue(i) + ",");
+                                    LogUtil.w("parms:" + body.encodedName(i) + "=" + body.encodedValue(i));
                                 }
                                 requestBuilder.method(request.method(), oldFormBody);
                             }

@@ -32,6 +32,14 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
     private List<indexBean> indexBeen;
     public String reporterAvatar; // 记录者头像
     public String reporterNickName; // 记录者昵称
+    public Integer createBy;
+    public String createName;
+    public Integer updateBy;
+    public String updateName;
+    public Integer userPrivateLabelId;
+    public String abName;
+    public Integer assetsId;
+    public String assetsName;
 
     @Override
     public int compareTo(@NonNull AccountDetailedBean o) {
@@ -266,6 +274,86 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
         notifyPropertyChanged(BR.reporterNickName);
     }
 
+    @Bindable
+    public Integer getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Integer createBy) {
+        this.createBy = createBy;
+        notifyPropertyChanged(BR.createBy);
+    }
+
+    @Bindable
+    public String getCreateName() {
+        return createName;
+    }
+
+    public void setCreateName(String createName) {
+        this.createName = createName;
+        notifyPropertyChanged(BR.createName);
+    }
+
+    @Bindable
+    public Integer getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Integer updateBy) {
+        this.updateBy = updateBy;
+        notifyPropertyChanged(BR.updateBy);
+    }
+
+    @Bindable
+    public String getUpdateName() {
+        return updateName;
+    }
+
+    public void setUpdateName(String updateName) {
+        this.updateName = updateName;
+        notifyPropertyChanged(BR.updateName);
+    }
+
+    @Bindable
+    public Integer getUserPrivateLabelId() {
+        return userPrivateLabelId;
+    }
+
+    public void setUserPrivateLabelId(Integer userPrivateLabelId) {
+        this.userPrivateLabelId = userPrivateLabelId;
+        notifyPropertyChanged(BR.userPrivateLabelId);
+    }
+
+    @Bindable
+    public String getAbName() {
+        return abName;
+    }
+
+    public void setAbName(String abName) {
+        this.abName = abName;
+        notifyPropertyChanged(BR.abName);
+    }
+
+    @Bindable
+    public Integer getAssetsId() {
+        return assetsId;
+    }
+
+    public void setAssetsId(Integer assetsId) {
+        this.assetsId = assetsId;
+        notifyPropertyChanged(BR.assetsId);
+    }
+
+    @Bindable
+    public String getAssetsName() {
+        return assetsName;
+    }
+
+    public void setAssetsName(String assetsName) {
+        this.assetsName = assetsName;
+        notifyPropertyChanged(BR.assetsName);
+    }
+
     public void setBean(indexBaseListBean temp) {
         tag = temp.getTag();
         orderType = temp.getOrderType();
@@ -282,6 +370,14 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
         chargeDate = temp.getChargeDate();
         createDate = temp.getCreateDate();
         typePname = temp.getTypePname();
+        createBy = temp.getCreateBy();
+        createName = temp.createName;
+        updateBy = temp.updateBy;
+        updateName = temp.updateName;
+        userPrivateLabelId = temp.userPrivateLabelId;
+        abName = temp.abName;
+        assetsId = temp.assetsId;
+        assetsName = temp.assetsName;
         indexBeen = new ArrayList<>();
         if (temp.getIndexBeen() != null) {
             for (int i = 0; i < temp.getIndexBeen().size(); i++) {

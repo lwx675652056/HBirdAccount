@@ -63,7 +63,7 @@ public class ChooseAccountDialog extends BaseDialog {
 
         // 判断最后一次选择的账户是否被删除，如果被删除，置为未选择
         if (!isExist(temp)) {
-            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, -1);
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, 0);
             SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, "未选择");
             SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, "");
         }
@@ -80,7 +80,7 @@ public class ChooseAccountDialog extends BaseDialog {
     }
 
     private boolean isExist(List<AssetsBean> temp) {
-        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
+        int id = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, 0);
         for (int i = 0; i < temp.size(); i++) {
             if (id == temp.get(i).assetsType) {
                 return true;
@@ -95,7 +95,7 @@ public class ChooseAccountDialog extends BaseDialog {
 
         public MyAdapter(Context context, List<AssetsBean> list, int layoutId) {
             super(context, list, layoutId);
-            accountId = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, -1);
+            accountId = (int) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_ID, 0);
         }
 
         @Override

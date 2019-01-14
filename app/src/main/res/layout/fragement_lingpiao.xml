@@ -1,24 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ripple="http://schemas.android.com/apk/res-auto"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_home_lingpiao"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_home_lingpiao"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-   <!--<include layout="@layout/activity_header" />-->
-   <com.github.lzyzsd.jsbridge.BridgeWebView
-       android:id="@+id/webView"
-       android:padding="12dp"
-       android:background="#123123"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"/>
-   <!--<WebView
-       android:id="@+id/webView"
-       android:layout_width="fill_parent"
-       android:layout_height="fill_parent"
-       android:autoLink="all" />-->
-
+    <com.github.lzyzsd.jsbridge.BridgeWebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </LinearLayout>

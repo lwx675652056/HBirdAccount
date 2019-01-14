@@ -47,9 +47,9 @@ public class IndexFragementModle extends BaseViewModel {
         String monthTime = mm < 10 ? yyyy + "-0" + mm : yyyy + "-" + mm;
         String sql;
         if (TextUtils.isEmpty(accountId)) {// 总账本
-            sql = "select sum(money) money,type_id,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_id order by money DESC LIMIT 5;";
+            sql = "select sum(money) money,type_id,USER_PRIVATE_LABEL_ID,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC LIMIT 5;";
         } else {
-            sql = "select sum(money) money,type_id,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.account_book_id= '" + accountId + "' AND wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_id order by money DESC LIMIT 5;";
+            sql = "select sum(money) money,type_id,USER_PRIVATE_LABEL_ID,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.account_book_id= '" + accountId + "' AND wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC LIMIT 5;";
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -61,7 +61,7 @@ public class IndexFragementModle extends BaseViewModel {
     }
 
     //月支出排行榜 某个类的具体条目前5
-    public List<WaterOrderCollect> getTypeRanking(String typeId, int yyyy, int mm, String accountId) {
+    public List<WaterOrderCollect> getTypeRanking(String typeName, int yyyy, int mm, String accountId) {
         List<WaterOrderCollect> list = new ArrayList<>();
 
         int orderType = 1;//1:支出  2:收入
@@ -79,21 +79,31 @@ public class IndexFragementModle extends BaseViewModel {
                     + " DELFLAG = 0 "
                     + " AND CHARGE_DATE >=" + MonthFirstDay
                     + " AND CHARGE_DATE<" + MonthLastDays
-                    + " AND type_id = " + typeId
-                    + " AND order_type = " + orderType
+                    + " AND type_name = '" + typeName
+                    + "' AND order_type = " + orderType
                     + " ORDER BY money DESC LIMIT 5";
         } else {
-            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+            sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " where"
                     + " ACCOUNT_BOOK_ID=" + accountId
                     + " AND  DELFLAG = 0 "
                     + " AND CHARGE_DATE >=" + MonthFirstDay
                     + " AND CHARGE_DATE<" + MonthLastDays
-                    + " AND type_id = " + typeId
-                    + " AND order_type = " + orderType
+                    + " AND type_name = '" + typeName
+                    + "' AND order_type = " + orderType
                     + " ORDER BY  money DESC LIMIT 5";
+
+//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//                    " where"
+//                    + " ACCOUNT_BOOK_ID=" + accountId
+//                    + " AND  DELFLAG = 0 "
+//                    + " AND CHARGE_DATE >=" + MonthFirstDay
+//                    + " AND CHARGE_DATE<" + MonthLastDays
+//                    + " AND type_name = '" + typeName
+//                    + "' AND order_type = " + orderType
+//                    + " ORDER BY  money DESC LIMIT 5";
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -105,7 +115,7 @@ public class IndexFragementModle extends BaseViewModel {
     }
 
     // 获取“其它”的排行前五
-    public List<WaterOrderCollect> getOthereRanking(String typeId1, String typeId2, String typeId3, String typeId4, int yyyy, int mm, String accountId) {
+    public List<WaterOrderCollect> getOthereRanking(String typeName1, String typeName2, String typeName3, String typeName4, int yyyy, int mm, String accountId) {
         List<WaterOrderCollect> list = new ArrayList<>();
 
         int orderType = 1;//1:支出  2:收入
@@ -123,25 +133,37 @@ public class IndexFragementModle extends BaseViewModel {
                     + " DELFLAG = 0 "
                     + " AND CHARGE_DATE >=" + MonthFirstDay
                     + " AND CHARGE_DATE<" + MonthLastDays
-                    + " AND type_id != " + typeId1
-                    + " AND type_id != " + typeId2
-                    + " AND type_id != " + typeId3
-                    + " AND type_id != " + typeId4
-                    + " AND order_type = " + orderType
+                    + " AND type_name != '" + typeName1
+                    + "' AND type_name != '" + typeName2
+                    + "' AND type_name != '" + typeName3
+                    + "' AND type_name != '" + typeName4
+                    + "' AND order_type = " + orderType
                     + " ORDER BY  money DESC LIMIT 5";
         } else {
-            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//                    " WHERE ACCOUNT_BOOK_ID=" + accountId
+//                    + " AND  DELFLAG = 0 "
+//                    + " AND CHARGE_DATE >=" + MonthFirstDay
+//                    + " AND CHARGE_DATE<" + MonthLastDays
+//                    + " AND type_name != '" + typeName1
+//                    + "' AND type_name != '" + typeName2
+//                    + "' AND type_name != '" + typeName3
+//                    + "' AND type_name != '" + typeName4
+//                    + "' AND order_type = " + orderType
+//                    + " ORDER BY  money DESC LIMIT 5";
+
+            sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " WHERE ACCOUNT_BOOK_ID=" + accountId
                     + " AND  DELFLAG = 0 "
                     + " AND CHARGE_DATE >=" + MonthFirstDay
                     + " AND CHARGE_DATE<" + MonthLastDays
-                    + " AND type_id != " + typeId1
-                    + " AND type_id != " + typeId2
-                    + " AND type_id != " + typeId3
-                    + " AND type_id != " + typeId4
-                    + " AND order_type = " + orderType
+                    + " AND type_name != '" + typeName1
+                    + "' AND type_name != '" + typeName2
+                    + "' AND type_name != '" + typeName3
+                    + "' AND type_name != '" + typeName4
+                    + "' AND order_type = " + orderType
                     + " ORDER BY  money DESC LIMIT 5";
         }
 
@@ -217,9 +239,13 @@ public class IndexFragementModle extends BaseViewModel {
                 }
             }
         } else {
-            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+//                    " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
+
+
+            sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
         }
 
@@ -381,6 +407,12 @@ public class IndexFragementModle extends BaseViewModel {
                 indexBeans2.setTypeName(dates.getTypeName());
                 indexBeans2.setReporterAvatar(dates.getReporterAvatar());
                 indexBeans2.setReporterNickName(dates.getReporterNickName());
+                indexBeans2.setUserPrivateLabelId(dates.getUserPrivateLabelId());
+                indexBeans2.setUpdateBy(dates.getUpdateBy());
+                indexBeans2.setUpdateName(dates.getUpdateName());
+                indexBeans2.setAbName(dates.getAbName());
+                indexBeans2.setAssetsId(dates.getAssetsId());
+                indexBeans2.setAssetsName(dates.getAssetsName());
                 been.add(indexBeans2);
             }
         }

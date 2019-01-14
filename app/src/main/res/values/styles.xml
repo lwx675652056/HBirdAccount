@@ -51,7 +51,7 @@
         <item name="android:button">@null</item>
         <item name="android:gravity">center</item>
         <item name="android:textColor">@drawable/radio_head_res</item>
-        <item name="android:textSize">@dimen/text_size_6</item>
+        <item name="android:textSize">12sp</item>
     </style>
 
     <style name="radio_choose_bg">
@@ -242,7 +242,7 @@
 
     <style name="TabRadioGroup">
         <item name="android:layout_width">match_parent</item>
-        <item name="android:layout_height">56dp</item>
+        <item name="android:layout_height">@dimen/dp_50_x</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:background">@null</item>
     </style>

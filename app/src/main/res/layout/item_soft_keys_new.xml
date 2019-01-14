@@ -13,60 +13,58 @@
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
-        android:paddingBottom="@dimen/dp_10_x"
-        android:paddingTop="@dimen/dp_10_x">
+        android:background="@color/white">
 
         <ImageView
             android:id="@+id/iv_account_icon"
-            android:layout_width="@dimen/dp_40_x"
-            android:layout_height="@dimen/dp_40_x"
-            android:layout_marginStart="@dimen/dp_15_x"
+            android:layout_width="@dimen/dp_60_x"
+            android:layout_height="@dimen/dp_60_x"
+            android:layout_marginStart="@dimen/dp_5_x"
+            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingTop="@dimen/dp_10_x"
             android:src="@mipmap/ic_budget_bg_gray"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
-        <View
-            android:id="@+id/temp"
+        <LinearLayout
+            android:id="@+id/ll_choose_account"
             android:layout_width="wrap_content"
-            android:layout_height="0.1dp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_account_icon"
-            app:layout_constraintTop_toTopOf="@+id/iv_account_icon"/>
-
-        <TextView
-            android:id="@+id/tv_temp"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10_x"
-            android:drawableEnd="@mipmap/icon_fjian_hover"
-            android:drawablePadding="@dimen/dp_5_x"
-            android:text="账户选择"
-            android:textColor="#808080"
-            android:textSize="12sp"
-            app:layout_constraintBottom_toTopOf="@+id/temp"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:orientation="vertical"
+            android:paddingBottom="@dimen/dp_10_x"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingTop="@dimen/dp_10_x"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@+id/iv_account_icon"
-            app:layout_constraintTop_toTopOf="@+id/iv_account_icon"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_account"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10_x"
-            android:text="未选择"
-            android:textColor="#808080"
-            android:textSize="14sp"
-            app:layout_constraintBottom_toBottomOf="@+id/iv_account_icon"
-            app:layout_constraintStart_toEndOf="@+id/iv_account_icon"
-            app:layout_constraintTop_toBottomOf="@+id/temp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:drawableEnd="@mipmap/icon_fjian_hover"
+                android:drawablePadding="@dimen/dp_5_x"
+                android:text="账户选择"
+                android:textColor="#808080"
+                android:textSize="12sp"/>
+
+            <TextView
+                android:id="@+id/tv_account"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_5_x"
+                android:text="未选择"
+                android:textColor="#808080"
+                android:textSize="14sp"/>
+        </LinearLayout>
 
         <View
             android:id="@+id/line"
             android:layout_width="0.5dp"
             android:layout_height="@dimen/dp_40_x"
-            android:layout_marginStart="@dimen/dp_50_x"
             android:background="@color/bg_cdcdcd"
             app:layout_constraintBottom_toBottomOf="@+id/iv_account_icon"
-            app:layout_constraintStart_toEndOf="@+id/tv_account"
+            app:layout_constraintStart_toEndOf="@+id/ll_choose_account"
             app:layout_constraintTop_toTopOf="@+id/iv_account_icon"/>
 
         <TextView
@@ -74,11 +72,12 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
-            android:layout_marginEnd="@dimen/dp_15_x"
             android:drawablePadding="@dimen/dp_5_x"
             android:drawableStart="@mipmap/ic_calendar_normal_select"
             android:gravity="center"
-            android:text="2018.12.10"
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x"
+            android:text="今天"
             android:textColor="#D80200"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="parent"

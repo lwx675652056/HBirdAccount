@@ -119,6 +119,14 @@ public class dayListBean extends BaseReturn {
                 private long chargeDate;
                 private long createDate;
                 private long updateDate;
+                public Integer createBy;
+                public String createName;
+                public Integer updateBy;
+                public String updateName;
+                public Integer userPrivateLabelId;
+                public String abName;
+                public Integer assetsId;
+                public String assetsName;
                 private String typePname;
                 //记录者头像
                 public String reporterAvatar;
@@ -259,6 +267,70 @@ public class dayListBean extends BaseReturn {
 
                 public void setTypePname(String typePname) {
                     this.typePname = typePname;
+                }
+
+                public Integer getCreateBy() {
+                    return createBy;
+                }
+
+                public void setCreateBy(Integer createBy) {
+                    this.createBy = createBy;
+                }
+
+                public String getCreateName() {
+                    return createName;
+                }
+
+                public void setCreateName(String createName) {
+                    this.createName = createName;
+                }
+
+                public Integer getUpdateBy() {
+                    return updateBy;
+                }
+
+                public void setUpdateBy(Integer updateBy) {
+                    this.updateBy = updateBy;
+                }
+
+                public String getUpdateName() {
+                    return updateName;
+                }
+
+                public void setUpdateName(String updateName) {
+                    this.updateName = updateName;
+                }
+
+                public Integer getUserPrivateLabelId() {
+                    return userPrivateLabelId;
+                }
+
+                public void setUserPrivateLabelId(Integer userPrivateLabelId) {
+                    this.userPrivateLabelId = userPrivateLabelId;
+                }
+
+                public String getAbName() {
+                    return abName;
+                }
+
+                public void setAbName(String abName) {
+                    this.abName = abName;
+                }
+
+                public Integer getAssetsId() {
+                    return assetsId;
+                }
+
+                public void setAssetsId(Integer assetsId) {
+                    this.assetsId = assetsId;
+                }
+
+                public String getAssetsName() {
+                    return assetsName;
+                }
+
+                public void setAssetsName(String assetsName) {
+                    this.assetsName = assetsName;
                 }
             }
         }
