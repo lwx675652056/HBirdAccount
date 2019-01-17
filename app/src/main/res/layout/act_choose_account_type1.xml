@@ -15,13 +15,13 @@
 
         <include layout="@layout/activity_my_header"/>
 
-        <sing.SmartRefreshLayout
-            android:id="@+id/refresh"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:srlEnableFooterFollowWhenLoadFinished="true"
-            app:srlEnableLoadMore="false"
-            app:srlEnableScrollContentWhenLoaded="true">
+        <!--<sing.SmartRefreshLayout-->
+            <!--android:id="@+id/refresh"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"-->
+            <!--app:srlEnableFooterFollowWhenLoadFinished="true"-->
+            <!--app:srlEnableLoadMore="false"-->
+            <!--app:srlEnableScrollContentWhenLoaded="true">-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/recycler_view"
@@ -30,6 +30,6 @@
                 android:overScrollMode="never"
                 android:paddingEnd="@dimen/dp_35_x"
                 android:scrollbars="none"/>
-        </sing.SmartRefreshLayout>
+        <!--</sing.SmartRefreshLayout>-->
     </LinearLayout>
 </layout>

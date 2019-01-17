@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hbird.base.R;
-import com.hbird.base.mvc.activity.AddMoreTypeActivityNew1;
+import com.hbird.base.mvc.activity.AddMoreTypeActivityNew;
 import com.hbird.base.mvc.activity.ChargeToAccount;
 import com.hbird.base.mvc.adapter.MyTypeAdapterNew;
 import com.hbird.base.mvc.base.BaseFragement;
@@ -131,7 +131,7 @@ public class AccountOutFragementNew1 extends BaseFragement {
                             return;
                         }
                         Intent intent = new Intent();
-                        intent.setClass(getActivity(), AddMoreTypeActivityNew1.class);
+                        intent.setClass(getActivity(), AddMoreTypeActivityNew.class);
                         ArrayList<String> list = new ArrayList<>();
                         list.clear();
                         for (int i = 0; i < commonList.size(); i++) {

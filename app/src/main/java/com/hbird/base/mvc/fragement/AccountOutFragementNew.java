@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.mvc.activity.ActSetAccountType;
 import com.hbird.base.mvc.activity.AddMoreTypeActivityNew;
-import com.hbird.base.mvc.activity.ChargeToAccount;
 import com.hbird.base.mvc.adapter.MyTypeAdapterNew;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.bean.BaseReturn;
@@ -18,7 +17,6 @@ import com.hbird.base.mvc.bean.MyTypeItem;
 import com.hbird.base.mvc.bean.RequestBean.ExChangeReq;
 import com.hbird.base.mvc.bean.ReturnBean.AccountTypes;
 import com.hbird.base.mvc.bean.ReturnBean.BiaoQianReturn;
-import com.hbird.base.mvc.bean.ReturnBean.CommonList2Bean;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.bean.ReturnBean.ZhiChuTagReturnNew;
 import com.hbird.base.mvc.global.CommonTag;
@@ -38,10 +36,11 @@ import sing.common.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 
 /**
- * Created by Liul on 2018/7/02.
- * 支出界面
+ * @author: LiangYX
+ * @ClassName: AccountOutFragementNew
+ * @date: 2019/1/16 18:28
+ * @Description: 我的-选择账本类型-支出
  */
-
 public class AccountOutFragementNew extends BaseFragement {
 
     @BindView(R.id.draggridview)
@@ -137,7 +136,6 @@ public class AccountOutFragementNew extends BaseFragement {
                         }
                         intent.putStringArrayListExtra("object", list);
                         startActivityForResult(intent, 120);
-                        //addSomeDate();
                     } else {
                         if (TextUtils.equals(tag, "choose")) {
                             //带数据跳转回上个页面 编辑页面
@@ -146,20 +144,20 @@ public class AccountOutFragementNew extends BaseFragement {
                             intent.putExtra("Object", new Gson().toJson(commonList.get(position)));
                             getActivity().setResult(202, intent);
                             getActivity().finish();
-                        } else { //跳转到下一个界面
-                            playVoice(R.raw.typevoice);
-                            Intent intent = new Intent();
-                            intent.setClass(getActivity(), ChargeToAccount.class);
-                            SystemBiaoqReturn.ResultBean.LabelBean.SpendBean commonListBean = commonList.get(position);
-
-                            CommonList2Bean bean = new CommonList2Bean();
-                            bean.setIcon(commonListBean.getIcon());
-                            bean.setId(commonListBean.getId() + "");
-                            bean.setSpendName(commonListBean.getSpendName());
-                            String sJson = new Gson().toJson(bean);
-                            intent.putExtra("JSONSTR", sJson);
-                            intent.putExtra("TAG", "支出");
-                            startActivityForResult(intent, 110);
+                        } else { //跳转到下一个界面 多账本不让记账
+//                            playVoice(R.raw.typevoice);
+//                            Intent intent = new Intent();
+//                            intent.setClass(getActivity(), ChargeToAccount.class);
+//                            SystemBiaoqReturn.ResultBean.LabelBean.SpendBean commonListBean = commonList.get(position);
+//
+//                            CommonList2Bean bean = new CommonList2Bean();
+//                            bean.setIcon(commonListBean.getIcon());
+//                            bean.setId(commonListBean.getId() + "");
+//                            bean.setSpendName(commonListBean.getSpendName());
+//                            String sJson = new Gson().toJson(bean);
+//                            intent.putExtra("JSONSTR", sJson);
+//                            intent.putExtra("TAG", "支出");
+//                            startActivityForResult(intent, 110);
                         }
                     }
                 } else {  //删除条目 item

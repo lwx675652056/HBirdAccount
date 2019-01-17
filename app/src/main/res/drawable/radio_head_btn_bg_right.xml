@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:drawable="@drawable/shape_radio_res_blue_right" android:state_checked="true" />
-    <item android:drawable="@drawable/shape_radio_res_white_right" android:state_checked="false" />
+    <item android:drawable="@mipmap/dl_btn_yzmdl_pressed" android:state_checked="true" />
+    <item android:drawable="@mipmap/dl_btn_yzmdl_normal" android:state_checked="false" />
 </selector>

@@ -21,6 +21,10 @@ public class AnalysisData extends BaseObservable {
     private boolean showEdit;// 显示编辑按钮，此时不显示蓝色的设置按钮
     private boolean isTotalAccount;// 是否为总账本，预算完成率使用
     private boolean isRatioAll;// 消费结构比是全部数据还是个人的
+    private boolean isSaveEfficientsAll;// 存钱效率是全部数据还是个人的
+
+    private boolean showRatio;// 显示消费结构比，false显示无数据的“记一笔”
+    private boolean showSetBudget;// 显示“设置预算”
 
     public AnalysisData() {
         setYyyy(Integer.parseInt(DateUtils.getCurYear("yyyy")));
@@ -31,6 +35,7 @@ public class AnalysisData extends BaseObservable {
         setShowEdit(false);// 存钱效率默认显示空白
         setTotalAccount(true);// 默认不显示预算完成率
         setRatioAll(false);// 默认个人数据
+        setSaveEfficientsAll(false);// 默认是个人数据
     }
 
     @Bindable
@@ -81,5 +86,35 @@ public class AnalysisData extends BaseObservable {
     public void setRatioAll(boolean ratioAll) {
         isRatioAll = ratioAll;
         notifyPropertyChanged(BR.ratioAll);
+    }
+
+    @Bindable
+    public boolean isSaveEfficientsAll() {
+        return isSaveEfficientsAll;
+    }
+
+    public void setSaveEfficientsAll(boolean saveEfficientsAll) {
+        isSaveEfficientsAll = saveEfficientsAll;
+        notifyPropertyChanged(BR.saveEfficientsAll);
+    }
+
+    @Bindable
+    public boolean isShowRatio() {
+        return showRatio;
+    }
+
+    public void setShowRatio(boolean showRatio) {
+        this.showRatio = showRatio;
+        notifyPropertyChanged(BR.showRatio);
+    }
+
+    @Bindable
+    public boolean isShowSetBudget() {
+        return showSetBudget;
+    }
+
+    public void setShowSetBudget(boolean showSetBudget) {
+        this.showSetBudget = showSetBudget;
+        notifyPropertyChanged(BR.showSetBudget);
     }
 }

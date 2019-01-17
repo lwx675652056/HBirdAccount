@@ -6,20 +6,17 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/iv_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:padding="4dp"
-            android:layout_marginLeft="@dimen/width_4_80"
-            android:src="@mipmap/icon_bg_sr"/>
+            android:layout_width="@dimen/dp_4_x"
+            android:layout_height="@dimen/dp_20_x"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:background="@mipmap/ic_title_line"/>
 
         <TextView
             android:id="@+id/tv_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="10dp"
+            android:textColor="#333333"
             android:gravity="center"
-            android:text="分组"
             android:textSize="18sp"/>
-
     </LinearLayout>

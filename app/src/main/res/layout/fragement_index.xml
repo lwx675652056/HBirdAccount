@@ -57,9 +57,7 @@
 
         <View style="@style/horizontal_line"/>
 
-        <sing.SmartRefreshLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            xmlns:app="http://schemas.android.com/apk/res-auto"
+        <com.hbird.common.refreshLayout.MaterialRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -602,6 +600,6 @@
                 </LinearLayout>
             </android.support.v4.widget.NestedScrollView>
 
-        </sing.SmartRefreshLayout>
+        </com.hbird.common.refreshLayout.MaterialRefreshLayout>
     </LinearLayout>
 </layout>

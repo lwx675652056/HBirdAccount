@@ -12,7 +12,7 @@
         android:layout_marginLeft="@dimen/width_4_80"
         android:layout_marginRight="@dimen/width_4_80"
         android:layout_marginTop="@dimen/height_1_80"
-        android:background="@mipmap/ic_bg_xiaozi"
+        android:background="@mipmap/bg_fxjgb_wushuju_normal"
         android:gravity="right"
         android:orientation="vertical">
         <TextView

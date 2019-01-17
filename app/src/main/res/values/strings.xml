@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">蜂鸟记账</string>
+
+    <integer-array name="material_colors">
+        <item>@color/material_red</item>
+        <item>@color/material_green</item>
+        <item>@color/material_blue</item>
+        <item>@color/material_yellow</item>
+    </integer-array>
+
     <string name="create_gesture_default">绘制解锁图案</string>
     <string name="create_gesture_correct">再次绘制解锁图案</string>
     <string name="create_gesture_less_error">至少连接4个点，请重新输入</string>

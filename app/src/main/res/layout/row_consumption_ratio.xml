@@ -29,7 +29,7 @@
         android:layout_marginEnd="@dimen/dp_15_x"
         android:layout_marginStart="@dimen/dp_15_x"
         android:layout_marginTop="@dimen/dp_15_x"
-        android:background="@mipmap/ic_bg_xiaozi"
+        android:background="@mipmap/bg_fxjgb_wushuju_normal"
         android:gravity="end|center_vertical"
         android:orientation="vertical"
         android:paddingEnd="@dimen/dp_15_x">

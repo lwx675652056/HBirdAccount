@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -100,8 +99,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
     TextView mJian;
     @BindView(R.id.anime_date)
     TextView mDate;
-    @BindView(R.id.rl_background)
-    RelativeLayout mIconBg;
     @BindView(R.id.iv_icon)
     ImageView mImages;
     @BindView(R.id.tv_type)
@@ -189,14 +186,12 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         if (bean.getOrderType() != 1) {
             mCenterTitle.setText("收入");
             mXinqing.setVisibility(View.GONE);
-            mIconBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
             mUpNum.setTextColor(getResources().getColor(R.color.colorPrimary));
             mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin2), null, null, null);
             mUpNum.setCompoundDrawablePadding(6);
         } else {
             mCenterTitle.setText("支出");
             mXinqing.setVisibility(View.VISIBLE);
-            mIconBg.setBackgroundResource(R.drawable.shape_cycle_blue);
             mUpNum.setTextColor(getResources().getColor(R.color.text_333333));
             mUpNum.setCompoundDrawables(getResources().getDrawable(R.mipmap.icon_coin), null, null, null);
             mUpNum.setCompoundDrawablePadding(6);
@@ -959,7 +954,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             Glide.with(ivIcon.getContext()).load(R.mipmap.jzzhxz_icon_bxzh_normal).into(ivIcon);
             tvAccount.setText("未选择");
         } else {
-            Glide.with(ivIcon.getContext()).load(icon).into(ivIcon);
+            Glide.with(ivIcon.getContext()).load(bean.pictureUrl).into(ivIcon);
             tvAccount.setText(bean.getAssetsName());
         }
     }

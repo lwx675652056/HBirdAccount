@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hbird.base.R;
@@ -38,9 +37,7 @@ public class MyExpandableListView2NewAdapter extends BaseExpandableListAdapter {
 
     private GridView gridView;
 
-    public MyExpandableListView2NewAdapter(Context context, List<ShouRuTagReturnNew.ResultBean.AllListBean> groupList,
-                                           List<List<ShouRuTagReturnNew.ResultBean.AllListBean.IncomeTypeSonsBean>> itemList
-                                        , ArrayList<String> list) {
+    public MyExpandableListView2NewAdapter(Context context, List<ShouRuTagReturnNew.ResultBean.AllListBean> groupList, List<List<ShouRuTagReturnNew.ResultBean.AllListBean.IncomeTypeSonsBean>> itemList, ArrayList<String> list) {
         mContext = context;
         this.groupList = groupList;
         this.itemList = itemList;
@@ -83,19 +80,11 @@ public class MyExpandableListView2NewAdapter extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup
-            parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup          parent) {
         if (null == convertView) {
             convertView = View.inflate(mContext, R.layout.expandablelist_group, null);
         }
-        ImageView ivGroup = (ImageView) convertView.findViewById(R.id.iv_group);
         TextView tvGroup = (TextView) convertView.findViewById(R.id.tv_group);
-        // 如果是展开状态，就显示展开的箭头，否则，显示折叠的箭头
-        if (isExpanded) {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        } else {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        }
         // 设置分组组名
         tvGroup.setText(groupList.get(groupPosition).getIncomeName());
         return convertView;
@@ -112,33 +101,38 @@ public class MyExpandableListView2NewAdapter extends BaseExpandableListAdapter {
         gridView = (GridView) convertView;
         // 创建 GridView 适配器
         final MyGridView2AdapterNew gridViewAdapter = new MyGridView2AdapterNew(mContext,
-                itemList.get(groupPosition),groupPosition,ii,jj,list);
+                itemList.get(groupPosition), groupPosition, ii, jj, list);
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //引起外部回调
-                callback.setOnCallBack(groupPosition,position);
+                callback.setOnCallBack(groupPosition, position);
                 //gridViewAdapter.setChecks(groupPosition ,position);
-                setUpDate(groupPosition,position);
+                setUpDate(groupPosition, position);
                 //Toast.makeText(mContext, "点击了第" + (groupPosition + 1) + "组，第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
+                gridViewAdapter.setCheck(groupPosition,position);
             }
         });
         return convertView;
     }
+
     private void setUpDate(int groupPosition, int position) {
         this.ii = groupPosition;
         this.jj = position;
         notifyDataSetChanged();
     }
+
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return false;
     }
-    public void  setMyOnclickListener(callBackInstance callback){
+
+    public void setMyOnclickListener(callBackInstance callback) {
         this.callback = callback;
     }
-    public interface callBackInstance{
+
+    public interface callBackInstance {
         void setOnCallBack(int groupPosition, int position);
     }
 }

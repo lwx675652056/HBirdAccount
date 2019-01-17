@@ -66,8 +66,13 @@ public class MyGridView2AdapterNew extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public void setChecks(int group,int item){
+    public void setCheck(int group, int item) {
+        this.ii = group;
+        this.jj = item;
+        notifyDataSetChanged();
+    }
 
+    public void setChecks(int group,int item){
         if(groupPosition==group){
             checking = new ArrayList<>();
             checking.clear();
@@ -95,39 +100,24 @@ public class MyGridView2AdapterNew extends BaseAdapter {
             viewHolder.imageView = (ImageView) mLinearLayout.findViewById(R.id.iv_head);
             viewHolder.imgChoose = (ImageView) mLinearLayout.findViewById(R.id.iv_img_choose);
             viewHolder.mBg = (RelativeLayout) mLinearLayout.findViewById(R.id.rl_bg);
-          /*  if(checking!=null && checking.size()>0){
-                if(checking.get(position)){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
-                }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
-                }
-            }*/
             boolean hasDate = getHasDate(position);
             if(groupPosition==ii){
                 if(position==jj){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
-                    viewHolder.imgChoose.setImageResource(R.mipmap.ic_shouruxuanzhong_normal);
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }else {
                     if(hasDate){
                         //表示有该数据
-                        viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_come);
-                        viewHolder.imgChoose.setImageResource(R.mipmap.ic_shouruxuanzhong_normal);
                         viewHolder.imgChoose.setVisibility(View.VISIBLE);
 
                     }else {
-                        viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
                         viewHolder.imgChoose.setVisibility(View.GONE);
                     }
                 }
             }else {
                 if(hasDate){
                     //表示有该数据
-                    viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_come);
-                    viewHolder.imgChoose.setImageResource(R.mipmap.ic_shouruxuanzhong_normal);
                     viewHolder.imgChoose.setVisibility(View.VISIBLE);
                 }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }
             }
@@ -138,10 +128,11 @@ public class MyGridView2AdapterNew extends BaseAdapter {
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50,50)
                     .into(viewHolder.imageView);
             //标记当前view
             mLinearLayout.setTag(viewHolder);
+
+            viewHolder.mBg.setSelected(groupPosition == ii && position == jj);
         }else {
             mLinearLayout = (LinearLayout) convertView;
             viewHolder = (ViewHolder) mLinearLayout.getTag();
@@ -152,27 +143,20 @@ public class MyGridView2AdapterNew extends BaseAdapter {
             boolean hasDate = getHasDate(position);
             if(groupPosition==ii){
                 if(position==jj){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }else {
                     if(hasDate){
                         //表示有该数据
-                        viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_come);
-                        viewHolder.imgChoose.setImageResource(R.mipmap.ic_shouruxuanzhong_normal);
                         viewHolder.imgChoose.setVisibility(View.VISIBLE);
                     }else {
-                        viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
                         viewHolder.imgChoose.setVisibility(View.GONE);
                     }
                 }
             }else {
                 if(hasDate){
                     //表示有该数据
-                    viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_come);
-                    viewHolder.imgChoose.setImageResource(R.mipmap.ic_shouruxuanzhong_normal);
                     viewHolder.imgChoose.setVisibility(View.VISIBLE);
                 }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }
             }
@@ -184,8 +168,9 @@ public class MyGridView2AdapterNew extends BaseAdapter {
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50,50)
                     .into(viewHolder.imageView);//显示的位置
+
+            viewHolder.mBg.setSelected(groupPosition == ii && position == jj);
         }
 
         return mLinearLayout;

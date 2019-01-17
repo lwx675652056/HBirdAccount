@@ -1,44 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:padding="@dimen/width_1_80"
-    android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:padding="@dimen/dp_5_x">
+
     <FrameLayout
-        android:layout_width="@dimen/width_10_80"
-        android:layout_height="@dimen/width_10_80"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:gravity="center">
+
         <RelativeLayout
             android:id="@+id/rl_bg"
-            android:layout_width="@dimen/width_10_80"
-            android:layout_height="@dimen/width_10_80"
+            android:layout_width="@dimen/dp_40_x"
+            android:layout_height="@dimen/dp_40_x"
             android:layout_gravity="center"
-            android:gravity="center"
-            android:background="@drawable/item_choose_bg">
+            android:background="@drawable/bg_choose_type"
+            android:gravity="center">
+
             <ImageView
                 android:id="@+id/iv_head"
-                android:layout_centerInParent="true"
-                android:padding="4dp"
-                android:layout_width="@dimen/width_6_80"
-                android:layout_height="@dimen/width_6_80" />
+                android:layout_width="@dimen/dp_15_x"
+                android:layout_height="@dimen/dp_15_x"
+                android:layout_centerInParent="true" />
         </RelativeLayout>
+
         <ImageView
             android:id="@+id/iv_img_choose"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:src="@mipmap/ic_chichuxuanzhong_normal"
+            android:visibility="gone"
             android:layout_gravity="bottom|right"
-            android:visibility="gone"/>
+            android:src="@mipmap/bjzh_icon_zhyx_normal" />
     </FrameLayout>
-
 
     <TextView
         android:id="@+id/tv_gridview"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/height_0_80"
+        android:textColor="#333333"
+        android:textSize="14sp"
         android:layout_gravity="center"
+        android:layout_marginTop="@dimen/dp_5_x"
         android:gravity="center"
         android:text="电脑"/>
 

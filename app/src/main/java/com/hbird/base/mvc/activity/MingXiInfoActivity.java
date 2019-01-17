@@ -70,8 +70,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
     @BindView(R.id.tv_delete)
     RelativeLayout mDelete;
     private String id;
-    @BindView(R.id.rl_background)
-    RelativeLayout mBackground;
     @BindView(R.id.text_bg)
     LinearLayout mTextBg;
     @BindView(R.id.ll_xinqings)
@@ -136,13 +134,11 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         String leixing = "";
         if (orderType == 1) {
             leixing = "支出";
-            mBackground.setBackground(getResources().getDrawable(R.drawable.shape_cycle_blue));
             mPayNum.setTextColor(Color.parseColor("#A1C7F3"));
             mFeileiBg.setBackgroundResource(R.drawable.shape_editor3_infos);
             //mTextBg.setBackgroundResource(R.color.bg_A1C7F3);
         } else {
             leixing = "收入";
-            mBackground.setBackground(getResources().getDrawable(R.drawable.shape_cycle_yellow));
             mPayNum.setTextColor(Color.parseColor("#FF7A45"));
             mFeileiBg.setBackgroundResource(R.drawable.shape_editor4_infos);
             //mTextBg.setBackgroundResource(R.color.bg_yellow);

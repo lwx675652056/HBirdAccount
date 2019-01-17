@@ -35,7 +35,6 @@ import com.hbird.base.mvc.activity.ExpendScaleActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RealListEntity;
 import com.hbird.base.mvc.bean.ReturnBean.AccountZbBean;
-import com.hbird.base.mvc.bean.ReturnBean.SaveMoney2Return;
 import com.hbird.base.mvc.bean.ReturnBean.SaveMoneyReturn;
 import com.hbird.base.mvc.bean.ReturnBean.YuSuanFinishReturn;
 import com.hbird.base.mvc.bean.ReturnBean.YuSuanZbFinishReturn;
@@ -51,6 +50,7 @@ import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Util;
 import com.hbird.bean.ConsumptionRatioBean;
+import com.hbird.bean.SaveMoneyBean;
 import com.hbird.common.chart.LineChartInViewPager;
 import com.hbird.util.Utils;
 
@@ -63,22 +63,24 @@ import sing.common.util.StringUtils;
 import sing.util.LogUtil;
 import sing.util.ToastUtil;
 
+/**
+ * @author: LiangYX
+ * @ClassName: FragAnalysis
+ * @date: 2019/1/16 10:20
+ * @Description: 分析
+ */
 public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModle> implements View.OnClickListener {
 
-    LinearLayout llRatioNoData;// 消费结构比没数据时
-    TextView mExpenseBtn;
     RadioGroup mRadio;
     RadioGroup mRadioDown;
 
     TextView textDes;
     LinearLayout mllViews;
-    TextView mSettingYs;
     LinearLayout mViewChosse;
     TextView mTvChooseZb;
     TextView tvYusuanTime;
 
 
-    private double maxNum = 100d;
     private int type = 3;//存钱效率
     private int types = 3;//预算完成率
     private ArrayList<String> dataM;
@@ -86,12 +88,11 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     private ArrayList<YearAndMonthBean> xiaoLvList;
     private ArrayList<YearAndMonthBean> yuSuanFinishList;
 
-    private ArrayList<SaveMoneyReturn.ResultBean> list;
+    private ArrayList<SaveMoneyReturn.ResultBean> list = new ArrayList<>();
 
 
     private ArrayList<YuSuanFinishReturn.ResultBean> finishList = new ArrayList<>();
     private String token;
-    private List<SaveMoney2Return.ResultBean.ArraysBean> result = new ArrayList<>();
     private List<RealListEntity> realList = new ArrayList<>();//此数据集合是用来对比折线用的 暂未用到 为空即可（方便对比两年的数据）
     private List<YoyListEntity> yoyList = new ArrayList<>();
     private List<YoyListEntity> xlList;
@@ -100,7 +101,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     private RealListEntity realListEntity;
     private YoyListEntity yoyListEntity;
     private LineChartInViewPager lineChart;
-    private LineChartInViewPager xLineChart;
+    private LineChartInViewPager xLineChart; // 存钱效率的
     private boolean xiaoLvs = false;
     private boolean zhipei = false;
 
@@ -124,13 +125,10 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         binding.setData(data);
         binding.setListener(new OnClick());
 
-        llRatioNoData = binding.llRatioNoData;
-        mExpenseBtn = binding.tvExpenseBtn;
         mRadio = binding.radioGroup;
         mRadioDown = binding.radioGroupDown;
         textDes = binding.tvTextDes;
         mllViews = binding.llViewLls;
-        mSettingYs = binding.tvSettingYs;
         mViewChosse = binding.llViewChoose;
         mTvChooseZb = binding.tvChooseZb;
         tvYusuanTime = binding.tvYusuanTime;
@@ -149,8 +147,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
             dataM.add(i + temp);
         }
 
-        mExpenseBtn.setOnClickListener(this);
-        mSettingYs.setOnClickListener(this);
         mTvChooseZb.setOnClickListener(this);
         mRadio.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -159,19 +155,19 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                     case R.id.radio_left:
                         Utils.playVoice(getActivity(), R.raw.changgui01);
                         type = 3;
-                        getXiaoLvNet(token);
+                        getXiaoLvNet(true);
                         //setDates(3);
                         break;
                     case R.id.radio_middle:
                         Utils.playVoice(getActivity(), R.raw.changgui01);
                         type = 6;
-                        getXiaoLvNet(token);
+                        getXiaoLvNet(true);
 
                         break;
                     case R.id.radio_right:
                         Utils.playVoice(getActivity(), R.raw.changgui01);
                         type = 12;
-                        getXiaoLvNet(token);
+                        getXiaoLvNet(true);
                         //setDates(12);
                         break;
                 }
@@ -184,10 +180,13 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                 switch (i) {
                     case R.id.radio_d_left:
                         types = 3;
+                        break;
                     case R.id.radio_d_middle:
                         types = 6;
+                        break;
                     case R.id.radio_d_right:
                         types = 12;
+                        break;
                 }
                 getYuSuanNet3();
             }
@@ -239,9 +238,34 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         }
 
         // 消费结构比切换个人、全部数据
-        public void changeRatio(View view){
+        public void changeRatio(View view) {
             data.setRatioAll(!data.isRatioAll());
             getXiaoFeiNet2(true);
+        }
+
+        // 存钱效率切换个人、全部数据
+        public void changeSaveEfficients(View view) {
+            data.setSaveEfficientsAll(!data.isSaveEfficientsAll());
+            getXiaoLvNet(true);
+        }
+
+        // 记一笔
+        public void expense(View view) {
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+            startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
+        }
+
+        // 设置预算
+        public void setBudget(View view) {
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+            Intent intent3 = new Intent(getActivity(), ActSetBudget.class);
+            intent3.putExtra("MONTH", data.getMm() + "");
+            intent3.putExtra("YEAR", data.getYyyy() + "");
+            String abId = SPUtil.getPrefString(getActivity(), CommonTag.ACCOUNT_BOOK_ID, "");
+            intent3.putExtra("accountBookId", abId + "");
+            intent3.putExtra("topTime", "- - 年 - - 月 - - 日");
+            intent3.putExtra("endTime", "- - 年 - - 月 - - 日");
+            startActivityForResult(intent3, 1000);
         }
     }
 
@@ -249,6 +273,9 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
+            binding.top.setFocusable(true);
+            binding.top.setFocusableInTouchMode(true);
+            binding.top.requestFocus();
             loadDataForNet();
         }
     }
@@ -260,7 +287,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         String bookName = SPUtil.getPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT, "默认账本");
         mTvChooseZb.setText(bookName);
 
-        getXiaoLvNet(token);
+        getXiaoLvNet(false);
         //获取消费结构比接口
         getXiaoFeiNet2(false);
         String zbId = SPUtil.getPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
@@ -271,36 +298,29 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         }
     }
 
-    private void getXiaoLvNet(String token) {
-        LogUtil.e("getXiaoLvNet()");
-        NetWorkManager.getInstance().setContext(getActivity()).getSaveEfficients(data.getMm(), type, token, new NetWorkManager.CallBack() {
+    // 存钱效率
+    private void getXiaoLvNet(boolean showDialog) {
+        viewModel.getSaveEfficients(showDialog, token, type, data.getMm(), data.isSaveEfficientsAll() ? -1 : null, new AnalysisModle.EfficientsCallBack() {
             @Override
-            public void onSuccess(BaseReturn b) {
-                SaveMoney2Return b1 = (SaveMoney2Return) b;
-                setSaveMoneyDate(b1);
-            }
-
-            @Override
-            public void onError(String s) {
-                ToastUtil.showShort(s);
+            public void success(SaveMoneyBean bean) {
+                setSaveMoneyDate(bean);
             }
         });
     }
 
+    // 消费结构比
     private void getXiaoFeiNet2(boolean showDialog) {
         viewModel.getConsumptionStructureRatio(showDialog, token, String.valueOf(data.getMm()), data.isRatioAll() ? -1 : null, new AnalysisModle.CallBack() {
             @Override
             public void success(List<ConsumptionRatioBean> ratioList) {
                 ratioBeanList.clear();
                 if (ratioList != null && ratioList.size() > 0) {
-                    llRatioNoData.setVisibility(View.GONE);
-                    binding.recyclerView.setVisibility(View.VISIBLE);
+                    data.setShowRatio(true);
 
                     ratioBeanList.addAll(ratioList);
                     adapter.notifyDataSetChanged();
                 } else {
-                    llRatioNoData.setVisibility(View.VISIBLE);
-                    binding.recyclerView.setVisibility(View.GONE);
+                    data.setShowRatio(false);
                 }
             }
         });
@@ -323,10 +343,8 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     }
 
     private void initFinishDatas(BaseReturn b) {
-        LogUtil.e("initFinishDatas()");
+        data.setShowSetBudget(false);
         mRadioDown.setVisibility(View.GONE);
-
-        mSettingYs.setVisibility(View.GONE);
 
         if (b instanceof YuSuanFinishReturn) {
             // 日常账本
@@ -341,14 +359,14 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                 textDes.setVisibility(View.VISIBLE);
                 //mFlViews.setVisibility(View.GONE);
 //                mllViews.setVisibility(View.GONE);
-                mSettingYs.setVisibility(View.VISIBLE);
+                data.setShowSetBudget(true);
                 mRadioDown.setVisibility(View.GONE);
                 if (lineChart != null) {
                     lineChart.setVisibility(View.GONE);
                 }
                 zhipei = true;
             } else {
-                mSettingYs.setVisibility(View.GONE);
+                data.setShowSetBudget(false);
                 if (lineChart != null) {
                     lineChart.setVisibility(View.VISIBLE);
                 }
@@ -421,14 +439,14 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
 
             // 没有设置预算
             if (b2.getResults() == null || b2.getResults().getSceneBudget() == null || b2.getResults().getSceneBudget().getBudgetMoney() < 0) {
-                mSettingYs.setVisibility(View.VISIBLE);
+                data.setShowSetBudget(true);
                 zhipei = false;
                 if (lineChart != null) {
                     lineChart.setVisibility(View.GONE);
                 }
                 return;
             } else {
-                mSettingYs.setVisibility(View.GONE);
+                data.setShowSetBudget(false);
                 zhipei = false;
                 if (lineChart != null) {
                     lineChart.setVisibility(View.VISIBLE);
@@ -743,18 +761,11 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         }
     }
 
-    private void setSaveMoneyDate(SaveMoney2Return b1) {
-        LogUtil.e("setSaveMoneyDate()");
-        if (result != null) {
-            result.clear();
-        }
-        if (b1.getResult() == null) {
+    private void setSaveMoneyDate(SaveMoneyBean temp) {
+        if (temp == null) {// 未设置可支配金额
             return;
         }
-        result = b1.getResult().getArrays();
-        list = new ArrayList<>();
-        list.clear();
-        if (this.result == null || this.result.size() < 1) {
+        if (temp.arrays == null || temp.arrays.size() < 1) {
             data.setShowEdit(false);
 
             mViewChosse.setVisibility(View.GONE);
@@ -765,13 +776,19 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
             mViewChosse.setVisibility(View.VISIBLE);
             xiaoLvs = false;
         }
+
+        list.clear();
+
         //如果 返回对应月数集合数 不对 则手动处理数据
         for (int i = 0; i < type; i++) {
             int timeNum = data.getMm() - (type - 1) + i;//（开始查询的日期 开始值）
             int index = 0;
             String time = "";
-            for (int j = 0; j < this.result.size(); j++) {
-                String times = this.result.get(j).getTime();
+            for (int j = 0; j < temp.arrays.size(); j++) {
+                String times = temp.arrays.get(j).time;
+                if (TextUtils.isEmpty(times) || times == null) {
+                    break;
+                }
                 String ss = times.substring(times.length() - 2, times.length());
                 int i1 = Integer.parseInt(ss);
                 if (i1 == timeNum) {
@@ -790,12 +807,10 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                 } else {
                     bean.setTime(time);
                 }
-                //bean.setBudgetMoney(this.result.get(index).getBudgetMoney());
-                bean.setFixedLargeExpenditure(b1.getResult().getFixedSpend().getFixedLargeExpenditure());
-                bean.setFixedLifeExpenditure(b1.getResult().getFixedSpend().getFixedLifeExpenditure());
-                bean.setMonthIncome(result.get(index).getMonthIncome());
-                bean.setMonthSpend(result.get(index).getMonthSpend());
-
+                bean.setFixedLargeExpenditure(temp.fixedSpend.fixedLargeExpenditure);
+                bean.setFixedLifeExpenditure(temp.fixedSpend.fixedLifeExpenditure);
+                bean.setMonthIncome(temp.arrays.get(index).monthIncome);
+                bean.setMonthSpend(temp.arrays.get(index).monthSpend);
             } else {
                 if (timeNum <= 0) {
                     DecimalFormat dfInt = new DecimalFormat("00");
@@ -806,7 +821,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                         bean.setTime(data.getYyyy() - 1 + "/" + timeNums);//获取去年
                     }
                     bean.setTags("a");//非手动添加
-
                 } else {
                     DecimalFormat dfInt = new DecimalFormat("00");
                     String timeNums = dfInt.format(timeNum);
@@ -824,7 +838,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     }
 
     private void setDates(int num) {
-        LogUtil.e("setDates()");
         xiaoLvList.clear();
         //三个月的实际值
         for (int i = 0; i < num; i++) {
@@ -903,7 +916,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
             xlList.add(yoyListEntity);
         }
         initChartToXiaolv();
-
     }
 
     private void setToDates(int num) {
@@ -1028,22 +1040,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_expense_btn:// 记一笔
-                Utils.playVoice(getActivity(), R.raw.changgui02);
-                startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
-                break;
-            case R.id.tv_setting_ys:
-                //设置预算
-                Utils.playVoice(getActivity(), R.raw.changgui02);
-                Intent intent3 = new Intent(getActivity(), ActSetBudget.class);
-                intent3.putExtra("MONTH", data.getMm() + "");
-                intent3.putExtra("YEAR", data.getYyyy() + "");
-                String abId = SPUtil.getPrefString(getActivity(), CommonTag.ACCOUNT_BOOK_ID, "");
-                intent3.putExtra("accountBookId", abId + "");
-                intent3.putExtra("topTime", "- - 年 - - 月 - - 日");
-                intent3.putExtra("endTime", "- - 年 - - 月 - - 日");
-                startActivityForResult(intent3, 1000);
-                break;
             case R.id.tv_choose_zb:
                 //showMessage("请选择账本");
                 NetWorkManager.getInstance().setContext(getActivity())
@@ -1077,7 +1073,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                                 ToastUtil.showShort(s);
                             }
                         });
-
                 break;
         }
     }
@@ -1095,8 +1090,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
      * @param values1
      * @param labels
      */
-    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables,
-                                final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, final String units) {
+    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, final String units) {
         List<Entry>[] entries = new ArrayList[2];
         entries[0] = values1;
         entries[1] = values2;
@@ -1235,7 +1229,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     }
 
     private void initChartToXiaolv() {
-        LogUtil.e("initChartToXiaolv()");
         mFormat = new DecimalFormat("#,###.##");
         xLineChart = binding.xlLineChart;
         if (xiaoLvs) {
@@ -1243,6 +1236,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         } else {
             xLineChart.setVisibility(View.VISIBLE);
         }
+
         values1 = new ArrayList<>();
         values2 = new ArrayList<>();
         for (int i = 0; i < xlList.size(); i++) {
@@ -1295,24 +1289,12 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         String[] labels = new String[]{thisYear, lastYear};
 
         updateLinehartTo(xlList, realList, xLineChart, callDurationColors, drawables, "%", values1, values2, labels);
-
     }
 
     /**
      * 双平滑曲线传入数据，添加markview，添加实体类单位
-     *
-     * @param yoyList
-     * @param realList
-     * @param lineChart
-     * @param colors
-     * @param drawables
-     * @param unit
-     * @param values2
-     * @param values1
-     * @param labels
      */
-    private void updateLinehartTo(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables,
-                                  final String unit, List<Entry> values2, List<Entry> values1, final String[] labels) {
+    private void updateLinehartTo(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels) {
         List<Entry>[] entries = new ArrayList[2];
         entries[0] = values1;
         entries[1] = values2;
@@ -1320,6 +1302,10 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChartEntity.drawCircle(true);
         lineChart.setScaleMinima(1.0f, 1.0f);
         toggleFilled(lineChartEntity, drawables, colors);
+
+
+        lineChart.animateY(300);
+        lineChart.setPinchZoom(false);
 
         lineChart.setDragEnabled(false);//设置是否可拖拽
         lineChart.setScaleEnabled(false);//设置可缩放
@@ -1335,87 +1321,63 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChart.getViewPortHandler().refresh(matrix, lineChart, false);
         //重设所有缩放和拖动，使图表完全适合它的边界（完全缩小）。
         lineChart.fitScreen();
-        /**
-         * 这里切换平滑曲线或者折现图
-         */
-//        lineChartEntity.setLineMode(LineDataSet.Mode.CUBIC_BEZIER); LINEAR, STEPPED,
-        lineChartEntity.setLineMode(LineDataSet.Mode.HORIZONTAL_BEZIER);
+        // 这里切换折现图
+        lineChartEntity.setLineMode(LineDataSet.Mode.LINEAR);
         lineChartEntity.initLegend(Legend.LegendForm.CIRCLE, 12f, Color.parseColor("#999999"));
         lineChartEntity.updateLegendOrientation(Legend.LegendVerticalAlignment.TOP, Legend.LegendHorizontalAlignment.RIGHT, Legend.LegendOrientation.HORIZONTAL);
-        lineChartEntity.setAxisFormatter(
-                new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        //设置折线图最底部月份显示
-                        if (value == 1.0f) {
-                            //return mFormat.format(value) + "月";
-                            if (type == 12) {
-                                return yoyList.get(0).getMonth();
-                            } else {
-                                return yoyList.get(0).getMonth() + "月";
-                            }
-
-                        }
-                        //String monthStr = mFormat.format(value);
-                        String monthStr = mFormat.format(value);
-                        int i = Integer.parseInt(monthStr);
-                        if (i > yoyList.size()) {
-                            return "";
-                        }
+        lineChartEntity.setAxisFormatter((value, axis) -> {
+                    //设置折线图最底部月份显示
+                    if (value == 1.0f) {
                         if (type == 12) {
-                            monthStr = yoyList.get(i - 1).getMonth();
+                            return yoyList.get(0).getMonth();
                         } else {
-                            monthStr = yoyList.get(i - 1).getMonth() + "月";
+                            return yoyList.get(0).getMonth() + "月";
                         }
-                        if (monthStr.contains(".")) {
-                            return "";
-                        } else {
-                            return monthStr;
-                        }
+                    }
+                    String monthStr = mFormat.format(value);
+                    int i = Integer.parseInt(monthStr);
+                    if (i > yoyList.size()) {
+                        return "";
+                    }
+                    if (type == 12) {
+                        monthStr = yoyList.get(i - 1).getMonth();
+                    } else {
+                        monthStr = yoyList.get(i - 1).getMonth() + "月";
+                    }
+                    if (monthStr.contains(".")) {
+                        return "";
+                    } else {
+                        return monthStr;
                     }
                 },
-                new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        //设置折线图最右边的百分比
-                        return mFormat.format(value) + unit;
-                    }
-                });
-
-        lineChartEntity.setDataValueFormatter(new IValueFormatter() {
-            @Override
-            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
                 //设置折线图最右边的百分比
-                return mFormat.format(value) + unit;
-            }
-        });
+                (value, axis) -> mFormat.format(value) + unit);
+
+        //设置折线图最右边的百分比
+        lineChartEntity.setDataValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> mFormat.format(value) + unit);
 
         final NewMarkerView markerView = new NewMarkerView(getActivity(), R.layout.custom_marker_view_layout);
-        markerView.setCallBack(new NewMarkerView.CallBack() {
-            @Override
-            public void onCallBack(float x, String value) {
-                int index = (int) (x);
-                if (index < 0) {
-                    return;
-                }
-                if (index > yoyList.size() && index > realList.size()) {
-                    return;
-                }
-                String textTemp = "";
-
-                if (index <= yoyList.size()) {
-                    if (!StringUtils.isEmpty(textTemp)) {
-                    }
-                    //textTemp += yoyList.get(index - 1).getYear() + "." + yoyList.get(index - 1).getMonth() + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-                    textTemp += mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-                }
-
-                if (index <= realList.size()) {
-                    textTemp += "\n";
-                    textTemp += realList.get(index - 1).getYear() + "." + index + "  " + mFormat.format(Float.parseFloat(realList.get(index - 1).getAmount())) + unit;
-                }
-                markerView.getTvContent().setText(textTemp);
+        markerView.setCallBack((x, value) -> {
+            int index = (int) (x);
+            if (index < 0) {
+                return;
             }
+            if (index > yoyList.size() && index > realList.size()) {
+                return;
+            }
+            String textTemp = "";
+
+            if (index <= yoyList.size()) {
+                if (!StringUtils.isEmpty(textTemp)) {
+                }
+                textTemp += mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
+            }
+
+            if (index <= realList.size()) {
+                textTemp += "\n";
+                textTemp += realList.get(index - 1).getYear() + "." + index + "  " + mFormat.format(Float.parseFloat(realList.get(index - 1).getAmount())) + unit;
+            }
+            markerView.getTvContent().setText(textTemp);
         });
         lineChartEntity.setMarkView(markerView);
         lineChart.getData().setDrawValues(false);

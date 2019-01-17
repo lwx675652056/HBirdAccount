@@ -170,7 +170,5 @@ dependencies {
     api 'com.tencent.bugly:nativecrashreport:3.6.0.0'
 
     api project(':lib_common')
-
-    api project(':refreshLayout')
 }
 

@@ -89,6 +89,44 @@
                         android:textSize="28sp"/>
                 </LinearLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/dp_10_x"
+                    android:layout_marginTop="@dimen/dp_15_x"
+                    android:orientation="horizontal"
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:paddingStart="@dimen/dp_15_x" >
+
+                    <View
+                        android:layout_width="@dimen/dp_5_x"
+                        android:layout_height="match_parent"
+                        android:background="@color/colorPrimary"/>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_10_x"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="资产设置"
+                            android:textColor="#333333"
+                            android:textSize="18sp"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:layout_marginTop="@dimen/dp_5_x"
+                            android:text="设置后坚持记账，顶部预估净资产可以同步您的总资产"
+                            android:textColor="#808080"
+                            android:textSize="12sp"/>
+                    </LinearLayout>
+
+                </LinearLayout>
+
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

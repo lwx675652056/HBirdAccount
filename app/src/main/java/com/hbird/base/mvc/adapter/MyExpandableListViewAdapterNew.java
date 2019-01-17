@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.hbird.base.R;
@@ -25,7 +24,6 @@ public class MyExpandableListViewAdapterNew extends BaseExpandableListAdapter {
     private int ii = 0;//组
     private int jj = 0;//child
 
-
     /**
      * 每个分组的名字的集合
      */
@@ -39,8 +37,7 @@ public class MyExpandableListViewAdapterNew extends BaseExpandableListAdapter {
     private GridView gridView;
     private ArrayList<String> list;
 
-    public MyExpandableListViewAdapterNew(Context context, List<ZhiChuTagReturnNew.ResultBean.AllListBean> groupList,
-                                          List<List<ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean>> itemList, ArrayList<String> list) {
+    public MyExpandableListViewAdapterNew(Context context, List<ZhiChuTagReturnNew.ResultBean.AllListBean> groupList, List<List<ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean>> itemList, ArrayList<String> list) {
         mContext = context;
         this.groupList = groupList;
         this.itemList = itemList;
@@ -83,46 +80,35 @@ public class MyExpandableListViewAdapterNew extends BaseExpandableListAdapter {
     }
 
     @Override
-    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup
-            parent) {
+    public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         if (null == convertView) {
             convertView = View.inflate(mContext, R.layout.expandablelist_group, null);
         }
-        ImageView ivGroup = (ImageView) convertView.findViewById(R.id.iv_group);
-        TextView tvGroup = (TextView) convertView.findViewById(R.id.tv_group);
-        // 如果是展开状态，就显示展开的箭头，否则，显示折叠的箭头
-        if (isExpanded) {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        } else {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        }
+        TextView tvGroup = convertView.findViewById(R.id.tv_group);
         // 设置分组组名
         tvGroup.setText(groupList.get(groupPosition).getSpendName());
         return convertView;
     }
 
     @Override
-    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View
-            convertView, ViewGroup parent) {
+    public View getChildView(final int groupPosition, final int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         if (null == convertView) {
             convertView = View.inflate(mContext, R.layout.expandablelist_item, null);
         }
-        // 因为 convertView 的布局就是一个 GridView，
-        // 所以可以向下转型为 GridView
+        // 因为 convertView 的布局就是一个 GridView，  所以可以向下转型为 GridView
         gridView = (GridView) convertView;
         // 创建 GridView 适配器
-        final MyGridViewAdapterNew gridViewAdapter = new MyGridViewAdapterNew(mContext,
-                itemList.get(groupPosition),groupPosition,ii,jj,list);
+        final MyGridViewAdapterNew gridViewAdapter = new MyGridViewAdapterNew(mContext, itemList.get(groupPosition),groupPosition,ii,jj,list);
         gridView.setAdapter(gridViewAdapter);
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //引起外部回调
                 callback.setOnCallBack(groupPosition,position);
-                //gridViewAdapter.setChecks(groupPosition ,position);
                 //点选后 刷新整个界面的数据 记住当前的选中目标 高亮显示
                 setUpDate(groupPosition,position);
                 //Toast.makeText(mContext, "点击了第" + (groupPosition + 1) + "组，第" + (position + 1) + "项", Toast.LENGTH_SHORT).show();
+                gridViewAdapter.setCheck(groupPosition,position);
             }
         });
         return convertView;

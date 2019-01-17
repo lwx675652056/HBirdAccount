@@ -22,7 +22,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -105,8 +104,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     TextView mJian;
     @BindView(R.id.anime_date)
     TextView mDate;
-    @BindView(R.id.rl_background)
-    RelativeLayout mIconBg;
     @BindView(R.id.iv_icon)
     ImageView mImages;
     @BindView(R.id.tv_type)
@@ -256,7 +253,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         if (TextUtils.equals(tag, "收入")) {
             mCenterTitle.setText("收入");
             mXinqing.setVisibility(View.GONE);
-            mIconBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
             String jsonstr = getIntent().getStringExtra("JSONSTR");
             commonListBean = new Gson().fromJson(jsonstr, CommonListBean.class);
             mType.setText(commonListBean.getIncomeName());
@@ -267,7 +263,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         } else {
             mCenterTitle.setText("支出");
             mXinqing.setVisibility(View.VISIBLE);
-            mIconBg.setBackgroundResource(R.drawable.shape_cycle_blue);
             String jsonstr = getIntent().getStringExtra("JSONSTR");
             commonList2Bean = new Gson().fromJson(jsonstr, CommonList2Bean.class);
             mType.setText(commonList2Bean.getSpendName());

@@ -3,6 +3,7 @@ package com.hbird.http.service;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.EditAddressBean;
+import com.hbird.bean.SaveMoneyBean;
 import com.hbird.bean.UserInfo;
 import com.hbird.http.HttpResult;
 
@@ -59,7 +60,10 @@ public interface GankDataService {
     @GET("getconsumptionstructureratiov2/android")
     Observable<HttpResult<List<ConsumptionRatioBean>>> getConsumptionStructureRatio(@Header("X-AUTH-TOKEN") String token, @Query("month") String month, @Query("abId") Object abId);
 
-
+    // 分接口-获取存钱效率接口
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("getsavingefficiencyv2/android") // range 查询范围 可选值 3/6/12 不传默认为3
+    Observable<HttpResult<SaveMoneyBean>> getSaveEfficientMoney(@Header("X-AUTH-TOKEN") String token, @Query("range") int range, @Query("month") int month, @Query("abId") Object abId);
 
 
 

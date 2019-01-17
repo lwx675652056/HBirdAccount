@@ -1,5 +1,6 @@
 package com.hbird.base.mvc.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,12 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
 import com.hbird.base.util.SuperSelectManager;
+import com.hbird.util.Utils;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import sing.common.util.StatusBarUtil;
 
 
 /**
@@ -68,6 +71,8 @@ public class ActSetAccountType extends BaseActivity<BaseActivityPresenter> imple
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Utils.initColor(this, Color.rgb(255, 255, 255));
+        StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
 
         String type = getIntent().getExtras().getString("account_id");
         accountType = Integer.parseInt(type);
@@ -178,8 +183,7 @@ public class ActSetAccountType extends BaseActivity<BaseActivityPresenter> imple
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.tv_right_title:
-                //完成点击分两部分（收入 支出） 通过type: 0   1 标识
+            case R.id.tv_right_title: // 完成点击分两部分（收入 支出） 通过type: 0   1 标识
                 playVoice(R.raw.changgui02);
                 setTypeSetting();
                 break;

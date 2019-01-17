@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.hbird.bean.ConsumptionRatioBean;
+import com.hbird.bean.SaveMoneyBean;
 import com.hbird.http.ApiClient;
 import com.hbird.http.HttpResult;
 
@@ -76,6 +77,48 @@ public class AnalysisModle extends BaseViewModel {
                 });
     }
 
+    // 获取存钱效率
+    public void getSaveEfficients(boolean showDialog,String token,int type,int mm,Object abld,EfficientsCallBack callBack){
+        //  abld 为空时查询个人信息，为-1时查询总账本
+        ApiClient.getGankDataService()
+                .getSaveEfficientMoney(token,type,mm,abld)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> {
+                    if (showDialog){
+                        showDialog("");
+                    }
+                })
+                .subscribe(new Observer<HttpResult<SaveMoneyBean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<SaveMoneyBean> value) {
+                        dismissDialog();
+                        LogUtil.e(value.toString());
+                        if (value.code == 200) {
+                            callBack.success(value.result);
+                        } else {
+                            ToastUtil.showShort(value.msg);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                        ToastUtil.showShort(e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("danxx", "onComplete------>");
+                    }
+                });
+    }
 
     @Override
     protected void onCleared() {
@@ -85,5 +128,9 @@ public class AnalysisModle extends BaseViewModel {
 
     public interface CallBack {
         void success(List<ConsumptionRatioBean> ratioList);
+    }
+
+    public interface EfficientsCallBack {
+        void success(SaveMoneyBean bean);
     }
 }

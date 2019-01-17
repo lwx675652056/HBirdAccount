@@ -1,10 +1,13 @@
 <layout>
 
     <data>
+
         <import type="android.view.View"/>
+
         <variable
             name="data"
             type="com.hbird.ui.analysis.AnalysisData"/>
+
         <variable
             name="listener"
             type="com.hbird.ui.analysis.FragAnalysis.OnClick"/>
@@ -18,7 +21,24 @@
         android:background="@color/white"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/tv_month"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/icon_shouhui_normal"
+            android:drawablePadding="@dimen/dp_5_x"
+            android:onClick="@{listener.chooseMonth}"
+            android:padding="@dimen/dp_15_x"
+            android:text="@{data.yyyy+@string/year+data.mm+@string/mouth}"
+            android:textColor="#D80200"
+            android:textSize="14sp"/>
+
+        <View
+            style="@style/horizontal_line"
+            android:layout_marginStart="@dimen/dp_15_x"/>
+
         <android.support.v4.widget.NestedScrollView
+            android:id="@+id/scroll_view"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:overScrollMode="never">
@@ -28,23 +48,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/tv_month"
-                   android:onClick="@{listener.chooseMonth}"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:drawableEnd="@mipmap/icon_shouhui_normal"
-                    android:drawablePadding="@dimen/dp_5_x"
-                    android:padding="@dimen/dp_15_x"
-                    android:text="@{data.yyyy+@string/year+data.mm+@string/mouth}"
-                    android:textColor="#D80200"
-                    android:textSize="14sp"/>
-
-                <View
-                    style="@style/horizontal_line"
-                    android:layout_marginStart="@dimen/dp_15_x"/>
-
                 <android.support.constraint.ConstraintLayout
+                    android:id="@+id/top"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:padding="@dimen/dp_15_x">
@@ -85,10 +90,9 @@
                         android:layout_marginStart="@dimen/dp_15_x"
                         android:drawablePadding="@dimen/dp_5_x"
                         android:drawableStart="@mipmap/icon_fenxi_bianji_normal"
-                        android:text="编辑"
                         android:onClick="@{listener.editor}"
+                        android:text="编辑"
                         android:textColor="#D80200"
-                        android:visibility="@{data.showEdit?View.VISIBLE:View.GONE}"
                         android:textSize="14sp"
                         app:layout_constraintBottom_toBottomOf="@id/tv_temp1"
                         app:layout_constraintStart_toEndOf="@id/tv_temp1"
@@ -101,10 +105,12 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/dp_15_x"
                         android:drawablePadding="@dimen/dp_5_x"
-                        android:drawableStart="@drawable/shuju_icon_qiehuanquanbu_normal"
-                        android:text="全部账本数据"
-                        android:textColor="#2F54EB"
+                        android:drawableStart="@{data.saveEfficientsAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                        android:onClick="@{listener.changeSaveEfficients}"
+                        android:text="@{data.saveEfficientsAll?@string/my_account:@string/all_account}"
+                        android:textColor="@{data.saveEfficientsAll?@color/color_D80200:@color/index_3}"
                         android:textSize="14sp"
+                        android:visibility="@{data.showEdit?View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
@@ -118,20 +124,24 @@
                     android:layout_margin="@dimen/dp_10_x"
                     android:background="@drawable/btn_bg_chart"
                     android:drawableEnd="@mipmap/ic_add"
-                    android:onClick="@{listener.editor}"
                     android:drawablePadding="@dimen/dp_5_x"
-                    android:visibility="@{data.showEdit?View.GONE:View.VISIBLE}"
+                    android:gravity="center"
+                    android:onClick="@{listener.editor}"
                     android:padding="@dimen/dp_5_x"
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:paddingStart="@dimen/dp_15_x"
                     android:text="设置可支配金额"
                     android:textColor="@color/white"
-                    android:textSize="14sp"/>
+                    android:textSize="14sp"
+                    android:visibility="@{data.showEdit?View.GONE:View.VISIBLE}"/>
 
                 <LinearLayout
                     android:id="@+id/ll_view_choose"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="@{data.showEdit?View.VISIBLE:View.GONE}">
 
                     <RadioGroup
                         android:id="@+id/radioGroup"
@@ -225,32 +235,35 @@
                             android:textSize="18sp"/>
 
                         <TextView
-                            android:onClick="@{listener.changeRatio}"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/dp_5_x"
                             android:drawableStart="@{data.ratioAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                            android:onClick="@{listener.changeRatio}"
                             android:text="@{data.ratioAll?@string/my_account:@string/all_account}"
                             android:textColor="@{data.ratioAll?@color/color_D80200:@color/index_3}"
                             android:textSize="14sp"/>
                     </LinearLayout>
 
                     <LinearLayout
-                        android:id="@+id/ll_ratio_no_data"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_15_x"
-                        android:orientation="vertical">
+                        android:orientation="vertical"
+                        android:visibility="@{data.showRatio?View.GONE:View.VISIBLE}">
 
                         <TextView
-                            android:id="@+id/tv_expense_btn"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center_horizontal"
                             android:background="@drawable/btn_bg_login"
                             android:drawableEnd="@mipmap/ic_add"
                             android:drawablePadding="@dimen/dp_5_x"
+                            android:gravity="center"
+                            android:onClick="@{listener.expense}"
                             android:padding="@dimen/dp_5_x"
+                            android:paddingEnd="@dimen/dp_25_x"
+                            android:paddingStart="@dimen/dp_25_x"
                             android:text="记一笔"
                             android:textColor="@color/white"
                             android:textSize="14sp"/>
@@ -271,7 +284,7 @@
                         android:layout_height="wrap_content"
                         android:overScrollMode="never"
                         android:scrollbars="none"
-                        android:visibility="gone"/>
+                        android:visibility="@{data.showRatio?View.VISIBLE:View.GONE}"/>
                 </LinearLayout>
 
                 <View
@@ -280,11 +293,11 @@
                     android:background="#F0F0F0"/>
                 <!--预算完成率-->
                 <LinearLayout
-                    android:visibility="@{data.isTotalAccount?View.GONE:View.VISIBLE}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingBottom="@dimen/dp_15_x">
+                    android:paddingBottom="@dimen/dp_15_x"
+                    android:visibility="@{data.isTotalAccount?View.GONE:View.VISIBLE}">
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -383,7 +396,6 @@
 
 
                     <TextView
-                        android:id="@+id/tv_setting_ys"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
@@ -391,10 +403,15 @@
                         android:background="@drawable/btn_bg_chart"
                         android:drawableEnd="@mipmap/ic_add"
                         android:drawablePadding="@dimen/dp_5_x"
+                        android:gravity="center"
+                        android:onClick="@{listener.setBudget}"
                         android:padding="@dimen/dp_5_x"
+                        android:paddingEnd="@dimen/dp_25_x"
+                        android:paddingStart="@dimen/dp_25_x"
                         android:text="设置预算"
                         android:textColor="@color/white"
-                        android:textSize="14sp"/>
+                        android:textSize="14sp"
+                        android:visibility="@{data.showSetBudget?View.VISIBLE:View.GONE}"/>
 
                     <com.hbird.common.chart.LineChartInViewPager
                         android:id="@+id/new_lineChart"

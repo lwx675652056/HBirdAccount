@@ -39,15 +39,14 @@ public class MyGridViewAdapterNew extends BaseAdapter {
     private ArrayList<String> listString;
     private ArrayList<Boolean> checking;
 
-    public MyGridViewAdapterNew(Context mContext, List<ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean> itemGridList
-            , int groupPosition, int ii, int jj, ArrayList<String> listString) {
+    public MyGridViewAdapterNew(Context mContext, List<ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean> itemGridList, int groupPosition, int ii, int jj, ArrayList<String> listString) {
         this.mContext = mContext;
         this.itemGridList = itemGridList;
         this.ii = ii;
         this.jj = jj;
         this.listString = listString;
         list = new ArrayList<>();
-        for (int i =0;i<itemGridList.size();i++){
+        for (int i = 0; i < itemGridList.size(); i++) {
             list.add(false);
         }
         this.groupPosition = groupPosition;
@@ -67,14 +66,21 @@ public class MyGridViewAdapterNew extends BaseAdapter {
     public long getItemId(int position) {
         return position;
     }
-    public void setChecks(int group,int item){
-        if(groupPosition==group){
+
+    public void setCheck(int group, int item) {
+        this.ii = group;
+        this.jj = item;
+        notifyDataSetChanged();
+    }
+
+    public void setChecks(int group, int item) {
+        if (groupPosition == group) {
             checking = new ArrayList<>();
             checking.clear();
-            for(int i=0;i<list.size();i++){
-                if(i==item){
+            for (int i = 0; i < list.size(); i++) {
+                if (i == item) {
                     checking.add(true);
-                }else {
+                } else {
                     checking.add(false);
                 }
             }
@@ -91,40 +97,27 @@ public class MyGridViewAdapterNew extends BaseAdapter {
             LayoutInflater inflater = LayoutInflater.from(mContext);
             mLinearLayout = (LinearLayout) inflater.inflate(R.layout.gridview_item, null);
 
-            viewHolder.textTitle= (TextView) mLinearLayout.findViewById(R.id.tv_gridview);
+            viewHolder.textTitle = (TextView) mLinearLayout.findViewById(R.id.tv_gridview);
             viewHolder.imageView = (ImageView) mLinearLayout.findViewById(R.id.iv_head);
             viewHolder.imgChoose = (ImageView) mLinearLayout.findViewById(R.id.iv_img_choose);
             viewHolder.mBg = (RelativeLayout) mLinearLayout.findViewById(R.id.rl_bg);
-           /* if(checking!=null && checking.size()>0){
-                if(checking.get(position)){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_blues);
-                }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
-                }
-            }*/
+
             boolean hasDate = getHasDate(position);
-            if(groupPosition==ii){
-                if(position==jj){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_blues);
+            if (groupPosition == ii) {
+                if (position == jj) {
                     viewHolder.imgChoose.setVisibility(View.GONE);
-                }else {
-                    if(hasDate){
-                        //表示有该数据
-                        viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_zc);
+                } else {
+                    if (hasDate) {   //表示有该数据
                         viewHolder.imgChoose.setVisibility(View.VISIBLE);
-                    }else {
-                        viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
+                    } else {
                         viewHolder.imgChoose.setVisibility(View.GONE);
                     }
                 }
-
-            }else {
-                if(hasDate){
+            } else {
+                if (hasDate) {
                     //表示有该数据
-                    viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_zc);
                     viewHolder.imgChoose.setVisibility(View.VISIBLE);
-                }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
+                } else {
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }
             }
@@ -135,39 +128,34 @@ public class MyGridViewAdapterNew extends BaseAdapter {
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50,50)
                     .into(viewHolder.imageView);
-            //标记当前view
             mLinearLayout.setTag(viewHolder);
-        }else {
+
+            viewHolder.mBg.setSelected(groupPosition == ii && position == jj);
+        } else {
             mLinearLayout = (LinearLayout) convertView;
             viewHolder = (ViewHolder) mLinearLayout.getTag();
             //获取id
             viewHolder.textTitle = mLinearLayout.findViewById(R.id.tv_gridview);
             viewHolder.imageView = mLinearLayout.findViewById(R.id.iv_head);
+            viewHolder.mBg = mLinearLayout.findViewById(R.id.rl_bg);
             //设置数据
             boolean hasDate = getHasDate(position);
-            if(groupPosition==ii){
-                if(position==jj){
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_blues);
+
+            if (groupPosition == ii) {
+                if (position == jj) {
                     viewHolder.imgChoose.setVisibility(View.GONE);
-                }else {
-                    if(hasDate){
-                        //表示有该数据
-                        viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_zc);
+                } else {
+                    if (hasDate) { //表示有该数据
                         viewHolder.imgChoose.setVisibility(View.VISIBLE);
-                    }else {
-                        viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
+                    } else {
                         viewHolder.imgChoose.setVisibility(View.GONE);
                     }
                 }
-            }else {
-                if(hasDate){
-                    //表示有该数据
-                    viewHolder.mBg.setBackgroundResource(R.drawable.item_choose_bg_zc);
+            } else {
+                if (hasDate) { //表示有该数据
                     viewHolder.imgChoose.setVisibility(View.VISIBLE);
-                }else {
-                    viewHolder.mBg.setBackgroundResource(R.drawable.shape_cycle_gray);
+                } else {
                     viewHolder.imgChoose.setVisibility(View.GONE);
                 }
             }
@@ -179,8 +167,9 @@ public class MyGridViewAdapterNew extends BaseAdapter {
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50,50)
                     .into(viewHolder.imageView);//显示的位置
+
+            viewHolder.mBg.setSelected(groupPosition == ii && position == jj);
         }
 
         return mLinearLayout;
@@ -189,7 +178,7 @@ public class MyGridViewAdapterNew extends BaseAdapter {
     private boolean getHasDate(int position) {
         String spendName = itemGridList.get(position).getSpendName();
         for (int i = 0; i < listString.size(); i++) {
-            if(TextUtils.equals(listString.get(i),spendName)){
+            if (TextUtils.equals(listString.get(i), spendName)) {
                 return true;
             }
         }

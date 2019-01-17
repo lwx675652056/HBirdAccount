@@ -1,5 +1,6 @@
 package com.hbird.base.mvc.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
@@ -22,10 +23,12 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SuperSelectComeManager;
 import com.hbird.base.util.SuperSelectManager;
+import com.hbird.util.Utils;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
+import sing.common.util.StatusBarUtil;
 
 /**
  * Created by Liul on 2018/7/2.
@@ -65,6 +68,9 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Utils.initColor(this, Color.rgb(255, 255, 255));
+        StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
+
         tag = getIntent().getStringExtra("TAG");
         mRightTitle.setVisibility(View.GONE);
         list = new ArrayList<>();

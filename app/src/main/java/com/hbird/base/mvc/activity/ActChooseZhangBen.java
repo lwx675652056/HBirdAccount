@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import sing.SmartRefreshLayout;
 
 /**
  * @author: LiangYX
@@ -41,8 +40,8 @@ public class ActChooseZhangBen extends BaseActivity<BasePresenter> {
     @BindView(R.id.tv_right_title)
     TextView mRightTitle;
 
-    @BindView(R.id.refresh)
-    SmartRefreshLayout refresh;
+//    @BindView(R.id.refresh)
+//    SmartRefreshLayout refresh;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -65,7 +64,7 @@ public class ActChooseZhangBen extends BaseActivity<BasePresenter> {
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
 
-        refresh.setOnRefreshListener(refreshLayout -> request());
+//        refresh.setOnRefreshListener(refreshLayout -> request());
     }
 
     @Override
@@ -91,7 +90,7 @@ public class ActChooseZhangBen extends BaseActivity<BasePresenter> {
                     public void onSuccess(BaseReturn b) {
                         hideProgress();
                         list.clear();
-                        refresh.finishRefresh();
+//                        refresh.finishRefresh();
                         list = ((AccountBookBean) b).result;
                         adapter.setData(list);
                     }
@@ -99,7 +98,7 @@ public class ActChooseZhangBen extends BaseActivity<BasePresenter> {
                     @Override
                     public void onError(String s) {
                         hideProgress();
-                        refresh.finishRefresh();
+//                        refresh.finishRefresh();
                         showMessage(s);
                     }
                 });

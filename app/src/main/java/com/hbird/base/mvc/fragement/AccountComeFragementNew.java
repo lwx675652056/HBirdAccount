@@ -10,7 +10,6 @@ import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.mvc.activity.ActSetAccountType;
 import com.hbird.base.mvc.activity.AddMoreTypeActivityNew;
-import com.hbird.base.mvc.activity.ChargeToAccount;
 import com.hbird.base.mvc.adapter.MyType2Adapter2;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.bean.BaseReturn;
@@ -18,7 +17,6 @@ import com.hbird.base.mvc.bean.MyTypeItem;
 import com.hbird.base.mvc.bean.RequestBean.ExChangeReq;
 import com.hbird.base.mvc.bean.ReturnBean.AccountTypes;
 import com.hbird.base.mvc.bean.ReturnBean.BiaoQianReturn;
-import com.hbird.base.mvc.bean.ReturnBean.CommonListBean;
 import com.hbird.base.mvc.bean.ReturnBean.ShouRuTagReturnNew;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
 import com.hbird.base.mvc.global.CommonTag;
@@ -154,21 +152,21 @@ public class AccountComeFragementNew extends BaseFragement{
                             intent.putExtra("Object", new Gson().toJson(commonList.get(position)));
                             getActivity().setResult(203, intent);
                             getActivity().finish();
-                        }else {
-                            playVoice(R.raw.typevoice);
-                            Intent intent = new Intent();
-                            intent.setClass(getActivity(),ChargeToAccount.class);
-                            SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean commonListBean = commonList.get(position);
-
-
-                            CommonListBean bean = new CommonListBean();
-                            bean.setIcon(commonListBean.getIcon());
-                            bean.setId(commonListBean.getId() + "");
-                            bean.setIncomeName(commonListBean.getIncomeName());
-                            String sJson = new Gson().toJson(bean);
-                            intent.putExtra("JSONSTR", sJson);
-                            intent.putExtra("TAG","收入");
-                            startActivityForResult(intent,110);
+                        }else { // 多账本不能记账
+//                            playVoice(R.raw.typevoice);
+//                            Intent intent = new Intent();
+//                            intent.setClass(getActivity(),ChargeToAccount.class);
+//                            SystemBiaoqReturn.ResultBean.LabelBean.IncomeBean commonListBean = commonList.get(position);
+//
+//
+//                            CommonListBean bean = new CommonListBean();
+//                            bean.setIcon(commonListBean.getIcon());
+//                            bean.setId(commonListBean.getId() + "");
+//                            bean.setIncomeName(commonListBean.getIncomeName());
+//                            String sJson = new Gson().toJson(bean);
+//                            intent.putExtra("JSONSTR", sJson);
+//                            intent.putExtra("TAG","收入");
+//                            startActivityForResult(intent,110);
                         }
                     }
                 }else{ //删除item

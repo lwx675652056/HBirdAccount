@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,7 +16,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.github.mikephil.chart_3_0_1v.charts.PieChart;
 import com.github.mikephil.chart_3_0_1v.data.Entry;
@@ -64,7 +62,8 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.hbird.common.Constants;
-import com.hbird.common.RefreshHeader;
+import com.hbird.common.refreshLayout.MaterialRefreshLayout;
+import com.hbird.common.refreshLayout.MaterialRefreshListener;
 import com.hbird.ui.calendar.ActCalendar;
 import com.hbird.ui.detailed.ActAccountDetailed;
 import com.hbird.util.Utils;
@@ -78,11 +77,8 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import sing.SmartRefreshLayout;
 import sing.common.base.BaseFragment;
 import sing.common.util.StatusBarUtil;
-import sing.refreshlayout.api.RefreshLayout;
-import sing.refreshlayout.listener.OnRefreshListener;
 import sing.util.AppUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
@@ -99,8 +95,6 @@ import static java.lang.Integer.parseInt;
  * @Description: 首页
  */
 public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFragementModle> {
-
-    TextView mMoRen;
 
     private ArrayList<String> dataY;
     private ArrayList<String> dataM;
@@ -168,8 +162,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.recyclerView2.setAdapter(pieChatAdapter);
         binding.recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity()));
 
-        mMoRen = binding.abMoren;
-
         //数据库相关操作
         jizhangs = getActivity().findViewById(R.id.btn_jizhang);
 
@@ -235,20 +227,19 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             setHomePage();
         }
 
-        getIndexInfo();
-        loadDataForNet();
+//        getIndexInfo();
+//        loadDataForNet();
 
+        MaterialRefreshLayout refresh = binding.refresh;
+        refresh.setLoadMore(false);
 
-        SmartRefreshLayout materialRefreshLayout = binding.refresh;
-        materialRefreshLayout.setEnableLoadMore(false);
-        materialRefreshLayout.setRefreshHeader(new RefreshHeader(getActivity()));
-        materialRefreshLayout.setOnRefreshListener(new OnRefreshListener() {
+        refresh.setMaterialRefreshListener(new MaterialRefreshListener() {
             @Override
-            public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+            public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
                 timeB = true;
                 getIndexInfo();
                 loadDataForNet();
-                refreshLayout.finishRefresh();
+                materialRefreshLayout.finishRefresh();
             }
         });
     }
@@ -394,14 +385,21 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
-
             Utils.initColor(getActivity(), Color.rgb(255, 255, 255));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
 
-            if (popOnces >= 0) {
-                //继续弹窗
+            if (popOnces >= 0) {  //继续弹窗
                 tanDialog(windowPop);
             }
+
+            typeBudget =  SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, "");
+            String abMoren = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, "");
+            binding.abMoren.setText(abMoren);
+            zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
+            accountId = zhangbenId;
+
+            getIndexInfo();
+            loadDataForNet();
         }
     }
 
@@ -569,7 +567,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     private void setZhangBenAbout() {
         String moRenAcc = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, "默认账本");
-        mMoRen.setText(moRenAcc);
+        binding.abMoren.setText(moRenAcc);
         zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
         if (TextUtils.isEmpty(zhangbenId)) { // 表示这个地方是总账本
             SharedPreferencesUtil.put("index_is_show", data.isShow());
@@ -860,7 +858,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == 131 && resultCode == 130) {
-            mMoRen.setText(data.getStringExtra("TITLE"));
+            binding.abMoren.setText(data.getStringExtra("TITLE"));
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, data.getStringExtra("TITLE"));
             zhangbenId = data.getStringExtra("ID");
             accountId = zhangbenId;

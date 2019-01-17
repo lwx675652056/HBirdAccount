@@ -29,7 +29,6 @@ public class AssetsAdapter extends BaseRecyclerAdapter<AssetsBean, RowAssetsBind
 
     @Override
     protected void onBindItem(RowAssetsBinding binding, AssetsBean bean, int position) {
-        binding.setPosition(position);
         binding.setLast(position == list.size() - 1);
         binding.setBean(bean);
 

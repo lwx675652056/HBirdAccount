@@ -33,7 +33,6 @@ import java.util.List;
 
 import sing.common.base.BaseFragment;
 import sing.common.base.BaseViewModel;
-import sing.common.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
@@ -144,9 +143,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            LogUtil.e("setUserVisibleHint()");
             getNetWorkInfo();
-            setValue();
         }
     }
 

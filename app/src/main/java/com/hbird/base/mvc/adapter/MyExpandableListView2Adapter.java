@@ -91,14 +91,7 @@ public class MyExpandableListView2Adapter extends BaseExpandableListAdapter {
         if (null == convertView) {
             convertView = View.inflate(mContext, R.layout.expandablelist_group, null);
         }
-        ImageView ivGroup = (ImageView) convertView.findViewById(R.id.iv_group);
         TextView tvGroup = (TextView) convertView.findViewById(R.id.tv_group);
-        // 如果是展开状态，就显示展开的箭头，否则，显示折叠的箭头
-        if (isExpanded) {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        } else {
-            ivGroup.setImageResource(R.mipmap.ic_title_line);
-        }
         // 设置分组组名
         tvGroup.setText(groupList.get(groupPosition).getIncomeName());
         return convertView;

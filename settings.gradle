@@ -1,1 +1,1 @@
-include ':app', ':devring', ':MPChartLib', ':sobotsdk', ':lib_common',':refreshLayout'
+include ':app', ':devring', ':MPChartLib', ':sobotsdk', ':lib_common'

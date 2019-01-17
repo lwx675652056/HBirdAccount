@@ -70,17 +70,17 @@ public class ConsumptionRatioAdapter extends BaseRecyclerAdapter<ConsumptionRati
 
         // 41%以下为贫困（吃货），41-50%（工作狂）温饱，60-51%（白领）小康，70-61%（小资）富裕，高于71%为土豪（最富）
         if (ppsa > 70) {//最富
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_zuifu));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_fxjgb_zuifu_normal));
         } else if (ppsa > 60 && ppsa <= 70) {//小资
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_xiaozi));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_xfjgb_gongzuokuang_normal));
         } else if (ppsa > 50 && ppsa <= 60) {//白领
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_bailing));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_xfjgb_chihuo_normal));
         } else if (ppsa > 40 && ppsa <= 50) {//工作狂
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_work));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_xfjgb_gongzuokuang_normal));
         } else if (ppsa < 41 && ppsa > 0) {//吃货
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_chihuo));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_xfjgb_chihuo_normal));
         } else if (ppsa <= 0) {//无数据
-            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_bg_nodate));
+            binding.llParent.setBackground(ContextCompat.getDrawable(context, R.mipmap.bg_fxjgb_wushuju_normal));
         }
 
         // 点击事件

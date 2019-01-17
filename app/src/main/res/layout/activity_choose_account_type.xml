@@ -7,7 +7,9 @@
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_my_header"/>
+    <include layout="@layout/header_white_toolbar"/>
+
+    <View style="@style/horizontal_line"/>
 
     <LinearLayout
         android:layout_width="match_parent"

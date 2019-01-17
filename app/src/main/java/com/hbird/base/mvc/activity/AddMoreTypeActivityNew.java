@@ -1,12 +1,12 @@
 package com.hbird.base.mvc.activity;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ExpandableListView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSON;
@@ -24,12 +24,14 @@ import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
+import com.hbird.util.Utils;
 import com.ljy.devring.image.support.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import sing.common.util.StatusBarUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
@@ -40,11 +42,12 @@ import sing.util.ToastUtil;
  * @Description: 我的里面 - 添加类别
  */
 public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
-    @BindView(R.id.iv_back)
+
+    @BindView(R.id.iv_backs)
     ImageView mBack;
-    @BindView(R.id.center_title)
+    @BindView(R.id.tv_center_title)
     TextView mCenterTitle;
-    @BindView(R.id.right_title2)
+    @BindView(R.id.tv_right_title)
     TextView mRightTitle;
     @BindView(R.id.expandableList)
     ExpandableListView expandableListView;
@@ -52,11 +55,8 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
     LinearLayout mChooseItem;
     @BindView(R.id.iv_img)
     ImageView mImg;
-    @BindView(R.id.rl_img_bg)
-    RelativeLayout mImgBg;
     @BindView(R.id.tv_choose_type)
     TextView mChooseType;
-
 
     private List<List<ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean>> itemList;
     private String title;
@@ -64,33 +64,33 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
     private ZhiChuTagReturnNew.ResultBean.AllListBean.SpendTypeSonsBean callBacka;
     private ShouRuTagReturnNew.ResultBean.AllListBean.IncomeTypeSonsBean callBackb;
     private ArrayList<String> list;
-    private Integer accountBookId;
     private String bookIdType;
     private Integer types;
 
     @Override
     protected int getContentLayout() {
-        return R.layout.activity_add_more_type;
+        return R.layout.act_add_more_type;
     }
 
     @Override
     protected void initView(Bundle savedInstanceState) {
+        Utils.initColor(this, Color.rgb(255, 255, 255));
+        StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
+
         title = getIntent().getStringExtra("TITLE");
+        mRightTitle.setTextColor(Color.parseColor("#D80200"));// 完成变红色
+        mRightTitle.setText("完成");
+
         if (TextUtils.equals(title, "收入")) {
             mCenterTitle.setText("添加收入类别");
-            mImgBg.setBackgroundResource(R.drawable.shape_cycle_yellow);
         } else {
             mCenterTitle.setText("添加支出类别");
-            mImgBg.setBackgroundResource(R.drawable.shape_cycle_blue);
         }
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         list = getIntent().getStringArrayListExtra("object");// 已有的
-        //返回的bean对象 AddMoreTypeBean已创建好 后面调用接口直接用
-//        String id = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.CURRENT_ACCOUNT_ID, "0");
-//        accountBookId = Integer.valueOf(id);
         bookIdType = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.CURRENT_ACCOUNT_ID, "0");
         types = Integer.valueOf(bookIdType);
         getDate();
@@ -112,13 +112,11 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.iv_back:
+            case R.id.iv_backs:
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.right_title2:
-                //showMessage("完成");
-                //调用添加或支出收入类别接口
+            case R.id.tv_right_title: // 完成
                 playVoice(R.raw.changgui02);
                 getAccountTypes();
                 break;
@@ -129,40 +127,39 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
         String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
         showProgress("");
         if (TextUtils.equals(title, "收入")) {
-            NetWorkManager.getInstance().setContext(this)
-                    .getIncomeLabelsNew(types, token, new NetWorkManager.CallBack() {
-                        @Override
-                        public void onSuccess(BaseReturn b) {
-                            hideProgress();
-                            ShouRuTagReturnNew b1 = (ShouRuTagReturnNew) b;
-                            set2Date(b1);
-                        }
+            NetWorkManager.getInstance().setContext(this).getIncomeLabelsNew(types, token, new NetWorkManager.CallBack() {
+                @Override
+                public void onSuccess(BaseReturn b) {
+                    hideProgress();
+                    ShouRuTagReturnNew b1 = (ShouRuTagReturnNew) b;
+                    set2Date(b1);
+                }
 
-                        @Override
-                        public void onError(String s) {
-                            hideProgress();
-                            showMessage(s);
-                        }
-                    });
+                @Override
+                public void onError(String s) {
+                    hideProgress();
+                    showMessage(s);
+                }
+            });
         } else {
-            NetWorkManager.getInstance().setContext(this)
-                    .getSpendLabelsNew(types, token, new NetWorkManager.CallBack() {
-                        @Override
-                        public void onSuccess(BaseReturn b) {
-                            hideProgress();
-                            ZhiChuTagReturnNew b2 = (ZhiChuTagReturnNew) b;
-                            setDate(b2);
-                        }
+            NetWorkManager.getInstance().setContext(this).getSpendLabelsNew(types, token, new NetWorkManager.CallBack() {
+                @Override
+                public void onSuccess(BaseReturn b) {
+                    hideProgress();
+                    ZhiChuTagReturnNew b2 = (ZhiChuTagReturnNew) b;
+                    setDate(b2);
+                }
 
-                        @Override
-                        public void onError(String s) {
-                            hideProgress();
-                            showMessage(s);
-                        }
-                    });
+                @Override
+                public void onError(String s) {
+                    hideProgress();
+                    showMessage(s);
+                }
+            });
         }
     }
 
+    // 设置支出
     private void setDate(ZhiChuTagReturnNew date) {
         final List<ZhiChuTagReturnNew.ResultBean.AllListBean> groupList = date.getResult().getAllList();//组 级项目
         if (groupList == null || groupList.size() < 1) {
@@ -189,25 +186,19 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50, 50)
                     .into(mImg);
             //点选后的数据回调
-            adapter.setMyOnclickListener(new MyExpandableListViewAdapterNew.callBackInstance() {
-                @Override
-                public void setOnCallBack(int groupPosition, int position) {
-                    playVoice(R.raw.typevoice);
-                    callBacka = groupList.get(groupPosition).getSpendTypeSons().get(position);
-                    mChooseItem.setVisibility(View.VISIBLE);
-                    mChooseType.setText(callBacka.getSpendName());
-                    GlideApp.with(AddMoreTypeActivityNew.this)
-                            .load(callBacka.getIcon())
-                            .skipMemoryCache(false)
-                            .dontAnimate()
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .override(50, 50)
-                            .into(mImg);
-                }
-
+            adapter.setMyOnclickListener((groupPosition, position) -> {
+                playVoice(R.raw.typevoice);
+                callBacka = groupList.get(groupPosition).getSpendTypeSons().get(position);
+                mChooseItem.setVisibility(View.VISIBLE);
+                mChooseType.setText(callBacka.getSpendName());
+                GlideApp.with(AddMoreTypeActivityNew.this)
+                        .load(callBacka.getIcon())
+                        .skipMemoryCache(false)
+                        .dontAnimate()
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(mImg);
             });
         }
 
@@ -215,13 +206,12 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
         for (int i = 0; i < groupCount; i++) {
             expandableListView.expandGroup(i);
         }
-        ;
+
         // 隐藏分组指示器
         expandableListView.setGroupIndicator(null);
-        // 默认展开第一组
-        // expandableListView.expandGroup(0);
     }
 
+    // 设置收入
     private void set2Date(ShouRuTagReturnNew date) {
         final List<ShouRuTagReturnNew.ResultBean.AllListBean> groupList = date.getResult().getAllList();//组 级项目
         if (groupList == null || groupList.size() < 1) {
@@ -248,25 +238,18 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
                     .skipMemoryCache(false)
                     .dontAnimate()
                     .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                    .override(50, 50)
                     .into(mImg);
             //点选后的数据回调
-            adapter.setMyOnclickListener(new MyExpandableListView2NewAdapter.callBackInstance() {
-
-                @Override
-                public void setOnCallBack(int groupPosition, int position) {
-                    playVoice(R.raw.typevoice);
-                    callBackb = groupList.get(groupPosition).getIncomeTypeSons().get(position);
-                    mChooseItem.setVisibility(View.VISIBLE);
-                    mChooseType.setText(callBackb.getIncomeName());
-                    GlideApp.with(AddMoreTypeActivityNew.this)
-                            .load(callBackb.getIcon())
-                            .skipMemoryCache(false)
-                            .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                            .override(50, 50)
-                            .into(mImg);
-                }
-
+            adapter.setMyOnclickListener((groupPosition, position) -> {
+                playVoice(R.raw.typevoice);
+                callBackb = groupList.get(groupPosition).getIncomeTypeSons().get(position);
+                mChooseItem.setVisibility(View.VISIBLE);
+                mChooseType.setText(callBackb.getIncomeName());
+                GlideApp.with(AddMoreTypeActivityNew.this)
+                        .load(callBackb.getIcon())
+                        .skipMemoryCache(false)
+                        .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
+                        .into(mImg);
             });
         }
 
@@ -274,13 +257,10 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
         for (int i = 0; i < groupCount; i++) {
             expandableListView.expandGroup(i);
         }
-        ;
+
         // 隐藏分组指示器
         expandableListView.setGroupIndicator(null);
-        // 默认展开第一组
-        // expandableListView.expandGroup(0);
     }
-
 
     private void getAccountTypes() {
         if (TextUtils.equals(title, "收入")) {
@@ -299,47 +279,45 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
         showProgress("");
         if (TextUtils.equals(title, "收入")) {
             //添加用户常用收入类目
-            NetWorkManager.getInstance().setContext(this)
-                    .postShouRuType(callBackb.getId(), Integer.parseInt(a), token, new NetWorkManager.CallBack() {
-                        @Override
-                        public void onSuccess(BaseReturn b) {
-                            hideProgress();
-                            BiaoQianReturn b1 = (BiaoQianReturn) b;
-                            String version = b1.getResult().getVersion();
-                            SPUtil.setPrefString(AddMoreTypeActivityNew.this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, version);
-                            insertDates();
-                            setResult(123);
-                            finish();
-                        }
+            NetWorkManager.getInstance().setContext(this).postShouRuType(callBackb.getId(), Integer.parseInt(a), token, new NetWorkManager.CallBack() {
+                @Override
+                public void onSuccess(BaseReturn b) {
+                    hideProgress();
+                    BiaoQianReturn b1 = (BiaoQianReturn) b;
+                    String version = b1.getResult().getVersion();
+                    SPUtil.setPrefString(AddMoreTypeActivityNew.this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, version);
+                    insertDates();
+                    setResult(123);
+                    finish();
+                }
 
-                        @Override
-                        public void onError(String s) {
-                            hideProgress();
-                            showMessage(s);
-                        }
-                    });
+                @Override
+                public void onError(String s) {
+                    hideProgress();
+                    showMessage(s);
+                }
+            });
         } else {
             //添加用户常用支出类目
-            NetWorkManager.getInstance().setContext(this)
-                    .postZhiChuType(callBacka.getId(), types, token, new NetWorkManager.CallBack() {
-                        @Override
-                        public void onSuccess(BaseReturn b) {
-                            hideProgress();
-                            BiaoQianReturn b1 = (BiaoQianReturn) b;
-                            String version = b1.getResult().getVersion();
-                            SPUtil.setPrefString(AddMoreTypeActivityNew.this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, version);
-                            insertDates();
-                            showMessage("成功");
-                            setResult(121);
-                            finish();
-                        }
+            NetWorkManager.getInstance().setContext(this).postZhiChuType(callBacka.getId(), types, token, new NetWorkManager.CallBack() {
+                @Override
+                public void onSuccess(BaseReturn b) {
+                    hideProgress();
+                    BiaoQianReturn b1 = (BiaoQianReturn) b;
+                    String version = b1.getResult().getVersion();
+                    SPUtil.setPrefString(AddMoreTypeActivityNew.this, com.hbird.base.app.constant.CommonTag.LABEL_VERSION, version);
+                    insertDates();
+                    showMessage("成功");
+                    setResult(121);
+                    finish();
+                }
 
-                        @Override
-                        public void onError(String s) {
-                            hideProgress();
-                            showMessage(s);
-                        }
-                    });
+                @Override
+                public void onError(String s) {
+                    hideProgress();
+                    showMessage(s);
+                }
+            });
         }
     }
 
@@ -403,5 +381,4 @@ public class AddMoreTypeActivityNew extends BaseActivity<BaseActivityPresenter> 
             SharedPreferencesUtil.put("userId_" + userInfoId + "abTypeId_" + abTypeId + "type_spend", list.toString());
         }
     }
-
 }
