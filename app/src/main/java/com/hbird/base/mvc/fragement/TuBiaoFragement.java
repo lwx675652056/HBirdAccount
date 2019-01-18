@@ -12,7 +12,6 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
-import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.base.baseActivity.BaseFragementPagerAdapter;
 import com.hbird.ui.analysis.FragAnalysis;
@@ -41,21 +40,13 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
 
     @BindView(R.id.rl_fenxi)
     FrameLayout mFenxi;
-    @BindView(R.id.iv_tit_down)
-    View mTitDown;
-    @BindView(R.id.iv_tit_down3)
-    View mTitDown3;
 
-    @BindView(R.id.iv_tit_down2)
-    View mTitDown2;
     @BindView(R.id.tv_title)
     TextView mTitle;
     @BindView(R.id.tv_title2)
     TextView mTitle2;
     @BindView(R.id.tv_title3)
     TextView mTitle3;
-    @BindView(R.id.right_title)
-    TextView mRightTit;
 
 
     private ArrayList<Fragment> fragements = new ArrayList<>();
@@ -87,20 +78,16 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
         viewPagers.setOffscreenPageLimit(2);
         viewPagers.setCurrentItem(0);
         setView(0);
-
-        mRightTit.setVisibility(View.GONE);
-
     }
     @Override
     public void initData() {
-
     }
 
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser){
-            Utils.initColor(getActivity(),Color.rgb(241, 92, 60));
+            Utils.initColor(getActivity(), Color.rgb(241, 92, 60));
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
         }
     }
@@ -115,8 +102,6 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
 
             }
         }, 500);
-
-
     }
 
     @Override
@@ -124,7 +109,6 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
         mTongji.setOnClickListener(this);
         mZiChan.setOnClickListener(this);
         mFenxi.setOnClickListener(this);
-        mRightTit.setOnClickListener(this);
 
         viewPagers.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -157,30 +141,18 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
         }else if(fenXiFragement.getUserVisibleHint()){
             fenXiFragement.loadDataForNet();
         }
-//        if(ziChanFragement.getUserVisibleHint()){
-//            ziChanFragement.loadData();
-//        }
     }
 
     private void setView(int i) {
         if(i==0){
-            mTitDown.setVisibility(View.VISIBLE);
-            mTitDown2.setVisibility(View.GONE);
-            mTitDown3.setVisibility(View.GONE);
             mTitle.setTypeface(Typeface.DEFAULT_BOLD);
             mTitle2.setTypeface(Typeface.DEFAULT);
             mTitle3.setTypeface(Typeface.DEFAULT);
         }else if(i==1){
-            mTitDown.setVisibility(View.GONE);
-            mTitDown3.setVisibility(View.GONE);
-            mTitDown2.setVisibility(View.VISIBLE);
             mTitle2.setTypeface(Typeface.DEFAULT_BOLD);
             mTitle.setTypeface(Typeface.DEFAULT);
             mTitle3.setTypeface(Typeface.DEFAULT);
         }else{
-            mTitDown.setVisibility(View.GONE);
-            mTitDown2.setVisibility(View.GONE);
-            mTitDown3.setVisibility(View.VISIBLE);
             mTitle2.setTypeface(Typeface.DEFAULT);
             mTitle3.setTypeface(Typeface.DEFAULT_BOLD);
             mTitle.setTypeface(Typeface.DEFAULT);
@@ -205,11 +177,7 @@ public class TuBiaoFragement extends BaseFragement implements View.OnClickListen
                 setView(2);
                 viewPagers.setCurrentItem(2);
                 break;
-            case R.id.right_title:
-                Intent intent = new Intent();
-                intent.setClass(getActivity(),ChooseAccountTypeActivity.class);
-                startActivityForResult(intent,321);
-                break;
+
         }
     }
 

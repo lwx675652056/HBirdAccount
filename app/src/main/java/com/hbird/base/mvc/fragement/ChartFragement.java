@@ -29,16 +29,13 @@ import com.hbird.base.mvc.adapter.barChart2Adapter;
 import com.hbird.base.mvc.adapter.barChartAdapter;
 import com.hbird.base.mvc.adapter.barChartTotypeAdapter;
 import com.hbird.base.mvc.base.BaseFragement;
-import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RealListEntity;
 import com.hbird.base.mvc.bean.ReturnBean.HappynessReturn;
 import com.hbird.base.mvc.bean.ReturnBean.chartToBarReturn;
-import com.hbird.base.mvc.bean.ReturnBean.chartToRanking2Return;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.bean.YearAndMonthBean;
 import com.hbird.base.mvc.bean.YoyListEntity;
 import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.widget.MyChart.LineChartEntity;
 import com.hbird.base.mvc.widget.MyChart.LineChartInViewPager;
 import com.hbird.base.mvc.widget.MyChart.NewMarkerView;
@@ -284,62 +281,6 @@ public class ChartFragement extends BaseFragement {
         getRankingBar();//获取支出排行情绪消费统计
     }
 
-    private void getApiBar2Date() {
-
-        NetWorkManager.getInstance().setContext(getActivity())
-                .postChartToComeBar(token, flag, beginTime, endTime, beginWeek, endWeek, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        chartToBarReturn b1 = (chartToBarReturn) b;
-                        List<chartToBarReturn.ResultBean.ArraysBean> arrays = b1.getResult().getArrays();
-                        maxMoney = b1.getResult().getMaxMoney();
-                        dayList.clear();
-                        dayList = getYearDate(years);
-                        setChartForks(arrays);
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                        showMessage(s);
-                    }
-                });
-    }
-
-    private void getRanking2Bar(final int i) {
-        NetWorkManager.getInstance().setContext(getActivity())
-                .postChartToComeRanking(token, flag, thisTime, weeks + "", monthCurrent, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        chartToRanking2Return b1 = (chartToRanking2Return) b;
-                        List<chartToRanking2Return.ResultBean.StatisticsIncomeTopArraysBean> lists = b1.getResult().getStatisticsIncomeTopArrays();
-                        Double money = b1.getResult().getTrueTotalMoney();
-                        String formats = getEnumToNumer(money);
-                        topMoney.setText(formats);
-                        mTopMoney.setNumberString("0", formats);
-                        if (null != lists && lists.size() > 0) {
-                            mTypeAdapter = new barChartTotypeAdapter(getActivity(), ChartFragement.this, lists, true, money, i);
-                            mTypeAdapter.setDate2(true);
-                            listview.setAdapter(mTypeAdapter);
-                            listview.setFocusable(false);
-                            listview.setVisibility(View.VISIBLE);
-                            mTitle.setVisibility(View.VISIBLE);
-                            mEmpty.setVisibility(View.GONE);
-                        } else {
-                            listview.setVisibility(View.GONE);
-                            mEmpty.setVisibility(View.VISIBLE);
-                        }
-
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                        showMessage(s);
-                        listview.setVisibility(View.GONE);
-                        mEmpty.setVisibility(View.VISIBLE);
-                    }
-                });
-    }
-
     private String getEnumToNumer(Double money) {
         java.text.NumberFormat NF = java.text.NumberFormat.getInstance();
         NF.setGroupingUsed(false);//去掉科学计数法显示
@@ -502,7 +443,7 @@ public class ChartFragement extends BaseFragement {
     }
 
     private void setXiaoFeiDate(List<StatisticsSpendTopArraysBean> lists, Double money) {
-        mAdapter = new barChartAdapter(getActivity(), ChartFragement.this, lists, true, money);
+        mAdapter = new barChartAdapter(getActivity(),  lists, true, money);
         mAdapter.setDate2(true);
         listview.setAdapter(mAdapter);
         listview.setFocusable(false);
@@ -566,34 +507,9 @@ public class ChartFragement extends BaseFragement {
                     dayList = getYearDate(years);
                 }
                 setChartForks(dbList);
-
             }
         } else {
-
         }
-        //调用接口获取数据
-       /* NetWorkManager.getInstance().setContext(getActivity())
-                .postChartToZcBar(token, flag, beginTime, endTime,beginWeek,endWeek, new NetWorkManager.CallBack() {
-
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        chartToBarReturn b1 = (chartToBarReturn) b;
-                        List<chartToBarReturn.ResultBean.ArraysBean> arrays = b1.getResult().getArrays();
-                        maxMoney = b1.getResult().getMaxMoney();
-                        //如果是月 周 此处不需要执行
-                        if(TextUtils.equals(flag,"1")){
-                            //只有日数据刷新时 执行此操作
-                            dayList.clear();
-                            dayList = getYearDate(years);
-                        }
-                        setChartForks(arrays);
-                    }
-
-                    @Override
-                    public void onError(String s) {
-                        showMessage(s);
-                    }
-                });*/
     }
 
     private void setChartForks(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
@@ -652,29 +568,6 @@ public class ChartFragement extends BaseFragement {
             //柱状图列表 每一周的
             setChartViews(3, monthList);
         }
-    }
-
-    //设置每周的
-    private void setChartWeekView() {
-        //判断指定一年中的本周 在集合中是第几个条目 方便后面跳转到指定条目
-        int pos = Utils.getYearToWeek() - 1;
-        mLayoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
-        adapter = new ChartRecyclerViewAdapter(getActivity(), weekList, maxMoney, pos);
-        mRecycleView.setLayoutManager(mLayoutManager);
-        mRecycleView.setAdapter(adapter);
-
-        MoveToPosition(new LinearLayoutManager(getActivity()), mRecycleView, pos);
-        adapter.setOnItemClickListener(new ChartRecyclerViewAdapter.OnItemClickListener() {
-            @Override
-            public void onItemClick(View view, int position) {
-                adapter.setItemClick(position);
-            }
-
-            @Override
-            public void onItemLongClick(View view, int position) {
-
-            }
-        });
     }
 
     //设置每天的
@@ -1063,21 +956,8 @@ public class ChartFragement extends BaseFragement {
 
     }
 
-    /**
-     * 双平滑曲线传入数据，添加markview，添加实体类单位
-     *
-     * @param yoyList
-     * @param realList
-     * @param lineChart
-     * @param colors
-     * @param drawables
-     * @param unit
-     * @param values2
-     * @param values1
-     * @param labels
-     */
-    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables,
-                                final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, int pos, final ArrayList<YearAndMonthBean> list) {
+    // 双平滑曲线传入数据，添加markview，添加实体类单位
+    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, int pos, final ArrayList<YearAndMonthBean> list) {
         List<Entry>[] entries = new ArrayList[2];
         entries[0] = values1;
         entries[1] = values2;
@@ -1229,13 +1109,7 @@ public class ChartFragement extends BaseFragement {
 
     }
 
-    /**
-     * 双平滑曲线添加线下的阴影
-     *
-     * @param lineChartEntity
-     * @param drawables
-     * @param colors
-     */
+    // 双平滑曲线添加线下的阴影
     private void toggleFilled(LineChartEntity lineChartEntity, Drawable[] drawables, int[] colors) {
         if (android.os.Build.VERSION.SDK_INT >= 18) {
 
@@ -1244,5 +1118,4 @@ public class ChartFragement extends BaseFragement {
             lineChartEntity.toggleFilled(null, colors, true);
         }
     }
-
 }

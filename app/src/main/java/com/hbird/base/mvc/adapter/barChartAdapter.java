@@ -12,7 +12,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.hbird.base.R;
-import com.hbird.base.mvc.fragement.ChartFragement;
 import com.hbird.base.mvc.widget.IndicatorProgressBar;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
 
@@ -27,7 +26,7 @@ import java.util.concurrent.Executors;
 
 public class barChartAdapter extends BaseAdapter {
     private Context context;
-    private ChartFragement mContext;
+//    private ChartFragement mContext;
     private List<StatisticsSpendTopArraysBean> accountDateList = new ArrayList<>();
 
     private double Max = 0;
@@ -35,10 +34,11 @@ public class barChartAdapter extends BaseAdapter {
     private boolean isProvinceShow = true;
     private String formatNum;
 
-    public barChartAdapter(Context context, ChartFragement mContext, List<StatisticsSpendTopArraysBean> accountDateList
+//    public barChartAdapter(Context context, ChartFragement mContext, List<StatisticsSpendTopArraysBean> accountDateList
+    public barChartAdapter(Context context,  List<StatisticsSpendTopArraysBean> accountDateList
             , boolean isProvinceShow,Double maxMoney){
         this.context = context;
-        this.mContext = mContext;
+//        this.mContext = mContext;
         this.accountDateList = accountDateList;
         this.isProvinceShow = isProvinceShow;
         //遍历集合，获取最大值
@@ -119,7 +119,8 @@ public class barChartAdapter extends BaseAdapter {
 
         textaddr.setText(bean.getTypeName());
         textNum.setText("￥"+format);
-        Glide.with(mContext).load(bean.getIcon()).into(img);
+//        Glide.with(mContext).load(bean.getIcon()).into(img);
+        Glide.with(context).load(bean.getIcon()).into(img);
         idc.setMax(100);
         //动画效果暂时注销
         /*if(isProvinceShow) {

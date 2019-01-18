@@ -305,7 +305,6 @@
                         android:orientation="horizontal"
                         android:padding="@dimen/dp_10_x">
 
-
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"

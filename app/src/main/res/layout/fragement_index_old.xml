@@ -89,7 +89,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="@dimen/height_6_80"
-                android:src="@mipmap/ic_normal_data"
+                android:src="@mipmap/pic_kongtai_disabled"
                 android:visibility="gone"/>
 
             <com.hbird.base.mvc.widget.XListView

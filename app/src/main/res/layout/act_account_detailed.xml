@@ -3,6 +3,7 @@
         xmlns:bind="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="title"
             type="com.hbird.bean.TitleBean"/>
@@ -14,6 +15,8 @@
         <variable
             name="data"
             type="com.hbird.ui.detailed.AccountDetailedData"/>
+
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -24,8 +27,8 @@
 
         <include
             android:id="@+id/toolbar"
-            bind:setTitle="@{title}"
-            layout="@layout/head_toolbar"/>
+            layout="@layout/head_toolbar"
+            bind:setTitle="@{title}"/>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,8 +42,8 @@
                 android:id="@+id/choose_data"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
                 android:onClick="@{click.chooseAccount}"
+                android:orientation="vertical"
                 android:paddingBottom="@dimen/dp_10_x"
                 android:paddingEnd="@dimen/space_15"
                 android:paddingStart="@dimen/dp_15_x"
@@ -156,12 +159,20 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/recycler_view"
-            android:background="#F6F6F6"
-            android:paddingEnd="@dimen/dp_15_x"
-            android:paddingStart="@dimen/dp_15_x"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#F6F6F6"
             android:overScrollMode="never"
-            android:scrollbars="none"/>
+            android:paddingEnd="@dimen/dp_15_x"
+            android:paddingStart="@dimen/dp_15_x"
+            android:scrollbars="none"
+            android:visibility="@{data.noData?View.GONE:View.VISIBLE}"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:src="@mipmap/pic_kongtai_disabled"
+            android:visibility="@{data.noData?View.VISIBLE:View.GONE}"/>
     </LinearLayout>
 </layout>

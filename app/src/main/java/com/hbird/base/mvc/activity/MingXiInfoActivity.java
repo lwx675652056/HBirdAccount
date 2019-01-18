@@ -266,7 +266,6 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         });
     }
 
-
     private void pushOffLine() {
         OffLineReq req = new OffLineReq();
         String deviceId = Utils.getDeviceInfo(MingXiInfoActivity.this);

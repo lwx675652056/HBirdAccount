@@ -25,12 +25,12 @@ import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.fragement.LingPiaoFragement;
-import com.hbird.base.mvc.fragement.TuBiaoFragement;
 import com.hbird.base.mvc.widget.NoScrollViewPager;
 import com.hbird.base.mvc.widget.TabRadioButton;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
+import com.hbird.ui.data.FragData;
 import com.hbird.ui.index.IndexFragement;
 import com.hbird.ui.me.FragMe;
 import com.hbird.util.Utils;
@@ -68,7 +68,7 @@ public class homeActivity extends BaseActivity<BasePresenter> {
     private BasePagerAdapter pagerAdapter;
     private IndexFragement indexFragement;
     private FragMe meFragement;
-    private TuBiaoFragement tuBiaoFragement;
+    private FragData tuBiaoFragement;
     private LingPiaoFragement lpFragement;
     private Long lastClickTime = 0L;
     private static SobotNotificationClickReceiver nClickReceiver;//点击通知以后发出的广播接收者
@@ -93,7 +93,7 @@ public class homeActivity extends BaseActivity<BasePresenter> {
 
         indexFragement = new IndexFragement();
         //chartFragement = new ChartFragement();
-        tuBiaoFragement = new TuBiaoFragement();
+        tuBiaoFragement = new FragData();
         lpFragement = new LingPiaoFragement();
         meFragement = new FragMe();
 

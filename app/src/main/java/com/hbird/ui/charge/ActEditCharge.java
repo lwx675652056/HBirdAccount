@@ -692,10 +692,10 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         //判断当前网络状态
         boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(this);
         if (!netWorkAvailable) {
-            if (b) {
-                //创建成功
-                setResult(resultCode);
+            if (b) {  //创建成功
+                setResult(104);
                 calculatorClear();
+                ToastUtil.showShort("修改成功");
                 finish();
             } else {
                 showMessage("创建失败");
@@ -726,10 +726,10 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 
             @Override
             public void onError(String s) {
-                if (b) {
-                    //创建成功
-                    setResult(resultCode);
+                if (b) {  //创建成功
+                    setResult(104);
                     calculatorClear();
+                    ToastUtil.showShort("修改成功");
                     finish();
                 } else {
                     showMessage("创建失败");
@@ -862,10 +862,10 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             @Override
             public void onSuccess(BaseReturn b2) {
                 GloableReturn b1 = (GloableReturn) b2;
-                if (b) {
-                    //创建成功
-                    setResult(code);
+                if (b) {  //创建成功
+                    setResult(104);
                     calculatorClear();
+                    ToastUtil.showShort("修改成功");
                     finish();
                 } else {
                     showMessage("创建失败");
@@ -874,10 +874,10 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 
             @Override
             public void onError(String s) {
-                if (b) {
-                    //创建成功
-                    setResult(code);
+                if (b) {  //创建成功
+                    setResult(104);
                     calculatorClear();
+                    ToastUtil.showShort("修改成功");
                     finish();
                 } else {
                     showMessage("创建失败");
@@ -940,7 +940,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
                     AssetsBean t = (AssetsBean) data;
                     bean.setAssetsId(t.assetsType);
                     bean.setAssetsName(t.assetsName);
-                    setAccount(bean.icon);
+                    setAccount(t.icon);
                 }
             }
         });
@@ -954,7 +954,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             Glide.with(ivIcon.getContext()).load(R.mipmap.jzzhxz_icon_bxzh_normal).into(ivIcon);
             tvAccount.setText("未选择");
         } else {
-            Glide.with(ivIcon.getContext()).load(bean.pictureUrl).into(ivIcon);
+            Glide.with(ivIcon.getContext()).load(icon).into(ivIcon);
             tvAccount.setText(bean.getAssetsName());
         }
     }

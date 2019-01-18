@@ -5,7 +5,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
@@ -13,18 +12,15 @@ import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.adapter.NotificationMessageAdapter;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.bean.BaseReturn;
-import com.hbird.base.mvc.bean.FengFengBean;
 import com.hbird.base.mvc.bean.ReturnBean.FengMessageReturn;
 import com.hbird.base.mvc.bean.ReturnBean.GloableReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -47,6 +43,8 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
     ImageView rightImg;
     @BindView(R.id.lv)
     ListView lv;
+    @BindView(R.id.iv_no_data)
+    ImageView ivNoData;
     private String token;
     private List<FengMessageReturn.ResultBean.MessageListBean> messageList;
     private String userinfoid;
@@ -69,21 +67,6 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
     @Override
     protected void initData(Bundle savedInstanceState) {
         getMessage();
-
-       /* ArrayList<FengFengBean> list = new ArrayList<>();
-        for (int i=0;i<8;i++){
-            FengFengBean bean = new FengFengBean();
-            bean.setItemType("旅行-出行账本"+i);
-            bean.setName("桥努森"+i);
-            bean.setTimes("2018-10-15 13:00");
-            if(i<2){
-                bean.setType(1);
-            }else {
-                bean.setType(2);
-            }
-            list.add(bean);
-        }*/
-
     }
 
     private void getMessage() {
@@ -98,6 +81,13 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
                             rightTitle2.setVisibility(View.VISIBLE);
                         }else {
                             rightTitle2.setVisibility(View.GONE);
+                        }
+                        if (messageList == null || messageList.size()<1){
+                            ivNoData.setVisibility(View.VISIBLE);
+                            lv.setVisibility(View.GONE);
+                        }else{
+                            ivNoData.setVisibility(View.GONE);
+                            lv.setVisibility(View.VISIBLE);
                         }
                         NotificationMessageAdapter adapter = new NotificationMessageAdapter(NotificationMessageActivity.this, messageList);
                         lv.setAdapter(adapter);

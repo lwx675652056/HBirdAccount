@@ -392,7 +392,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 tanDialog(windowPop);
             }
 
-            typeBudget =  SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, "");
+            typeBudget = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, "");
             String abMoren = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, "");
             binding.abMoren.setText(abMoren);
             zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
@@ -872,19 +872,18 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     private void setHasRed(String id, final int m) {
         //首页公告已读接口
-        NetWorkManager.getInstance().setContext(getActivity())
-                .putHasRead(id, token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GloableReturn b1 = (GloableReturn) b;
-                        dialog2TiaoZhuan(m);
-                    }
+        NetWorkManager.getInstance().setContext(getActivity()).putHasRead(id, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                GloableReturn b1 = (GloableReturn) b;
+                dialog2TiaoZhuan(m);
+            }
 
-                    @Override
-                    public void onError(String s) {
-                        ToastUtil.showShort(s);
-                    }
-                });
+            @Override
+            public void onError(String s) {
+                ToastUtil.showShort(s);
+            }
+        });
     }
 
     private void setHomePage() {

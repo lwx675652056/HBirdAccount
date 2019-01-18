@@ -18,6 +18,9 @@ import com.ljy.devring.util.ColorBar;
 import java.io.FileOutputStream;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 public class Utils {
 
@@ -178,5 +181,16 @@ public class Utils {
     public static String to2DigitString(double f) {
         BigDecimal bg = new BigDecimal(f);
         return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"";
+    }
+
+    //获取一年中总共有几周
+    public static int getYearToWeek() {
+        Date date = new Date();
+        Calendar c = new GregorianCalendar();
+        c.setFirstDayOfWeek(Calendar.MONDAY);
+        c.setMinimalDaysInFirstWeek(7);
+        c.setTime(date);
+
+        return c.get(Calendar.WEEK_OF_YEAR);
     }
 }

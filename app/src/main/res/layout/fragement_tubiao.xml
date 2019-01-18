@@ -1,30 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-   <include layout="@layout/fragement_header" />
-  <!-- <com.hbird.base.mvc.widget.NoScrollViewPager
-       android:id="@+id/view_pager"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"
-       android:overScrollMode="never"
-       android:background="@color/white">
-   </com.hbird.base.mvc.widget.NoScrollViewPager>-->
-   <android.support.v4.view.ViewPager
-       android:id="@+id/view_pager"
-       android:layout_width="match_parent"
-       android:layout_height="0dp"
-       android:layout_weight="1"
-       android:overScrollMode="never"
-       android:background="@color/white"
-      >
+    android:background="@color/white"
+    android:orientation="vertical">
 
-   </android.support.v4.view.ViewPager>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
 
+       <LinearLayout
+           android:layout_weight="1"
+           android:layout_width="0dp"
+           android:gravity="center"
+           android:layout_height="wrap_content">
+           <TextView
+               android:text="统计"
+               android:layout_width="wrap_content"
+               android:layout_height="wrap_content"/>
+       </LinearLayout>
 
+        <TextView
+            android:text="资产"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
+        <TextView
+            android:text="分析"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/height_6_80"
+        android:background="@color/colorPrimary"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="@dimen/width_6_80"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <FrameLayout
+                android:id="@+id/rl_tongji"
+                android:layout_width="@dimen/width_10_80"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginTop="@dimen/height_1_80"
+                    android:text="统计"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/rl_fenxi"
+                android:layout_width="@dimen/width_10_80"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/width_6_80"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/height_1_80"
+                    android:text="分析"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"/>
+            </FrameLayout>
+
+            <FrameLayout
+                android:id="@+id/rl_zichan"
+                android:layout_width="@dimen/width_10_80"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="@dimen/width_6_80"
+                android:gravity="center_horizontal">
+
+                <TextView
+                    android:id="@+id/tv_title3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/height_1_80"
+                    android:text="资产"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/text_size_12"/>
+
+            </FrameLayout>
+        </LinearLayout>
+    </RelativeLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:background="@color/white"
+        android:overScrollMode="never"/>
 </LinearLayout>

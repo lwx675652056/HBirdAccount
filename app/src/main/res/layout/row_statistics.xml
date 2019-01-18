@@ -1,0 +1,95 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="bean"
+            type="com.hbird.bean.StatisticsSpendTopArraysBean"/>
+
+        <variable
+            name="ratio"
+            type="String"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/ll_parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <FrameLayout
+                android:layout_width="@dimen/dp_70_x"
+                android:layout_height="@dimen/dp_70_x"
+                android:padding="@dimen/dp_15_x">
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/circle_333333"/>
+
+                <ImageView
+                    imageUrl="@{bean.icon}"
+                    android:layout_width="@dimen/dp_15_x"
+                    android:layout_height="@dimen/dp_15_x"
+                    android:layout_gravity="center"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:gravity="center_vertical"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:text="@{bean.typeName}"
+                        android:textColor="#333333"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:text="@{ratio}"
+                        android:textColor="#808080"
+                        android:textSize="14sp"/>
+
+                    <TextView
+                        android:id="@+id/text_item_bar_contory"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="end"
+                        android:text="@{@string/money+String.valueOf(bean.money)}"
+                        android:textColor="#333333"
+                        android:textSize="14sp"/>
+                </LinearLayout>
+
+                <ImageView
+                    android:id="@+id/iv_progress"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_4_x"
+                    android:layout_marginTop="@dimen/dp_5_x"
+                    android:background="@drawable/progress_indicator"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view"
+            style="@style/horizontal_line"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:layout_marginStart="@dimen/dp_15_x"/>
+    </LinearLayout>
+</layout>

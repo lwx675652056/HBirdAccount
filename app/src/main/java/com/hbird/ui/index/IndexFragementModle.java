@@ -35,6 +35,7 @@ import sing.common.base.BaseViewModel;
 import sing.common.util.LogUtil;
 
 public class IndexFragementModle extends BaseViewModel {
+
     public IndexFragementModle(@NonNull Application application) {
         super(application);
     }
