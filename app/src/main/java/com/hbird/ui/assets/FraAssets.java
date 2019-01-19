@@ -72,6 +72,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+        binding.recyclerView.setItemAnimator(null);//设置动画为null来解决闪烁问题
     }
 
     // item点击
@@ -101,7 +102,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
                     list.get(i).money = bean.money;
                 }
             }
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, list.size());
         }
     }
 
@@ -179,7 +180,7 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
 
             list.clear();
             list.addAll(temp.getResult().getAssets());
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, list.size());
         }
     }
 

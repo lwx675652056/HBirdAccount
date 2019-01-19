@@ -1303,10 +1303,6 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChart.setScaleMinima(1.0f, 1.0f);
         toggleFilled(lineChartEntity, drawables, colors);
 
-
-        lineChart.animateY(300);
-        lineChart.setPinchZoom(false);
-
         lineChart.setDragEnabled(false);//设置是否可拖拽
         lineChart.setScaleEnabled(false);//设置可缩放
         lineChart.setTouchEnabled(true); //可点击

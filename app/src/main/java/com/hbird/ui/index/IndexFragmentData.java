@@ -24,7 +24,13 @@ public class IndexFragmentData extends BaseObservable {
     private int select = -1;// 选中的第几个饼图
     private String str1 = "--", str2 = "--", str3 = "--", str4 = "--", str5 = "--";// 饼图的5个类别
     private String cop1, cop2, cop3, cop4, cop5;// 饼图的5个比例
+    private boolean noData;// 是否有数据
+    private boolean showMore;// 有多少数据,超过3条才显示“查看全部”
 
+    public IndexFragmentData() {
+        setNoData(true);
+        setShowMore(false);
+    }
 
     @Bindable
     public int getMm() {
@@ -264,5 +270,25 @@ public class IndexFragmentData extends BaseObservable {
     public void setSelestStr(String selestStr) {
         this.selestStr = selestStr;
         notifyPropertyChanged(BR.selestStr);
+    }
+
+    @Bindable
+    public boolean isNoData() {
+        return noData;
+    }
+
+    public void setNoData(boolean noData) {
+        this.noData = noData;
+        notifyPropertyChanged(BR.noData);
+    }
+
+    @Bindable
+    public boolean isShowMore() {
+        return showMore;
+    }
+
+    public void setShowMore(boolean showMore) {
+        this.showMore = showMore;
+        notifyPropertyChanged(BR.showMore);
     }
 }

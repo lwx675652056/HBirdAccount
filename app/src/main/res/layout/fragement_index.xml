@@ -60,6 +60,7 @@
         <com.hbird.common.refreshLayout.MaterialRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
+            app:isLoadMore="false"
             android:layout_height="match_parent">
 
             <android.support.v4.widget.NestedScrollView
@@ -270,19 +271,22 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:overScrollMode="never"
-                            android:scrollbars="none"/>
+                            android:scrollbars="none"
+                            android:visibility="@{bean.noData?View.GONE:View.VISIBLE}"/>
 
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="0.5dp"
-                            android:background="@color/line"/>
+                            android:background="@color/line"
+                            android:visibility="@{bean.noData?View.GONE:(bean.showMore?View.VISIBLE:View.GONE)}"/>
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:background="@drawable/select_bottom_white"
                             android:gravity="center"
-                            android:onClick="@{listener.more}">
+                            android:onClick="@{listener.more}"
+                            android:visibility="@{bean.noData?View.GONE:(bean.showMore?View.VISIBLE:View.GONE)}">
 
                             <TextView
                                 android:layout_width="wrap_content"
@@ -293,6 +297,83 @@
                                 android:text="查看全部"
                                 android:textColor="#333333"
                                 android:textSize="16sp"/>
+                        </LinearLayout>
+
+                        <!--空白页面-->
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/select_white_8px"
+                            android:orientation="vertical"
+                            android:visibility="@{bean.noData?View.VISIBLE:View.GONE}">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:orientation="horizontal"
+                                android:paddingBottom="@dimen/dp_10_x"
+                                android:paddingEnd="@dimen/dp_15_x"
+                                android:paddingStart="@dimen/dp_15_x"
+                                android:paddingTop="@dimen/dp_10_x">
+
+                                <TextView
+                                    android:id="@+id/tv_date"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"/>
+
+                                <TextView
+                                    android:id="@+id/tv_week"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginStart="@dimen/dp_10_x"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1.7"
+                                    android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:maxLength="13"
+                                    android:singleLine="true"
+                                    android:text="收入: - -"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"/>
+
+                                <TextView
+                                    android:layout_width="0dp"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:ellipsize="end"
+                                    android:gravity="end"
+                                    android:maxLength="13"
+                                    android:singleLine="true"
+                                    android:text="支出: - -"
+                                    android:textColor="#333333"
+                                    android:textSize="12sp"/>
+                            </LinearLayout>
+
+                            <View style="@style/horizontal_line"/>
+
+                            <ImageView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginTop="@dimen/dp_35_x"
+                                android:layout_marginBottom="@dimen/dp_15_x"
+                                android:src="@mipmap/home_pic_kongtai_disabled"/>
+
+                            <TextView
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginBottom="@dimen/dp_35_x"
+                                android:text="赶快去记第一笔帐吧~"
+                                android:gravity="center"
+                                android:textColor="#BDBDBD"
+                                android:textSize="14sp"/>
                         </LinearLayout>
                     </LinearLayout>
 

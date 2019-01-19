@@ -175,48 +175,45 @@
                     android:textSize="14sp"/>
             </LinearLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="vertical">
 
+                <!--日的-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:visibility="@{data.dateType==1?View.VISIBLE:View.GONE}"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"/>
+                <!--周的-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:visibility="@{data.dateType==2?View.VISIBLE:View.GONE}"
+                    android:scrollbars="none"/>
+                <!--月的-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view3"
+                    android:layout_width="wrap_content"
+                    android:visibility="@{data.dateType==3?View.VISIBLE:View.GONE}"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"/>
+            </LinearLayout>
+
+            <!--代码内动态添加 LineChartInViewPager-->
             <FrameLayout
+                android:id="@+id/fl_parent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
-                android:paddingBottom="@dimen/dp_15_x">
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/new_lineChart"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"/>
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/new_lineChart2"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:visibility="gone"/>
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/new_lineChart3"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:visibility="gone"/>
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/sr_lineChart1"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:visibility="gone"/>
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/sr_lineChart2"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:visibility="gone"/>
-
-                <com.hbird.widget.LineChartInViewPager
-                    android:id="@+id/sr_lineChart3"
-                    android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:visibility="gone"/>
-            </FrameLayout>
+                android:paddingBottom="@dimen/dp_15_x"/>
 
             <!--不知道干嘛的一直没显示过-->
             <TextView

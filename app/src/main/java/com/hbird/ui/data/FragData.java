@@ -62,8 +62,8 @@ public class FragData extends BaseFragment<FragDataBinding,BaseViewModel> {
         ziChanFragement = new FraAssets();
 
         fragements.add(chartFragement);
-        fragements.add(fenXiFragement);
         fragements.add(ziChanFragement);
+        fragements.add(fenXiFragement);
         pagerAdapter = new BaseFragementPagerAdapter(getChildFragmentManager(), fragements);
         binding.viewPager.setAdapter(pagerAdapter);
 

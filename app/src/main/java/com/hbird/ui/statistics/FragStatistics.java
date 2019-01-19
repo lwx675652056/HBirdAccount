@@ -3,18 +3,19 @@ package com.hbird.ui.statistics;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
-import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.OrientationHelper;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.chart_3_0_1v.charts.LineChart;
@@ -31,11 +32,7 @@ import com.github.mikephil.chart_3_0_1v.highlight.Highlight;
 import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.animation.Easing;
 import com.hbird.base.R;
-import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.databinding.FragStatisticsBinding;
-import com.hbird.base.mvc.adapter.barChart2Adapter;
-import com.hbird.base.mvc.adapter.barChartAdapter;
-import com.hbird.base.mvc.adapter.barChartTotypeAdapter;
 import com.hbird.base.mvc.bean.RealListEntity;
 import com.hbird.base.mvc.bean.ReturnBean.chartToBarReturn;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
@@ -43,14 +40,12 @@ import com.hbird.base.mvc.bean.YearAndMonthBean;
 import com.hbird.base.mvc.bean.YoyListEntity;
 import com.hbird.base.mvc.widget.MyChart.LineChartEntity;
 import com.hbird.base.mvc.widget.MyChart.NewMarkerView;
-import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
-import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
+import com.hbird.bean.StatisticsTopBean;
 import com.hbird.util.Utils;
 import com.hbird.widget.LineChartInViewPager;
-import com.ljy.devring.DevRing;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -73,43 +68,15 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     TextView topMoney;
 
-    private barChartAdapter mAdapter;
-    private barChartTotypeAdapter mTypeAdapter;
-    private barChart2Adapter dAdapter;
-    private String token;
-    private LinearLayoutManager mLayoutManager;
-    private ArrayList<YearAndMonthBean> mDayList;
-    private YearAndMonthBean b;
-    private ArrayList<YearAndMonthBean> dayList;
-    private double maxMoney;
-    private String beginWeek = "1";
-    private String endWeek = "53";
-    private String beginTime = "";
-    private String endTime = "";
-    private String thisTime = "";
-    private ArrayList<YearAndMonthBean> weekList;
-    private ArrayList<YearAndMonthBean> monthList;
     private int weeks;
     private String monthCurrent;
     private int years;
-    private String accountId;
     private List<RealListEntity> realList = new ArrayList<>();//此数据集合是用来对比折线用的 暂未用到 为空即可（方便对比两年的数据）
     private List<YoyListEntity> yoyList;
     private DecimalFormat mFormat;
     private List<Entry> values1, values2;
-    private RealListEntity realListEntity;
     private YoyListEntity yoyListEntity;
-    private LineChartInViewPager lineChart;
-    private LineChartInViewPager lineChart2;
-    private LineChartInViewPager lineChart3;
-    private LineChartInViewPager lineChartSr3;
-    private LineChartInViewPager lineChartSr2;
-    private LineChartInViewPager lineChartSr1;
-    private int firsts2 = 0;
-    private int firsts = 0;
-    private int first1s = 0;
-    private int first1s2 = 0;
-    private boolean isClick = true;
+
     int aaa = 0;
     boolean aa = false;
 
@@ -119,6 +86,23 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
     private List<StatisticsSpendTopArraysBean> list = new ArrayList<>();// 实际上显示的数据
     private List<StatisticsSpendTopArraysBean> t = new ArrayList<>();// 全部数据
 
+    private List<StatisticsTopBean> topList1 = new ArrayList<>();// 日的 年月信息
+    private TopAdapter1 adapter1;
+    private List<StatisticsTopBean> topList2 = new ArrayList<>();// 周月的 年信息
+    private TopAdapter2 adapter2;
+    private List<StatisticsTopBean> topList3 = new ArrayList<>();// 周月的 年信息
+    private TopAdapter3 adapter3;
+    private ArrayList<YearAndMonthBean> monthDayList = new ArrayList<>();// 每月中每天的数据
+    private ArrayList<YearAndMonthBean> yearWeekList = new ArrayList<>();// 每年中周的数据
+    private ArrayList<YearAndMonthBean> yearMonthList = new ArrayList<>();// 每年中月的数据
+    private String persionId;// 个人的ID
+    private int height_200;
+    private int dayYyyy;// 日标签已选择的年
+    private int dayMm;// 日标签已选择的月
+    private int weekYyyy;// 日标签已选择的年
+    private int monthYyyy;// 日标签已选择的年
+    private String thisTime = "";// 2019-01-01
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.frag_statistics;
@@ -126,6 +110,9 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     @Override
     public void initData() {
+        persionId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
+        height_200 = getResources().getDimensionPixelSize(R.dimen.dp_200_x);
+
         data = new StatisticsData();
         binding.setData(data);
         binding.setListener(new OnClick());
@@ -137,30 +124,140 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setNestedScrollingEnabled(false);
 
-        token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
         //获取当前周
-
         weeks = Utils.getYearToWeek();
         //获取当前月
         monthCurrent = DateUtils.getMonthCurrent();
         //造数据 一年中的每一天
         years = DateUtils.getYears();
-        beginTime = years + "-01-01";
-        endTime = years + "-12-31";
-        thisTime = DateUtils.getYearMonthDay();
-        dayList = getYearDate(years);
+
         getWeekDate();//初始化周数
         //初始化月的数据
         getMonthDate();
 
+        thisTime = DateUtils.getYearMonthDay();
+
+        dayYyyy = DateUtils.getYears();
+        dayMm = DateUtils.getMonthToNum() + 1;
+        weekYyyy = DateUtils.getYears();
+        monthYyyy = DateUtils.getYears();
+
+        adapter1 = new TopAdapter1(getActivity(), topList1, R.layout.row_top, (position, data, type) -> onTopItemClick(position, 1));
+        adapter1.setYyyy(dayYyyy, dayMm);
+        binding.recyclerView1.setAdapter(adapter1);
+        binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
+        binding.recyclerView1.setNestedScrollingEnabled(false);
+
+        adapter2 = new TopAdapter2(getActivity(), topList2, R.layout.row_top, (position, data, type) -> onTopItemClick(position, 2));
+        adapter2.setYyyy(weekYyyy);
+        binding.recyclerView2.setAdapter(adapter2);
+        binding.recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
+        binding.recyclerView2.setNestedScrollingEnabled(false);
+
+        adapter3 = new TopAdapter3(getActivity(), topList3, R.layout.row_top, (position, data, type) -> onTopItemClick(position, 3));
+        adapter3.setYyyy(monthYyyy);
+        binding.recyclerView3.setAdapter(adapter3);
+        binding.recyclerView3.setLayoutManager(new LinearLayoutManager(getActivity(), OrientationHelper.HORIZONTAL, false));
+        binding.recyclerView3.setNestedScrollingEnabled(false);
+
+        restTopList();
+
         loadDataForNet();
     }
 
-    public void loadDataForNet() {
-        accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-        thisTime = DateUtils.getYearMonthDay();
+    // 重置顶部数据
+    private void restTopList() {
+        topList1.clear();
+        topList2.clear();
+        topList3.clear();
+        int yyyy = DateUtils.getYears();
+        int mm = DateUtils.getMonthToNum();
+        for (int i = 0; i < 12; i++) {
+//            topList1.add(new StatisticsTopBean(yyyy, i + 1, i == mm));
+            topList1.add(new StatisticsTopBean(yyyy, i + 1));
+        }
+        int minYyyy = 2018;
+        while (minYyyy <= yyyy) {
+            topList2.add(new StatisticsTopBean(minYyyy, 0));
+            topList3.add(new StatisticsTopBean(minYyyy, 0));
+            minYyyy += 1;
+        }
+    }
 
-        getApiBarDate();//获取日周月 竖向柱状图的数据信息
+    // 日标签的顶部点击
+    private void onTopItemClick(int position, int type) {
+        if (type == 1) {
+            dayYyyy = topList1.get(position).yyyy;
+            dayMm = topList1.get(position).mm;
+            // 已选择的年月下该月的信息
+            adapter1.setYyyy(dayYyyy, dayMm);
+        } else if (type == 2) {
+            weekYyyy = topList2.get(position).yyyy;
+            getWeekDate();
+            adapter2.setYyyy(weekYyyy);
+        } else if (type == 3) {
+            monthYyyy = topList3.get(position).yyyy;
+            adapter3.setYyyy(monthYyyy);
+        }
+
+        loadDataForNet();
+    }
+
+
+    // 设置天的
+    private void setChartForksDay(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
+        getMonthDay(dayYyyy,dayMm-1);
+        for (int i = 0; i < arrays.size(); i++) {
+            long time = DateUtils.dateToTimestamp(arrays.get(i).getDayTime());
+            double money = arrays.get(i).getMoney();
+            String day = DateUtils.getMonthDays(time);
+            for (int j = 0; j < monthDayList.size(); j++) {
+                String s = monthDayList.get(j).getmDate();
+                if (TextUtils.equals(s, day)) {
+                    monthDayList.get(j).setMoney(money);
+                }
+            }
+        }
+        //柱状图列表 每一天的
+        setChartViews(1, monthDayList);
+    }
+
+    private void setChartForksWeek(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
+        getWeekDate();//初始化周数
+        for (int i = 0; i < arrays.size(); i++) {
+            int week = Integer.parseInt(arrays.get(i).getWeek());
+            double money = arrays.get(i).getMoney();
+            for (int j = 0; j <= yearWeekList.size(); j++) {
+                if (week == (j + 1)) {
+                    yearWeekList.get(j).setMoney(money);
+                }
+            }
+        }
+        //柱状图列表 每一周的
+        setChartViews(2, yearWeekList);
+    }
+
+    private void setChartForksMOnth(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
+        yearMonthList.clear();
+        getMonthDate();
+        for (int i = 0; i < arrays.size(); i++) {
+            String month2M = arrays.get(i).getMonth();
+            //获取当前月份
+            int i1 = Integer.parseInt(month2M);
+            double money = arrays.get(i).getMoney();
+            for (int j = 0; j < yearMonthList.size(); j++) {
+                if (i1 - 1 == j) {
+                    yearMonthList.get(j).setMoney(money);
+                }
+            }
+        }
+        //柱状图列表 每一周的
+        setChartViews(3, yearMonthList);
+    }
+
+
+    public void loadDataForNet() {
+        getApiBarDate();//获取日周月
         getRankingBar();//获取支出排行情绪消费统计
     }
 
@@ -168,39 +265,19 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         public void changeType(boolean isInCome) {
             data.setInCome(isInCome);
             Utils.playVoice(getActivity(), R.raw.changgui01);
-            if (isInCome) {// 收入
-                thisTime = DateUtils.getYearMonthDay();
-                weeks = Utils.getYearToWeek();
-                monthCurrent = DateUtils.getMonthCurrent();
-                loadDataForNet();
-            } else { // 支出
-                thisTime = DateUtils.getYearMonthDay();
-                weeks = Utils.getYearToWeek();
-                monthCurrent = DateUtils.getMonthCurrent();
-                loadDataForNet();
-            }
+            loadDataForNet();
         }
 
         // 切换了日期类型 1 2 3 , 日 周 年
         public void changeDateType(int pos) {
             data.setDateType(pos);
             Utils.playVoice(getActivity(), R.raw.changgui01);
-            if (pos == 1) {// 日
-                thisTime = DateUtils.getYearMonthDay();
-            } else if (pos == 2) {// 周
-                weeks = Utils.getYearToWeek();
-            } else if (pos == 3) {// 月
-                monthCurrent = DateUtils.getMonthCurrent();
-            }
             loadDataForNet();
         }
 
         // 个人数据全部数据的切换
         public void isAll(View view) {
             data.setAll(!data.isAll());
-            thisTime = DateUtils.getYearMonthDay();
-            weeks = Utils.getYearToWeek();
-            monthCurrent = DateUtils.getMonthCurrent();
             loadDataForNet();
         }
 
@@ -231,13 +308,13 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     // 获取日周月的支出排行榜和情绪消费统计
     private void getRankingBar() {
-        String persionId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
-        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), years, weeks, monthCurrent, accountId, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
+        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), years, weeks, monthCurrent, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
             @Override
             public void result(List<StatisticsSpendTopArraysBean> temp, double maxMoney) {
                 if (null != temp && temp.size() > 0) {
                     data.setNoDataRanking(false);
                     data.setShowOpen(temp.size() > 5);// 不显示展开按钮
+                    data.setOpen(temp.size() <= 5);// 设置默认显示“展开”
 
                     t.clear();
                     t.addAll(temp);
@@ -262,7 +339,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             }
         });
 
-        viewModel.getHappnessRanking(data.isAll(), persionId, data.getDateType(), (data.isInCome() ? 2 : 1), accountId, thisTime, years, weeks, monthCurrent, new FragStatisticsModle.OnHappnessRankingCallBack() {
+        viewModel.getHappnessRanking(data.isAll(), persionId, data.getDateType(), (data.isInCome() ? 2 : 1), thisTime, years, weeks, monthCurrent, new FragStatisticsModle.OnHappnessRankingCallBack() {
             @Override
             public void result(List<chartToRankingReturn.ResultBean.StatisticsSpendHappinessArraysBean> list, int totalCount) {
                 pieList.clear();
@@ -274,153 +351,37 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         });
     }
 
-
     private void getApiBarDate() {
-        String SQL = "";
-        String maxSQL = "";
-        String persionId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
-        //flag 1 2 3代表 日、周、月
         if (data.getDateType() == 1) {// 日
-            if (data.isAll()) {// 全部数据
-                //查询全年 每日的统计数据
-                SQL = "select sum(money) money,charge_date2 as day_time  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%j', charge_date2 )  order by  charge_date2 desc;";
-                //查询一年中日的最大值
-                maxSQL = "select max (moneyList.totalDay) as money from (select sum(money) as totalDay  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND DELFLAG = 0 AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%m-%d', charge_date2 ) ) as moneyList ;";
-            } else {
-                //查询全年 每日的统计数据
-                SQL = "select sum(money) money,charge_date2 as day_time  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND CREATE_BY= " + persionId + " AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%j', charge_date2 )  order by  charge_date2 desc;";
-                //查询一年中日的最大值
-                maxSQL = "select max (moneyList.totalDay) as money from (select sum(money) as totalDay  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND DELFLAG = 0 AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%m-%d', charge_date2 ) ) as moneyList ;";
-//                //查询全年 每日的统计数据
-//                SQL = "select sum(money) money,charge_date2 as day_time  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ACCOUNT_BOOK_ID=" + accountId + " AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND CREATE_BY= " + persionId + " AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%j', charge_date2 )  order by  charge_date2 desc;";
-//                //查询一年中日的最大值
-//                maxSQL = "select max (moneyList.totalDay) as money from (select sum(money) as totalDay  from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND ACCOUNT_BOOK_ID=" + accountId + " AND DELFLAG = 0 AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%m-%d', charge_date2 ) ) as moneyList ;";
-            }
+            viewModel.getDayData(persionId, dayYyyy, dayMm, data.isAll(), data.isInCome() ? 2 : 1, new FragStatisticsModle.onMonthCallBack() {
+                @Override
+                public void result(List<chartToBarReturn.ResultBean.ArraysBean> dbList) {
+                    setChartForksDay(dbList);
+                }
+            });
         } else if (data.getDateType() == 2) {// 周
-            if (data.isAll()) {// 全部数据
-                //查询 一年中54周的统计
-                SQL = "select sum(money) money ,strftime('%W', charge_date2) week from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2    from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND CREATE_BY= " + persionId + " AND DELFLAG = 0 AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%W', charge_date2 )  order by  week DESC;";
-                //查询一年中周的最大值
-                maxSQL = "SELECT max( moneyList.totalWeek) AS money FROM ( SELECT sum(money) AS totalWeek FROM (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND order_type = " + (data.isInCome() ? 2 : 1) + " AND strftime( '%Y',charge_date2 ) LIKE strftime( '%Y', date('now') ) GROUP BY strftime( '%Y-% W ', charge_date2 ) ) AS moneyList;";
-            } else {
-                //查询 一年中54周的统计
-                SQL = "select sum(money) money ,strftime('%W', charge_date2) week from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2    from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND CREATE_BY= " + persionId + " AND DELFLAG = 0 AND strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%W', charge_date2 )  order by  week DESC;";
-                //查询一年中周的最大值
-                maxSQL = "SELECT max( moneyList.totalWeek) AS money FROM ( SELECT sum(money) AS totalWeek FROM (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND order_type = " + (data.isInCome() ? 2 : 1) + " AND strftime( '%Y',charge_date2 ) LIKE strftime( '%Y', date('now') ) GROUP BY strftime( '%Y-% W ', charge_date2 ) ) AS moneyList;";
-            }
+            viewModel.getWeekData(persionId, weekYyyy, data.isAll(), data.isInCome() ? 2 : 1, new FragStatisticsModle.onMonthCallBack() {
+                @Override
+                public void result(List<chartToBarReturn.ResultBean.ArraysBean> dbList) {
+                    setChartForksWeek(dbList);
+                }
+            });
         } else if (data.getDateType() == 3) {// 月
-            if (data.isAll()) {// 全部数据
-                //查询 一年中12个月的统计
-                SQL = "select sum(money) money ,strftime('%m', charge_date2) month from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2    from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND  strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%m', charge_date2 )  order by  month ASC;";
-                //查询一年中月的最大值
-                maxSQL = "SELECT max( moneyList.totalWeek) AS money FROM ( SELECT sum(money) AS totalWeek FROM (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT  where 1=1) where delflag = 0 AND order_type = " + (data.isInCome() ? 2 : 1) + " AND strftime( '%Y',charge_date2 ) LIKE strftime( '%Y', date('now') ) GROUP BY strftime( '%Y-%m', charge_date2 ) ) AS moneyList;";
-            } else {
-                //查询 一年中12个月的统计
-                SQL = "select sum(money) money ,strftime('%m', charge_date2) month from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2    from  WATER_ORDER_COLLECT   where 1=1) where delflag = 0 AND ORDER_TYPE= " + (data.isInCome() ? 2 : 1) + " AND CREATE_BY= " + persionId + " AND  strftime('%Y', charge_date2) = '" + years + "' GROUP BY strftime( '%Y-%m', charge_date2 )  order by  month ASC;";
-                //查询一年中月的最大值
-                maxSQL = "SELECT max( moneyList.totalWeek) AS money FROM ( SELECT sum(money) AS totalWeek FROM (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT  where 1=1) where delflag = 0 AND order_type = " + (data.isInCome() ? 2 : 1) + " AND strftime( '%Y',charge_date2 ) LIKE strftime( '%Y', date('now') ) GROUP BY strftime( '%Y-%m', charge_date2 ) ) AS moneyList;";
-            }
-        }
-        Cursor cursorMax = DevRing.tableManager(WaterOrderCollect.class).rawQuery(maxSQL, null);
-        if (cursorMax != null) {
-            cursorMax.moveToFirst();
-            try {
-                String max = cursorMax.getString(0);
-                if (null == max || TextUtils.isEmpty(max)) {
-                    maxMoney = 0;
-                } else {
-                    maxMoney = Double.parseDouble(max);//最大值
+            viewModel.getMonthData(persionId, monthYyyy, data.isAll(), data.isInCome() ? 2 : 1, new FragStatisticsModle.onMonthCallBack() {
+                @Override
+                public void result(List<chartToBarReturn.ResultBean.ArraysBean> dbList) {
+                    setChartForksMOnth(dbList);
                 }
-            } catch (Exception e) {
-            }
-        }
-
-        Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(SQL, null);
-        if (cursor != null) {
-            List<chartToBarReturn.ResultBean.ArraysBean> dbList = new ArrayList<>();
-            dbList.clear();
-            if (null != cursor) {
-                dbList = DBUtil.changeToListDYY(cursor, dbList, chartToBarReturn.ResultBean.ArraysBean.class);
-            }
-            if (null != dbList && dbList.size() > 0) {
-                int size = dayList.size();
-                //如果是月 周 此处不需要执行
-                if (data.getDateType() == 1) {
-                    //只有日数据刷新时 执行此操作
-                    dayList.clear();
-                    dayList = getYearDate(years);
-                }
-                setChartForks(dbList);
-            }
+            });
         }
     }
-
-    private void setChartForks(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
-        if (data.getDateType() == 1) {
-            //日
-            for (int i = 0; i < arrays.size(); i++) {
-                //long time = arrays.get(i).getTime();
-                long time = DateUtils.dateToTimestamp(arrays.get(i).getDayTime());
-                double money = arrays.get(i).getMoney();
-                String day = DateUtils.getMonthDays(time);
-                for (int j = 0; j < dayList.size(); j++) {
-                    String s = dayList.get(j).getmDate();
-                    if (TextUtils.equals(s, day)) {
-                        dayList.get(j).setMoney(money);
-                    }
-                }
-            }
-            //柱状图列表 每一天的
-            setChartViews(1, dayList);
-        } else if (data.getDateType() == 2) {
-            //周
-            //对weekList重新初始化
-            if (null != weekList) {
-                weekList.clear();
-            }
-            getWeekDate();//初始化周数
-            for (int i = 0; i < arrays.size(); i++) {
-                String week = arrays.get(i).getWeek();
-                double money = arrays.get(i).getMoney();
-                for (int j = 0; j <= weekList.size(); j++) {
-                    if (null != week && week.equals((j + 1) + "")) {
-                        weekList.get(j).setMoney(money);
-                    }
-                }
-            }
-            //柱状图列表 每一周的
-            setChartViews(2, weekList);
-        } else {
-            //月
-            //对monthList初始化操作(重新初始化)
-            if (null != monthList) {
-                monthList.clear();
-            }
-            getMonthDate();
-            for (int i = 0; i < arrays.size(); i++) {
-                String month2M = arrays.get(i).getMonth();
-                //获取当前月份
-                int i1 = Integer.parseInt(month2M);
-                double money = arrays.get(i).getMoney();
-                for (int j = 0; j < monthList.size(); j++) {
-                    if (i1 - 1 == j) {
-                        monthList.get(j).setMoney(money);
-                    }
-                }
-            }
-            //柱状图列表 每一周的
-            setChartViews(3, monthList);
-        }
-    }
-
 
     //设置每天的
     private void setChartViews(final int item, final ArrayList<YearAndMonthBean> list) {
         //判断指定日期在集合中是第几个条目
         int pos = 0;
 
-        if (item == 1) {
-            //日 ，每天的数据
+        if (item == 1) { //日，每天的数据
             String currentTime = DateUtils.getMonthDays(new Date().getTime());
             for (int j = 0; j < list.size(); j++) {
                 String time = list.get(j).getmDate();
@@ -460,7 +421,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     private void setDateToCharts(int position, ArrayList<YearAndMonthBean> list) {
         //选中对应条目 刷新界面
-
         String s = list.get(position).getmDate();
         double money = list.get(position).getMoney();
         String formats = getEnumToNumer(money);
@@ -468,9 +428,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         topMoney.setText(formats);
         binding.natvMoney.setNumberString("0", formats);
         if (data.getDateType() == 1) {
-
-            int years = DateUtils.getYears();
-            thisTime = years + "-" + s;
+            thisTime = DateUtils.getYears() + "-" + s;
         } else if (data.getDateType() == 2) {
             weeks = position + 1;
         } else {
@@ -482,143 +440,77 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     //获取一年中所有的月份
     private void getMonthDate() {
-        monthList = new ArrayList<>();
+        yearMonthList = new ArrayList<>();
         for (int i = 1; i < 13; i++) {
             YearAndMonthBean bean = new YearAndMonthBean();
-            bean.setmDate(i + "月份");
+            bean.setmDate(i + "月");
             bean.setMoney(0);
-            monthList.add(bean);
+            yearMonthList.add(bean);
         }
     }
 
     //获取一年中的所有周数
     private void getWeekDate() {
-        weekList = new ArrayList<>();
+        yearWeekList.clear();
         for (int i = 1; i < 54; i++) {
             YearAndMonthBean bean = new YearAndMonthBean();
             String weekDay = getDateByWeeks(i);
-            //String weekDays = Utils.getWeekDays(2018, i, 1);
             bean.setmDate(weekDay);
             bean.setMoney(0);
-            weekList.add(bean);
+            yearWeekList.add(bean);
         }
     }
 
-    //获取一年中的每一天 365条数据 相当于
-    private ArrayList<YearAndMonthBean> getYearDate(int year) {
-        mDayList = new ArrayList<>();
-        for (int k = 0; k < 12; k++) {
-            //k表示月份
-            int dayNum = 0;
-            if (k == 0 || k == 2 || k == 4 || k == 6 || k == 7 || k == 9 || k == 11) {
-                //31天
-                dayNum = 32;
-                setList(k, dayNum);
-            } else if (k == 1) {
-                if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
-                    //29天
-                    dayNum = 30;
-                    setList(k, dayNum);
-                } else {
-                    //28天
-                    dayNum = 29;
-                    setList(k, dayNum);
-                }
-            } else {
-                //有30天
-                dayNum = 31;
-                setList(k, dayNum);
+    // 获取每月中的每一天
+    private ArrayList<YearAndMonthBean> getMonthDay(int year, int mm) {
+        monthDayList.clear();
+        int dayNum = 0;
+        if (mm == 0 || mm == 2 || mm == 4 || mm == 6 || mm == 7 || mm == 9 || mm == 11) { //31天
+            dayNum = 32;
+            setList(mm, dayNum);
+        } else if (mm == 1) {
+            //29天
+            if ((year % 4 == 0 && year % 100 != 0) || year % 400 == 0) {
+                dayNum = 30;
+                setList(mm, dayNum);
+            } else {//28天
+                dayNum = 29;
+                setList(mm, dayNum);
             }
+        } else { //有30天
+            dayNum = 31;
+            setList(mm, dayNum);
         }
-        return mDayList;
-
+        return monthDayList;
     }
 
     private void setList(int k, int dayNum) {
         for (int i = 1; i < dayNum; i++) {
-            b = new YearAndMonthBean();
+            YearAndMonthBean bean = new YearAndMonthBean();
             if (i < 10) {
                 if (k < 9) {
-                    b.setmDate("0" + (k + 1) + "-" + "0" + i);
-                    b.setMoney(0);
+                    bean.setmDate("0" + (k + 1) + "-" + "0" + i);
                 } else {
-                    b.setmDate((k + 1) + "-" + "0" + i);
-                    b.setMoney(0);
+                    bean.setmDate((k + 1) + "-" + "0" + i);
                 }
-
             } else {
                 if (k < 9) {
-                    b.setmDate("0" + (k + 1) + "-" + i);
-                    b.setMoney(0);
+                    bean.setmDate("0" + (k + 1) + "-" + i);
                 } else {
-                    b.setmDate((k + 1) + "-" + i);
-                    b.setMoney(0);
+                    bean.setmDate((k + 1) + "-" + i);
                 }
-
             }
-            mDayList.add(b);
+            bean.setMoney(0);
+            monthDayList.add(bean);
         }
     }
 
     private void initChart(int pos, ArrayList<YearAndMonthBean> list) {
         mFormat = new DecimalFormat("#,###.##");
-        lineChart = binding.newLineChart;
-        lineChart2 = binding.newLineChart2;
-        lineChart3 = binding.newLineChart3;
-        lineChartSr1 = binding.srLineChart1;
-        lineChartSr2 = binding.srLineChart2;
-        lineChartSr3 = binding.srLineChart3;
-        //这个地方不去复用的原因是 复用时数据之间会相互影响  单独的数据UI界面之间不会相互影响
-        if (data.getDateType() == 3) {    //月
-            if (data.isInCome()) {  //收入的
-                lineChart.setVisibility(View.GONE);
-                lineChart2.setVisibility(View.GONE);
-                lineChart3.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.GONE);
-                lineChartSr2.setVisibility(View.GONE);
-                lineChartSr3.setVisibility(View.VISIBLE);
-            } else {
-                lineChart.setVisibility(View.GONE);
-                lineChart2.setVisibility(View.GONE);
-                lineChart3.setVisibility(View.VISIBLE);
-                lineChartSr3.setVisibility(View.GONE);
-                lineChartSr2.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.GONE);
-            }
-        } else if (data.getDateType() == 2) {    //周
-            if (data.isInCome()) {   //收入的
-                lineChart.setVisibility(View.GONE);
-                lineChart2.setVisibility(View.GONE);
-                lineChart3.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.GONE);
-                lineChartSr2.setVisibility(View.VISIBLE);
-                lineChartSr3.setVisibility(View.GONE);
-            } else {
-                lineChart.setVisibility(View.GONE);
-                lineChart2.setVisibility(View.VISIBLE);
-                lineChart3.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.GONE);
-                lineChartSr2.setVisibility(View.GONE);
-                lineChartSr3.setVisibility(View.GONE);
-            }
-
-        } else if (data.getDateType() == 1) {  //日
-            if (data.isInCome()) {  //收入的
-                lineChart.setVisibility(View.GONE);
-                lineChart2.setVisibility(View.GONE);
-                lineChart3.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.VISIBLE);
-                lineChartSr2.setVisibility(View.GONE);
-                lineChartSr3.setVisibility(View.GONE);
-            } else {
-                lineChart.setVisibility(View.VISIBLE);
-                lineChart2.setVisibility(View.GONE);
-                lineChart3.setVisibility(View.GONE);
-                lineChartSr3.setVisibility(View.GONE);
-                lineChartSr2.setVisibility(View.GONE);
-                lineChartSr1.setVisibility(View.GONE);
-            }
-        }
+        binding.flParent.removeAllViews();
+        LineChartInViewPager lineCharts = new LineChartInViewPager(getActivity());
+        lineCharts.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
+        binding.flParent.addView(lineCharts);
 
         values1 = new ArrayList<>();
         values2 = new ArrayList<>();
@@ -638,21 +530,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             }
         }
 
-        for (int i = 0; i < realList.size(); i++) {
-            realListEntity = realList.get(i);
-            String amount = realListEntity.getAmount();
-            if (amount != null) {
-                float f = 0;
-                try {
-                    f = Float.parseFloat(amount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    f = 0;
-                }
-                Entry entry = new Entry(i + 1, f);
-                values2.add(entry);
-            }
-        }
         //折线图下面阴影遮罩的颜色
         Drawable[] drawables = {
                 ContextCompat.getDrawable(getActivity(), R.drawable.chart_thisyear_blue),
@@ -666,49 +543,36 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         }
 
         String lastYear = "";
-        if (yoyList.size() > 0) {
-            //去掉右上角的 圆点2018
+        if (yoyList.size() > 0) {  //去掉右上角的 圆点2018
             lastYear = yoyList.get(0).getYear();
         }
         String[] labels = new String[]{thisYear, lastYear};
 
-        if (data.getDateType() == 3) {
-            if (data.isInCome()) {    //收入的
-                updateLinehart(yoyList, realList, lineChartSr3, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            } else {
-                updateLinehart(yoyList, realList, lineChart3, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            }
-        } else if (data.getDateType() == 2) {
-            if (data.isInCome()) {   //收入的
-                if (firsts2 == 0) {
-                    //重复添加一遍的原因为 第一次添加会产生一个页面加载全部数据 挤到一块的问题 （删除自己看）
-                    updateLinehart(yoyList, realList, lineChartSr2, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-                }
-                firsts2 = firsts2 + 1;
-                updateLinehart(yoyList, realList, lineChartSr2, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            } else {
-                if (firsts == 0) {
-                    //重复添加一遍的原因为 第一次添加会产生一个页面加载全部数据 挤到一块的问题 （删除自己看）
-                    updateLinehart(yoyList, realList, lineChart2, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-                }
-                firsts = firsts + 1;
-                updateLinehart(yoyList, realList, lineChart2, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            }
-        } else if (data.getDateType() == 1) {
-            if (data.isInCome()) {   //收入
-                if (first1s2 == 0) {
-                    updateLinehart(yoyList, realList, lineChartSr1, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-                }
-                first1s2 = first1s2 + 1;
-                updateLinehart(yoyList, realList, lineChartSr1, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            } else { //支出
-                if (first1s == 0) {
-                    updateLinehart(yoyList, realList, lineChart, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-                }
-                first1s = first1s + 1;
-                updateLinehart(yoyList, realList, lineChart, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-            }
-        }
+//        if (data.getDateType() == 3) {// 月
+//            if (data.isInCome()) {    //收入的
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            } else {
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            }
+//        } else if (data.getDateType() == 2) {// 周
+//            if (data.isInCome()) {   //收入的
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            } else {
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            }
+//        } else if (data.getDateType() == 1) {// 日
+//            if (data.isInCome()) {   //收入
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            } else { //支出
+        updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+        updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
+//            }
+//        }
     }
 
     // 双平滑曲线传入数据，添加markview，添加实体类单位
@@ -718,6 +582,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         entries[1] = values2;
         LineChartEntity lineChartEntity = new LineChartEntity(lineChart, entries, labels, colors, Color.parseColor("#999999"), 12f);
         lineChartEntity.drawCircle(true);
+
         lineChart.setScaleMinima(1.0f, 1.0f);
         toggleFilled(lineChartEntity, drawables, colors);
 
@@ -732,6 +597,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         //lineChart.getViewPortHandler().setMinMaxScaleX(2,2);
         //lineChart.highlightValue(pos,pos);//设置 默认显示对应月份时间 对应的记账金额 (0,0 默认显示第一个覆盖物)（不起作用 醉了）
         //lineChart.getLineData().getDataSets().get(0).setVisible(true); //线条的隐藏以及显示
+//        lineChart.getAxisLeft().setLabelCount(4);
 
         if (data.getDateType() == 3) {
            /* lineChart.setDragEnabled(false);//设置是否可拖拽
@@ -799,7 +665,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChartEntity.setDataValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "");
 
         final NewMarkerView markerView = new NewMarkerView(getActivity(), R.layout.custom_marker_view_layout);
-
         markerView.setCallBack(new NewMarkerView.CallBack() {
             @Override
             public void onCallBack(float x, String value) {
