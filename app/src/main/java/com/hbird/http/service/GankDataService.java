@@ -1,6 +1,7 @@
 package com.hbird.http.service;
 
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
+import com.hbird.bean.AccountBean;
 import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.EditAddressBean;
 import com.hbird.bean.SaveMoneyBean;
@@ -37,6 +38,11 @@ public interface GankDataService {
     @POST("verifycodeToRegister/")
     Observable<HttpResult<String>> getRegisterCode(@Body RequestBody body);
 
+    // 获取登录验证码
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("verifycodeToLogin/")
+    Observable<HttpResult<String>> getLoginVerifycode(@Body RequestBody body);
+
     // 手机号注册
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("register/android")
@@ -67,8 +73,20 @@ public interface GankDataService {
 
 
 
+    // 手机号密码登录
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("login/")
+    Observable<HttpResult<String>> login(@Body RequestBody body);
 
+    // 通过短信验证码登录
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("loginByCode/")
+    Observable<HttpResult<String>> loginByVerifyCode(@Body RequestBody body);
 
+    // 获取我的账本接口--->切换账本页请求
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("getABAll/android")
+    Observable<HttpResult<List<AccountBean>>> getAllzb(@Header("X-AUTH-TOKEN") String token);
 
 
     // 获取收入类型标签

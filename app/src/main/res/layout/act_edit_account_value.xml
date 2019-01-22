@@ -28,6 +28,8 @@
             android:id="@+id/toolbar"
             layout="@layout/header_white_toolbar"/>
 
+        <View style="@style/horizontal_line"/>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -52,16 +54,16 @@
                     requestFocus="@{data.edit}"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@{data.edit?@color/bg_468de1:@color/white}"
+                    android:background="@drawable/bg_account_edit"
                     android:clickable="@{data.edit}"
                     android:enabled="@{data.edit}"
                     android:focusable="@{data.edit}"
                     android:imeOptions="actionDone"
-                    android:textCursorDrawable="@null"
                     android:minHeight="0dp"
                     android:singleLine="true"
                     android:text="@{bean.assetsName}"
                     android:textColor="@{data.edit?@color/white:@color/text_333333}"
+                    android:textCursorDrawable="@null"
                     android:textSize="16sp"/>
 
                 <ImageView
@@ -107,7 +109,10 @@
                     android:paddingTop="@dimen/dp_10_x"
                     android:text="@{String.valueOf(bean.money)}"
                     android:textColor="#333333"
-                    android:textSize="20sp"/>
+                    android:textSize="20sp">
+
+                    <requestFocus/>
+                </EditText>
             </LinearLayout>
         </LinearLayout>
 
@@ -116,7 +121,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/dp_50_x"
             android:layout_marginStart="@dimen/dp_50_x"
-            android:layout_marginTop="@dimen/dp_40_x"
+            android:layout_marginTop="@dimen/dp_20_x"
             android:background="@drawable/select_main_button"
             android:gravity="center"
             android:onClick="@{listener.save}"

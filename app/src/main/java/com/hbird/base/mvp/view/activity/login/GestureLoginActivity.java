@@ -5,12 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
-import com.hbird.base.app.RingApplication;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.global.ACache;
@@ -18,14 +17,10 @@ import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvc.widget.LockPatternView;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-
 import com.hbird.base.mvp.view.iview.login.IGestureLoginView;
-import com.hbird.base.mvp.presenter.login.GestureLoginPresenter;
-
-import com.hbird.base.R;
 import com.hbird.base.util.LockPatternUtil;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
-import com.ljy.devring.util.RingToast;
 
 import java.util.List;
 
@@ -210,7 +205,7 @@ public class GestureLoginActivity extends BaseActivity<BaseActivityPresenter> im
 
         Intent intent = getIntent();//获取传来的intent对象
         String data = intent.getStringExtra("comfrom");
-        Intent intentNew = new Intent(GestureLoginActivity.this, loginActivity.class);
+        Intent intentNew = new Intent(GestureLoginActivity.this, ActLogin.class);
         if (data!=null && data.equals("modify")) {//来自于修改界面,验证成功后进入创建手势密码界面
             //打开创建手势密码界面
             intentNew.putExtra("comfrom","modify_forget");

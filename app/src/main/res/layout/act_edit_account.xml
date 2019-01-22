@@ -16,26 +16,33 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#F6F6F6"
         android:orientation="vertical">
 
         <include
             android:id="@+id/toolbar"
             layout="@layout/header_white_toolbar"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:overScrollMode="never"
-            android:scrollbars="none"/>
+            android:descendantFocusability="blocksDescendants">
+
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:overScrollMode="never"
+                android:scrollbars="none"/>
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:onClick="@{listener.editAndDelete}"
             android:layout_height="wrap_content"
             android:background="@drawable/select_white_0px"
-            android:gravity="center">
+            android:gravity="center"
+            android:onClick="@{listener.editAndDelete}">
 
             <ImageView
                 android:layout_width="wrap_content"

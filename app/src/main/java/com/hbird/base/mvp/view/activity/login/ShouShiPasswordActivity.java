@@ -3,24 +3,17 @@ package com.hbird.base.mvp.view.activity.login;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
+import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.global.ACache;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
-import com.hbird.base.mvp.view.activity.login.GestureLoginActivity;
-import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvp.view.activity.base.BaseActivity;
-
-import com.hbird.base.mvp.view.iview.login.IShouShiPasswordView;
 import com.hbird.base.mvp.presenter.login.ShouShiPasswordPresenter;
-
-import com.hbird.base.R;
-import com.hbird.base.util.SPUtil;
+import com.hbird.base.mvp.view.activity.base.BaseActivity;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
-
-import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -139,7 +132,7 @@ public class ShouShiPasswordActivity extends BaseActivity<ShouShiPasswordPresent
     void forgetGesturePasswrod() {
         Intent intent = getIntent();//获取传来的intent对象
         String data = intent.getStringExtra("comfrom");
-        Intent intentNew = new Intent(ShouShiPasswordActivity.this, loginActivity.class);
+        Intent intentNew = new Intent(ShouShiPasswordActivity.this, ActLogin.class);
         //if (data!=null && data.equals("modify")) {//来自于修改界面,验证成功后进入创建手势密码界面
             //打开创建手势密码界面
             intentNew.putExtra("comfrom","modify_forget");

@@ -216,6 +216,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                     LogUtil.e(strJson);
                     //登录成功
                     if (strCode.equals("200")) {
+                        if (listener != null ){
+                            listener.onClick(0,strResult,0);
+                        }
                         DevRing.busManager().postEvent(new WxLoginEvent(strResult));
                     }
                     else{

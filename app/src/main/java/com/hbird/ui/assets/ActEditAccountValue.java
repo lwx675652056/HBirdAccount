@@ -25,6 +25,7 @@ import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import sing.common.base.BaseActivity;
 import sing.common.base.BaseViewModel;
 import sing.common.util.StatusBarUtil;
+import sing.util.KeyboardUtil;
 import sing.util.ToastUtil;
 
 /**
@@ -73,10 +74,11 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
         binding.setBean(bean);
 
         data = new AssetsData();
-        data.setEdit(false);
         binding.setData(data);
 
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+
+        KeyboardUtil.openKeybord(binding.etMoney, this);
     }
 
 
@@ -157,5 +159,11 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
             public void onError(String s) {
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        KeyboardUtil.closeKeybord(binding.etMoney, this);
+        super.onBackPressed();
     }
 }

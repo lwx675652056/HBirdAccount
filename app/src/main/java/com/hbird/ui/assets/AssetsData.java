@@ -17,6 +17,10 @@ public class AssetsData extends BaseObservable {
     private String value = "0.00";// 资产值
     private boolean edit = false;// 是否为编辑名称状态
 
+    public AssetsData() {
+        setEdit(false);
+    }
+
     @Bindable
     public String getTime() {
         return time;

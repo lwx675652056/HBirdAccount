@@ -1,0 +1,259 @@
+<layout>
+
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="data"
+            type="com.hbird.ui.login_register.LoginData"/>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.login_register.ActLogin.OnClick"/>
+
+        <import type="android.text.TextUtils"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/header_white_toolbar"/>
+
+        <View style="@style/horizontal_line"/>
+
+        <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:fillViewport="true">-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:paddingEnd="@dimen/dp_50_x"
+            android:paddingStart="@dimen/dp_50_x">
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_30_x"
+                android:layout_gravity="center_vertical"
+                android:layout_marginBottom="@dimen/dp_40_x"
+                android:layout_marginEnd="@dimen/dp_50_x"
+                android:layout_marginStart="@dimen/dp_50_x"
+                android:layout_marginTop="@dimen/dp_40_x"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    style="@style/radio_head_bg"
+                    android:background="@drawable/select_login_left"
+                    android:checked="@{data.isPassword?true:false}"
+                    android:onClick="@{() -> listener.change()}"
+                    android:text="密码登录"/>
+
+                <RadioButton
+                    style="@style/radio_head_bg"
+                    android:background="@drawable/select_login_right"
+                    android:checked="@{data.isPassword?false:true}"
+                    android:onClick="@{() -> listener.change()}"
+                    android:text="验证码登录"/>
+            </RadioGroup>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical">
+
+                <EditText
+                    android:id="@+id/et_phone"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入手机号"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@={data.phone1}"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="@dimen/dp_10_x"
+                    android:onClick="@{listener.clear}"
+                    android:src="@mipmap/icon_qingkong_normal"
+                    android:visibility="@{TextUtils.isEmpty(data.phone1)?View.GONE:View.VISIBLE}"/>
+            </LinearLayout>
+
+            <View style="@style/horizontal_line"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15_x"
+                android:gravity="center_vertical"
+                android:visibility="@{data.isPassword?View.VISIBLE:View.GONE}">
+
+                <EditText
+                    android:id="@+id/et_password"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入密码"
+                    android:inputType="textPassword"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:text="@={data.password}"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:onClick="@{listener.showPassword}"
+                    android:paddingStart="@dimen/dp_10_x"
+                    android:src="@{data.showPassword?@drawable/icon_mmkj_normal:@drawable/icon_mmbkj_normal}"/>
+            </LinearLayout>
+
+            <View
+                style="@style/horizontal_line"
+                android:visibility="@{data.isPassword?View.VISIBLE:View.GONE}"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_15_x"
+                android:gravity="center_vertical"
+                android:visibility="@{data.isPassword?View.GONE:View.VISIBLE}">
+
+                <EditText
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:hint="请输入验证码"
+                    android:text="@={data.code}"
+                    android:inputType="number"
+                    android:paddingBottom="@dimen/dp_10_x"
+                    android:paddingTop="@dimen/dp_10_x"
+                    android:textColor="#333333"
+                    android:textSize="16sp"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:onClick="@{listener.getCode}"
+                    android:paddingStart="@dimen/dp_10_x"
+                    android:clickable="@{data.clickable}"
+                    android:text="@{data.time}"
+                    android:textColor="#D80200"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <View
+                style="@style/horizontal_line"
+                android:visibility="@{data.isPassword?View.GONE:View.VISIBLE}"/>
+
+            <!--找回密码 注册-->
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{listener.findPassword}"
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_20_x"
+                    android:text="@string/login_text_forget_pwd"
+                    android:textColor="#808080"
+                    android:textSize="14sp"
+                    android:visibility="@{data.isPassword?View.VISIBLE:View.GONE}"/>
+
+                <View
+                    android:layout_width="0dp"
+                    android:layout_height="1dp"
+                    android:layout_weight="1"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="@{listener.register}"
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_20_x"
+                    android:text="注册"
+                    android:textColor="#2F54EB"
+                    android:textSize="14sp"/>
+            </LinearLayout>
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="10dp"
+                android:layout_weight="1"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@{data.isLoginClickable?@drawable/select_main_button:@drawable/shape_gray_8px}"
+                android:clickable="@{data.isLoginClickable}"
+                android:gravity="center"
+                android:onClick="@{listener.login}"
+                android:padding="@dimen/dp_13_x"
+                android:text="登录"
+                android:textColor="@color/white"
+                android:textSize="16sp"/>
+
+            <FrameLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <View
+                    style="@style/horizontal_line"
+                    android:layout_gravity="center"/>
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="@color/white"
+                    android:padding="@dimen/dp_10_x"
+                    android:text="or"
+                    android:textColor="#CDCDCD"
+                    android:textSize="14sp"/>
+            </FrameLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/dp_40_x"
+                android:background="@mipmap/dl_btn_wxdlxx_normal"
+                android:gravity="center"
+                android:onClick="@{listener.wxLogin}">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:drawableStart="@mipmap/dl_icon_weixinh_normal"
+                    android:gravity="center"
+                    android:padding="@dimen/dp_13_x"
+                    android:text="微信登录"
+                    android:textColor="#D80200"
+                    android:textSize="16sp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <!--</ScrollView>-->
+    </LinearLayout>
+</layout>

@@ -82,6 +82,8 @@ public class ActEditAccount extends BaseActivity<ActEditAccountBinding, BaseView
         adapter.setData(false);// 不是删除状态
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+        binding.recyclerView.setItemAnimator(null);//设置动画为null来解决闪烁问题
 
         getData();
     }
@@ -116,7 +118,7 @@ public class ActEditAccount extends BaseActivity<ActEditAccountBinding, BaseView
                 ZiChanInfoReturn.ResultBean result = ((ZiChanInfoReturn) b).getResult();
                 list.clear();
                 list.addAll(result.getAssets());
-                adapter.notifyDataSetChanged();
+                adapter.notifyItemRangeChanged(0, list.size());
             }
 
             @Override

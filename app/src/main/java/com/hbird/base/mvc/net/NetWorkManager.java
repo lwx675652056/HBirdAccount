@@ -54,10 +54,10 @@ import com.hbird.base.mvc.bean.ReturnBean.chartToRanking2Return;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.bean.ReturnBean.indexDatasReturn;
 import com.hbird.base.mvc.bean.dayListBean;
-import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.JSONUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.checkInterCode;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.http.support.observer.CommonObserver;
 import com.ljy.devring.http.support.throwable.HttpThrowable;
@@ -151,7 +151,7 @@ public class NetWorkManager {
 
             //杀掉所有Activity，返回打开登录界面
             DevRing.activityListManager().killAll();
-            context.startActivity(new Intent(context, loginActivity.class));
+            context.startActivity(new Intent(context, ActLogin.class));
         }
     }
 

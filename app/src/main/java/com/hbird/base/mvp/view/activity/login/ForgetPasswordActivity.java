@@ -8,27 +8,19 @@ import android.support.design.widget.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.HideReturnsTransformationMethod;
-import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvp.model.login.ForgetPasswordModel;
-import com.hbird.base.mvp.model.login.loginModel;
-import com.hbird.base.mvp.presenter.login.loginPresenter;
-import com.hbird.base.mvp.view.activity.base.BaseActivity;
-
-import com.hbird.base.mvp.view.iview.login.IForgetPasswordView;
 import com.hbird.base.mvp.presenter.login.ForgetPasswordPresenter;
-
-import com.hbird.base.R;
+import com.hbird.base.mvp.view.activity.base.BaseActivity;
+import com.hbird.base.mvp.view.iview.login.IForgetPasswordView;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 
@@ -196,7 +188,7 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
     @Override
     public void resetPasswordSuccess() {
         RingToast.show("密码重置成功！");
-        DevRing.activityListManager().killActivity(loginActivity.class); //退出loginActivity
+        DevRing.activityListManager().killActivity(ActLogin.class); //退出loginActivity
         //
         Intent intentNew = new Intent(ForgetPasswordActivity.this, CreateGestureActivity.class);
         //清空手势密码

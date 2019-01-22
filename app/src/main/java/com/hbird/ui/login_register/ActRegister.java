@@ -18,12 +18,10 @@ import com.hbird.base.R;
 import com.hbird.base.databinding.ActRegisterBinding;
 import com.hbird.base.mvc.activity.WebViewActivity;
 import com.hbird.base.mvc.activity.homeActivity;
-import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.bean.TitleBean;
 import com.hbird.ui.fill_invitation.ActFillInvitation;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
-import com.ljy.devring.util.RingToast;
 
 import sing.common.base.BaseActivity;
 import sing.common.listener.OnTextChangedListener;
@@ -94,6 +92,10 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
     }
 
     public class OnClick {
+        public void clear(View view) {
+            data.setPhone1("");
+        }
+
         public void onFocus(View view) {
             binding.etPassword.setFocusable(true);
             binding.etPassword.requestFocus();
@@ -121,7 +123,7 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
                 ToastUtil.showShort("请输入正确的手机号");
             } else {
                 viewModel.getCode(data.getPhone(), toHome -> {
-                    if (toHome){
+                    if (toHome) {
                         time.start();// 开始计时
                     }
                 });
@@ -130,28 +132,28 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
 
         // 注册
         public void register(View view) {
-            if (TextUtils.isEmpty(data.getPhone()) || data.getPhone().length()!=11 ||!data.getPhone().startsWith("1")){
+            if (TextUtils.isEmpty(data.getPhone()) || data.getPhone().length() != 11 || !data.getPhone().startsWith("1")) {
                 ToastUtil.showShort("请输入正确的手机号");
                 return;
             }
-            if (TextUtils.isEmpty(data.getCode())){
+            if (TextUtils.isEmpty(data.getCode())) {
                 ToastUtil.showShort("请输入密码");
                 return;
             }
-            if (TextUtils.isEmpty(data.getPassword())||data.getPassword().length()<6){
+            if (TextUtils.isEmpty(data.getPassword()) || data.getPassword().length() < 6) {
                 ToastUtil.showShort("请输入6位以上密码");
                 return;
             }
 
-            viewModel.register(data.getPhone(),data.getPassword(),data.getCode(), toHome -> {
+            viewModel.register(data.getPhone(), data.getPassword(), data.getCode(), toHome -> {
                 ToastUtil.showShort("注册成功");
-                if (toHome){// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
+                if (toHome) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
                     startActivity(new Intent(ActRegister.this, homeActivity.class));
-                }else{
+                } else {
                     startActivity(new Intent(ActRegister.this, ActFillInvitation.class));
                 }
 
-                DevRing.activityListManager().killActivity(loginActivity.class); //退出loginActivity
+                DevRing.activityListManager().killActivity(ActLogin.class); //退出loginActivity
                 finish();
             });
         }

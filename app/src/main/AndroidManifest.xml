@@ -103,11 +103,19 @@
             android:screenOrientation="portrait"/>
 
         <!--统计 详情-->
-        <activity android:name="com.hbird.ui.statistics_details.ActRankingDetails"
-                  android:theme="@style/TranslucentTheme"/>
+        <activity
+            android:name="com.hbird.ui.statistics_details.ActRankingDetails"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
         <!--统计 饼图 详情-->
-        <activity android:name="com.hbird.ui.statistics_details.ActPieChartRanking"
-                  android:theme="@style/TranslucentTheme"/>
+        <activity
+            android:name="com.hbird.ui.statistics_details.ActPieChartRanking"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
+        <!--登录-->
+        <activity
+            android:name="com.hbird.ui.login_register.ActLogin"
+            android:screenOrientation="portrait"/>
 
         <activity
             android:name=".mvc.activity.homeActivity"

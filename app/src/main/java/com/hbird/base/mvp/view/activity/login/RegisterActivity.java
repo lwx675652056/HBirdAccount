@@ -33,6 +33,7 @@ import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.common.Constants;
 import com.hbird.ui.fill_invitation.ActFillInvitation;
+import com.hbird.ui.login_register.ActLogin;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
@@ -407,7 +408,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
             startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
         }
 
-        DevRing.activityListManager().killActivity(loginActivity.class); //退出loginActivity
+        DevRing.activityListManager().killActivity(ActLogin.class); //退出loginActivity
         finish();
     }
 }

@@ -26,13 +26,13 @@ import com.hbird.base.mvc.widget.DownLoadDialog;
 import com.hbird.base.mvp.presenter.sys.SplashPresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.activity.login.GestureLoginActivity;
-import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.mvp.view.iview.sys.ISplashView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.PermissionUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 import com.hbird.base.util.alarmClock.AlarmManagerUtil;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.util.FileUtil;
@@ -131,7 +131,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                         mainIntent = new Intent(SplashActivity.this, GestureLoginActivity.class);
                         mainIntent.putExtra("comfrom", "splash");
                     } else if (isOpen && GestureUtil.beOverMaxErrNum()) {//如果当前是开启状态，并且没有超过最大错误次数，登录验证
-                        mainIntent = new Intent(SplashActivity.this, loginActivity.class);
+                        mainIntent = new Intent(SplashActivity.this, ActLogin.class);
                         //这中情况下，如果登录成功，需要清空手势密码
                         mainIntent.putExtra("comfrom", "splash_overmaxnum");
                     } else {
@@ -140,7 +140,7 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                         return;
                     }
                 } else {//否则显示登录界面
-                    mainIntent = new Intent(SplashActivity.this, loginActivity.class);
+                    mainIntent = new Intent(SplashActivity.this, ActLogin.class);
                 }
                 SplashActivity.this.startActivity(mainIntent);
                 SplashActivity.this.finish();

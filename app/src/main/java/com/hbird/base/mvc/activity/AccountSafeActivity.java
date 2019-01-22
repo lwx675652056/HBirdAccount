@@ -20,9 +20,9 @@ import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.mvp.view.activity.login.loginActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
+import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.sobot.chat.SobotApi;
@@ -34,7 +34,6 @@ import butterknife.OnClick;
 import sing.util.SharedPreferencesUtil;
 
 import static com.hbird.base.R.color.text_468DE1;
-import static com.hbird.base.mvp.view.activity.login.loginActivity.isWeChatAppInstalled;
 
 /**
  * Created by Liul on 2018/7/5.
@@ -240,7 +239,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
 
                 //杀掉所有Activity，返回打开登录界面
                 DevRing.activityListManager().killAll();
-                startActivity(new Intent(getApplicationContext(), loginActivity.class));
+                startActivity(new Intent(getApplicationContext(), ActLogin.class));
                 break;
         }
     }
@@ -271,7 +270,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
 
     private void doWeChatLogin() {
         //先判断是否安装微信APP,按照微信的说法，目前移动应用上微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
-        if (!isWeChatAppInstalled(this)) {
+        if (!ActLogin.isWeChatAppInstalled(this)) {
             RingToast.show("您还未安装微信客户端");
         } else {
             SendAuth.Req req = new SendAuth.Req();

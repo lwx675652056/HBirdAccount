@@ -3,19 +3,19 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/bg_f6"
+    android:background="#F6F6F6"
     android:orientation="vertical">
 
-    <include  layout="@layout/header_white_toolbar"/>
+    <include layout="@layout/header_white_toolbar"/>
 
     <LinearLayout
         android:id="@+id/ll_types"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_15_x"
-        android:layout_marginTop="@dimen/dp_15_x"
+        android:layout_marginEnd="@dimen/dp_15_x"
         android:layout_marginStart="@dimen/dp_15_x"
-        android:layout_marginEnd="@dimen/dp_15_x" >
+        android:layout_marginTop="@dimen/dp_15_x">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -32,7 +32,7 @@
                 <ImageView
                     android:id="@+id/iv_icon"
                     android:layout_width="@dimen/dp_15_x"
-                    android:layout_height="@dimen/dp_15_x" />
+                    android:layout_height="@dimen/dp_15_x"/>
             </RelativeLayout>
 
             <TextView
@@ -87,23 +87,24 @@
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/dp_15_x"
         android:layout_marginRight="@dimen/dp_15_x"
-        android:background="@color/bg_e2"
+        android:background="#E2E2E2"
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:orientation="vertical">
 
         <EditText
             android:id="@+id/et_record"
-            android:padding="@dimen/dp_7_x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:ellipsize="end"
-            android:hint="备注：（20字以内）"
-            android:maxLength="20"
-            android:lines="2"
             android:gravity="top|start"
+            android:hint="备注：（20字以内）"
+            android:lines="2"
+            android:maxLength="20"
+            android:padding="@dimen/dp_7_x"
             android:scrollbars="vertical"
+            android:textColor="#BDBDBD"
             android:textSize="14sp"/>
 
         <TextView
@@ -111,8 +112,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp_10_x"
             android:layout_marginBottom="@dimen/dp_10_x"
+            android:layout_marginEnd="@dimen/dp_10_x"
             android:text="0/20"
             android:textColor="@color/text_808080"
             android:textSize="12sp"/>
@@ -123,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15_x"
-        android:layout_marginTop="@dimen/dp_10_x" >
+        android:layout_marginTop="@dimen/dp_10_x">
 
         <TextView
             android:layout_width="wrap_content"
