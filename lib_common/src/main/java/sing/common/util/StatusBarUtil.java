@@ -2,6 +2,7 @@ package sing.common.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Build;
 import android.view.View;
@@ -179,5 +180,21 @@ public class StatusBarUtil {
             }
         }
         return result;
+    }
+
+    // 获取状态栏高度
+    public static int getStateBarHeight(Context context) {
+        Class c = null;
+        try {
+            c = Class.forName("com.android.internal.R$dimen");
+            Object obj = c.newInstance();
+            Field field = c.getField("status_bar_height");
+            int x = Integer.parseInt(field.get(obj).toString());
+            int statusBarHeight = context.getResources().getDimensionPixelSize(x);
+            return statusBarHeight;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return 60;
+        }
     }
 }

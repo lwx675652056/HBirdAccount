@@ -11,9 +11,11 @@ import com.hbird.base.mvc.bean.ReturnBean.chartToBarReturn;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.DBUtil;
+import com.hbird.base.util.DateUtil;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.ljy.devring.DevRing;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,7 @@ public class FragStatisticsModle extends BaseViewModel {
 
 
     // 支出排行榜 某个类的具体条目
-    public void getRanking(boolean isAll, String persionId, int dateType, int years, int weeks, String monthCurrent,
+    public void getRanking(boolean isAll, String persionId, int dateType, String firstDay,String lastDay,int years, int weeks, String monthCurrent,
                            String thisTime, int orderType, TextView topMoney, OnRankingCallBack callBack) {
         String sql = "";//日支出收入排行榜
         if (dateType == 1) {
@@ -36,17 +38,41 @@ public class FragStatisticsModle extends BaseViewModel {
                         + " where wo.delflag = 0"
                         + " AND wo.order_type = " + orderType
                         + " AND strftime('%Y-%m-%d', wo.charge_date2) = '" + thisTime + "'"
-                        + " GROUP BY wo.type_id"
+                        + " GROUP BY wo.type_name"
                         + " order by money desc;";
             } else {
-                sql = "select sum(money) money, type_name as type_name , icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) wo  where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%m-%d', wo.charge_date2) = '" + thisTime + "' GROUP BY wo.type_id order by money desc;";
+                sql = "select sum(money) money, type_name as type_name , icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from  WATER_ORDER_COLLECT   where 1=1) wo  where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%m-%d', wo.charge_date2) = '" + thisTime + "' GROUP BY wo.type_name order by money desc;";
             }
         } else if (dateType == 2) {
             String weekTime = years + "-" + (weeks < 10 ? "0" + weeks : weeks);
             if (isAll) {
-                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_id order by money DESC;";
+                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
             } else {
-                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_id order by money DESC;";
+
+//                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
+                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 " +
+                        "from WATER_ORDER_COLLECT ) wo " +
+                        "where wo.delflag = 0 " +
+                        "AND wo.order_type = " + orderType
+                        + " AND CREATE_BY= " + persionId
+                        + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
+
+                try {
+                    firstDay = DateUtil.dateToStamp1("2019-01-01");
+                    lastDay = DateUtil.dateToStamp1("2020-01-01");
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                    sql = "SELECT  sum(money) money,icon,type_name from WATER_ORDER_COLLECT"
+                            + " where"
+                            + " DELFLAG = 0"
+                            + " AND order_type = " + orderType
+                            + " AND CREATE_BY = " + persionId
+                            + " AND CHARGE_DATE >= " + firstDay
+                            + " AND CHARGE_DATE < " + lastDay
+                            + " GROUP BY strftime('%Y-%W', datetime(charge_date/1000, 'unixepoch', 'localtime'))"
+                            + " order by money DESC;";
             }
         } else if (dateType == 3) {
             if (monthCurrent.length() == 1) {
@@ -54,16 +80,25 @@ public class FragStatisticsModle extends BaseViewModel {
             }
             String monthTime = years + "-" + monthCurrent;
             if (isAll) {
-                sql = "select sum(money) money,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_id order by money DESC;";
+                sql = "select sum(money) money,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC;";
             } else {
-                sql = "select sum(money) money,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_id order by money DESC;";
+                sql = "select sum(money) money,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC;";
             }
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
+
+        List<WaterOrderCollect> dbList = new ArrayList<>();
+
         if (cursor != null) {
-            List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
-            list = DBUtil.changeToListTJ(cursor, list, StatisticsSpendTopArraysBean.class);
+            try {
+                dbList = DBUtil.changeToList(cursor, dbList, WaterOrderCollect.class);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+//            List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
+//            list = DBUtil.changeToListTJ(cursor, list, StatisticsSpendTopArraysBean.class);
             double maxMoney;
             if (TextUtils.isEmpty(topMoney.getText().toString())) {
                 maxMoney = 0;
@@ -71,7 +106,7 @@ public class FragStatisticsModle extends BaseViewModel {
                 maxMoney = Double.parseDouble(topMoney.getText().toString());
             }
 
-            callBack.result(list, maxMoney);
+            callBack.result(null, maxMoney);
         } else {
             callBack.result(null, 0);
         }
@@ -216,7 +251,7 @@ public class FragStatisticsModle extends BaseViewModel {
         }
     }
 
-    // 獲取一年中周的数据
+    // 獲取一年中月的数据
     public void getMonthData(String persionId, int yyyy, boolean isAll, int orderType, onMonthCallBack callBack) {
         String SQL;
 

@@ -11,6 +11,8 @@ import android.text.TextUtils;
 import android.util.Base64;
 
 import com.hbird.base.app.constant.CommonTag;
+import com.hbird.base.mvc.bean.indexBaseListBean;
+import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.VoiceUtils;
 import com.ljy.devring.util.ColorBar;
@@ -180,7 +182,7 @@ public class Utils {
 
     public static String to2DigitString(double f) {
         BigDecimal bg = new BigDecimal(f);
-        return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue()+"";
+        return bg.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue() + "";
     }
 
     //获取一年中总共有几周
@@ -192,5 +194,46 @@ public class Utils {
         c.setTime(date);
 
         return c.get(Calendar.WEEK_OF_YEAR);
+    }
+
+    public static WaterOrderCollect toWaterOrderCollect(indexBaseListBean temp) {
+        WaterOrderCollect bean = new WaterOrderCollect();
+        bean.id = temp.getId();
+        bean.money = temp.getMoney();
+        bean.accountBookId = temp.getAccountBookId();
+        bean.orderType = temp.getOrderType();
+        bean.isStaged = temp.getIsStaged();
+        bean.spendHappiness = temp.getSpendHappiness();
+        bean.typePid = temp.getTypePid();
+        bean.typePname = temp.getTypePname();
+        bean.typeId = temp.getTypeId();
+        bean.typeName = temp.getTypeName();
+        bean.updateDate = new Date(temp.getUpdateDate());
+        bean.createDate = new Date(temp.getCreateDate());
+        bean.chargeDate = new Date(temp.getChargeDate());
+        bean.createBy = temp.getCreateBy();
+        bean.createName = temp.getCreateName();
+        bean.updateBy = temp.getUpdateBy();
+        bean.updateName = temp.getUpdateName();
+        bean.remark = temp.getRemark();
+        bean.icon = temp.getIcon();
+        bean.userPrivateLabelId = temp.getUserPrivateLabelId();
+        bean.reporterAvatar = temp.getReporterAvatar();
+        bean.reporterNickName = temp.getReporterNickName();
+        bean.abName = temp.getAbName();
+        bean.assetsId = temp.getAssetsId();
+        bean.assetsName = temp.getAssetsName();
+
+//        indexBeen = new ArrayList<>();
+//        if (temp.getIndexBeen() != null) {
+//            for (int i = 0; i < temp.getIndexBeen().size(); i++) {
+//                AccountDetailedBean.indexBean temp1 = new AccountDetailedBean.indexBean();
+//                temp1.setDayIncome(temp.getIndexBeen().get(i).getDayIncome());
+//                temp1.setDaySpend(temp.getIndexBeen().get(i).getDaySpend());
+//                temp1.setDayTime(temp.getIndexBeen().get(i).getDayTime());
+//                indexBeen.add(temp1);
+//            }
+//        }
+        return bean;
     }
 }

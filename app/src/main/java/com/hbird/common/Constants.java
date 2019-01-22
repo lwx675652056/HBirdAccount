@@ -16,6 +16,13 @@ public class Constants {
     public static final String CHOOSE_ASSETS = "choose_assets";// 保存的资产
 
     public static final String START_INTENT_A = "start_intent_a";
+    public static final String START_INTENT_B = "start_intent_b";
+    public static final String START_INTENT_C = "start_intent_c";
+    public static final String START_INTENT_D = "start_intent_d";
+    public static final String START_INTENT_E = "start_intent_e";
+    public static final String START_INTENT_F = "start_intent_f";
+    public static final String START_INTENT_G = "start_intent_g";
+    public static final String START_INTENT_H = "start_intent_h";
 
     public static final String ASSETS_TIME = "assets_time";// 资产重置时间
 

@@ -23,12 +23,7 @@ import java.util.List;
 
 import butterknife.BindView;
 
-/**
- * @author: LiangYX
- * @ClassName: ActChooseAccountType
- * @date: 2018/12/11 15:24
- * @Description: 选择账本类别
- */
+
 public class ActChooseAccountType extends BaseActivity<BaseActivityPresenter> {
 
     @BindView(R.id.iv_backs)

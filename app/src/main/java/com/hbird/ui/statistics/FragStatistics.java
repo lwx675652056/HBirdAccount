@@ -3,6 +3,7 @@ package com.hbird.ui.statistics;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -44,6 +45,9 @@ import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.hbird.bean.StatisticsTopBean;
+import com.hbird.common.Constants;
+import com.hbird.ui.statistics_details.ActPieChartRanking;
+import com.hbird.ui.statistics_details.ActRankingDetails;
 import com.hbird.util.Utils;
 import com.hbird.widget.LineChartInViewPager;
 
@@ -53,7 +57,6 @@ import java.util.Date;
 import java.util.List;
 
 import sing.common.base.BaseFragment;
-import sing.common.util.LogUtil;
 import sing.common.util.StringUtils;
 
 import static com.hbird.base.util.Utils.getDateByWeeks;
@@ -70,7 +73,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     private int weeks;
     private String monthCurrent;
-    private int years;
     private List<RealListEntity> realList = new ArrayList<>();//此数据集合是用来对比折线用的 暂未用到 为空即可（方便对比两年的数据）
     private List<YoyListEntity> yoyList;
     private DecimalFormat mFormat;
@@ -103,6 +105,10 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
     private int monthYyyy;// 日标签已选择的年
     private String thisTime = "";// 2019-01-01
 
+    // 点击折线的时候，
+    private String firstDay;// 当前选择的开始天
+    private String lastDay;// 当前选择的结束天
+
     @Override
     public int initContentView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return R.layout.frag_statistics;
@@ -119,7 +125,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
         topMoney = binding.tvTopMoney;
 
-        adapter = new FragStatisticsAdapter(getActivity(), list, R.layout.row_statistics, (position, data, type) -> LogUtil.e(""));
+        adapter = new FragStatisticsAdapter(getActivity(), list, R.layout.row_statistics, (position, data, type) -> onClickRanking((StatisticsSpendTopArraysBean) data));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setNestedScrollingEnabled(false);
@@ -128,8 +134,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         weeks = Utils.getYearToWeek();
         //获取当前月
         monthCurrent = DateUtils.getMonthCurrent();
-        //造数据 一年中的每一天
-        years = DateUtils.getYears();
 
         getWeekDate();//初始化周数
         //初始化月的数据
@@ -163,6 +167,19 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         restTopList();
 
         loadDataForNet();
+    }
+
+    // 点击了排行
+    private void onClickRanking(StatisticsSpendTopArraysBean b) {
+        Intent intent = new Intent(getActivity(), ActRankingDetails.class);
+        intent.putExtra(Constants.START_INTENT_A, b.typeName);
+        intent.putExtra(Constants.START_INTENT_B, String.valueOf(b.money));
+        intent.putExtra(Constants.START_INTENT_C, firstDay);
+        intent.putExtra(Constants.START_INTENT_D, lastDay);
+        intent.putExtra(Constants.START_INTENT_E, data.getDateType());
+        intent.putExtra(Constants.START_INTENT_F, (data.isInCome() ? 2 : 1));
+        intent.putExtra(Constants.START_INTENT_G, data.isAll());
+        startActivity(intent);
     }
 
     // 重置顶部数据
@@ -203,10 +220,9 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         loadDataForNet();
     }
 
-
     // 设置天的
     private void setChartForksDay(List<chartToBarReturn.ResultBean.ArraysBean> arrays) {
-        getMonthDay(dayYyyy,dayMm-1);
+        getMonthDay(dayYyyy, dayMm - 1);
         for (int i = 0; i < arrays.size(); i++) {
             long time = DateUtils.dateToTimestamp(arrays.get(i).getDayTime());
             double money = arrays.get(i).getMoney();
@@ -255,7 +271,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         setChartViews(3, yearMonthList);
     }
 
-
     public void loadDataForNet() {
         getApiBarDate();//获取日周月
         getRankingBar();//获取支出排行情绪消费统计
@@ -295,8 +310,19 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
                 list.add(t.get(3));
                 list.add(t.get(4));
             }
-
             adapter.setOpen(data.isOpen());
+        }
+
+        public void pieChartRanking(View view) {
+            Intent intent = new Intent(getActivity(), ActPieChartRanking.class);
+            intent.putExtra(Constants.START_INTENT_A, data.getSelestStr());// 花的多、花的少、差不多
+            intent.putExtra(Constants.START_INTENT_B, data.getCount());// 多少笔
+            intent.putExtra(Constants.START_INTENT_C, firstDay);
+            intent.putExtra(Constants.START_INTENT_D, lastDay);
+            intent.putExtra(Constants.START_INTENT_E, data.getDateType());
+            intent.putExtra(Constants.START_INTENT_F, (data.isInCome() ? 2 : 1));
+            intent.putExtra(Constants.START_INTENT_G, data.isAll());
+            startActivity(intent);
         }
     }
 
@@ -308,7 +334,15 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     // 获取日周月的支出排行榜和情绪消费统计
     private void getRankingBar() {
-        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), years, weeks, monthCurrent, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
+        int years = 2019;
+        if (data.getDateType() == 1) {
+            years = dayYyyy;
+        } else if (data.getDateType() == 2) {
+            years = weekYyyy;
+        } else if (data.getDateType() == 3) {
+            years = monthYyyy;
+        }
+        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), firstDay,lastDay,years, weeks, monthCurrent, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
             @Override
             public void result(List<StatisticsSpendTopArraysBean> temp, double maxMoney) {
                 if (null != temp && temp.size() > 0) {
@@ -400,12 +434,22 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         //折线图 曲线
         yoyList = new ArrayList<>();
         yoyList.clear();
+
+        int years = 2019;
+        if (data.getDateType() == 1) {
+            years = dayYyyy;
+        } else if (data.getDateType() == 2) {
+            years = weekYyyy;
+        } else if (data.getDateType() == 3) {
+            years = monthYyyy;
+        }
+
         for (int i = 0; i < list.size(); i++) {
             YoyListEntity yoyListEntity = new YoyListEntity();
             double money = list.get(i).getMoney();
             String amount = String.valueOf(money);
             String month = list.get(i).getmDate();
-            String year = DateUtils.getYears() + "";
+            String year = years + "";
             yoyListEntity.setAmount(amount);
             yoyListEntity.setMonth(month);
             yoyListEntity.setYear(year);
@@ -428,10 +472,34 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         topMoney.setText(formats);
         binding.natvMoney.setNumberString("0", formats);
         if (data.getDateType() == 1) {
+            // s为01-21
+            firstDay = dayYyyy + "-" + s;
+            // 将 firstDay 转为Date加一天后转回来
+            Date d = DateUtils.parse(firstDay, "yyyy-MM-dd");
+            DateUtils.addDay(d, 1);
+            lastDay = DateUtils.stampToString(DateUtils.addDay(d, 1), "yyyy-MM-dd");
+
             thisTime = DateUtils.getYears() + "-" + s;
         } else if (data.getDateType() == 2) {
+            // s为 01/14-01/20  、 12/31-01/06
+            int t1 = Integer.parseInt(s.substring(0, 2));
+            int t2 = Integer.parseInt(s.substring(6, 8));
+            if (t1 > t2) { // 12/31-01/06
+                firstDay = (weekYyyy-1) + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + s.substring(9, s.length());
+            } else { // 01/14-01/20
+                firstDay = weekYyyy + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + s.substring(9, s.length());
+            }
+
             weeks = position + 1;
         } else {
+            // s为 3月
+            int temp = Integer.parseInt(s.substring(0, s.length() - 1));
+            firstDay = monthYyyy + "-" + (temp < 10 ? "0" + temp : temp) + "-01";
+            temp += 1;
+            lastDay = monthYyyy + "-" + (temp < 10 ? "0" + temp : temp) + "-01";
+
             monthCurrent = position + 1 + "";
         }
 
@@ -548,31 +616,8 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         }
         String[] labels = new String[]{thisYear, lastYear};
 
-//        if (data.getDateType() == 3) {// 月
-//            if (data.isInCome()) {    //收入的
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            } else {
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            }
-//        } else if (data.getDateType() == 2) {// 周
-//            if (data.isInCome()) {   //收入的
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            } else {
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            }
-//        } else if (data.getDateType() == 1) {// 日
-//            if (data.isInCome()) {   //收入
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//                updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            } else { //支出
         updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
         updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//            }
-//        }
     }
 
     // 双平滑曲线传入数据，添加markview，添加实体类单位

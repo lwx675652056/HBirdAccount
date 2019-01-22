@@ -22,6 +22,7 @@ public class indexBaseListBean extends BaseBean {
     private int accountBookId;
     private long chargeDate;
     private long createDate;
+    private long updateDate;
     private String typePname;
     private List<indexBean> indexBeen;
     //记录者头像
@@ -228,6 +229,14 @@ public class indexBaseListBean extends BaseBean {
         this.id = id;
     }
 
+    public long getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(long updateDate) {
+        this.updateDate = updateDate;
+    }
+
     public int getAccountBookId() {
         return accountBookId;
     }
@@ -277,7 +286,7 @@ public class indexBaseListBean extends BaseBean {
     }
 
     public void setDates(int tag, int orderType, String icon, String typeName, int isStaged, String remark, Integer spendHappiness
-                    , double money, String typePid, String typeId, String id, int accountBookId, long chargeDate, long createDate
+                    , double money, String typePid, String typeId, String id, int accountBookId, long chargeDate, long createDate,long updateDate
                     , String typePname){
          this.tag = tag;
          this. orderType = orderType;
@@ -293,6 +302,7 @@ public class indexBaseListBean extends BaseBean {
          this. accountBookId =accountBookId;
         this. chargeDate = chargeDate;
         this. createDate = createDate;
+        this. updateDate = updateDate;
          this. typePname = typePname;
     }
 }

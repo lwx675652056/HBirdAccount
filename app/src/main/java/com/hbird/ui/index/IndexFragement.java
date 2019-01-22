@@ -1139,8 +1139,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 if (pieList.size() > i) {
                     binding.setPiechat(pieList.get(i));
                     data.setSelestStr(pieList.get(i).typeName);
-
-
                     if (i == 4) {// 其它
                         List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeName(), pieList.get(1).getTypeName(), pieList.get(2).getTypeName(), pieList.get(3).getTypeName(), data.getYyyy(), data.getMm(), accountId);
                         pieChatList.addAll(temp);

@@ -188,7 +188,7 @@ public class DateUtils {
     }
 
     public static Date str2Date(String str) {
-        return str2Date(str, null);
+        return str2Date(str, FORMAT_YMD);
     }
 
     public static Date str2Date(String str, String format) {

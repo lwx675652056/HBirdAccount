@@ -102,10 +102,12 @@
             android:name="com.hbird.ui.login_register.ActRegister"
             android:screenOrientation="portrait"/>
 
-        <!--我的 - 选择账本类型 MVVM -->
-
-        <activity android:name="com.hbird.ui.ActChooseAccountType"/>
-
+        <!--统计 详情-->
+        <activity android:name="com.hbird.ui.statistics_details.ActRankingDetails"
+                  android:theme="@style/TranslucentTheme"/>
+        <!--统计 饼图 详情-->
+        <activity android:name="com.hbird.ui.statistics_details.ActPieChartRanking"
+                  android:theme="@style/TranslucentTheme"/>
 
         <activity
             android:name=".mvc.activity.homeActivity"

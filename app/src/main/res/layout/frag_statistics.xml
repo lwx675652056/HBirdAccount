@@ -451,6 +451,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5_x"
+                        android:onClick="@{listener.pieChartRanking}"
                         android:background="@mipmap/home_icon_btqxzk_disabled"
                         android:padding="@dimen/dp_15_x">
 

@@ -1174,7 +1174,7 @@ public class IndexFragementOld extends BaseFragement implements View.OnClickList
             indexBaseListBean indexBeans = new indexBaseListBean();
             if (dayArrays != null && dayArrays.size() > 0) {
                 ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, "");
+                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, 0,"");
                 indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
                 xBean.setDayIncome(arrays.get(i).getDayIncome());
                 xBean.setDaySpend(arrays.get(i).getDaySpend());
@@ -1220,7 +1220,7 @@ public class IndexFragementOld extends BaseFragement implements View.OnClickList
             indexBaseListBean indexBeans = new indexBaseListBean();
             if (dayArrays != null && dayArrays.size() > 0) {
                 ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, "");
+                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0,0, "");
                 indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
                 xBean.setDayIncome(arrays.get(i).getDayIncome());
                 xBean.setDaySpend(arrays.get(i).getDaySpend());

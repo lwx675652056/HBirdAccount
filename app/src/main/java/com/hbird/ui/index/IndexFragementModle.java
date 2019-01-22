@@ -93,18 +93,6 @@ public class IndexFragementModle extends BaseViewModel {
                     + " AND type_name = '" + typeName
                     + "' AND order_type = " + orderType
                     + " ORDER BY  money DESC LIMIT 5";
-
-//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-//                    " where"
-//                    + " ACCOUNT_BOOK_ID=" + accountId
-//                    + " AND  DELFLAG = 0 "
-//                    + " AND CHARGE_DATE >=" + MonthFirstDay
-//                    + " AND CHARGE_DATE<" + MonthLastDays
-//                    + " AND type_name = '" + typeName
-//                    + "' AND order_type = " + orderType
-//                    + " ORDER BY  money DESC LIMIT 5";
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -141,20 +129,6 @@ public class IndexFragementModle extends BaseViewModel {
                     + "' AND order_type = " + orderType
                     + " ORDER BY  money DESC LIMIT 5";
         } else {
-//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-//                    " WHERE ACCOUNT_BOOK_ID=" + accountId
-//                    + " AND  DELFLAG = 0 "
-//                    + " AND CHARGE_DATE >=" + MonthFirstDay
-//                    + " AND CHARGE_DATE<" + MonthLastDays
-//                    + " AND type_name != '" + typeName1
-//                    + "' AND type_name != '" + typeName2
-//                    + "' AND type_name != '" + typeName3
-//                    + "' AND type_name != '" + typeName4
-//                    + "' AND order_type = " + orderType
-//                    + " ORDER BY  money DESC LIMIT 5";
-
             sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " WHERE ACCOUNT_BOOK_ID=" + accountId
                     + " AND  DELFLAG = 0 "
@@ -240,12 +214,6 @@ public class IndexFragementModle extends BaseViewModel {
                 }
             }
         } else {
-//            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-//                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-//                    ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
-//                    " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-
-
             sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
         }
@@ -377,7 +345,7 @@ public class IndexFragementModle extends BaseViewModel {
             indexBaseListBean indexBeans = new indexBaseListBean();
             if (dayArrays != null && dayArrays.size() > 0) {
                 ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, "");
+                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0,0, "");
                 indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
                 xBean.setDayIncome(arrays.get(i).getDayIncome());
                 xBean.setDaySpend(arrays.get(i).getDaySpend());
