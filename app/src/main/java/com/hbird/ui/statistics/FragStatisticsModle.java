@@ -28,7 +28,7 @@ public class FragStatisticsModle extends BaseViewModel {
 
 
     // 支出排行榜 某个类的具体条目
-    public void getRanking(boolean isAll, String persionId, int dateType, String firstDay,String lastDay,int years, int weeks, String monthCurrent,
+    public void getRanking(boolean isAll, String persionId, int dateType, String firstDay, String lastDay, int years, int weeks, String monthCurrent,
                            String thisTime, int orderType, TextView topMoney, OnRankingCallBack callBack) {
         String sql = "";//日支出收入排行榜
         if (dateType == 1) {
@@ -48,31 +48,24 @@ public class FragStatisticsModle extends BaseViewModel {
             if (isAll) {
                 sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
             } else {
-
-//                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND CREATE_BY= " + persionId + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
-                sql = "select sum(money) money,type_name as type_name,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime')  charge_date2 " +
-                        "from WATER_ORDER_COLLECT ) wo " +
-                        "where wo.delflag = 0 " +
-                        "AND wo.order_type = " + orderType
-                        + " AND CREATE_BY= " + persionId
-                        + " AND strftime('%Y-%W', charge_date2) = '" + weekTime + "' GROUP BY wo.type_name order by money DESC;";
-
                 try {
-                    firstDay = DateUtil.dateToStamp1("2019-01-01");
-                    lastDay = DateUtil.dateToStamp1("2020-01-01");
+                    firstDay = DateUtil.dateToStamp1(firstDay);
+                    lastDay = DateUtil.dateToStamp1(lastDay);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
 
-                    sql = "SELECT  sum(money) money,icon,type_name from WATER_ORDER_COLLECT"
-                            + " where"
-                            + " DELFLAG = 0"
-                            + " AND order_type = " + orderType
-                            + " AND CREATE_BY = " + persionId
-                            + " AND CHARGE_DATE >= " + firstDay
-                            + " AND CHARGE_DATE < " + lastDay
-                            + " GROUP BY strftime('%Y-%W', datetime(charge_date/1000, 'unixepoch', 'localtime'))"
-                            + " order by money DESC;";
+                sql = "SELECT  sum(money) money,icon,type_name from WATER_ORDER_COLLECT"
+                        + " where"
+                        + " DELFLAG = 0"
+                        + " AND order_type = " + orderType
+                        + " AND CREATE_BY = " + persionId
+                        + " AND CHARGE_DATE >= " + firstDay
+                        + " AND CHARGE_DATE < " + lastDay
+//                        + " GROUP BY strftime('%Y-%W', datetime(charge_date/1000, 'unixepoch', 'localtime'))"
+                        + " GROUP BY type_name"
+                        + " order by money DESC;";
+
             }
         } else if (dateType == 3) {
             if (monthCurrent.length() == 1) {
@@ -97,7 +90,14 @@ public class FragStatisticsModle extends BaseViewModel {
                 e.printStackTrace();
             }
 
-//            List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
+            List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
+            for (int i = 0; i < dbList.size(); i++) {
+                StatisticsSpendTopArraysBean bean = new StatisticsSpendTopArraysBean();
+                bean.money = dbList.get(i).getMoney();
+                bean.icon = dbList.get(i).getIcon();
+                bean.typeName = dbList.get(i).getTypeName();
+                list.add(bean);
+            }
 //            list = DBUtil.changeToListTJ(cursor, list, StatisticsSpendTopArraysBean.class);
             double maxMoney;
             if (TextUtils.isEmpty(topMoney.getText().toString())) {
@@ -106,7 +106,7 @@ public class FragStatisticsModle extends BaseViewModel {
                 maxMoney = Double.parseDouble(topMoney.getText().toString());
             }
 
-            callBack.result(null, maxMoney);
+            callBack.result(list, maxMoney);
         } else {
             callBack.result(null, 0);
         }

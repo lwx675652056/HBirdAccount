@@ -210,7 +210,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             adapter1.setYyyy(dayYyyy, dayMm);
         } else if (type == 2) {
             weekYyyy = topList2.get(position).yyyy;
-            getWeekDate();
             adapter2.setYyyy(weekYyyy);
         } else if (type == 3) {
             monthYyyy = topList3.get(position).yyyy;
@@ -244,8 +243,14 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             int week = Integer.parseInt(arrays.get(i).getWeek());
             double money = arrays.get(i).getMoney();
             for (int j = 0; j <= yearWeekList.size(); j++) {
-                if (week == (j + 1)) {
-                    yearWeekList.get(j).setMoney(money);
+                if (weekYyyy == 2018) {
+                    if (week == (j + 1)) {
+                        yearWeekList.get(j).setMoney(money);
+                    }
+                } else {
+                    if (week == (j)) {
+                        yearWeekList.get(j).setMoney(money);
+                    }
                 }
             }
         }
@@ -342,7 +347,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         } else if (data.getDateType() == 3) {
             years = monthYyyy;
         }
-        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), firstDay,lastDay,years, weeks, monthCurrent, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
+        viewModel.getRanking(data.isAll(), persionId, data.getDateType(), firstDay, lastDay, years, weeks, monthCurrent, thisTime, (data.isInCome() ? 2 : 1), topMoney, new FragStatisticsModle.OnRankingCallBack() {
             @Override
             public void result(List<StatisticsSpendTopArraysBean> temp, double maxMoney) {
                 if (null != temp && temp.size() > 0) {
@@ -463,8 +468,8 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         binding.natvMoney.setNumberString("0", formats);
     }
 
+    //选中对应条目 刷新界面
     private void setDateToCharts(int position, ArrayList<YearAndMonthBean> list) {
-        //选中对应条目 刷新界面
         String s = list.get(position).getmDate();
         double money = list.get(position).getMoney();
         String formats = getEnumToNumer(money);
@@ -484,12 +489,13 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             // s为 01/14-01/20  、 12/31-01/06
             int t1 = Integer.parseInt(s.substring(0, 2));
             int t2 = Integer.parseInt(s.substring(6, 8));
+            int lastD = Integer.parseInt(s.substring(9, 11))+1;
             if (t1 > t2) { // 12/31-01/06
-                firstDay = (weekYyyy-1) + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
-                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + s.substring(9, s.length());
+                firstDay = (weekYyyy - 1) + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD<10)?"0"+(lastD):(lastD));// 最后一天要+1，比如12/31-01/06，是01/07之前
             } else { // 01/14-01/20
                 firstDay = weekYyyy + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
-                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + s.substring(9, s.length());
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD<10)?"0"+(lastD):(lastD));
             }
 
             weeks = position + 1;

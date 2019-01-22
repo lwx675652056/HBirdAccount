@@ -71,8 +71,11 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
         if (dateType == 1) {// 日
             data.setDate(DateUtils.str2Str(firstDay));
         } else if (dateType == 2) {// 周
-            String t = DateUtils.str2Str(lastDay);
-            data.setDate(DateUtils.str2Str(firstDay) + "-" + t.substring(5, t.length()));
+            String t = DateUtils.str2Str(lastDay);// 2019年01月02日
+            String m = t.substring(5,8);// 01月
+            String d = t.substring(8,10);// 02
+            int day = Integer.parseInt(d)-1;
+            data.setDate(DateUtils.str2Str(firstDay) + "-" + m+(day<10?"0"+day:day)+"日");
         } else if (dateType == 3) {// 月
             String t = DateUtils.str2Str(firstDay);
             data.setDate(t.substring(0, t.length() - 3));
