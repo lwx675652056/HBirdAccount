@@ -2,6 +2,7 @@ package com.hbird.ui.calendar;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
@@ -50,6 +51,7 @@ import java.util.Map;
 import java.util.Set;
 
 import sing.common.base.BaseActivity;
+import sing.common.util.StatusBarUtil;
 import sing.util.ToastUtil;
 
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
@@ -112,6 +114,9 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
 
     @Override
     public void initData() {
+        Utils.initColor(this, Color.rgb(255, 255, 255));
+        StatusBarUtil.setStatusBarLightMode(getWindow());
+
         binding.setTitle(new TitleBean("日历"));
         binding.toolbar.ivBack.setOnClickListener(v -> finish());
         data = new CalendarData();

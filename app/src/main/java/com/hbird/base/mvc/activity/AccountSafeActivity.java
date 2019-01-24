@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.growingio.android.sdk.collection.GrowingIO;
@@ -41,14 +40,13 @@ import static com.hbird.base.R.color.text_468DE1;
  */
 
 public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
+
     @BindView(R.id.iv_back)
     ImageView mBack;
     @BindView(R.id.center_title)
     TextView mCenterTitle;
     @BindView(R.id.right_title2)
     TextView mRightTitle;
-    @BindView(R.id.rl_bottom_btn)
-    RelativeLayout mBottomBtn;
     @BindView(R.id.tv_wx_num)
     TextView mWxNum;
     @BindView(R.id.tv_phone_num)
@@ -65,7 +63,6 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
     TextView mFangshi;
     @BindView(R.id.ll_safekey)
     LinearLayout mLoginPasswords;
-
 
     private String phone;
     private String phones;
@@ -157,8 +154,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.ll_phone:
-                //showMessage("手机号");
+            case R.id.ll_phone: // 手机号
                 playVoice(R.raw.changgui02);
                 if (phoneClick) {
                     return;
@@ -166,9 +162,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 Intent intent1 = new Intent(this, BindingActivity.class);
                 startActivityForResult(intent1, 303);
                 break;
-            case R.id.ll_weixin:
-                //showMessage("微信");
-                //判断微信当前的状态 处于已绑定状态时 则没有点击事件
+            case R.id.ll_weixin:// 微信,判断微信当前的状态 处于已绑定状态时 则没有点击事件`
                 if (hasBd) {
                     return;
                 }
@@ -177,13 +171,11 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 doWeChatLogin();
                 //startActivity(new Intent(this,RegisterViewActivity.class));
                 break;
-            case R.id.ll_safekey:
-                ////showMessage("修改登录密码");
+            case R.id.ll_safekey:// 修改登录密码
                 playVoice(R.raw.changgui02);
                 startActivity(new Intent(this, ChangePasswordActivity.class));
                 break;
-            case R.id.ll_modifi_phone:
-                //showMessage("修改手机号");
+            case R.id.ll_modifi_phone:// 修改手机号
                 playVoice(R.raw.changgui02);
                 Intent intent = new Intent();
                 intent.setClass(this, BindingModifiActivity.class);

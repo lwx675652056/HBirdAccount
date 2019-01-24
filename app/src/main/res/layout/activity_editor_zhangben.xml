@@ -8,16 +8,13 @@
 
     <include layout="@layout/activity_headers"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2"/>
+    <View style="@style/horizontal_line"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginTop="@dimen/width_4_80"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:layout_marginTop="@dimen/dp_15_x"
         android:orientation="horizontal">
 
         <ImageView
@@ -31,44 +28,36 @@
             android:layout_marginLeft="@dimen/width_2_80"
             android:text="账本名称"
             android:textColor="@color/text_333333"
-            android:textSize="@dimen/text_size_6"/>
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_shuru"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_5_80"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginRight="@dimen/width_4_80"
-        android:layout_marginTop="@dimen/height_2_80"
-        android:background="@color/bg_f0f0f0">
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/dp_15_x"
+        android:background="@color/bg_f0f0f0"
+        android:padding="@dimen/dp_15_x">
 
         <EditText
             android:id="@+id/et_zhangben_name"
-            android:layout_width="@dimen/width_50_80"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="@dimen/width_1_80"
+            android:layout_weight="1"
             android:background="@null"
             android:maxLength="20"
             android:text=""
             android:textColor="@color/text_bdbdbd"
             android:textSize="@dimen/text_size_4"/>
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <TextView
+            android:id="@+id/tv_hints"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical"
-            android:layout_marginRight="@dimen/width_2_80"
-            android:gravity="right">
-
-            <TextView
-                android:id="@+id/tv_hints"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="(20字以内)"
-                android:textColor="@color/text_bdbdbd"/>
-        </LinearLayout>
-
+            android:layout_marginStart="@dimen/dp_10_x"
+            android:text="(20字以内)"
+            android:textColor="@color/text_bdbdbd"/>
     </LinearLayout>
 
     <RelativeLayout
@@ -84,7 +73,7 @@
             android:layout_gravity="bottom"
             android:layout_marginLeft="@dimen/width_12_80"
             android:layout_marginRight="@dimen/width_12_80"
-            android:background="@drawable/btn_bg_login">
+            android:background="@drawable/select_main_button">
 
             <TextView
                 android:layout_width="wrap_content"

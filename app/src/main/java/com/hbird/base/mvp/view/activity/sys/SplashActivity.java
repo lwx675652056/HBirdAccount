@@ -2,6 +2,7 @@ package com.hbird.base.mvp.view.activity.sys;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.app.constant.CommonTag;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.AccountZbBean;
 import com.hbird.base.mvc.bean.ReturnBean.CheckVersionReturn;
@@ -32,6 +32,7 @@ import com.hbird.base.util.PermissionUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
 import com.hbird.base.util.alarmClock.AlarmManagerUtil;
+import com.hbird.ui.MainActivity;
 import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.base.activity.IBaseActivity;
@@ -44,6 +45,7 @@ import java.util.Set;
 
 import butterknife.BindView;
 import sing.common.util.DownLoadUtil;
+import sing.common.util.StatusBarUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
@@ -70,6 +72,9 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
 
     @Override
     protected void initView(Bundle bundle) {
+        StatusBarUtil.clearStatusBarDarkMode(getWindow());
+        initBarColor(Color.parseColor("#F15C3C"),Color.parseColor("#F15C3C"));
+
         BounceInterpolator bounceInterpolator = new BounceInterpolator();
         showTranslate(bounceInterpolator);
         new android.os.Handler().postDelayed(new Runnable() {
@@ -460,13 +465,13 @@ public class SplashActivity extends BaseActivity<SplashPresenter> implements ISp
                             }
                         }
 
-                        Intent intent = new Intent(SplashActivity.this, homeActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
 
                     @Override
                     public void onError(String s) {
-                        Intent intent = new Intent(SplashActivity.this, homeActivity.class);
+                        Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                         startActivity(intent);
                     }
                 });

@@ -85,8 +85,7 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.ll_account_safe:
-                //showMessage("账户安全");
+            case R.id.ll_account_safe:// 账户安全
                 playVoice(R.raw.changgui02);
                 Intent intent3 = new Intent();
                 intent3.setClass(this, AccountSafeActivity.class);
@@ -98,15 +97,13 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
                 playVoice(R.raw.changgui02);
                 startActivity(new Intent(this, ShouShiPasswordActivity.class));
                 break;
-            case R.id.ll_usefo:
-                //showMessage("使用手册");
+            case R.id.ll_usefo:// 使用手册
                 playVoice(R.raw.changgui02);
                 Intent intent2 = new Intent(this, WebViewActivity.class);
                 intent2.putExtra("TYPE", "shouce");
                 startActivity(intent2);
                 break;
-            case R.id.ll_about_us:
-                //showMessage("关于我们");
+            case R.id.ll_about_us:// 关于我们
                 playVoice(R.raw.changgui02);
                 startActivity(new Intent(this, AboutOursActivity.class));
                 break;

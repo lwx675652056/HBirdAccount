@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.support.v4.content.ContextCompat;
 import android.text.Editable;
-import android.text.Html;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
@@ -15,13 +14,10 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
 import com.hbird.base.R;
-import com.hbird.base.databinding.ActRegisterBinding;
-import com.hbird.base.mvc.activity.WebViewActivity;
+import com.hbird.base.databinding.ActFindPasswordBinding;
 import com.hbird.bean.TitleBean;
 import com.hbird.ui.MainActivity;
-import com.hbird.ui.fill_invitation.ActFillInvitation;
 import com.hbird.util.Utils;
-import com.ljy.devring.DevRing;
 
 import sing.common.base.BaseActivity;
 import sing.common.listener.OnTextChangedListener;
@@ -30,23 +26,18 @@ import sing.util.ToastUtil;
 
 /**
  * @author: LiangYX
- * @ClassName: ActRegister
- * @date: 2019/1/7 16:50
- * @Description: 注冊
+ * @ClassName: ActFindPassword
+ * @date: 2019/1/23 14:04
+ * @Description: 找回密码
  */
-public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle> {
+public class ActFindPassword extends BaseActivity<ActFindPasswordBinding,FindPasswordModle>{
 
     private RegisterData data;
     private TimeCount time;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
-        return R.layout.act_register;
-    }
-
-    @Override
-    public int initVariableId() {
-        return 0;
+        return R.layout.act_find_password;
     }
 
     @Override
@@ -57,15 +48,12 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
         binding.setData(data);
         binding.setListener(new OnClick());
 
-        TitleBean t = new TitleBean("登录注册");
+        TitleBean t = new TitleBean("找回密码");
         t.setBg_color(R.color.white);
         t.setRightColor(Color.parseColor("#333333"));
         t.setBackIcon(ContextCompat.getDrawable(this, R.mipmap.nav_back_normal));
         binding.setTitle(t);
         binding.toolbar.ivBack.setOnClickListener(v -> onBackPressed());
-
-        String strs = "注册即同意 " + "<font color='#2F54EB'>" + "《蜂鸟记账使用协议》" + "</font>";
-        data.setAgreement(Html.fromHtml(strs));
 
         Utils.initColor(this, Color.rgb(255, 255, 255));
         StatusBarUtil.setStatusBarLightMode(getWindow());
@@ -91,6 +79,11 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
         time = new TimeCount(60000, 1000);
     }
 
+    @Override
+    public int initVariableId() {
+        return 0;
+    }
+
     public class OnClick {
         public void clear(View view) {
             data.setPhone1("");
@@ -110,27 +103,16 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
             data.setShowPassword(!data.isShowPassword());
         }
 
-        // 协议
-        public void agreement(View view) {
-            Intent intent = new Intent(ActRegister.this, WebViewActivity.class);
-            intent.putExtra("TYPE", "xieyi");
-            startActivity(intent);
-        }
-
         // 验证码
         public void getCode(View view) {
             if (data.getPhone() == null || data.getPhone().length() != 11 || !data.getPhone().startsWith("1")) {
                 ToastUtil.showShort("请输入正确的手机号");
             } else {
-                viewModel.getCode(data.getPhone(), toHome -> {
-                    if (toHome) {
-                        time.start();// 开始计时
-                    }
-                });
+                viewModel.getCode(data.getPhone(), toHome -> time.start());// 开始计时
             }
         }
 
-        // 注册
+        // 找回
         public void register(View view) {
             if (TextUtils.isEmpty(data.getPhone()) || data.getPhone().length() != 11 || !data.getPhone().startsWith("1")) {
                 ToastUtil.showShort("请输入正确的手机号");
@@ -145,15 +127,9 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
                 return;
             }
 
-            viewModel.register(data.getPhone(), data.getPassword(), data.getCode(), toHome -> {
-                ToastUtil.showShort("注册成功");
-                if (toHome) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
-                    startActivity(new Intent(ActRegister.this, MainActivity.class));
-                } else {
-                    startActivity(new Intent(ActRegister.this, ActFillInvitation.class));
-                }
-
-                DevRing.activityListManager().killActivity(ActLogin.class); //退出loginActivity
+            viewModel.find(data.getPhone(), data.getPassword(), data.getCode(), toHome -> {
+                ToastUtil.showShort("密码重置成功！");
+                startActivity(new Intent(getApplicationContext(), MainActivity.class));
                 finish();
             });
         }
@@ -175,14 +151,6 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
         public void onTick(long millisUntilFinished) {// 计时过程
             data.setClickable(false);
             data.setTime(millisUntilFinished / 1000 + "s");
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        if (time != null) {
-            time.cancel();//取消倒计时
         }
     }
 }

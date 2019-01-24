@@ -4,13 +4,13 @@ import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
+import android.widget.LinearLayout;
 
 import com.github.lzyzsd.jsbridge.BridgeHandler;
 import com.github.lzyzsd.jsbridge.CallBackFunction;
@@ -27,7 +27,6 @@ import com.hbird.base.mvc.activity.CanSettingMoneyActivity;
 import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
 import com.hbird.base.mvc.activity.H5WebViewActivity;
 import com.hbird.base.mvc.activity.PersionnalInfoActivity;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.base.BaseFragement;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.Html5Date;
@@ -39,6 +38,7 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Util;
 import com.hbird.base.wxapi.WXEntryActivity;
 import com.hbird.common.Constants;
+import com.hbird.ui.MainActivity;
 import com.hbird.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -70,14 +70,9 @@ import static com.umeng.socialize.bean.SHARE_MEDIA.WEIXIN_CIRCLE;
 
 
 public class LingPiaoFragement extends BaseFragement implements View.OnClickListener {
-    /* @BindView(R.id.left_title)
-     TextView mLeftTitle;
-     @BindView(R.id.center_title)
-     TextView mCenterTitle;*/
+
     @BindView(R.id.webView)
     com.github.lzyzsd.jsbridge.BridgeWebView webView;
-  /*  @BindView(R.id.iv_back_web)
-    ImageView mBack;*/
 
     private String url = UrlConstants.BASE_H5_URL;
 
@@ -88,7 +83,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     private String ids;
     private String name;
     private int firstCome = 0;
-    homeActivity activity;
+    MainActivity activity;
     private boolean aaa;
 
     @Override
@@ -98,11 +93,14 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     @Override
     public void initView() {
+        LinearLayout ll = getActivity().findViewById(R.id.ll_home_lingpiao);
+        ll.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
+
         String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
         String version = Utils.getVersion(getActivity());
         url = url + token + "&currentVersion=" + version;
         LogUtil.e("领票票URL:---" + url);
-        activity = (homeActivity) getActivity();
+        activity = (MainActivity) getActivity();
     }
 
     @Override
@@ -123,8 +121,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         if (isVisibleToUser){
             activity.setBottomDH2Visiable();
             aaa = true;
-
-            Utils.initColor(getActivity(), Color.rgb(241, 92, 60));
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
         }
     }
@@ -160,9 +156,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
             @Override
             public void handler(String data, CallBackFunction function) {
                 playVoice(R.raw.changgui02);
-//                ids = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYIDS, "");
-//                name = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYNAME, "");
-//                inviteYou();
+
                 showDialog();
             }
         });

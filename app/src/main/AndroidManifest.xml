@@ -84,6 +84,7 @@
 
         <!--资产详情-->
         <activity
+            android:theme="@style/TranslucentTheme"
             android:name="com.hbird.ui.assets.ActAssetsDetail"
             android:screenOrientation="portrait"/>
 
@@ -102,6 +103,11 @@
             android:name="com.hbird.ui.login_register.ActRegister"
             android:screenOrientation="portrait"/>
 
+        <!--找回密码-->
+        <activity
+            android:name="com.hbird.ui.login_register.ActFindPassword"
+            android:screenOrientation="portrait"/>
+
         <!--统计 详情-->
         <activity
             android:name="com.hbird.ui.statistics_details.ActRankingDetails"
@@ -117,16 +123,11 @@
             android:name="com.hbird.ui.login_register.ActLogin"
             android:screenOrientation="portrait"/>
 
-        <activity
-            android:name=".mvc.activity.homeActivity"
-            android:configChanges="orientation|keyboardHidden|screenLayout"
-            android:exported="true"
-            android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-            </intent-filter>
+        <activity android:name="com.hbird.ui.MainActivity"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/TranslucentTheme">
         </activity>
+
         <!--<activity android:name=".mvc.activity.OpenClickActivity"
             android:exported="true">
             <intent-filter>
@@ -206,7 +207,6 @@
         <activity android:name=".mvp.view.activity.CollectActivity"/>
         <activity android:name=".mvp.view.activity.UploadActivity"/>
         <activity android:name=".mvp.view.activity.DownloadActivity"/>
-        <activity android:name=".mvp.view.activity.login.loginActivity"/>
         <activity android:name=".mvp.view.activity.MovieActivity"/>
         <!-- <activity android:name=".mvp.view.activity.sys.sysActivity" /> -->
         <activity android:name=".mvp.view.activity.account.AccountMainActivity"/>
@@ -214,7 +214,6 @@
             android:name=".mvc.activity.ChargeToAccount"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
         <activity android:name=".mvp.view.activity.login.RegisterActivity"/>
-        <activity android:name=".mvp.view.activity.login.ForgetPasswordActivity"/>
         <activity android:name=".mvp.view.activity.login.GestureLoginActivity"/>
         <activity android:name=".mvp.view.activity.login.CreateGestureActivity"/>
         <!--新版添加类别-->

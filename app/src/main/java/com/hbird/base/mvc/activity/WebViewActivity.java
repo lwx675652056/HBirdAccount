@@ -1,7 +1,6 @@
 package com.hbird.base.mvc.activity;
 
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -10,14 +9,11 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.UrlConstants;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
-import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 import com.umeng.socialize.ShareAction;
 import com.umeng.socialize.UMShareAPI;
 import com.umeng.socialize.UMShareListener;
@@ -25,7 +21,6 @@ import com.umeng.socialize.bean.SHARE_MEDIA;
 import com.umeng.socialize.media.UMImage;
 import com.umeng.socialize.media.UMWeb;
 
-import butterknife.BindDimen;
 import butterknife.BindView;
 
 import static com.umeng.socialize.bean.SHARE_MEDIA.WEIXIN;
@@ -53,81 +48,59 @@ public class WebViewActivity extends BaseActivity<BaseActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         String type = getIntent().getStringExtra("TYPE");
-        if(TextUtils.equals(type,"shouce")){
+        if (TextUtils.equals(type, "shouce")) {
             url = UrlConstants.USER_HAND_BOOK;
             mTitle2.setVisibility(View.GONE);
             mCenterTitle.setText("使用手册");
-        }else if(TextUtils.equals(type,"firend")){
+        } else if (TextUtils.equals(type, "firend")) {
             url = UrlConstants.INVITE_FIRENDS_URL;
             mTitle2.setText("分享");
             mCenterTitle.setText("邀请好友");
-        }else if(TextUtils.equals(type,"zichan")){
+        } else if (TextUtils.equals(type, "zichan")) {
             url = UrlConstants.USE_AGREEMENT_URL;
             mTitle2.setVisibility(View.GONE);
             mCenterTitle.setText("资产说明");
-        }else {
+        } else {
             url = UrlConstants.USE_AGREEMENT_URL;
             mTitle2.setVisibility(View.GONE);
             mCenterTitle.setText("使用协议");
         }
-
     }
 
     @Override
     protected void initData(Bundle savedInstanceState) {
         WebSettings s = mWb.getSettings();
-
         s.setLayoutAlgorithm(WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
-
         s.setUseWideViewPort(true);
-
         s.setLoadWithOverviewMode(true);
-
         s.setJavaScriptEnabled(true);//设置能与JS互调
-
         s.setGeolocationEnabled(true);
-
         s.setDomStorageEnabled(true);
-
         mWb.requestFocus();
-
         mWb.setScrollBarStyle(View.SCROLLBARS_INSIDE_INSET);
-
         mWb.setWebChromeClient(new WebChromeClient());
-
         mWb.loadUrl(url);
     }
 
     @Override
     protected void initEvent() {
-        mBack.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                playVoice(R.raw.changgui02);
-               finish();
-            }
+        mBack.setOnClickListener(view -> {
+            playVoice(R.raw.changgui02);
+            finish();
         });
-        mTitle2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                //showMessage("分享");
-               /* new ShareAction(WebViewActivity.this)
-                        .setPlatform(SHARE_MEDIA.WEIXIN)//传入平台
-                        .withText(url)//分享内容
-                        .setCallback(shareListener)//回调监听器
-                        .share();*/
-                UMWeb web = new UMWeb(url);
-                web.setTitle("蜂鸟记账");//标题
-                web.setThumb(new UMImage(WebViewActivity.this, R.mipmap.ic_about_ours));  //缩略图
-                web.setDescription("蜂鸟记账 \n不乱花，更自在");//描述
+        mTitle2.setOnClickListener(view -> {
+            UMWeb web = new UMWeb(url);
+            web.setTitle("蜂鸟记账");//标题
+            web.setThumb(new UMImage(WebViewActivity.this, R.mipmap.ic_about_ours));  //缩略图
+            web.setDescription("蜂鸟记账 \n不乱花，更自在");//描述
 
-                new ShareAction(WebViewActivity.this)
-                        .withMedia(web)
-                        .setPlatform(WEIXIN)
-                        .share();
-            }
+            new ShareAction(WebViewActivity.this)
+                    .withMedia(web)
+                    .setPlatform(WEIXIN)
+                    .share();
         });
     }
+
     private UMShareListener shareListener = new UMShareListener() {
         /**
          * @descrption 分享开始的回调
@@ -136,6 +109,7 @@ public class WebViewActivity extends BaseActivity<BaseActivityPresenter> {
         @Override
         public void onStart(SHARE_MEDIA platform) {
         }
+
         /**
          * @descrption 分享成功的回调
          * @param platform 平台类型
@@ -144,6 +118,7 @@ public class WebViewActivity extends BaseActivity<BaseActivityPresenter> {
         public void onResult(SHARE_MEDIA platform) {
             showMessage("成功了");
         }
+
         /**
          * @descrption 分享失败的回调
          * @param platform 平台类型
@@ -153,6 +128,7 @@ public class WebViewActivity extends BaseActivity<BaseActivityPresenter> {
         public void onError(SHARE_MEDIA platform, Throwable t) {
             showMessage("失败");
         }
+
         /**
          * @descrption 分享取消的回调
          * @param platform 平台类型
@@ -168,15 +144,16 @@ public class WebViewActivity extends BaseActivity<BaseActivityPresenter> {
         mWb.goBack();
         super.onBackPressed();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mWb.destroy();
     }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        UMShareAPI.get(this).onActivityResult(requestCode,resultCode,data);
+        UMShareAPI.get(this).onActivityResult(requestCode, resultCode, data);
     }
-
 }

@@ -20,8 +20,8 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AssetsBean;
 import com.hbird.common.Constants;
 import com.hbird.ui.assets.ActEditAccountValue;
+import com.hbird.util.Utils;
 import com.ljy.devring.base.activity.IBaseActivity;
-import com.ljy.devring.util.ColorBar;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -59,14 +59,8 @@ public class ActEditAccount extends BaseActivity<ActEditAccountBinding, BaseView
 
     @Override
     public void initData() {
-        ColorBar.newColorBuilder()
-                .applyNav(true)
-                .navColor(Color.parseColor("#FFFFFF"))
-                .navDepth(0)
-                .statusColor(Color.parseColor("#FFFFFF"))
-                .statusDepth(0)
-                .build(this)
-                .apply();
+        Utils.initColor(this, Color.rgb(255, 255, 255));
+        StatusBarUtil.setStatusBarLightMode(getWindow());
 
         data = new EditAccountData();
         data.setEdit(true);

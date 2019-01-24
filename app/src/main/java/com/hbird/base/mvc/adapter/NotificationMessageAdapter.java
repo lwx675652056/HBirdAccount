@@ -4,21 +4,13 @@ import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.hbird.base.R;
-import com.hbird.base.mvc.bean.FengFengBean;
 import com.hbird.base.mvc.bean.ReturnBean.FengMessageReturn;
-import com.hbird.base.mvc.widget.cycleView;
-import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import static com.hbird.base.R.color.bg_f15c3c;
 
 /**
  * Created by Liul(245904552@qq.com) on 2018/11/9.
@@ -52,9 +44,9 @@ public class NotificationMessageAdapter extends BaseAdapter {
         if(null==convertView){
             viewHolder =new ViewHolder();
             convertView = View.inflate(context, R.layout.adapter_notification_message, null);
-            viewHolder.tzTime = (TextView) convertView.findViewById(R.id.tv_time);
-            viewHolder.tzTypes = (TextView) convertView.findViewById(R.id.tv_type);
-            viewHolder.tzContent = (TextView) convertView.findViewById(R.id.tv_content);
+            viewHolder.tzTime = convertView.findViewById(R.id.tv_time);
+            viewHolder.tzTypes = convertView.findViewById(R.id.tv_type);
+            viewHolder.tzContent = convertView.findViewById(R.id.tv_content);
             convertView.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder)convertView.getTag();
@@ -70,7 +62,6 @@ public class NotificationMessageAdapter extends BaseAdapter {
             viewHolder.tzTypes.setTextColor(context.getResources().getColor(R.color.text_bdbdbd));
         }
         viewHolder.tzContent.setText(list.get(i).getContent());
-
 
         return convertView;
     }

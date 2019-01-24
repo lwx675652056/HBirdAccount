@@ -5,7 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/bg_f6">
+
     <include layout="@layout/activity_headers_zb"/>
+
+    <View style="@style/horizontal_line"/>
 
     <com.hbird.base.mvc.view.RefreshSwipeMenu.RefreshSwipeMenuListView
         android:id="@+id/swipe"
@@ -18,7 +21,4 @@
         android:scrollbars="none"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
-
-
-
 </LinearLayout>

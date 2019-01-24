@@ -18,9 +18,10 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_parent2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/colorPrimary">
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@drawable/shape_main_bg">
 
             <View
                 android:layout_width="0dp"
@@ -29,7 +30,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
 
@@ -39,7 +40,6 @@
                     android:drawablePadding="@dimen/dp_5_x"
                     android:drawableStart="@{data.select==0?@drawable/shuju_icon_tongji_selected:@drawable/shuju_icon_tongji_normal}"
                     android:onClick="@{(view) -> listener.change(0)}"
-                    android:padding="@dimen/dp_15_x"
                     android:text="统计"
                     android:textColor="@{data.select==0?@color/white:@color/white_40}"
                     android:textSize="18sp"/>
@@ -47,7 +47,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
 
@@ -57,7 +57,6 @@
                     android:drawablePadding="@dimen/dp_5_x"
                     android:drawableStart="@{data.select==1?@drawable/shuju_icon_zichan_selected:@drawable/shuju_icon_zichan_normal}"
                     android:onClick="@{(view) -> listener.change(1)}"
-                    android:padding="@dimen/dp_15_x"
                     android:text="资产"
                     android:textColor="@{data.select==1?@color/white:@color/white_40}"
                     android:textSize="18sp"/>
@@ -65,7 +64,7 @@
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:gravity="center">
 
@@ -75,7 +74,6 @@
                     android:drawablePadding="@dimen/dp_5_x"
                     android:drawableStart="@{data.select==2?@drawable/shuju_icon_fenxi_selected:@drawable/shuju_icon_fenxi_normal}"
                     android:onClick="@{(view) -> listener.change(2)}"
-                    android:padding="@dimen/dp_15_x"
                     android:text="分析"
                     android:textColor="@{data.select==2?@color/white:@color/white_40}"
                     android:textSize="18sp"/>

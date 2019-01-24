@@ -6,16 +6,19 @@
     android:background="@color/bg_f6"
     android:orientation="vertical">
 
-    <include  layout="@layout/header_white_toolbar"/>
+    <include layout="@layout/header_white_toolbar"/>
+
+    <View style="@style/horizontal_line"/>
 
     <LinearLayout
         android:id="@+id/ll_types"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_15_x"
-        android:layout_marginTop="@dimen/dp_15_x"
+        android:layout_marginEnd="@dimen/dp_15_x"
         android:layout_marginStart="@dimen/dp_15_x"
-        android:layout_marginEnd="@dimen/dp_15_x" >
+        android:layout_marginTop="@dimen/dp_15_x"
+        android:gravity="center">
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -48,7 +51,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_15_x">
 
@@ -95,15 +98,15 @@
 
         <EditText
             android:id="@+id/et_record"
-            android:padding="@dimen/dp_7_x"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="@null"
             android:ellipsize="end"
-            android:hint="备注：（20字以内）"
-            android:maxLength="20"
-            android:lines="2"
             android:gravity="top|start"
+            android:hint="备注：（20字以内）"
+            android:lines="2"
+            android:maxLength="20"
+            android:padding="@dimen/dp_7_x"
             android:scrollbars="vertical"
             android:textSize="14sp"/>
 
@@ -112,8 +115,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:layout_marginEnd="@dimen/dp_10_x"
             android:layout_marginBottom="@dimen/dp_10_x"
+            android:layout_marginEnd="@dimen/dp_10_x"
             android:text="0/20"
             android:textColor="@color/text_808080"
             android:textSize="12sp"/>
@@ -124,7 +127,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15_x"
-        android:layout_marginTop="@dimen/dp_10_x" >
+        android:layout_marginTop="@dimen/dp_10_x">
 
         <TextView
             android:layout_width="wrap_content"

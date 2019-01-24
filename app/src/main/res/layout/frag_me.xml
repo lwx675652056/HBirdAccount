@@ -25,10 +25,55 @@
         android:background="#F6F6F6"
         android:orientation="vertical">
 
-        <include
-            android:id="@+id/toolbar"
-            layout="@layout/head_toolbar"
-            bind:setTitle="@{title}"/>
+        <FrameLayout
+            android:id="@+id/fl_parent1"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="我的"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:onClick="@{listener.setting}"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:src="@mipmap/my_icon_shezhifb_normal"/>
+        </FrameLayout>
+
+        <FrameLayout
+            android:id="@+id/fl_parent2"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@drawable/shape_main_bg">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:singleLine="true"
+                android:text="我的"
+                android:textColor="@color/white"
+                android:textSize="18sp"/>
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"
+                android:onClick="@{listener.setting}"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:src="@mipmap/my_icon_shezhi_normal"/>
+        </FrameLayout>
 
         <View
             android:layout_width="match_parent"
@@ -55,7 +100,7 @@
                     <View
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/dp_50_x"
-                        android:background="@color/colorPrimary"/>
+                        android:background="@drawable/shape_main_bg"/>
 
                     <LinearLayout
                         android:layout_width="match_parent"
@@ -321,6 +366,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingStart="@dimen/dp_48_x">
+
                     <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
@@ -418,6 +464,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingStart="@dimen/dp_48_x">
+
                     <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
@@ -495,6 +542,7 @@
                     android:layout_height="wrap_content"
                     android:background="@color/white"
                     android:paddingStart="@dimen/dp_48_x">
+
                     <View style="@style/horizontal_line"/>
                 </LinearLayout>
 
@@ -616,10 +664,10 @@
                 </LinearLayout>
 
                 <LinearLayout
-                   android:onClick="@{listener.followWX}"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/dp_20_x"
+                    android:onClick="@{listener.followWX}"
                     android:orientation="vertical">
 
                     <TextView

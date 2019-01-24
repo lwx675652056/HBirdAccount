@@ -1,18 +1,17 @@
-package com.hbird.base.mvc.activity;
+package com.hbird.ui;
 
-import android.annotation.SuppressLint;
 import android.app.ActivityOptions;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -23,45 +22,37 @@ import android.widget.Toast;
 
 import com.hbird.base.R;
 import com.hbird.base.app.constant.CommonTag;
+import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
+import com.hbird.base.mvc.activity.NotificationMessageActivity;
+import com.hbird.base.mvc.activity.SobotNotificationClickReceiver;
+import com.hbird.base.mvc.activity.SobotUnReadMsgReceiver;
 import com.hbird.base.mvc.base.BasePagerAdapter;
 import com.hbird.base.mvc.fragement.LingPiaoFragement;
 import com.hbird.base.mvc.widget.NoScrollViewPager;
 import com.hbird.base.mvc.widget.TabRadioButton;
-import com.hbird.base.mvp.presenter.base.BasePresenter;
-import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 import com.hbird.ui.data.FragData;
 import com.hbird.ui.index.IndexFragement;
 import com.hbird.ui.me.FragMe;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.base.activity.IBaseActivity;
 import com.sobot.chat.utils.ZhiChiConstant;
 import com.umeng.socialize.UMShareAPI;
 
 import java.util.ArrayList;
 
-import butterknife.BindView;
 import cn.jpush.android.api.JPushInterface;
 import sing.common.util.LogUtil;
 import sing.common.util.StatusBarUtil;
+import sing.util.ToastUtil;
 
-/**
- * Created by Liul(245904552@qq.com) on 2018/6/28.
- * 主页面
- */
+public class MainActivity extends AppCompatActivity implements IBaseActivity {
 
-public class homeActivity extends BaseActivity<BasePresenter> {
-    @BindView(R.id.rg_top)
     RadioGroup rg;
-
-    @BindView(R.id.viewpager)
     NoScrollViewPager viewPager;
-
-    @BindView(R.id.ll_home_view)
     LinearLayout mHomeView;
-    @BindView(R.id.btn_jizhang)
     TabRadioButton btnJz;
-    @BindView(R.id.ll_bottom_dh)
     LinearLayout mBottomDh;
 
     private ArrayList<Fragment> fragements = new ArrayList<>();
@@ -75,21 +66,33 @@ public class homeActivity extends BaseActivity<BasePresenter> {
     private static SobotUnReadMsgReceiver unReadMsgReceiver;//获取未读消息数的广播接收者
     public static boolean isForeground = false;
 
-    @Override
-    protected int getContentLayout() {
-        return R.layout.activity_home;
-    }
+    TabRadioButton trb1 ;
+    TabRadioButton trb2 ;
+    TabRadioButton trb3 ;
+    TabRadioButton trb4 ;
 
     @Override
-    protected void initView(Bundle savedInstanceState) {
-        LogUtil.e("homeActivity");
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.main_activity);
+        initData();
+        initEvent();
     }
 
-    @SuppressLint("NewApi")
-    @Override
-    protected void initData(Bundle savedInstanceState) {
-        Utils.initColor(this, Color.rgb(255, 255, 255));
+    protected void initData() {
+        trb1 = findViewById(R.id.button_mingxi);
+        trb2 = findViewById(R.id.button_tubiao);
+        trb3 = findViewById(R.id.button_lingpp);
+        trb4 = findViewById(R.id.button_wo);
+
         StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
+
+        rg = findViewById(R.id.rg_top);
+        viewPager = findViewById(R.id.viewpager);
+        mHomeView = findViewById(R.id.ll_home_view);
+        btnJz = findViewById(R.id.btn_jizhang);
+        mBottomDh = findViewById(R.id.ll_bottom_dh);
+
 
         indexFragement = new IndexFragement();
         //chartFragement = new ChartFragement();
@@ -107,9 +110,12 @@ public class homeActivity extends BaseActivity<BasePresenter> {
         viewPager.setAdapter(pagerAdapter);
         viewPager.setOffscreenPageLimit(4);
         viewPager.setCurrentItem(0);
+
         //setView(0);
         /*mMingxi.setImageView(R.mipmap.ic_mingxi);
         mMingxi.setTextColor(getResources().getColor(R.color.colorPrimary));*/
+
+        trb1.setNoClick(true);
         rg.check(R.id.button_mingxi);
         //智齿客服 注册通知
         regReceiver();
@@ -117,31 +123,50 @@ public class homeActivity extends BaseActivity<BasePresenter> {
         registerMessageReceiver();
     }
 
-    @Override
     protected void initEvent() {
         rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(RadioGroup radioGroup, @IdRes int i) {
+                trb1.setNoClick(false);
+                trb2.setNoClick(false);
+                trb3.setNoClick(false);
+                trb4.setNoClick(false);
                 switch (i) {
                     case R.id.button_mingxi:// 账本首页
+                        if (viewPager.getCurrentItem() == 0) {
+                            return;
+                        }
+                        trb1.setNoClick(true);
                         rg.check(R.id.button_mingxi);
-                        viewPager.setCurrentItem(0);
-                        playVoice(R.raw.jizhang);
+                        viewPager.setCurrentItem(0, false);
+                        Utils.playVoice(MainActivity.this, R.raw.jizhang);
                         break;
                     case R.id.button_tubiao:// 图标
+                        if (viewPager.getCurrentItem() == 1) {
+                            return;
+                        }
+                        trb2.setNoClick(true);
                         rg.check(R.id.button_tubiao);
-                        viewPager.setCurrentItem(1);
-                        playVoice(R.raw.jizhang);
+                        viewPager.setCurrentItem(1, false);
+                        Utils.playVoice(MainActivity.this, R.raw.jizhang);
                         break;
                     case R.id.button_lingpp:// 领票票
+                        if (viewPager.getCurrentItem() == 2) {
+                            return;
+                        }
+                        trb3.setNoClick(true);
                         rg.check(R.id.button_lingpp);
-                        viewPager.setCurrentItem(2);
-                        playVoice(R.raw.jizhang);
+                        viewPager.setCurrentItem(2, false);
+                        Utils.playVoice(MainActivity.this, R.raw.jizhang);
                         break;
                     case R.id.button_wo:// 我的
+                        if (viewPager.getCurrentItem() == 3) {
+                            return;
+                        }
+                        trb4.setNoClick(true);
                         rg.check(R.id.button_wo);
-                        viewPager.setCurrentItem(3);
-                        playVoice(R.raw.jizhang);
+                        viewPager.setCurrentItem(3, false);
+                        Utils.playVoice(MainActivity.this, R.raw.jizhang);
                         break;
                 }
             }
@@ -153,9 +178,9 @@ public class homeActivity extends BaseActivity<BasePresenter> {
                 long timeD = time - lastClickTime;
                 lastClickTime = time;
                 if (timeD > 300) {
-                    String zhangbenId = SPUtil.getPrefString(homeActivity.this, CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+                    String zhangbenId = SPUtil.getPrefString(MainActivity.this, CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
                     if (TextUtils.isEmpty(zhangbenId)) {
-                        showMessage("请先创建账本");
+                        ToastUtil.showShort("请先选择账本");
                         return;
                     }
                     openJiZhang();
@@ -194,11 +219,11 @@ public class homeActivity extends BaseActivity<BasePresenter> {
     }
 
     private void openJiZhang() {
-        playVoice(R.raw.jizhang);
+        Utils.playVoice(MainActivity.this, R.raw.jizhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(new Intent(homeActivity.this, ChooseAccountTypeActivity.class), ActivityOptions.makeSceneTransitionAnimation(homeActivity.this).toBundle());
+            startActivity(new Intent(MainActivity.this, ChooseAccountTypeActivity.class), ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
         } else {
-            startActivity(new Intent(homeActivity.this, ChooseAccountTypeActivity.class));
+            startActivity(new Intent(MainActivity.this, ChooseAccountTypeActivity.class));
         }
     }
 
@@ -278,6 +303,16 @@ public class homeActivity extends BaseActivity<BasePresenter> {
         LocalBroadcastManager.getInstance(this).registerReceiver(mMessageReceiver, filter);
     }
 
+    @Override
+    public boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    public boolean isUseFragment() {
+        return false;
+    }
+
     public class MessageReceiver extends BroadcastReceiver {
 
         @Override
@@ -322,12 +357,9 @@ public class homeActivity extends BaseActivity<BasePresenter> {
         setIntent(intent);
     }
 
-
     private void handleOpenClick() {
         if (getIntent().getStringExtra(JPushInterface.EXTRA_EXTRA) == null) return;
-
         try {
-
             String ss = getIntent().getStringExtra(JPushInterface.EXTRA_EXTRA);
             com.alibaba.fastjson.JSONObject jsonObject = com.alibaba.fastjson.JSONObject.parseObject(ss);
             String jumpPage = jsonObject.getString("jumpPage");
@@ -392,5 +424,4 @@ public class homeActivity extends BaseActivity<BasePresenter> {
         }
         return name;
     }
-
 }

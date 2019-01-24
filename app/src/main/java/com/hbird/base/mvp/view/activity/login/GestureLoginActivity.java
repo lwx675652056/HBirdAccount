@@ -10,7 +10,6 @@ import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.global.ACache;
 import com.hbird.base.mvc.global.CommonTag;
@@ -19,6 +18,7 @@ import com.hbird.base.mvc.widget.LockPatternView;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.iview.login.IGestureLoginView;
 import com.hbird.base.util.LockPatternUtil;
+import com.hbird.ui.MainActivity;
 import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 
@@ -182,7 +182,7 @@ public class GestureLoginActivity extends BaseActivity<BaseActivityPresenter> im
             finish();
         }
         else{//来自于登录界面,验证成功后进入到首页
-            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
             finish();
         }
         //showMessage("登录成功！");
@@ -216,7 +216,7 @@ public class GestureLoginActivity extends BaseActivity<BaseActivityPresenter> im
             }
         }
         startActivity(intentNew);
-        Activity activity = DevRing.activityListManager().findActivity(homeActivity.class);
+        Activity activity = DevRing.activityListManager().findActivity(MainActivity.class);
         if(null!=activity){
             activity.finish();
         }

@@ -37,7 +37,6 @@ import com.hbird.base.mvc.activity.MemberManagerActivity;
 import com.hbird.base.mvc.activity.MingXiInfoActivity;
 import com.hbird.base.mvc.activity.MyZhangBenActivity;
 import com.hbird.base.mvc.activity.NotificationMessageActivity;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.OffLine2Req;
 import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
@@ -65,6 +64,7 @@ import com.hbird.bean.StatisticsSpendTopArraysBean;
 import com.hbird.common.Constants;
 import com.hbird.common.refreshLayout.MaterialRefreshLayout;
 import com.hbird.common.refreshLayout.MaterialRefreshListener;
+import com.hbird.ui.MainActivity;
 import com.hbird.ui.calendar.ActCalendar;
 import com.hbird.ui.detailed.ActAccountDetailed;
 import com.hbird.util.Utils;
@@ -146,9 +146,13 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     @Override
     public void initData() {
+        ViewGroup.LayoutParams params = binding.llParent1.getLayoutParams();
+        params.height += StatusBarUtil.getStateBarHeight(getActivity());
+        binding.llParent1.setLayoutParams(params);
+        binding.llParent1.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
+
         data = new IndexFragmentData();
         binding.setBean(data);
-        data.setComparison("相比上月支出 --%");
 
         binding.setListener(new OnClick());
 
@@ -382,7 +386,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
-            Utils.initColor(getActivity(), Color.rgb(255, 255, 255));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
 
             if (popOnces >= 0) {  //继续弹窗
@@ -466,7 +469,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         if (!netWorkAvailable) {
             return;
         }
-        if (showDialog){
+        if (showDialog) {
             showGifProgress("");
         }
         if (AppUtil.getVersionCode(getActivity()) < 10) {
@@ -1005,23 +1008,23 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         if (TextUtils.equals(jumpType, "0")) {
             //内链
             String connectionAddress = windowPop.get(m).getConnectionAddress();
-            homeActivity activity;
+            MainActivity activity;
             switch (connectionAddress) {
                 case "mxsy":
                     Utils.playVoice(getActivity(), R.raw.changgui02);
-                    activity = (homeActivity) getActivity();
+                    activity = (MainActivity) getActivity();
                     activity.setTiaozhuanFragement(0, 0);
                     break;
                 case "tbtj":
-                    activity = (homeActivity) getActivity();
+                    activity = (MainActivity) getActivity();
                     activity.setTiaozhuanFragement(1, 0);
                     break;
                 case "tbfx":
-                    activity = (homeActivity) getActivity();
+                    activity = (MainActivity) getActivity();
                     activity.setTiaozhuanFragement(1, 1);
                     break;
                 case "tbzc":
-                    activity = (homeActivity) getActivity();
+                    activity = (MainActivity) getActivity();
                     activity.setTiaozhuanFragement(1, 2);
                     break;
                 case "jzsy":
@@ -1029,7 +1032,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
                     break;
                 case "lppsy":
-                    activity = (homeActivity) getActivity();
+                    activity = (MainActivity) getActivity();
                     activity.setTiaozhuanFragement(2, 0);
                     break;
                 case "fftz":
@@ -1111,13 +1114,13 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         double spend1 = Double.parseDouble(data.getSpendingMoney());
         viewModel.getLastMonthData(data.getYyyy(), data.getMm(), accountId, prefSet, (spend2, income, list) -> {
             if (spend2 == 0 || spend1 == 0) {
-                data.setComparison("相比上月支出 --%");
+                data.setComparison("");
             } else {  // 设置比例
                 String s;// 比例结果
                 if (spend1 - spend2 > 0) {
-                    s = "+" + Utils.to2Digit((spend1 - spend2) / spend2) + "%";
+                    s = "+" + Utils.to2Digit((spend1 - spend2) / spend2 * 100) + "%";
                 } else {
-                    s = "-" + Utils.to2Digit((spend2 - spend1) / spend2) + "%";
+                    s = "-" + Utils.to2Digit((spend2 - spend1) / spend2 * 100) + "%";
                 }
                 data.setComparison("相比上月支出 " + s);
             }

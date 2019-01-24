@@ -19,7 +19,6 @@ import android.widget.TextView;
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
 import com.hbird.base.mvc.activity.WebViewActivity;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SystemBiaoqReturn;
@@ -32,6 +31,7 @@ import com.hbird.base.mvp.view.iview.login.IRegisterView;
 import com.hbird.base.util.DBUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.common.Constants;
+import com.hbird.ui.MainActivity;
 import com.hbird.ui.fill_invitation.ActFillInvitation;
 import com.hbird.ui.login_register.ActLogin;
 import com.hbird.util.Utils;
@@ -403,7 +403,7 @@ public class RegisterActivity extends BaseActivity<RegisterPresenter> implements
         LogUtil.e("filledIn = " + filledIn);
         LogUtil.e("currentData-registerDate = " + (currentData - registerDate));
         if (currentData - registerDate > 180000 || filledIn) {// 当前时间超过注册时间3分钟，直接去首页不填写邀请码
-            startActivity(new Intent(getApplicationContext(), homeActivity.class));
+            startActivity(new Intent(getApplicationContext(), MainActivity.class));
         } else {
             startActivity(new Intent(getApplicationContext(), ActFillInvitation.class));
         }

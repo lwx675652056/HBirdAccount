@@ -1,93 +1,75 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
-    <include layout="@layout/activity_headers"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2"/>
+    android:background="@color/white"
+    android:orientation="vertical">
 
-    <LinearLayout
-        android:id="@+id/ll_suggest"
+    <include layout="@layout/activity_headers"/>
+
+    <View style="@style/horizontal_line"/>
+
+
+    <EditText
+        android:id="@+id/et_record"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/height_3_80"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginRight="@dimen/width_4_80"
+        android:layout_height="@dimen/height_18_80"
+        android:layout_margin="@dimen/dp_15_x"
         android:background="@color/line2"
-        android:orientation="vertical">
-        <EditText
-            android:id="@+id/et_record"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_18_80"
-            android:background="@null"
-            android:hint="请输入您所需要反馈的内容（225字以内）"
-            android:maxLength="225"
-            android:padding="@dimen/width_3_80"
-            android:gravity="top"
-            android:paddingBottom="@dimen/height_1_80"
-            android:paddingLeft="@dimen/width_2_80"
-            android:paddingTop="@dimen/height_1_80"
-            android:scrollbars="vertical"
-            android:textColor="@color/text_333333"
-            android:textSize="@dimen/text_size_4" />
-    </LinearLayout>
+        android:gravity="top"
+        android:hint="请输入您所需要反馈的内容（225字以内）"
+        android:maxLength="225"
+        android:padding="@dimen/dp_10_x"
+        android:scrollbars="vertical"
+        android:textColor="@color/text_333333"
+        android:textSize="14sp"/>
 
     <EditText
         android:id="@+id/et_phone"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginRight="@dimen/width_4_80"
-        android:layout_marginTop="@dimen/height_2_80"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"
         android:background="@color/line2"
-        android:hint="请输入您的手机号/微信号"
-        android:singleLine="true"
         android:ellipsize="end"
-        android:padding="@dimen/width_3_80"
         android:gravity="top"
-        android:paddingBottom="@dimen/height_1_80"
-        android:paddingLeft="@dimen/width_2_80"
-        android:paddingTop="@dimen/height_1_80"
+        android:hint="请输入您的手机号/微信号"
+        android:padding="@dimen/dp_10_x"
         android:scrollbars="vertical"
+        android:singleLine="true"
         android:textColor="@color/text_333333"
-        android:textSize="@dimen/text_size_4" />
-    <RelativeLayout
+        android:textSize="14sp"/>
+
+    <TextView
         android:id="@+id/rl_top_btn"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80"
-        android:layout_marginTop="@dimen/height_4_80"
-        android:layout_marginBottom="@dimen/height_2_80"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginRight="@dimen/width_4_80"
-        android:background="@drawable/btn_bg_login">
-        <TextView
-            android:id="@+id/bt_my_login"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="提交"
-            android:layout_centerInParent="true"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_6" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:layout_marginTop="@dimen/dp_30_x"
+        android:background="@drawable/select_main_button"
+        android:gravity="center"
+        android:padding="@dimen/dp_15_x"
+        android:text="提交"
+        android:textColor="@color/white"
+        android:textSize="16sp"/>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginBottom="@dimen/height_4_80"
+        android:layout_marginBottom="@dimen/dp_30_x"
         android:gravity="bottom"
         android:orientation="vertical">
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:gravity="center_horizontal"
-            android:text="感谢您的留言，我们会尽快处理，并会按照您\n 留下的联系方式向您反馈。\n  如果问题紧急，详情咨询小蜂鸟MM客服微信：\n  qiao45820"
-            android:textSize="@dimen/text_size_2"
             android:lineSpacingExtra="5dp"
-            android:textColor="@color/text_bdbdbd"/>
+            android:text="感谢您的留言，我们会尽快处理，并会按照您\n 留下的联系方式向您反馈。\n  如果问题紧急，详情咨询小蜂鸟MM客服微信：\n  qiao45820"
+            android:textColor="@color/text_bdbdbd"
+            android:textSize="@dimen/dp_12_x"/>
     </LinearLayout>
 </LinearLayout>

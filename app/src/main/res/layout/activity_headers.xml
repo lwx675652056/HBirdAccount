@@ -1,17 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="horizontal"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/height_6_80"
-    android:background="@color/colorPrimary">
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_45_x"
+                android:background="@color/white"
+                android:orientation="horizontal">
+
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:padding="@dimen/height_2_80"
-        android:src="@drawable/ic_white_back"/>
+        android:src="@mipmap/ic_back"/>
+
     <TextView
         android:id="@+id/left_title"
         android:layout_width="wrap_content"
@@ -19,55 +20,58 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="@dimen/width_4_80"
         android:text="蜂鸟记账"
-        android:textColor="@color/white"
-        android:visibility="gone"
-        android:textSize="@dimen/text_size_12"/>
+        android:textColor="#333333"
+        android:textSize="16sp"
+        android:visibility="gone"/>
+
     <TextView
         android:id="@+id/center_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:text="个人信息管理"
-        android:gravity="center"
         android:layout_centerInParent="true"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_10" />
+        android:layout_gravity="center_vertical"
+        android:gravity="center"
+        android:text="个人信息管理"
+        android:textColor="#333333"
+        android:textSize="18sp"/>
+
     <TextView
         android:id="@+id/right_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginRight="@dimen/width_4_80"
-        android:text="记一笔"
-        android:textStyle="bold"
-        android:textColor="@color/white"
-        android:layout_centerVertical="true"
-        android:drawableRight="@mipmap/ic_add"
         android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="@dimen/width_4_80"
         android:drawablePadding="@dimen/width_2_80"
-        android:textSize="@dimen/text_size_4"
+        android:drawableRight="@mipmap/ic_add"
+        android:text="记一笔"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:textStyle="bold"
         android:visibility="gone"/>
+
     <TextView
         android:id="@+id/right_title2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/width_2_80"
         android:padding="@dimen/width_2_80"
         android:text="完成"
-        android:textStyle="bold"
-        android:textColor="@drawable/textview"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
-        android:textSize="@dimen/text_size_6" />
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp"
+        android:textStyle="bold"/>
+
     <ImageView
         android:id="@+id/right_img"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
         android:layout_marginRight="@dimen/width_2_80"
         android:padding="@dimen/width_2_80"
-        android:layout_centerVertical="true"
-        android:layout_alignParentRight="true"
         android:src="@mipmap/icon_fenxiang"
-        android:visibility="gone"
-        />
+        android:visibility="gone"/>
 
 </RelativeLayout>

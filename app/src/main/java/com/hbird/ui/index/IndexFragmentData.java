@@ -30,6 +30,7 @@ public class IndexFragmentData extends BaseObservable {
     public IndexFragmentData() {
         setNoData(true);
         setShowMore(false);
+        setComparison("");
     }
 
     @Bindable

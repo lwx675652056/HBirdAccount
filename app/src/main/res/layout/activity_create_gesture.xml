@@ -1,16 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
+
     <include layout="@layout/activity_headers"/>
+
+    <View style="@style/horizontal_line"/>
+
     <com.hbird.base.mvc.widget.LockPatternIndicator
         android:id="@+id/lockPatterIndicator"
         android:layout_width="@dimen/width_15_80"
         android:layout_height="@dimen/width_15_80"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/height_2_80" />
+        android:layout_marginTop="@dimen/height_2_80"/>
 
     <TextView
         android:id="@+id/messageTv"
@@ -20,7 +25,7 @@
         android:layout_marginTop="@dimen/height_2_80"
         android:text="绘制解锁图案"
         android:textColor="@color/text_808080"
-        android:textSize="@dimen/text_size_6" />
+        android:textSize="@dimen/text_size_6"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -32,7 +37,7 @@
         <com.hbird.base.mvc.widget.LockPatternView
             android:id="@+id/lockPatternView"
             android:layout_width="@dimen/width_60_80"
-            android:layout_height="@dimen/width_60_80" />
+            android:layout_height="@dimen/width_60_80"/>
 
         <Button
             android:id="@+id/resetBtn"
@@ -42,10 +47,7 @@
             android:layout_marginTop="@dimen/height_2_80"
             android:text="重新设定"
             android:textColor="@color/text_808080"
-            android:visibility="gone"
-            android:textSize="@dimen/text_size_6" />
-
+            android:textSize="@dimen/text_size_6"
+            android:visibility="gone"/>
     </LinearLayout>
-
-
 </LinearLayout>

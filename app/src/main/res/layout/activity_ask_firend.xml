@@ -1,63 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <include layout="@layout/activity_headers"/>
+
+    <View style="@style/horizontal_line"/>
+
     <com.hbird.base.mvc.widget.XListView
         android:id="@+id/xList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@color/line"
         android:listSelector="@android:color/transparent"
-        android:overScrollMode="never"
-        >
+        android:overScrollMode="never"/>
 
-    </com.hbird.base.mvc.widget.XListView>
     <RelativeLayout
         android:id="@+id/rl_emptys"
-        android:visibility="gone"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="gone">
+
         <ImageView
             android:id="@+id/iv_imgs"
-            android:layout_marginTop="@dimen/height_6_80"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/height_6_80"
             android:src="@mipmap/icon_yqjzch_disabled"/>
+
         <TextView
             android:id="@+id/tv_text_desc"
-            android:layout_below="@id/iv_imgs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
+            android:layout_below="@id/iv_imgs"
             android:layout_marginTop="@dimen/height_3_80"
-            android:textSize="@dimen/text_size_4"
+            android:gravity="center_horizontal"
+            android:text="目前还未邀请到好友，加把劲咯~"
             android:textColor="@color/wheel_select_text_bg"
-            android:text="目前还未邀请到好友，加把劲咯~"/>
+            android:textSize="@dimen/text_size_4"/>
+
         <RelativeLayout
             android:id="@+id/rl_bottom_btn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal|bottom"
             android:layout_alignParentBottom="true"
-            android:layout_marginTop="@dimen/height_2_80"
             android:layout_marginBottom="@dimen/height_4_80"
             android:layout_marginLeft="@dimen/width_6_80"
             android:layout_marginRight="@dimen/width_6_80"
-            android:background="@drawable/btn_bg_login">
+            android:layout_marginTop="@dimen/height_2_80"
+            android:background="@drawable/btn_bg_login"
+            android:gravity="center_horizontal|bottom">
+
             <TextView
                 android:id="@+id/bt_my_login"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="微信邀请记账"
-                android:padding="@dimen/width_3_80"
                 android:layout_centerInParent="true"
+                android:padding="@dimen/width_3_80"
+                android:text="微信邀请记账"
                 android:textColor="@color/white"
-                android:textSize="@dimen/text_size_6" />
+                android:textSize="@dimen/text_size_6"/>
         </RelativeLayout>
     </RelativeLayout>
 

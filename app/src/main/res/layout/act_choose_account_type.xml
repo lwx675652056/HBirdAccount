@@ -1,29 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ll_contents"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/white"
     android:orientation="vertical">
 
-    <include layout="@layout/activity_my_header"/>
+    <include layout="@layout/header_white_toolbar"/>
 
-    <!--<sing.SmartRefreshLayout-->
-        <!--android:id="@+id/refresh"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:srlEnableFooterFollowWhenLoadFinished="true"-->
-        <!--app:srlEnableLoadMore="false"-->
-        <!--app:srlEnableScrollContentWhenLoaded="true">-->
+    <View style="@style/horizontal_line"/>
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:overScrollMode="never"
-            android:paddingEnd="@dimen/dp_35_x"
-            android:scrollbars="none"/>
-    <!--</sing.SmartRefreshLayout>-->
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/dp_35_x"
+        android:scrollbars="none"/>
 </LinearLayout>

@@ -7,12 +7,12 @@ import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.databinding.ActFillInvitationBinding;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.util.SPUtil;
 import com.hbird.common.Constants;
+import com.hbird.ui.MainActivity;
 import com.ljy.devring.base.activity.IBaseActivity;
 
 import sing.common.base.BaseActivity;
@@ -58,7 +58,7 @@ public class ActFillInvitation extends BaseActivity<ActFillInvitationBinding, Ba
         String userId = (String) SharedPreferencesUtil.get(Constants.USER_ID, "");// 用户id
 
         SharedPreferencesUtil.put(userId + Constants._FILLED_IN, true);// 是否填写过邀请码
-        startActivity(new Intent(getApplicationContext(), homeActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
 
         KeyboardUtil.closeKeybord(binding.etCode, this);
         finish();

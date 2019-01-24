@@ -7,9 +7,12 @@ import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -60,6 +63,7 @@ import java.util.Set;
 
 import sing.common.base.BaseActivity;
 import sing.common.base.BaseViewModel;
+import sing.common.util.StatusBarUtil;
 import sing.util.ScreenUtil;
 import sing.util.ToastUtil;
 
@@ -106,8 +110,15 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         width_15 = getResources().getDimensionPixelSize(R.dimen.dp_15_x);
         maxWidth = ScreenUtil.getScreenWidth(this) - width_15 * 6 - width_15 * 3 - width_15 / 15;
 
-        findViewById(R.id.id_back).setOnClickListener(v -> finish());
+        findViewById(R.id.id_back).setOnClickListener(v -> onBackPressed());
+        FrameLayout toolBar = findViewById(R.id.toolbar);
+        toolBar.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_main_bg));
         ((TextView) findViewById(R.id.id_title)).setText("资产详情");
+        ViewGroup.LayoutParams params = toolBar.getLayoutParams();
+        params.height += StatusBarUtil.getStateBarHeight(this);
+        toolBar.setLayoutParams(params);
+        toolBar.setPadding(0, StatusBarUtil.getStateBarHeight(this), 0, 0);
+
         bean = (AssetsBean) getIntent().getExtras().getSerializable(Constants.START_INTENT_A);
         if (bean == null) {
             ToastUtil.showShort("数据传值遗异常");

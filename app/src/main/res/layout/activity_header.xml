@@ -65,7 +65,7 @@
         android:id="@+id/iv_shezhi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@mipmap/shezhi_normal"
+        android:src="@mipmap/my_icon_shezhi_normal"
         android:layout_centerVertical="true"
         android:layout_alignParentRight="true"
         android:visibility="gone"

@@ -3,6 +3,7 @@ package com.hbird.base.mvp.view.activity.base;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.DrawerLayout;
@@ -25,6 +26,7 @@ import javax.inject.Inject;
 
 import butterknife.BindColor;
 import butterknife.ButterKnife;
+import sing.common.util.StatusBarUtil;
 
 public abstract class BaseActivity<P extends BasePresenter> extends AppCompatActivity implements IBaseActivity {
 
@@ -63,7 +65,8 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             setContentView(getContentLayout());
             ButterKnife.bind(this);
         }
-        initBarColor(mBlack,mColor);
+        StatusBarUtil.setStatusBarLightMode(getWindow());
+        initBarColor(Color.WHITE,Color.WHITE);
         initView(savedInstanceState);
         initData(savedInstanceState);
         initEvent();

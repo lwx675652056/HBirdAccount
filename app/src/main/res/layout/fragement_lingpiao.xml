@@ -4,11 +4,13 @@
     android:id="@+id/ll_home_lingpiao"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="@color/colorPrimary"
     android:orientation="vertical">
 
     <com.github.lzyzsd.jsbridge.BridgeWebView
         android:id="@+id/webView"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:overScrollMode="never"
+        android:scrollbars="none"/>
 </LinearLayout>

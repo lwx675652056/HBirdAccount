@@ -11,10 +11,7 @@ import android.os.Vibrator;
 import android.support.v4.app.NotificationCompat;
 
 import com.hbird.base.R;
-import com.hbird.base.mvc.activity.AccountAlertActivity;
-import com.hbird.base.mvc.activity.homeActivity;
-import com.hbird.base.mvc.global.CommonTag;
-import com.hbird.base.util.SPUtil;
+import com.hbird.ui.MainActivity;
 
 /**
  * Created by liul on 2018/7/14.
@@ -52,7 +49,7 @@ public class LoongggAlarmReceiver extends BroadcastReceiver {
         String id = intent.getStringExtra("id");
         id= "0";
         //homeActivity是你点击通知时想要跳转的Activity
-        Intent playIntent = new Intent(context, homeActivity.class);
+        Intent playIntent = new Intent(context, MainActivity.class);
         playIntent.putExtra("id", id);
         PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, playIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context);

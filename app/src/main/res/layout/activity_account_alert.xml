@@ -1,105 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="#F6F6F6"
+    android:orientation="vertical">
+
     <include layout="@layout/activity_headers"/>
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2"/>
+
+    <View style="@style/horizontal_line"/>
 
     <LinearLayout
         android:id="@+id/ll_open_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/width_4_80"
-        android:paddingRight="@dimen/width_4_80"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_8_80"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/tv_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="开启"
-                android:textSize="@dimen/text_size_6"
-                android:textColor="@color/text_333333" />
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-                <com.hbird.base.mvc.widget.IosLikeToggleButton
-                    android:id="@+id/iv_btn"
-                    android:layout_width="50dp"
-                    android:layout_height="wrap_content"
-                    app:off_color="@color/line2"
-                    app:on_color="@color/colorPrimary"
-                    app:toggle="true"
-                    android:layout_alignParentRight="true"
-                    />
-               <!-- <ImageView
-                    android:id="@+id/iv_btn"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true" />-->
-            </RelativeLayout>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line2"/>
+        android:background="@color/white"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10_x"
+        android:paddingLeft="@dimen/dp_15_x"
+        android:paddingRight="@dimen/dp_15_x"
+        android:paddingTop="@dimen/dp_10_x">
+
+        <TextView
+            android:id="@+id/tv_btn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="开启"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
+
+        <com.hbird.base.mvc.widget.IosLikeToggleButton
+            android:id="@+id/iv_btn"
+            android:layout_width="@dimen/dp_50_x"
+            android:layout_height="wrap_content"
+            app:off_color="@color/line2"
+            app:on_color="@color/colorPrimary"
+            app:toggle="true"/>
+
+
     </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:paddingStart="@dimen/dp_15_x">
+
+        <View style="@style/horizontal_line"/>
+    </LinearLayout>
+
     <LinearLayout
         android:id="@+id/ll_modifi_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingLeft="@dimen/width_4_80"
-        android:paddingRight="@dimen/width_4_80"
-        android:background="@drawable/item_selector_hint"
-        android:orientation="vertical">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_8_80"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-            <TextView
-                android:id="@+id/tv_modfi"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="提醒时间"
-                android:textSize="@dimen/text_size_6"
-                android:textColor="@color/text_333333" />
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-              <!--  <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/ic_me_arrow"/>-->
-                <TextView
-                    android:id="@+id/tv_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:drawablePadding="@dimen/width_2_80"
-                    android:drawableRight="@mipmap/ic_me_arrow"
-                    android:text="00:00"
-                    android:textSize="@dimen/text_size_6"
-                    android:textColor="@color/text_333333"/>
-            </RelativeLayout>
-        </LinearLayout>
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/line2"/>
+        android:background="@drawable/select_white_0px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_15_x"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:paddingStart="@dimen/dp_15_x"
+        android:paddingTop="@dimen/dp_15_x">
+
+        <TextView
+            android:id="@+id/tv_modfi"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="提醒时间"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableEnd="@mipmap/ic_me_arrow"
+            android:drawablePadding="@dimen/dp_5_x"
+            android:text="00:00"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:paddingStart="@dimen/dp_15_x">
 
-
+        <View style="@style/horizontal_line"/>
+    </LinearLayout>
 </LinearLayout>

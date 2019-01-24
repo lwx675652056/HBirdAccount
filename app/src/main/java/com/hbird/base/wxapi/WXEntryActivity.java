@@ -41,17 +41,18 @@ import sing.util.SharedPreferencesUtil;
 
 /**
  * WXEntryActivity是一个Activity，用来接收微信的响应信息。这里有几个需要注意的地方：
-
- 它必须在"包名.wxapi"这个包下，如：你的应用包名为：com.xx.test，
- 则WXEntryActivity所在的包名必须为com.xx.test.wxapi。
- 这里和签名一样，很重要，你如果名字错了，或者包名的位置错了，
- 都是不能回调的，切记
+ * <p>
+ * 它必须在"包名.wxapi"这个包下，如：你的应用包名为：com.xx.test，
+ * 则WXEntryActivity所在的包名必须为com.xx.test.wxapi。
+ * 这里和签名一样，很重要，你如果名字错了，或者包名的位置错了，
+ * 都是不能回调的，切记
  */
 public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     String strWeixinUrl = "https://api.weixin.qq.com/sns/";
     static UserApiService userApiService = null;
     Context context;
+
     public WXEntryActivity() {
         //
         if (RingApplication.wxetrofit == null) {
@@ -76,7 +77,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     }
 
     private static OnItemClickListener listener;
-    public static void setListener(OnItemClickListener l){
+
+    public static void setListener(OnItemClickListener l) {
         listener = l;
     }
 
@@ -124,18 +126,18 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 //RingToast.show("ERR_OK");
                 if (sendResp != null) {
                     String code = sendResp.code;
-                    boolean getCode = (boolean) SharedPreferencesUtil.get("get_weixin_code",false);
-                    if (getCode){
-                        if (listener != null){
-                            listener.onClick(0,code,0);
+                    boolean getCode = (boolean) SharedPreferencesUtil.get("get_weixin_code", false);
+                    if (getCode) {
+                        if (listener != null) {
+                            listener.onClick(0, code, 0);
                         }
 
-                        SharedPreferencesUtil.put("get_weixin_code",false);// 标记为不是获取code，每次获取都设置
+                        SharedPreferencesUtil.put("get_weixin_code", false);// 标记为不是获取code，每次获取都设置
                         finish();
                         return;
-                    }else{
+                    } else {
                         Activity activity = DevRing.activityListManager().findActivity(AccountSafeActivity.class);
-                        if(activity!=null){
+                        if (activity != null) {
                             //账户安全中 绑定微信时的判断流程
                             DevRing.busManager().postEvent(new WxLoginCodeEvent(code));
                             finish();
@@ -167,6 +169,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
         /**
          * 获取openid accessToken值用于后期操作
+         *
          * @param appid
          * @param secret
          * @param code
@@ -180,13 +183,13 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
         /**
          * 获取个人信息
+         *
          * @param token
          * @param openid
-         * @return
-         * String path = "https://api.weixin.qq.com/sns/userinfo?access_token="
-        + access_token
-        + "&openid="
-        + openid;
+         * @return String path = "https://api.weixin.qq.com/sns/userinfo?access_token="
+         * + access_token
+         * + "&openid="
+         * + openid;
          */
         @GET("userinfo")
         Call<ResponseBody> getUserInof(@Query("access_token") String token, @Query("openid") String openid);
@@ -196,7 +199,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     private void getAccessToken(String code) {
         String deviceId = Utils.getDeviceInfo(this);
         LogUtil.e(deviceId);
-        String channelName =getChannelName();
+        String channelName = getChannelName();
         String mobileType = android.os.Build.MODEL;
         String jsonInfo = "{\"code\":\"" + code + "\", \"mobileDevice\":\"" + deviceId + "\", \"mobileManufacturer\":\"" + mobileType + "\", \"androidChannel\":\"" + channelName + "\"}";
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonInfo);
@@ -208,27 +211,31 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 String strJson = null;
                 try {
                     //{"code":"200","msg":"success","result":{"expire":"2592000","X-AUTH-TOKEN":"eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxNTUwMTIzMzc3MCIsInN1YiI6IjE1NTAxMjMzNzcwIiwiaWF0IjoxNTMwMDAxODUxfQ.ZTpgbPp0tRWa7D_ViQ1XjEtMA83AtaIIGTdpqgZSjHw"}}
-                    strJson = response.body().string();
-                    JSONObject jsonObj = JSON.parseObject(strJson);
-                    String strCode   = jsonObj.getString("code");
-                    String strMsg    = jsonObj.getString("msg");
-                    String strResult = jsonObj.getString("result");
-                    LogUtil.e(strJson);
-                    //登录成功
-                    if (strCode.equals("200")) {
-                        if (listener != null ){
-                            listener.onClick(0,strResult,0);
+                    if (response.body() != null) {
+                        strJson = response.body().string();
+                        JSONObject jsonObj = JSON.parseObject(strJson);
+                        String strCode = jsonObj.getString("code");
+                        String strMsg = jsonObj.getString("msg");
+                        String strResult = jsonObj.getString("result");
+                        LogUtil.e(strJson);
+                        //登录成功
+                        if (strCode.equals("200")) {
+                            if (listener != null) {
+                                listener.onClick(0, strResult, 0);
+                            }
+                            DevRing.busManager().postEvent(new WxLoginEvent(strResult));
+                        } else {
+                            RingToast.show(strMsg);
                         }
-                        DevRing.busManager().postEvent(new WxLoginEvent(strResult));
-                    }
-                    else{
-                        RingToast.show(strMsg);
+                    } else {
+                        RingToast.show("登录失败");
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 finish();
             }
+
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
                 RingToast.show("登录失败");
@@ -331,7 +338,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //        });
 //    }
 
-    public  String getChannelName() {
+    public String getChannelName() {
         if (getApplicationContext() == null) {
             return null;
         }

@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 
+import com.hbird.ui.MainActivity;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -49,7 +51,7 @@ public class MyReceiver extends BroadcastReceiver {
                 LogUtil.e("[MyReceiver] 用户点击打开了通知");
 
                 //打开自定义的Activity TestActivity蜂鸟通知
-                Intent i = new Intent(context, homeActivity.class);
+                Intent i = new Intent(context, MainActivity.class);
                 i.putExtras(bundle);
                 //i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 			/*	String ss = bundle.getString(JPushInterface.EXTRA_EXTRA);
@@ -110,16 +112,16 @@ public class MyReceiver extends BroadcastReceiver {
 
     //send msg to MainActivity
     private void processCustomMessage(Context context, Bundle bundle) {
-        if (homeActivity.isForeground) {
+        if (MainActivity.isForeground) {
             String message = bundle.getString(JPushInterface.EXTRA_MESSAGE);
             String extras = bundle.getString(JPushInterface.EXTRA_EXTRA);
-            Intent msgIntent = new Intent(homeActivity.MESSAGE_RECEIVED_ACTION);
-            msgIntent.putExtra(homeActivity.KEY_MESSAGE, message);
+            Intent msgIntent = new Intent(MainActivity.MESSAGE_RECEIVED_ACTION);
+            msgIntent.putExtra(MainActivity.KEY_MESSAGE, message);
             if (!TextUtils.isEmpty(extras)) {
                 try {
                     JSONObject extraJson = new JSONObject(extras);
                     if (extraJson.length() > 0) {
-                        msgIntent.putExtra(homeActivity.KEY_EXTRAS, extras);
+                        msgIntent.putExtra(MainActivity.KEY_EXTRAS, extras);
                     }
                 } catch (JSONException e) {
 

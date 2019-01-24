@@ -8,8 +8,11 @@
 
     <include layout="@layout/header_white_toolbar"/>
 
+    <View style="@style/horizontal_line"/>
+
     <LinearLayout
         android:id="@+id/ll_types"
+        android:gravity="center_vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/dp_15_x"
@@ -47,7 +50,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:paddingStart="@dimen/dp_15_x">
 
@@ -78,7 +81,7 @@
                 android:singleLine="true"
                 android:text=""
                 android:textColor="@color/text_808080"
-                android:textSize="@dimen/text_size_6"/>
+                android:textSize="14sp"/>
         </RelativeLayout>
     </LinearLayout>
 

@@ -34,7 +34,7 @@
                 android:singleLine="true"
                 android:text="@{title.title}"
                 android:textColor="@{title.rightColor==-1?@color/white:title.rightColor}"
-                android:textSize="20sp"/>
+                android:textSize="18sp"/>
 
             <ImageView
                 android:id="@+id/iv_back"

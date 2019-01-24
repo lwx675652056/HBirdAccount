@@ -9,6 +9,8 @@
 
     <include layout="@layout/activity_headers"/>
 
+    <View style="@style/horizontal_line"/>
+
     <LinearLayout
         android:id="@+id/ll_feilei_bg"
         android:layout_width="match_parent"

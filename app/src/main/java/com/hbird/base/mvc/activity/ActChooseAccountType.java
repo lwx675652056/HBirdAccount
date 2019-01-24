@@ -33,8 +33,6 @@ public class ActChooseAccountType extends BaseActivity<BaseActivityPresenter> {
     @BindView(R.id.tv_right_title)
     TextView mRightTitle;
 
-//    @BindView(R.id.refresh)
-//    SmartRefreshLayout refresh;
     @BindView(R.id.recycler_view)
     RecyclerView recyclerView;
 
@@ -54,8 +52,6 @@ public class ActChooseAccountType extends BaseActivity<BaseActivityPresenter> {
         adapter = new ChooseZhangBenAdapter(this, list, R.layout.row_choose_account, (position, data, type) -> onItemClick((AccountBookBean.AccountBean) data));
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-
-//        refresh.setOnRefreshListener(refreshLayout -> request());
     }
 
     // Item点击
@@ -80,7 +76,6 @@ public class ActChooseAccountType extends BaseActivity<BaseActivityPresenter> {
                     public void onSuccess(BaseReturn b) {
                         hideProgress();
                         list.clear();
-//                        refresh.finishRefresh();
                         list = ((AccountBookBean) b).result;
                         adapter.setData(list);
                     }
@@ -88,7 +83,6 @@ public class ActChooseAccountType extends BaseActivity<BaseActivityPresenter> {
                     @Override
                     public void onError(String s) {
                         hideProgress();
-//                        refresh.finishRefresh();
                         showMessage(s);
                     }
                 });

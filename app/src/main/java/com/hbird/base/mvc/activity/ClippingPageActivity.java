@@ -2,6 +2,7 @@ package com.hbird.base.mvc.activity;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -16,7 +17,10 @@ import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.BitmapUtils;
 import com.hbird.base.util.ConstantSet;
 import com.hbird.base.util.SDCardUtils;
+
 import java.io.ByteArrayOutputStream;
+
+import sing.common.util.StatusBarUtil;
 
 /**
  * 头像裁剪界面  create By liul on 2018/07/05;
@@ -36,7 +40,8 @@ public class ClippingPageActivity extends BaseActivity<BasePresenter> {
 
     @Override
     protected void initView(Bundle savedInstanceState) {
-
+        StatusBarUtil.clearStatusBarDarkMode(getWindow());
+        initBarColor(Color.parseColor("#F15C3C"),Color.parseColor("#F15C3C"));
     }
 
     @Override

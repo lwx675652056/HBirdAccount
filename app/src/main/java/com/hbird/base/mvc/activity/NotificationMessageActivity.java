@@ -70,34 +70,32 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
     }
 
     private void getMessage() {
-        NetWorkManager.getInstance().setContext(NotificationMessageActivity.this)
-                .getFengMessage(userinfoid, "1", "500", token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        FengMessageReturn b1 = (FengMessageReturn) b;
-                        messageList = b1.getResult().getMessageList();
-                        int unreadMessageNumber = b1.getResult().getUnreadMessageNumber();
-                        if(unreadMessageNumber>0){
-                            rightTitle2.setVisibility(View.VISIBLE);
-                        }else {
-                            rightTitle2.setVisibility(View.GONE);
-                        }
-                        if (messageList == null || messageList.size()<1){
-                            ivNoData.setVisibility(View.VISIBLE);
-                            lv.setVisibility(View.GONE);
-                        }else{
-                            ivNoData.setVisibility(View.GONE);
-                            lv.setVisibility(View.VISIBLE);
-                        }
-                        NotificationMessageAdapter adapter = new NotificationMessageAdapter(NotificationMessageActivity.this, messageList);
-                        lv.setAdapter(adapter);
-                    }
+        NetWorkManager.getInstance().setContext(NotificationMessageActivity.this).getFengMessage(userinfoid, "1", "500", token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                FengMessageReturn b1 = (FengMessageReturn) b;
+                messageList = b1.getResult().getMessageList();
+                int unreadMessageNumber = b1.getResult().getUnreadMessageNumber();
+                if (unreadMessageNumber > 0) {
+                    rightTitle2.setVisibility(View.VISIBLE);
+                } else {
+                    rightTitle2.setVisibility(View.GONE);
+                }
+                if (messageList == null || messageList.size() < 1) {
+                    ivNoData.setVisibility(View.VISIBLE);
+                    lv.setVisibility(View.GONE);
+                } else {
+                    ivNoData.setVisibility(View.GONE);
+                    lv.setVisibility(View.VISIBLE);
+                }
+                NotificationMessageAdapter adapter = new NotificationMessageAdapter(NotificationMessageActivity.this, messageList);
+                lv.setAdapter(adapter);
+            }
 
-                    @Override
-                    public void onError(String s) {
-
-                    }
-                });
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     @Override
@@ -107,12 +105,12 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 //showMessage("点击查看了 "+i);
                 int status = messageList.get(i).getStatus();
-                if(status==1){
+                if (status == 1) {
                     //表示已读  返回不调接口
                     return;
                 }
                 NetWorkManager.getInstance().setContext(NotificationMessageActivity.this)
-                        .postUpDateStaus("ONE", userinfoid,messageList.get(i).getId()+"" , token, new NetWorkManager.CallBack() {
+                        .postUpDateStaus("ONE", userinfoid, messageList.get(i).getId() + "", token, new NetWorkManager.CallBack() {
                             @Override
                             public void onSuccess(BaseReturn b) {
                                 GloableReturn b1 = (GloableReturn) b;
@@ -138,7 +136,7 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
             case R.id.right_title2:
                 playVoice(R.raw.changgui02);
                 NetWorkManager.getInstance().setContext(NotificationMessageActivity.this)
-                        .postUpDateStaus("ALL", userinfoid,"", token, new NetWorkManager.CallBack() {
+                        .postUpDateStaus("ALL", userinfoid, "", token, new NetWorkManager.CallBack() {
                             @Override
                             public void onSuccess(BaseReturn b) {
                                 GloableReturn b1 = (GloableReturn) b;

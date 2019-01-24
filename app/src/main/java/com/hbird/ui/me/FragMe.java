@@ -4,21 +4,18 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.ColorStateList;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ScrollView;
 
 import com.google.gson.Gson;
@@ -47,7 +44,6 @@ import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.SobotUtils;
 import com.hbird.base.util.Util;
-import com.hbird.bean.TitleBean;
 import com.hbird.common.Constants;
 import com.hbird.ui.address.ActEditAddress;
 import com.hbird.util.Utils;
@@ -95,14 +91,14 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            binding.toolbar.flParent.setBackgroundColor(Color.rgb(241, 92, 60));
-            Utils.initColor(getActivity(), Color.rgb(241, 92, 60));
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
-            binding.toolbar.tvTitle.setTextColor(Color.WHITE);
-            setSettingColor(Color.rgb(255, 255, 255));
+
             data.setShowLine(false);
             data.setFengniaoId(-1);// 空值
             binding.scrollView.fullScroll(ScrollView.FOCUS_UP);//滑到顶部
+
+            binding.flParent1.setVisibility(View.GONE);
+            binding.flParent2.setVisibility(View.VISIBLE);
 
             // 调三个接口，获取个人信息、获取头部信息、获取丰丰通知数
             getUserInfo();
@@ -117,26 +113,18 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
         accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
 
-        TitleBean titleBean = new TitleBean(true, "我的", R.mipmap.shezhi_normal);
-        binding.setTitle(titleBean);
-
         data = new FragMeData();
         data.setShowLine(false);
         binding.setData(data);
         binding.setListener(new OnClick());
 
-        binding.toolbar.ivRight.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) { // 设置
-                Utils.playVoice(getActivity(), R.raw.changgui02);
-                Intent intent5 = new Intent(getActivity(), SettingsActivity.class);
-                if (null != b1) {
-                    intent5.putExtra("PHONE", b1.getResult().getMobile());
-                    intent5.putExtra("WEIXIN", b1.getResult().getWechatAuth());
-                }
-                startActivity(intent5);
-            }
-        });
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.flParent1.getLayoutParams();
+        params.height += StatusBarUtil.getStateBarHeight(getActivity());
+        binding.flParent1.setLayoutParams(params);
+        binding.flParent1.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
+        binding.flParent2.setLayoutParams(params);
+        binding.flParent2.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
+
 
         height = getResources().getDimensionPixelSize(R.dimen.dp_50_x);
 
@@ -144,6 +132,16 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     }
 
     public class OnClick {
+        // 设置
+        public void setting(View view){
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+            Intent intent5 = new Intent(getActivity(), SettingsActivity.class);
+            if (null != b1) {
+                intent5.putExtra("PHONE", b1.getResult().getMobile());
+                intent5.putExtra("WEIXIN", b1.getResult().getWechatAuth());
+            }
+            startActivity(intent5);
+        }
         // 个人信息
         public void userInfo(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
@@ -299,42 +297,33 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
     // scrollView 滑动监听
     private void onScroll(int scrollY) {
-        if (scrollY < 10) {
-            binding.toolbar.flParent.setBackgroundColor(Color.rgb(241, 92, 60));
-            Utils.initColor(getActivity(), Color.rgb(241, 92, 60));
+        if (scrollY < 50) {
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
-            binding.toolbar.tvTitle.setTextColor(Color.WHITE);
-            setSettingColor(Color.rgb(255, 255, 255));
+
+            binding.flParent1.setVisibility(View.GONE);
+            binding.flParent2.setVisibility(View.VISIBLE);
+            binding.flParent1.setAlpha(0);
+
             data.setShowLine(false);
         } else if (scrollY >= height) {
-            binding.toolbar.flParent.setBackgroundColor(Color.rgb(255, 255, 255));
-            Utils.initColor(getActivity(), Color.rgb(255, 255, 255));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
-            binding.toolbar.tvTitle.setTextColor(Color.parseColor("#333333"));
-            setSettingColor(Color.parseColor("#333333"));
+
+            binding.flParent1.setVisibility(View.VISIBLE);
+            binding.flParent2.setVisibility(View.GONE);
+            binding.flParent1.setAlpha(1);
+
             data.setShowLine(true);
         } else {
-            int R = (int) (241 + (((double) scrollY / height) * 14));
-            int G = (int) (92 + (((double) scrollY / height) * 163));
-            int B = (int) (60 + (((double) scrollY / height) * 195));
-            int textColor = (int) (255 - (((double) scrollY / height) * 33));
-
-            binding.toolbar.flParent.setBackgroundColor(Color.rgb(R, G, B));
-            Utils.initColor(getActivity(), Color.rgb(R, G, B));
             StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
-            binding.toolbar.tvTitle.setTextColor(Color.rgb(textColor, textColor, textColor));
 
-            setSettingColor(Color.rgb(textColor, textColor, textColor));
+            binding.flParent1.setVisibility(View.VISIBLE);
+            binding.flParent2.setVisibility(View.GONE);
+
+            float alpha = (float)scrollY / height;
+            binding.flParent1.setAlpha(alpha>1?1:alpha);
+
             data.setShowLine(false);
         }
-    }
-
-    // 设置按钮的颜色
-    private void setSettingColor(int color) {
-        Drawable modeDrawable = binding.toolbar.ivRight.getDrawable().mutate();
-        Drawable temp = DrawableCompat.wrap(modeDrawable);
-        DrawableCompat.setTintList(temp, ColorStateList.valueOf(color));
-        binding.toolbar.ivRight.setImageDrawable(temp);
     }
 
     //获取个人信息

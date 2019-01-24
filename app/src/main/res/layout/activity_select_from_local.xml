@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include layout="@layout/header_title_layout"></include>
+    <include layout="@layout/header_title_layout"/>
 
     <GridView
         android:id="@+id/imagesGridView"

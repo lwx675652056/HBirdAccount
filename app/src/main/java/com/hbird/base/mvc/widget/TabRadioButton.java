@@ -50,6 +50,8 @@ public class TabRadioButton extends android.support.v7.widget.AppCompatRadioButt
     private long duration;
     private float scaleRate;
 
+    private boolean noClick = false;// 不可点击
+
     public TabRadioButton(Context context) {
         this(context, null);
     }
@@ -93,16 +95,17 @@ public class TabRadioButton extends android.support.v7.widget.AppCompatRadioButt
     @Override
     public boolean onTouchEvent(MotionEvent event) {
 //        this.performClick();
+
         switch (event.getAction()){
             case MotionEvent.ACTION_DOWN:
                 //手指按下时开始动画
-                if (enableAnimation && !pressedAnimator.isRunning()){
+                if (enableAnimation && !pressedAnimator.isRunning() && !noClick){
                     pressedAnimator.start();
                 }
                 break;
             case MotionEvent.ACTION_UP:
                 //手指离开时进行复原
-                if (enableAnimation && !releasedAnimator.isRunning()){
+                if (enableAnimation && !releasedAnimator.isRunning() && !noClick){
                     releasedAnimator.start();
                 }
                 break;
@@ -195,5 +198,9 @@ public class TabRadioButton extends android.support.v7.widget.AppCompatRadioButt
 
     public void setScaleRate(float scaleRate) {
         this.scaleRate = scaleRate;
+    }
+
+    public void setNoClick(boolean noClick) {
+        this.noClick = noClick;
     }
 }

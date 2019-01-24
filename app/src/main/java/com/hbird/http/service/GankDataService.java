@@ -42,11 +42,20 @@ public interface GankDataService {
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("verifycodeToLogin/")
     Observable<HttpResult<String>> getLoginVerifycode(@Body RequestBody body);
+    // 获取找回密码验证码
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("verifycodeToResetpwd/")
+    Observable<HttpResult<String>> getVerifycodeToResetpwd(@Body RequestBody body);
 
     // 手机号注册
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
     @POST("register/android")
     Observable<HttpResult<String>> register(@Body RequestBody body);
+
+    // 密码找回（重置）
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("resetpwd/")
+    Observable<HttpResult<String>> resetpwd(@Body RequestBody body);
 
     /**
      * 获取个人信息详情

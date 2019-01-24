@@ -2,6 +2,7 @@ package com.hbird.base.mvc.activity;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -27,6 +28,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import sing.common.util.StatusBarUtil;
 
 public class SelectImagesFromLocalActivity extends BaseActivity<BasePresenter> implements
         View.OnClickListener,ImagesFolderPopupWindow.FinishOnItemClickListener,AdapterView.OnItemClickListener {
@@ -61,6 +64,8 @@ public class SelectImagesFromLocalActivity extends BaseActivity<BasePresenter> i
 
     @Override
     protected void initData(Bundle savedInstanceState) {
+        StatusBarUtil.clearStatusBarDarkMode(getWindow());
+        initBarColor(Color.parseColor("#F15C3C"),Color.parseColor("#F15C3C"));
         msp=new SpinnerProgressDialoag(this);
         initTitle();
         mgridView=(GridView)findViewById(R.id.imagesGridView);

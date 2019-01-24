@@ -165,8 +165,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         binding.recyclerView3.setNestedScrollingEnabled(false);
 
         restTopList();
-
-        loadDataForNet();
     }
 
     // 点击了排行
@@ -180,6 +178,14 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         intent.putExtra(Constants.START_INTENT_F, (data.isInCome() ? 2 : 1));
         intent.putExtra(Constants.START_INTENT_G, data.isAll());
         startActivity(intent);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser && getActivity() != null) {
+            loadDataForNet();
+        }
     }
 
     // 重置顶部数据
@@ -489,13 +495,13 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             // s为 01/14-01/20  、 12/31-01/06
             int t1 = Integer.parseInt(s.substring(0, 2));
             int t2 = Integer.parseInt(s.substring(6, 8));
-            int lastD = Integer.parseInt(s.substring(9, 11))+1;
+            int lastD = Integer.parseInt(s.substring(9, 11)) + 1;
             if (t1 > t2) { // 12/31-01/06
                 firstDay = (weekYyyy - 1) + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
-                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD<10)?"0"+(lastD):(lastD));// 最后一天要+1，比如12/31-01/06，是01/07之前
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD < 10) ? "0" + (lastD) : (lastD));// 最后一天要+1，比如12/31-01/06，是01/07之前
             } else { // 01/14-01/20
                 firstDay = weekYyyy + "-" + s.substring(0, 2) + "-" + s.substring(3, 5);
-                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD<10)?"0"+(lastD):(lastD));
+                lastDay = weekYyyy + "-" + s.substring(6, 8) + "-" + ((lastD < 10) ? "0" + (lastD) : (lastD));
             }
 
             weeks = position + 1;

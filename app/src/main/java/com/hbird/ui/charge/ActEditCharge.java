@@ -127,24 +127,14 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
     @BindView(R.id.tv_account)
     TextView tvAccount;// 账户名称
 
-    private DecimalFormat decimalFormat = new DecimalFormat("0.00");
     private boolean inputTag;
-    private int isFirst = 1;
-    //    private CommonListBean commonListBean;
-//    private CommonList2Bean commonList2Bean;
     private String moneyString;
     private Integer happys;
     private Long time = 0L;
-    private String decode;
     private numberWatcher numberWatcher;
     private Vibrator vibrator;
-    private boolean happysFlag = false;
-    private int accountId;
-    private final int FIRST_LENGHT = 4000;
-    private final int FIRST_LENGHT_TO = 4000;
     private String token;
     private boolean comeInForLogin;
-    private String p;
     private boolean b;
 
 
@@ -164,9 +154,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        p = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-        accountId = Integer.parseInt(p);
-
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
         getMyAccount();
         setDate();
@@ -273,7 +260,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
                 switch (i) {
                     case R.id.btn_happy:// 开心
                         playVoice(R.raw.changgui01);
-                        happysFlag = true;
                         happys = 0;
                         ivHappy.setVisibility(View.VISIBLE);
                         ivNormal.setVisibility(View.GONE);
@@ -283,7 +269,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
                         break;
                     case R.id.btn_normal: // 一般
                         playVoice(R.raw.changgui01);
-                        happysFlag = true;
                         happys = 1;
                         ivHappy.setVisibility(View.GONE);
                         ivNormal.setVisibility(View.VISIBLE);
@@ -293,7 +278,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
                         break;
                     case R.id.btn_unhappy: // 不开心
                         playVoice(R.raw.changgui01);
-                        happysFlag = true;
                         happys = 2;
                         ivHappy.setVisibility(View.GONE);
                         ivNormal.setVisibility(View.GONE);

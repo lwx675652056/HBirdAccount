@@ -15,11 +15,11 @@ import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
-import com.hbird.base.mvc.activity.homeActivity;
 import com.hbird.base.mvp.model.login.ForgetPasswordModel;
 import com.hbird.base.mvp.presenter.login.ForgetPasswordPresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.mvp.view.iview.login.IForgetPasswordView;
+import com.hbird.ui.MainActivity;
 import com.hbird.ui.login_register.ActLogin;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
@@ -196,7 +196,7 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
         //关闭手势密码开关（必须重新打开设置）
         DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).
                 put(com.hbird.base.app.constant.CommonTag.SHOUSHI_PASSWORD_OPENED, false);
-        startActivity(new Intent(getApplicationContext(), homeActivity.class));
+        startActivity(new Intent(getApplicationContext(), MainActivity.class));
         finish();
     }
 
@@ -231,5 +231,4 @@ public class ForgetPasswordActivity extends BaseActivity<ForgetPasswordPresenter
             mSubmit.setText(millisUntilFinished / 1000 + "s");
         }
     }
-
 }

@@ -1707,11 +1707,11 @@ public class NetWorkManager {
     }
 
     //设置/修改资产
-    public void saveOrUpdateAssets(int assetsType, double money, String assetsName,String token, final CallBack callBack) {
+    public void saveOrUpdateAssets(int assetsType, double money, String assetsName, String token, final CallBack callBack) {
         JSONObject obj = new JSONObject();
-        obj.put("assetsType",assetsType);
-        obj.put("money",money);
-        obj.put("assetsName",assetsName);
+        obj.put("assetsType", assetsType);
+        obj.put("money", money);
+        obj.put("assetsName", assetsName);
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toJSONString());
         Observable<ResponseBody> observable = DevRing.httpManager().getService(ApiService.class).postSaveOrUpdateAssets(token, body);
@@ -1776,7 +1776,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("失败：" + message);
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2409,7 +2409,7 @@ public class NetWorkManager {
     // 添加默认记账账户接口
     public void addAT2Mark(String token, int id, final CallBack callBack) {
         JSONObject obj = new JSONObject();
-        obj.put("ats",new int[]{id});
+        obj.put("ats", new int[]{id});
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toJSONString());
 
@@ -2444,7 +2444,7 @@ public class NetWorkManager {
     // 删除默认记账账户接口
     public void deleteAT2Mark(String token, Integer[] id, final CallBack callBack) {
         JSONObject obj = new JSONObject();
-        obj.put("ats",id);
+        obj.put("ats", id);
 
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), obj.toJSONString());
 
@@ -2474,9 +2474,10 @@ public class NetWorkManager {
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
+
     // 提交邀请码
     public void bindInvite(String token, String inviteCode, final CallBack callBack) {
-        String jsonInfo = "{\"inviteCode\":\""+inviteCode+"\"}";
+        String jsonInfo = "{\"inviteCode\":\"" + inviteCode + "\"}";
         RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonInfo);
 
         Observable<ResponseBody> observable = DevRing.httpManager().getService(ApiService.class).bindInvite(token, body);
@@ -2507,8 +2508,10 @@ public class NetWorkManager {
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
+
     public interface CallBack {
         void onSuccess(BaseReturn b);
+
         void onError(String s);
     }
 }

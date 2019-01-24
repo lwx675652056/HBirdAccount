@@ -26,6 +26,7 @@
         android:orientation="vertical">
 
         <LinearLayout
+            android:id="@+id/ll_parent1"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45_x"
             android:background="@color/white">
@@ -60,8 +61,8 @@
         <com.hbird.common.refreshLayout.MaterialRefreshLayout
             android:id="@+id/refresh"
             android:layout_width="match_parent"
-            app:isLoadMore="false"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            app:isLoadMore="false">
 
             <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
@@ -362,16 +363,16 @@
                             <ImageView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_marginTop="@dimen/dp_35_x"
                                 android:layout_marginBottom="@dimen/dp_15_x"
+                                android:layout_marginTop="@dimen/dp_35_x"
                                 android:src="@mipmap/home_pic_kongtai_disabled"/>
 
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginBottom="@dimen/dp_35_x"
-                                android:text="赶快去记第一笔帐吧~"
                                 android:gravity="center"
+                                android:text="赶快去记第一笔帐吧~"
                                 android:textColor="#BDBDBD"
                                 android:textSize="14sp"/>
                         </LinearLayout>
