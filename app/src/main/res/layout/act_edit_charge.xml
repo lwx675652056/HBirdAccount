@@ -27,15 +27,15 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="@dimen/dp_45_x"
-                android:layout_height="@dimen/dp_45_x"
+                android:layout_width="@dimen/dp_40_x"
+                android:layout_height="@dimen/dp_40_x"
                 android:background="@drawable/circle_333333"
                 android:gravity="center">
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/dp_30_x"
-                    android:layout_height="@dimen/dp_30_x"
+                    android:layout_width="@dimen/dp_20_x"
+                    android:layout_height="@dimen/dp_20_x"
                     android:padding="4dp"/>
             </RelativeLayout>
 
@@ -105,6 +105,8 @@
             android:gravity="top|start"
             android:hint="备注：（20字以内）"
             android:lines="2"
+            android:textColorHint="#BDBDBD"
+            android:textColor="#BDBDBD"
             android:maxLength="20"
             android:padding="@dimen/dp_7_x"
             android:scrollbars="vertical"

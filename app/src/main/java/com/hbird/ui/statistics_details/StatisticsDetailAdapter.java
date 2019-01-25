@@ -1,12 +1,15 @@
 package com.hbird.ui.statistics_details;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.hbird.base.R;
 import com.hbird.base.databinding.RowStaticticsDetailBinding;
 import com.hbird.base.listener.OnItemClickListener;
+import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 
 import java.util.List;
@@ -25,13 +28,17 @@ public class StatisticsDetailAdapter extends BaseRecyclerAdapter<AccountDetailed
     private Context context;
     private OnItemClickListener listener;
     private int orderType;// 1 是支出
-
+    private int persionId = 0;
     public StatisticsDetailAdapter(Context context, List<AccountDetailedBean> list, int layoutId,int orderType, OnItemClickListener listener) {
         super(context, list, layoutId);
         this.list = list;
         this.context = context;
         this.listener = listener;
         this.orderType = orderType;
+        String s = SPUtil.getPrefString(context, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
+        if (!TextUtils.isEmpty(s)) {
+            persionId = Integer.parseInt(s);
+        }
     }
 
     @Override
@@ -68,6 +75,13 @@ public class StatisticsDetailAdapter extends BaseRecyclerAdapter<AccountDetailed
             }
         }
 
+        if (accountDetailedBean != null) {
+            if (accountDetailedBean.getUpdateBy() == null || accountDetailedBean.getUpdateBy() == persionId) {
+                binding.imagess.setBorderColor(Color.parseColor("#D80200"));
+            } else {
+                binding.imagess.setBorderColor(Color.parseColor("#41AB14"));
+            }
+        }
 
 //        binding.llContent.setOnClickListener(v -> listener.onClick(position,accountDetailedBean,0));
 //        binding.llContent.setOnLongClickListener(v -> {

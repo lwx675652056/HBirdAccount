@@ -20,6 +20,7 @@ import com.hbird.base.mvc.bean.RequestBean.OffLineReq;
 import com.hbird.base.mvc.bean.ReturnBean.PullSyncDateReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
+import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.mvp.presenter.base.BasePresenter;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
@@ -87,11 +88,11 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
     @BindView(R.id.tv_account)
     TextView tvAccount;
 
-    private WaterOrderCollect waterOrderCollect;
     private boolean comeInForLogin;
     private String accountId;
     private String token;
     private Boolean a;
+    WaterOrderCollect waterOrderCollect;
 
     @Override
     protected int getContentLayout() {
@@ -120,17 +121,20 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         if (null != cursor) {
             List<WaterOrderCollect> waterOrderCollects = DBUtil.changeToList(cursor, dbList, WaterOrderCollect.class);
             waterOrderCollect = waterOrderCollects.get(0);
+            setValue(waterOrderCollect);
         }
+    }
 
-        String typeName = waterOrderCollect.getTypeName();
-        double money = waterOrderCollect.getMoney();
-        long chargeDate = waterOrderCollect.getChargeDate().getTime();
+    private void setValue(WaterOrderCollect bean) {
+        String typeName = bean.getTypeName();
+        double money = bean.getMoney();
+        long chargeDate = bean.getChargeDate().getTime();
         String yearMonthDay = DateUtils.getMonthDay(chargeDate);
         String day = DateUtils.getDay(chargeDate);
         String weekDay = DateUtil.dateToWeek(day);
-        String remark = waterOrderCollect.getRemark();
-        String iconUrl = waterOrderCollect.getIcon();
-        int orderType = waterOrderCollect.getOrderType();
+        String remark = bean.getRemark();
+        String iconUrl = bean.getIcon();
+        int orderType = bean.getOrderType();
         String leixing = "";
         if (orderType == 1) {
             leixing = "支出";
@@ -145,7 +149,7 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
             mXinQing.setVisibility(View.GONE);
             mViewLine.setVisibility(View.GONE);
         }
-        Integer spendHappiness = waterOrderCollect.getSpendHappiness();
+        Integer spendHappiness = bean.getSpendHappiness();
         if (null == spendHappiness) {
             mMood.setVisibility(View.GONE);
         } else {
@@ -162,19 +166,19 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
                 mMood.setVisibility(View.GONE);
             }
         }
-        mFenLei.setText("# 所属账本：" + waterOrderCollect.getAbName() + "账本 #");
-        mTvJlr.setText(waterOrderCollect.getReporterNickName());
+        mFenLei.setText("# 所属账本：" + bean.getAbName() + "账本 #");
+        mTvJlr.setText(bean.getReporterNickName());
         mTypes.setText(typeName);
         mPayNum.setText(money + "");
         mRiQi.setText(yearMonthDay + " " + weekDay);
         mLeiXing.setText(leixing);
-        tvAccount.setText(waterOrderCollect.getAssetsName());
+        tvAccount.setText(bean.getAssetsName());
         if (null == remark) {
             mBeiZhu.setText("");
         } else {
             mBeiZhu.setText(remark);
         }
-        Glide.with(this).load(waterOrderCollect.getReporterAvatar()).into(mImgHeader);
+        Glide.with(this).load(bean.getReporterAvatar()).into(mImgHeader);
         Glide.with(this).load(iconUrl).into(mIcon);
     }
 
@@ -195,14 +199,22 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
             case R.id.tv_delete:
                 //调用接口的删除
                 playVoice(R.raw.changgui02);
-                a = DBUtil.updateOneDate(waterOrderCollect);
-                if (a) {
-                    //刪除完 同步
-                    pullToSyncDate();
-                } else {
-                    setResult(102);
-                    finish();
-                }
+                new DialogUtils(this)
+                        .builder()
+                        .setTitle("温馨提示")
+                        .setMsg("确认删除吗？")
+                        .setCancleButton("取消", v -> {
+                        })
+                        .setSureButton("删除", v -> {
+                            a = DBUtil.updateOneDate(waterOrderCollect);
+                            if (a) {
+                                //刪除完 同步
+                                pullToSyncDate();
+                            } else {
+                                setResult(102);
+                                finish();
+                            }
+                        }).show();
                 break;
             case R.id.tv_editor:// 编辑
                 playVoice(R.raw.changgui02);
@@ -212,7 +224,7 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
 //                startActivityForResult(intent, 103);
                 Intent intent = new Intent(this, ActEditCharge.class);
                 intent.putExtra(Constants.START_INTENT_A, waterOrderCollect);
-                startActivityForResult(intent,103);
+                startActivityForResult(intent, 103);
                 break;
         }
     }
@@ -222,7 +234,9 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 103 && resultCode == 104) {
             //刷新界面数据
-            setDates(id);
+            WaterOrderCollect t = (WaterOrderCollect) data.getExtras().getSerializable(Constants.START_INTENT_A);
+            waterOrderCollect = t;
+            setValue(waterOrderCollect);
         }
     }
 

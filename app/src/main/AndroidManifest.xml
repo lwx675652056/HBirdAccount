@@ -65,7 +65,8 @@
         <!--首页的更多 账本明细-->
         <activity
             android:name="com.hbird.ui.detailed.ActAccountDetailed"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
 
         <!--首页的日历-->
         <activity
@@ -84,9 +85,9 @@
 
         <!--资产详情-->
         <activity
-            android:theme="@style/TranslucentTheme"
             android:name="com.hbird.ui.assets.ActAssetsDetail"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
 
         <!--填写邀请码-->
         <activity
@@ -101,7 +102,8 @@
         <!--注册-->
         <activity
             android:name="com.hbird.ui.login_register.ActRegister"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
 
         <!--找回密码-->
         <activity
@@ -123,10 +125,16 @@
             android:name="com.hbird.ui.login_register.ActLogin"
             android:screenOrientation="portrait"/>
 
-        <activity android:name="com.hbird.ui.MainActivity"
-                  android:screenOrientation="portrait"
-                  android:theme="@style/TranslucentTheme">
-        </activity>
+        <activity
+            android:name="com.hbird.ui.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
+
+        <!--领票票二级页面-->
+        <activity
+            android:name="com.hbird.ui.ticket.ActGetTicket"
+            android:screenOrientation="portrait"
+            android:theme="@style/TranslucentTheme"/>
 
         <!--<activity android:name=".mvc.activity.OpenClickActivity"
             android:exported="true">
@@ -194,7 +202,9 @@
         <activity android:name=".mvc.activity.RegisterViewActivity"/>
         <activity android:name=".mvc.activity.BudgetActivity"/>
         <activity android:name=".mvc.activity.AskFriendsActivity"/>
-        <activity android:name=".mvc.activity.ZiChanJieShaoActivity"/>
+        <activity
+            android:name=".mvc.activity.ZiChanJieShaoActivity"
+            android:theme="@style/TranslucentTheme"/>
         <activity android:name=".mvc.activity.ActSetBudget"/>
         <!-- <activity android:name=".mvp.view.activity.MovieActivity"> -->
         <!-- <intent-filter> -->

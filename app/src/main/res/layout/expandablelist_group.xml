@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:gravity="center_vertical"
+              android:orientation="horizontal">
+
+    <ImageView
+        android:layout_width="@dimen/dp_5_x"
+        android:layout_height="@dimen/dp_20_x"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:background="@drawable/shape_main_button"/>
+
+    <TextView
+        android:id="@+id/tv_group"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:orientation="horizontal">
-
-        <ImageView
-            android:layout_width="@dimen/dp_4_x"
-            android:layout_height="@dimen/dp_20_x"
-            android:layout_marginStart="@dimen/dp_15_x"
-            android:background="@mipmap/ic_title_line"/>
-
-        <TextView
-            android:id="@+id/tv_group"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="10dp"
-            android:textColor="#333333"
-            android:gravity="center"
-            android:textSize="18sp"/>
-    </LinearLayout>
+        android:layout_margin="10dp"
+        android:gravity="center"
+        android:textColor="#333333"
+        android:textSize="18sp"/>
+</LinearLayout>

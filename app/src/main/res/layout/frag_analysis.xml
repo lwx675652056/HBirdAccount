@@ -55,20 +55,21 @@
                     android:padding="@dimen/dp_15_x">
 
                     <View
-                        android:layout_width="@dimen/dp_3_x"
-                        android:layout_height="@dimen/dp_38_x"
+                        android:layout_width="@dimen/dp_5_x"
+                        android:layout_height="@dimen/dp_33_x"
                         android:background="@drawable/shape_main_button"
-                        app:layout_constraintBottom_toBottomOf="parent"
-                        app:layout_constraintTop_toTopOf="parent"/>
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_temp2"
+                        app:layout_constraintTop_toTopOf="@+id/tv_temp1"/>
 
                     <TextView
                         android:id="@+id/tv_temp1"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_marginStart="@dimen/dp_10_x"
                         android:text="存钱效率"
                         android:textColor="#333333"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"/>
 
@@ -80,8 +81,8 @@
                         android:text="(余额占可支配金额比)"
                         android:textColor="#BDBDBD"
                         android:textSize="12sp"
-                        app:layout_constraintStart_toStartOf="@id/tv_temp1"
-                        app:layout_constraintTop_toBottomOf="@id/tv_temp1"/>
+                        app:layout_constraintStart_toStartOf="@+id/tv_temp1"
+                        app:layout_constraintTop_toBottomOf="@+id/tv_temp1"/>
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -94,9 +95,9 @@
                         android:text="编辑"
                         android:textColor="#D80200"
                         android:textSize="14sp"
-                        app:layout_constraintBottom_toBottomOf="@id/tv_temp1"
-                        app:layout_constraintStart_toEndOf="@id/tv_temp1"
-                        app:layout_constraintTop_toTopOf="@id/tv_temp1"/>
+                        app:layout_constraintBottom_toBottomOf="@+id/tv_temp1"
+                        app:layout_constraintStart_toEndOf="@+id/tv_temp1"
+                        app:layout_constraintTop_toTopOf="@+id/tv_temp1"/>
 
                     <TextView
                         android:id="@+id/tv_change_efficiency"
@@ -105,10 +106,10 @@
                         android:layout_centerVertical="true"
                         android:layout_marginStart="@dimen/dp_15_x"
                         android:drawablePadding="@dimen/dp_5_x"
-                        android:drawableStart="@{data.saveEfficientsAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                        android:drawableStart="@{data.saveEfficientsAll?@drawable/shuju_icon_qiehuanquanbu_normal:@drawable/shuju_icon_qiehuanwode_normal}"
                         android:onClick="@{listener.changeSaveEfficients}"
-                        android:text="@{data.saveEfficientsAll?@string/my_account:@string/all_account}"
-                        android:textColor="@{data.saveEfficientsAll?@color/color_D80200:@color/index_3}"
+                        android:text="@{data.saveEfficientsAll?@string/all_account:@string/my_account}"
+                        android:textColor="@{data.saveEfficientsAll?@color/index_3:@color/color_D80200}"
                         android:textSize="14sp"
                         android:visibility="@{data.showEdit?View.VISIBLE:View.GONE}"
                         app:layout_constraintBottom_toBottomOf="parent"
@@ -221,27 +222,28 @@
                         android:gravity="center_vertical">
 
                         <View
-                            android:layout_width="@dimen/dp_3_x"
-                            android:layout_height="@dimen/dp_20_x"
+                            android:layout_width="@dimen/dp_5_x"
+                            android:layout_height="@dimen/dp_16_x"
                             android:background="@drawable/shape_main_button"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp_12_x"
+                            android:layout_marginStart="@dimen/dp_10_x"
                             android:layout_weight="1"
                             android:text="消费结构比"
                             android:textColor="#333333"
-                            android:textSize="18sp"/>
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:drawablePadding="@dimen/dp_5_x"
-                            android:drawableStart="@{data.ratioAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                            android:drawableStart="@{data.ratioAll?@drawable/shuju_icon_qiehuanquanbu_normal:@drawable/shuju_icon_qiehuanwode_normal}"
                             android:onClick="@{listener.changeRatio}"
-                            android:text="@{data.ratioAll?@string/my_account:@string/all_account}"
-                            android:textColor="@{data.ratioAll?@color/color_D80200:@color/index_3}"
+                            android:text="@{data.ratioAll?@string/all_account:@string/my_account}"
+                            android:textColor="@{data.ratioAll?@color/index_3:@color/color_D80200}"
                             android:textSize="14sp"/>
                     </LinearLayout>
 
@@ -308,18 +310,19 @@
                         android:gravity="center_vertical">
 
                         <View
-                            android:layout_width="@dimen/dp_3_x"
-                            android:layout_height="@dimen/dp_20_x"
+                            android:layout_width="@dimen/dp_5_x"
+                            android:layout_height="@dimen/dp_16_x"
                             android:background="@drawable/shape_main_button"/>
 
                         <TextView
                             android:layout_width="0dp"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp_12_x"
+                            android:layout_marginStart="@dimen/dp_10_x"
                             android:layout_weight="1"
                             android:text="预算完成率"
                             android:textColor="#333333"
-                            android:textSize="18sp"/>
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
                     </LinearLayout>
 
                     <LinearLayout

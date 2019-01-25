@@ -1,21 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:id="@+id/ll_home_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/ll_home_view"
-    android:background="@color/white">
-    <include layout="@layout/activity_header" />
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <include
+        android:id="@+id/toolbar"
+        layout="@layout/header_title_layout"/>
+
+    <View style="@style/horizontal_line"/>
+
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
+
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:src="@mipmap/ic_zichan_sm"/>
     </ScrollView>
-
-
 </LinearLayout>

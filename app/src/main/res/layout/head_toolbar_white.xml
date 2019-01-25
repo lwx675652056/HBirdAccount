@@ -44,7 +44,7 @@
                 android:layout_gravity="start"
                 android:paddingEnd="@dimen/dp_15_x"
                 android:paddingStart="@dimen/dp_15_x"
-                android:src="@mipmap/ic_back"
+                android:src="@mipmap/nav_back_normal"
                 android:visibility="@{title.goneBack?View.GONE:View.VISIBLE}"/>
 
             <ImageView

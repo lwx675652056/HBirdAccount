@@ -42,8 +42,7 @@ public class MyTimerPop implements View.OnClickListener{
     private MyRecyclerViewAdapter mAdapter;
     private MonthRecyclerViewAdapter monthAdapter;
 
-    public MyTimerPop(Context context, View view, ArrayList<String> listYear, ArrayList<String> listMonth, int yearItem, int monthItem,
-                      OnDateListener listener, PopDismissListener dismissListener) {
+    public MyTimerPop(Context context, View view, ArrayList<String> listYear, ArrayList<String> listMonth, int yearItem, int monthItem, OnDateListener listener, PopDismissListener dismissListener) {
         this.context = context;
         this.view = view;
         this.listYear = listYear;

@@ -55,14 +55,20 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
     ImageView mArrows;
     @BindView(R.id.ll_wx_unbind)
     LinearLayout mWxUnbind;
-    @BindView(R.id.ll_modifi_phone)
-    LinearLayout mModifiPhone;
+    @BindView(R.id.temp)
+    View temp;
     @BindView(R.id.iv_arrow2)
     ImageView mArrows2;
     @BindView(R.id.tv_fangshi)
     TextView mFangshi;
     @BindView(R.id.ll_safekey)
     LinearLayout mLoginPasswords;
+    @BindView(R.id.temp1)
+    View temp1;
+    @BindView(R.id.ll_modifi_phone)
+    LinearLayout mModifiPhone;
+    @BindView(R.id.temp2)
+    View temp2;
 
     private String phone;
     private String phones;
@@ -101,10 +107,12 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
         phones = getIntent().getStringExtra("PHONE");
         weiXin = getIntent().getStringExtra("WEIXIN");
         mLoginPasswords.setVisibility(View.VISIBLE);
+        temp1.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(phones)) {
             phone = Utils.getHiddenPhone(phones);
             mPhoneNum.setText(phone);
             mModifiPhone.setVisibility(View.VISIBLE);
+            temp2.setVisibility(View.VISIBLE);
             phoneClick = true;
             mFangshi.setText("当前登录方式（手机号）");
         } else {
@@ -112,6 +120,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
             mPhoneNum.setTextColor(getResources().getColor(text_468DE1));
             mArrows.setVisibility(View.VISIBLE);
             mModifiPhone.setVisibility(View.GONE);
+            temp2.setVisibility(View.GONE);
             phoneClick = false;
         }
         if (TextUtils.isEmpty(weiXin)) {
@@ -125,18 +134,24 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
             mArrows2.setVisibility(View.GONE);
             hasBd = true;
             mLoginPasswords.setVisibility(View.GONE);
+            temp1.setVisibility(View.GONE);
         }
+
+        // 是微信登录，且有绑定手机号
         if (!TextUtils.isEmpty(phones) && !TextUtils.isEmpty(weiXin)) {
             mWxUnbind.setVisibility(View.VISIBLE);
+            temp.setVisibility(View.VISIBLE);
             String methods = SPUtil.getPrefString(AccountSafeActivity.this, CommonTag.CURRENT_LOGIN_METHOD, "sj");
             String ss = "手机号";
             if (TextUtils.equals(methods, "wx")) {
                 ss = "微信";
                 mLoginPasswords.setVisibility(View.GONE);
+                temp1.setVisibility(View.GONE);
             }
             mFangshi.setText("当前登录方式（" + ss + ")");
         } else {
             mWxUnbind.setVisibility(View.GONE);
+            temp.setVisibility(View.GONE);
         }
     }
 
@@ -187,8 +202,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                 String token = SPUtil.getPrefString(this, com.hbird.base.mvc.global.CommonTag.GLOABLE_TOKEN, "");
                 //解除绑定微信号
                 showProgress("");
-                NetWorkManager.getInstance().setContext(this)
-                        .unBindWeiXin(token, new NetWorkManager.CallBack() {
+                NetWorkManager.getInstance().setContext(this).unBindWeiXin(token, new NetWorkManager.CallBack() {
                             @Override
                             public void onSuccess(BaseReturn b) {
                                 hideProgress();
@@ -198,6 +212,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                                 mArrows2.setVisibility(View.VISIBLE);
                                 hasBd = false;
                                 mWxUnbind.setVisibility(View.GONE);
+                                temp.setVisibility(View.GONE);
                             }
 
                             @Override
@@ -250,6 +265,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
                         mArrows2.setVisibility(View.GONE);
                         hasBd = true;
                         mWxUnbind.setVisibility(View.VISIBLE);
+                        temp.setVisibility(View.VISIBLE);
                     }
 
                     @Override

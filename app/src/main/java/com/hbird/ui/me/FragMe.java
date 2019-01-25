@@ -1,5 +1,6 @@
 package com.hbird.ui.me;
 
+import android.app.Activity;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -213,7 +214,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         // 丰丰通知
         public void notification(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            startActivity(new Intent(getActivity(), NotificationMessageActivity.class));
+            startActivityForResult(new Intent(getActivity(), NotificationMessageActivity.class),1000);
         }
 
         // 联系客服
@@ -519,5 +520,13 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
                 LogUtil.e("当前已下载：" + current);
             }
         });
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK){
+            getMessage();
+        }
     }
 }

@@ -81,7 +81,6 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
         KeyboardUtil.openKeybord(binding.etMoney, this);
     }
 
-
     @Override
     public boolean isUseEventBus() {
         return false;
@@ -93,7 +92,6 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
     }
 
     public class OnClick {
-
         // 编辑
         public void edit(View view) {
             data.setEdit(true);
@@ -147,6 +145,8 @@ public class ActEditAccountValue extends BaseActivity<ActEditAccountValueBinding
         NetWorkManager.getInstance().setContext(this).saveOrUpdateAssets(bean.assetsType, money, nameS, token, new NetWorkManager.CallBack() {
             @Override
             public void onSuccess(BaseReturn b) {
+                KeyboardUtil.closeKeybord(binding.etMoney, ActEditAccountValue.this);
+
                 bean.assetsName = finalNameS;
                 bean.money = money;
                 Intent intent = new Intent();

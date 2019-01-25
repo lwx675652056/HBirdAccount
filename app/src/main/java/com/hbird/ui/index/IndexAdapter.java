@@ -1,10 +1,13 @@
 package com.hbird.ui.index;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.text.TextUtils;
 import android.view.View;
 
 import com.hbird.base.databinding.RowIndexBinding;
 import com.hbird.base.listener.OnItemClickListener;
+import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 
 import java.util.List;
@@ -22,12 +25,17 @@ public class IndexAdapter extends BaseRecyclerAdapter<AccountDetailedBean, RowIn
     private List<AccountDetailedBean> list;
     private Context context;
     private OnItemClickListener listener;
+    private int persionId = 0;
 
     public IndexAdapter(Context context, List<AccountDetailedBean> list, int layoutId, OnItemClickListener listener) {
         super(context, list, layoutId);
         this.list = list;
         this.context = context;
         this.listener = listener;
+        String s = SPUtil.getPrefString(context, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
+        if (!TextUtils.isEmpty(s)) {
+            persionId = Integer.parseInt(s);
+        }
     }
 
     @Override
@@ -52,9 +60,17 @@ public class IndexAdapter extends BaseRecyclerAdapter<AccountDetailedBean, RowIn
             binding.llView.setVisibility(View.GONE);
         }
 
-        binding.llContent.setOnClickListener(v -> listener.onClick(position,accountDetailedBean,0));
+        if (accountDetailedBean != null) {
+            if (accountDetailedBean.getUpdateBy() == null || accountDetailedBean.getUpdateBy() == persionId) {
+                binding.imagess.setBorderColor(Color.parseColor("#D80200"));
+            } else {
+                binding.imagess.setBorderColor(Color.parseColor("#41AB14"));
+            }
+        }
+
+        binding.llContent.setOnClickListener(v -> listener.onClick(position, accountDetailedBean, 0));
         binding.llContent.setOnLongClickListener(v -> {
-            listener.onClick(position,accountDetailedBean,1);
+            listener.onClick(position, accountDetailedBean, 1);
             return true;
         });
     }

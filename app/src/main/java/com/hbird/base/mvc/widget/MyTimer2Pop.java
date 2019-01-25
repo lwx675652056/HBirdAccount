@@ -14,9 +14,7 @@ import android.widget.PopupWindow;
 
 import com.hbird.base.R;
 import com.hbird.base.mvc.adapter.FenXiMonthRecyclerViewAdapter;
-import com.hbird.base.mvc.adapter.MonthRecyclerViewAdapter;
 import com.hbird.base.mvc.adapter.MyRecyclerViewAdapter;
-import com.hbird.base.mvc.base.MyDividerItemDecoration;
 
 import java.util.ArrayList;
 
@@ -25,7 +23,7 @@ import java.util.ArrayList;
  * 自定义pop 图表 - 分析 -选择月份
  */
 
-public class MyTimer2Pop implements View.OnClickListener{
+public class MyTimer2Pop  {
 
     private PopupWindow popupWindow;
     private Context context;
@@ -41,8 +39,7 @@ public class MyTimer2Pop implements View.OnClickListener{
     private FenXiMonthRecyclerViewAdapter monthAdapter;
     OnDateListener listener;
 
-    public MyTimer2Pop(Context context, View view,  ArrayList<String> listMonth, int monthItem,
-                       OnDateListener listener,PopDismissListener dismissListener) {
+    public MyTimer2Pop(Context context, View view, ArrayList<String> listMonth, int monthItem, OnDateListener listener, PopDismissListener dismissListener) {
         this.context = context;
         this.view = view;
         this.listMonth = listMonth;
@@ -61,13 +58,9 @@ public class MyTimer2Pop implements View.OnClickListener{
         View popView = LayoutInflater.from(context).inflate(R.layout.pop_my_timer, null);
 
         popupWindow = new PopupWindow(context);
-
         popupWindow.setContentView(popView);
-
         popupWindow.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-
         popupWindow.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-
         popupWindow.setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
         //设置点击外面让其消失
         popupWindow.setFocusable(true);
@@ -94,12 +87,12 @@ public class MyTimer2Pop implements View.OnClickListener{
     private void initPopView(View popView) {
         //月
         m2LayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        monthAdapter = new FenXiMonthRecyclerViewAdapter(context,listMonth,monthItem);
+        monthAdapter = new FenXiMonthRecyclerViewAdapter(context, listMonth, monthItem);
         monthRecyclerView = (RecyclerView) popView.findViewById(R.id.recyclerMothView);
         monthRecyclerView.setLayoutManager(m2LayoutManager);
         monthRecyclerView.setItemAnimator(new DefaultItemAnimator());
         monthRecyclerView.setAdapter(monthAdapter);
-        Move2ToPosition(new LinearLayoutManager(context),monthRecyclerView,monthItem);
+        Move2ToPosition(new LinearLayoutManager(context), monthRecyclerView, monthItem);
 
         monthAdapter.setOnItemClickListener(new FenXiMonthRecyclerViewAdapter.OnItemClickListener() {
             @Override
@@ -108,6 +101,7 @@ public class MyTimer2Pop implements View.OnClickListener{
                 listener.getMonthList(listMonth.get(position));
                 popupWindow.dismiss();
             }
+
             @Override
             public void onItemLongClick(View view, int position) {
 
@@ -115,6 +109,7 @@ public class MyTimer2Pop implements View.OnClickListener{
         });
 
     }
+
     public static void Move2ToPosition(LinearLayoutManager manager, RecyclerView mRecyclerView, int n) {
         int firstItem = manager.findFirstVisibleItemPosition();
         int lastItem = manager.findLastVisibleItemPosition();
@@ -128,17 +123,17 @@ public class MyTimer2Pop implements View.OnClickListener{
         }
 
     }
+
     private void bgBianLiang() {
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
 
             @Override
             public void onDismiss() {
-
                 WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
                 lp.alpha = 1f;
                 ((Activity) context).getWindow().setAttributes(lp);
 
-                if(dismissListener!=null) {
+                if (dismissListener != null) {
                     dismissListener.PopDismiss();
                 }
             }
@@ -146,22 +141,16 @@ public class MyTimer2Pop implements View.OnClickListener{
     }
 
     private void bgBianAn() {
-
         WindowManager.LayoutParams lp = ((Activity) context).getWindow().getAttributes();
         lp.alpha = 0.5f;
         ((Activity) context).getWindow().setAttributes(lp);
-
     }
 
-    @Override
-    public void onClick(View v) {
-
-    }
-    public interface OnDateListener{
+    public interface OnDateListener {
         void getMonthList(String s);
     }
 
-    public interface PopDismissListener{
+    public interface PopDismissListener {
         void PopDismiss();
     }
 }

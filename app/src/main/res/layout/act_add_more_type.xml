@@ -18,16 +18,12 @@
         android:padding="@dimen/dp_15_x">
 
         <RelativeLayout
-            android:layout_width="@dimen/dp_40_x"
-            android:layout_height="@dimen/dp_40_x"
-            android:layout_gravity="center"
-            android:background="@drawable/circle_333333"
+            style="@style/main_type"
             android:gravity="center">
 
             <ImageView
                 android:id="@+id/iv_img"
-                android:layout_width="@dimen/dp_15_x"
-                android:layout_height="@dimen/dp_15_x"/>
+                style="@style/main_icon"/>
         </RelativeLayout>
 
         <TextView

@@ -71,7 +71,7 @@
                     android:layout_height="@dimen/dp_30_x"
                     android:onClick="@{listener.edit}"
                     android:padding="@dimen/dp_8_x"
-                    android:src="@mipmap/ic_editors"/>
+                    android:src="@drawable/icon_edit"/>
             </LinearLayout>
 
             <LinearLayout
@@ -104,10 +104,11 @@
                     android:enabled="@{!data.edit}"
                     android:focusable="@{!data.edit}"
                     android:inputType="number"
+                    android:selectAllOnFocus="true"
                     android:onClick="@{listener.clickMoney}"
                     android:paddingBottom="@dimen/dp_10_x"
                     android:paddingTop="@dimen/dp_10_x"
-                    android:text="@{String.valueOf(bean.money)}"
+                    android:hint="@{String.valueOf(bean.money)}"
                     android:textColor="#333333"
                     android:textSize="20sp">
 

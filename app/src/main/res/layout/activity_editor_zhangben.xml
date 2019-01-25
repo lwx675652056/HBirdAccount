@@ -14,13 +14,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_15_x"
+        android:gravity="center_vertical"
         android:layout_marginTop="@dimen/dp_15_x"
         android:orientation="horizontal">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_title_line"/>
+            android:layout_width="@dimen/dp_5_x"
+            android:layout_height="@dimen/dp_16_x"
+            android:background="@drawable/shape_main_button"/>
 
         <TextView
             android:layout_width="wrap_content"

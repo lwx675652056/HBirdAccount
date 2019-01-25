@@ -66,10 +66,10 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
     private static SobotUnReadMsgReceiver unReadMsgReceiver;//获取未读消息数的广播接收者
     public static boolean isForeground = false;
 
-    TabRadioButton trb1 ;
-    TabRadioButton trb2 ;
-    TabRadioButton trb3 ;
-    TabRadioButton trb4 ;
+    TabRadioButton trb1;
+    TabRadioButton trb2;
+    TabRadioButton trb3;
+    TabRadioButton trb4;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -197,19 +197,11 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
     }
 
     public void setTiaozhuanFragement(int i, int m) {
+        rg.check(R.id.button_tubiao);
+        viewPager.setCurrentItem(i);
         if (i == 1) {
-            LogUtil.e("wo bei zhixing la");
-            rg.check(R.id.button_tubiao);
-            viewPager.setCurrentItem(i);
             tuBiaoFragement.setH5TiaoZhuan(m);
-        } else if (i == 0) {
-            rg.check(R.id.button_tubiao);
-            viewPager.setCurrentItem(i);
-        } else if (i == 2) {
-            rg.check(R.id.button_tubiao);
-            viewPager.setCurrentItem(i);
         }
-
     }
 
     @Override

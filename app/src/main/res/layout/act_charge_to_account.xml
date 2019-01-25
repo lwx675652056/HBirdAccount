@@ -34,8 +34,8 @@
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/dp_15_x"
-                    android:layout_height="@dimen/dp_15_x"/>
+                    android:layout_width="@dimen/dp_20_x"
+                    android:layout_height="@dimen/dp_20_x"/>
             </RelativeLayout>
 
             <TextView
@@ -79,7 +79,7 @@
                 android:focusableInTouchMode="false"
                 android:scrollHorizontally="true"
                 android:singleLine="true"
-                android:text=""
+                android:text="0.00"
                 android:textColor="@color/text_808080"
                 android:textSize="14sp"/>
         </RelativeLayout>
@@ -104,6 +104,7 @@
             android:gravity="top|start"
             android:hint="备注：（20字以内）"
             android:lines="2"
+            android:textColorHint="#BDBDBD"
             android:maxLength="20"
             android:padding="@dimen/dp_7_x"
             android:scrollbars="vertical"

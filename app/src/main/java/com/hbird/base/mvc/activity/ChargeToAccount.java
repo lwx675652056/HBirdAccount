@@ -281,8 +281,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             }
 
         }
-        mDownNum.setText("");
-        mDownNum.setVisibility(View.GONE);
+        mDownNum.setText("0.00");
     }
 
     @Override
@@ -448,7 +447,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
 
     private void reset() {
         mUpNum.setText("");
-        mDownNum.setText("");
+        mDownNum.setText("0.00");
         inputTag = false;
         GlobalVariables.setmInputMoney("");
         showMessage("不能为负值，请重新输入");
@@ -510,7 +509,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
                 mDownNum.setText(str);
                 if (TextUtils.isEmpty(str)) {
                     mUpNum.setText("0.00");
-                    mDownNum.setVisibility(View.GONE);
                 }
 
                 break;
@@ -709,7 +707,6 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             //showMessage("手速太快了");
             return;
         }*/
-        mDownNum.setVisibility(View.VISIBLE);
         String money = GlobalVariables.getmInputMoney();
         if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length() > 2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
@@ -772,8 +769,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
     public void calculatorClear() {
         GlobalVariables.setmInputMoney("");
         mUpNum.setText("");
-        mDownNum.setText("");
-        mDownNum.setVisibility(View.GONE);
+        mDownNum.setText("0.00");
         GlobalVariables.setHasDot(false);
     }
 

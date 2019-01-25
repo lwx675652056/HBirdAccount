@@ -26,7 +26,6 @@
     <!-- 页面跳转间的过渡动画 -->
     <style name="pageInOut">
         <item name="android:activityOpenEnterAnimation">@anim/slide_in_from_right</item>
-
         <item name="android:activityOpenExitAnimation">@anim/slide_out_to_left</item>
 
         <item name="android:activityCloseEnterAnimation">@anim/slide_in_from_left</item>
@@ -284,6 +283,35 @@
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">0.5dp</item>
         <item name="android:background">@color/line</item>
+    </style>
+
+
+    <style name="main_button">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/select_main_button</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:padding">@dimen/dp_15_x</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="main_type">
+        <item name="android:layout_width">@dimen/dp_40_x</item>
+        <item name="android:layout_height">@dimen/dp_40_x</item>
+        <item name="android:background">@drawable/circle_333333</item>
+    </style>
+
+    <style name="main_icon">
+        <item name="android:layout_width">@dimen/dp_20_x</item>
+        <item name="android:layout_height">@dimen/dp_20_x</item>
+        <item name="android:layout_gravity">center</item>
+    </style>
+
+    <style name="main_head">
+        <item name="android:layout_width">@dimen/dp_17_x</item>
+        <item name="android:layout_height">@dimen/dp_17_x</item>
+        <item name="android:layout_gravity">end|bottom</item>
     </style>
 
 </resources>

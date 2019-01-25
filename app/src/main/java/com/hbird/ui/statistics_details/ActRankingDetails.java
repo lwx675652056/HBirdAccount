@@ -12,6 +12,7 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.TitleBean;
 import com.hbird.common.Constants;
+import com.hbird.util.Utils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -107,6 +108,12 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
             adapter.notifyDataSetChanged();
             data.setNoData(list.size() < 1);
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Utils.playVoice(this, R.raw.changgui02);
+        finish();
     }
 
     @Override

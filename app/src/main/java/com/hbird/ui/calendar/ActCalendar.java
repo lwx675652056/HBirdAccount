@@ -118,7 +118,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         StatusBarUtil.setStatusBarLightMode(getWindow());
 
         binding.setTitle(new TitleBean("日历"));
-        binding.toolbar.ivBack.setOnClickListener(v -> finish());
+        binding.toolbar.ivBack.setOnClickListener(v -> onBackPressed());
         data = new CalendarData();
 
         currentDate = CalendarUtil.getCurrentDate();
@@ -243,14 +243,14 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                 if (!TextUtils.isEmpty(ids)) {
                     String substring = ids.substring(0, ids.length() - 1);
                     sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                            ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+                            ", type_pid, type_pname, type_id, type_name,update_by, picture_url, create_date, charge_date" +
                             ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
                             " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")" + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
                 }
             }
         } else {
             sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+                    ", type_pid, type_pname, type_id, type_name,update_by, picture_url, create_date, charge_date" +
                     ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
                     " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
 
@@ -417,6 +417,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
                 indexBeans2.setTypeName(dates.getTypeName());
                 indexBeans2.setReporterAvatar(dates.getReporterAvatar());
                 indexBeans2.setReporterNickName(dates.getReporterNickName());
+                indexBeans2.setUpdateBy(dates.getUpdateBy());
                 been.add(indexBeans2);
             }
         }
@@ -605,5 +606,11 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
             public void onError(String s) {
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        Utils.playVoice(this,R.raw.changgui02);
+        finish();
     }
 }

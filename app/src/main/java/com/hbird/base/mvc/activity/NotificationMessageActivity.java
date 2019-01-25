@@ -1,5 +1,6 @@
 package com.hbird.base.mvc.activity;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -59,7 +60,6 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
         centerTitle.setText("丰丰通知");
         rightTitle2.setText("全部已读");
         rightTitle2.setVisibility(View.GONE);
-        rightTitle2.setTextColor(getResources().getColor(R.color.white));
         token = SPUtil.getPrefString(NotificationMessageActivity.this, CommonTag.GLOABLE_TOKEN, "");
         userinfoid = SPUtil.getPrefString(NotificationMessageActivity.this, CommonTag.USER_INFO_PERSION, "");
     }
@@ -130,8 +130,7 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
-                playVoice(R.raw.changgui02);
-                finish();
+                onBackPressed();
                 break;
             case R.id.right_title2:
                 playVoice(R.raw.changgui02);
@@ -150,5 +149,12 @@ public class NotificationMessageActivity extends BaseActivity<BaseActivityPresen
                         });
                 break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        playVoice(R.raw.changgui02);
+        setResult(Activity.RESULT_OK);
+        finish();
     }
 }

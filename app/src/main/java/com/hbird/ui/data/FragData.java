@@ -23,7 +23,6 @@ import sing.common.base.BaseFragment;
 import sing.common.base.BaseViewModel;
 import sing.common.listener.OnMyPageChangeListener;
 import sing.common.util.StatusBarUtil;
-import sing.util.ToastUtil;
 
 /**
  * @author: LiangYX
@@ -80,6 +79,7 @@ public class FragData extends BaseFragment<FragDataBinding, BaseViewModel> {
         binding.viewPager.addOnPageChangeListener(new OnMyPageChangeListener() {
             @Override
             public void onPageSelected(int i) {
+                Utils.playVoice(getActivity(), R.raw.changgui02);
                 listener.change(i);
             }
         });
@@ -88,7 +88,10 @@ public class FragData extends BaseFragment<FragDataBinding, BaseViewModel> {
     public class OnClick {
         // 统计 资产 分析 , 0 1 2
         public void change(int pos) {
-            Utils.playVoice(getActivity(), R.raw.changgui02);
+            if (pos == data.getSelect()){
+                return;
+            }
+
             data.setSelect(pos);
             binding.viewPager.setCurrentItem(pos);
         }

@@ -7,11 +7,8 @@ import android.text.TextWatcher;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -29,8 +26,6 @@ import butterknife.BindView;
 import butterknife.OnClick;
 
 import static com.hbird.base.R.id.pwd;
-import static com.hbird.base.R.id.text;
-import static com.hbird.base.R.id.tv_submit;
 import static com.hbird.base.R.id.userName;
 
 /**
@@ -52,11 +47,11 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
     @BindView(pwd)
     EditText mPwd;
     @BindView(R.id.setpwd_view)
-    CheckBox mSetpwd;
+    ImageView mSetpwd;
     @BindView(R.id.setpwd2_view)
-    CheckBox mSet2pwd;
+    ImageView mSet2pwd;
     @BindView(R.id.iv_login)
-    RelativeLayout mLogin;
+    TextView mLogin;
 
     boolean bShowPassWord = false;
     boolean bShowToPassWord = false;
@@ -69,7 +64,6 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
     @Override
     protected void initView(Bundle savedInstanceState) {
         mCenterTitle.setText("修改密码");
-        mCenterTitle.setTextSize(18);
         mRightTitle.setVisibility(View.GONE);
     }
 
@@ -85,7 +79,6 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
         mUserName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
 
             @Override
@@ -94,7 +87,7 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
                 String yzm = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getText().toString().trim();
                 if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(yzm) && !TextUtils.isEmpty(pwd)){
-                    mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                    mLogin.setBackgroundResource(R.drawable.select_main_button);
                 }else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
@@ -117,7 +110,7 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
                 String yzm = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getText().toString().trim();
                 if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(yzm) && !TextUtils.isEmpty(pwd)){
-                    mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                    mLogin.setBackgroundResource(R.drawable.select_main_button);
                 }else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
@@ -140,7 +133,7 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
                 String yzm = mYanZM.getText().toString().trim();
                 String pwd = mPwd.getText().toString().trim();
                 if(!TextUtils.isEmpty(userName) && !TextUtils.isEmpty(yzm) && !TextUtils.isEmpty(pwd)){
-                    mLogin.setBackgroundResource(R.drawable.btn_bg_login);
+                    mLogin.setBackgroundResource(R.drawable.select_main_button);
                 }else {
                     mLogin.setBackgroundResource(R.drawable.shape_btn_login_hui);
                 }
@@ -192,23 +185,26 @@ public class ChangePasswordActivity extends BaseActivity<BaseActivityPresenter> 
                     //如果选中，显示密码
                     mPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     mPwd.setSelection(mPwd.getText().length());
+                    mSetpwd.setImageResource(R.drawable.icon_mmkj_normal);
                 }else{
                     //否则隐藏密码
                     mPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     mPwd.setSelection(mPwd.getText().length());
+                    mSetpwd.setImageResource(R.drawable.icon_mmbkj_normal);
                 }
                 break;
             case R.id.setpwd2_view:
                 playVoice(R.raw.changgui02);
                 bShowToPassWord = !bShowToPassWord;
                 if(bShowToPassWord){
-                    //如果选中，显示密码
                     mYanZM.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     mYanZM.setSelection(mYanZM.getText().length());
+                    mSet2pwd.setImageResource(R.drawable.icon_mmkj_normal);
                 }else{
                     //否则隐藏密码
                     mYanZM.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     mYanZM.setSelection(mYanZM.getText().length());
+                    mSet2pwd.setImageResource(R.drawable.icon_mmbkj_normal);
                 }
                 break;
         }

@@ -35,7 +35,7 @@
                 android:layout_width="@dimen/dp_45_x"
                 android:layout_height="@dimen/dp_45_x"
                 android:onClick="@{listener.chooseAccount}"
-                android:padding="@dimen/dp_12_x"
+                android:padding="@dimen/dp_15_x"
                 android:src="@mipmap/nav_icon_syzb_normal"/>
 
             <TextView
@@ -52,7 +52,7 @@
                 android:layout_width="@dimen/dp_45_x"
                 android:layout_height="@dimen/dp_45_x"
                 android:onClick="@{listener.calendar}"
-                android:padding="@dimen/dp_12_x"
+                android:padding="@dimen/dp_15_x"
                 android:src="@mipmap/nav_icon_calendar_normal"/>
         </LinearLayout>
 
@@ -142,20 +142,29 @@
                             app:layout_constraintStart_toStartOf="@id/tv_spend"
                             app:layout_constraintTop_toBottomOf="@+id/tv_budget"/>
 
+                        <ImageView
+                            android:id="@+id/iv_temp11"
+                            android:layout_width="@dimen/dp_11_x"
+                            android:layout_height="@dimen/dp_11_x"
+                            android:layout_marginStart="@dimen/dp_10_x"
+                            android:onClick="@{listener.editor}"
+                            android:src="@mipmap/icon_editor"
+                            app:layout_constraintBottom_toBottomOf="@+id/tv_budget_money"
+                            app:layout_constraintStart_toEndOf="@+id/tv_budget_money"
+                            app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+
                         <TextView
                             android:id="@+id/tv_editor"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/dp_10_x"
-                            android:drawablePadding="@dimen/dp_3_x"
-                            android:drawableStart="@mipmap/icon_editor"
+                            android:layout_marginStart="@dimen/dp_3_x"
                             android:onClick="@{listener.editor}"
                             android:text="编辑"
                             android:textColor="@color/white"
-                            android:textSize="12sp"
-                            app:layout_constraintBottom_toBottomOf="@+id/tv_budget_money"
-                            app:layout_constraintStart_toEndOf="@+id/tv_budget_money"
-                            app:layout_constraintTop_toTopOf="@+id/tv_budget_money"/>
+                            android:textSize="16sp"
+                            app:layout_constraintBottom_toBottomOf="@+id/iv_temp11"
+                            app:layout_constraintStart_toEndOf="@+id/iv_temp11"
+                            app:layout_constraintTop_toTopOf="@+id/iv_temp11"/>
 
                         <ImageView
                             android:id="@+id/line2"
@@ -256,7 +265,7 @@
                             android:layout_height="@dimen/dp_40_x"
                             android:layout_marginStart="@dimen/dp_15_x"
                             android:onClick="@{listener.setMemberSetting}"
-                            android:src="@mipmap/icon_sysz_normal"
+                            android:src="@drawable/select_setting"
                             android:visibility="@{bean.showMemberSeting?View.VISIBLE:View.GONE}"/>
                     </LinearLayout>
 
@@ -275,42 +284,18 @@
                             android:scrollbars="none"
                             android:visibility="@{bean.noData?View.GONE:View.VISIBLE}"/>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="0.5dp"
-                            android:background="@color/line"
-                            android:visibility="@{bean.noData?View.GONE:(bean.showMore?View.VISIBLE:View.GONE)}"/>
-
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/select_bottom_white"
-                            android:gravity="center"
-                            android:onClick="@{listener.more}"
-                            android:visibility="@{bean.noData?View.GONE:(bean.showMore?View.VISIBLE:View.GONE)}">
-
-                            <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:drawableEnd="@drawable/home_icon_ckqbjr_normal"
-                                android:drawablePadding="@dimen/dp_5_x"
-                                android:padding="@dimen/dp_10_x"
-                                android:text="查看全部"
-                                android:textColor="#333333"
-                                android:textSize="16sp"/>
-                        </LinearLayout>
-
                         <!--空白页面-->
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/select_white_8px"
+                            android:background="@drawable/select_top_white"
                             android:orientation="vertical"
                             android:visibility="@{bean.noData?View.VISIBLE:View.GONE}">
 
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:background="@drawable/select_top_white"
                                 android:orientation="horizontal"
                                 android:paddingBottom="@dimen/dp_10_x"
                                 android:paddingEnd="@dimen/dp_15_x"
@@ -376,6 +361,30 @@
                                 android:textColor="#BDBDBD"
                                 android:textSize="14sp"/>
                         </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="0.5dp"
+                            android:background="@color/line"/>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/select_bottom_white"
+                            android:gravity="center"
+                            android:onClick="@{listener.more}">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:drawableEnd="@drawable/home_icon_ckqbjr_normal"
+                                android:drawablePadding="@dimen/dp_5_x"
+                                android:padding="@dimen/dp_15_x"
+                                android:text="查看全部"
+                                android:textColor="#333333"
+                                android:textSize="16sp"/>
+                        </LinearLayout>
+
                     </LinearLayout>
 
                     <LinearLayout
@@ -393,7 +402,8 @@
                             android:layout_weight="1"
                             android:text="@{bean.mm+@string/money_spend_type}"
                             android:textColor="#333333"
-                            android:textSize="18sp"/>
+                            android:textSize="16sp"
+                            android:textStyle="bold"/>
 
                         <TextView
                             android:layout_width="wrap_content"

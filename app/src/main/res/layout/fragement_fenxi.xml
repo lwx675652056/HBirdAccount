@@ -358,7 +358,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/ic_title_line"
                         android:drawablePadding="@dimen/width_2_80"
                         android:text="消费结构比"
                         android:textColor="@color/text_333333"
@@ -447,7 +446,6 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:drawableLeft="@mipmap/ic_title_line"
                         android:drawablePadding="@dimen/width_2_80"
                         android:text="预算完成率"
                         android:textColor="@color/text_333333"

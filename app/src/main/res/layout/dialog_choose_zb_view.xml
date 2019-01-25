@@ -1,47 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:id="@+id/lLayout_bg"
-              android:layout_width="match_parent"
-              android:layout_height="@dimen/height_40_80"
-              android:background="@drawable/bg_pop_shapes"
-              android:orientation="vertical" >
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80"
-        android:gravity="center"
-        android:background="@color/colorPrimary">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
-            android:orientation="horizontal">
-            <ImageView
-                android:id="@+id/iv_img"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:src="@mipmap/icon_xzzb_disabled" />
-            <TextView
-                android:id="@+id/title_xxx"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/width_2_80"
-                android:textColor="@color/white"
-                android:textSize="18sp"
-                android:text="选 择 账 本" />
-        </LinearLayout>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/lLayout_bg"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/height_40_80"
+    android:background="@drawable/bg_pop_shapes"
+    android:orientation="vertical">
 
-    </RelativeLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/shape_choose_zhangben"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_15_x"
+        android:paddingTop="@dimen/dp_15_x">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="@dimen/dp_10_x"
+            android:drawableStart="@mipmap/icon_xzzb_disabled"
+            android:text="选 择 账 本"
+            android:textColor="@color/white"
+            android:textSize="18sp"/>
+    </LinearLayout>
+
     <ListView
         android:id="@+id/lv"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"
+        android:background="@drawable/shape_bottom_white"
         android:divider="@null"
-        android:overScrollMode="never"
         android:listSelector="@android:color/transparent"
-        android:transcriptMode="normal">
-
-    </ListView>
-
-
+        android:overScrollMode="never"
+        android:paddingBottom="@dimen/dp_10_x"
+        android:scrollbars="none"
+        android:transcriptMode="normal"/>
 </LinearLayout>

@@ -42,30 +42,23 @@ public class FenXiMonthRecyclerViewAdapter extends RecyclerView.Adapter<FenXiMon
         holder.setIsRecyclable(false);
         holder.mTv.setText(mData.get(position));
         if(position==itemPosition){
-            holder.mTv.setBackgroundResource(R.mipmap.ic_bg_year);
+            holder.mTv.setBackgroundResource(R.drawable.shape_hong_radius);
             holder.mTv.setTextColor(context.getResources().getColor(R.color.white));
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null) {
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemClick(holder.itemView,pos);
-                }
-
+        holder.itemView.setOnClickListener(v -> {
+            if(onItemClickListener != null) {
+                int pos = holder.getLayoutPosition();
+                onItemClickListener.onItemClick(holder.itemView,pos);
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(onItemClickListener!=null){
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemLongClick(holder.itemView,pos);
-                }
-                //此事件被消费 不会触发单击事件
-                return true;
+        holder.itemView.setOnLongClickListener(v -> {
+            if(onItemClickListener!=null){
+                int pos = holder.getLayoutPosition();
+                onItemClickListener.onItemLongClick(holder.itemView,pos);
             }
+            //此事件被消费 不会触发单击事件
+            return true;
         });
     }
     public void setItemClick(int i){
@@ -77,13 +70,11 @@ public class FenXiMonthRecyclerViewAdapter extends RecyclerView.Adapter<FenXiMon
         return mData == null ? 0 : mData.size();
     }
 
-
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView mTv;
         public ViewHolder(View itemView) {
             super(itemView);
-            mTv = (TextView) itemView.findViewById(R.id.item_tv);
-
+            mTv = itemView.findViewById(R.id.item_tv);
         }
     }
     //设置监听回调
@@ -95,5 +86,4 @@ public class FenXiMonthRecyclerViewAdapter extends RecyclerView.Adapter<FenXiMon
         void onItemClick(View view, int position);
         void onItemLongClick(View view, int position);
     }
-
 }

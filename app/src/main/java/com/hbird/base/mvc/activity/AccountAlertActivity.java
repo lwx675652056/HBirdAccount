@@ -1,13 +1,8 @@
 package com.hbird.base.mvc.activity;
 
-import android.app.AlarmManager;
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bigkoo.pickerview.TimePickerView;
@@ -15,7 +10,6 @@ import com.hbird.base.R;
 import com.hbird.base.mvc.base.baseActivity.BaseActivityPresenter;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
-import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.alarmClock.AlarmManagerUtil;
 
@@ -24,8 +18,6 @@ import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.OnClick;
-
-import static com.hbird.base.util.DateUtils.calendar;
 
 /**
  * Created by Liul on 2018/7/5.
@@ -86,8 +78,7 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
                 finish();
                 break;
             case R.id.iv_btn:
-            case R.id.ll_open_password:
-                //showMessage("开启记账提醒");
+            case R.id.ll_open_password:// 开启记账提醒
                 playVoice(R.raw.changgui02);
                 boolean ss = SPUtil.getPrefBoolean(AccountAlertActivity.this, CommonTag.ACCOUNT_ALERT, false);
                 time = mTime.getText().toString().trim();
@@ -98,7 +89,6 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
                         stopService(intent);
                     }
                     setArmlock(false,time);
-
                 }else {
                     SPUtil.setPrefBoolean(AccountAlertActivity.this, CommonTag.ACCOUNT_ALERT,true);
                     mIvBtn.setChecked(true);
@@ -121,7 +111,6 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
                     public void onTimeSelect(Date date) {
                         time = getTime(date);
                         setArmlock(opens,time);
-
                     }
                 });
                 pvTime.show();
@@ -146,6 +135,4 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         return format.format(date);
     }
-
-
 }

@@ -20,16 +20,16 @@
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:src="@mipmap/ic_title_line"/>
+        <TextView
+            android:layout_width="@dimen/dp_5_x"
+            android:layout_height="@dimen/dp_16_x"
+            android:background="@drawable/shape_main_button"/>
 
         <TextView
             android:id="@+id/tv_fangshi"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_15_x"
+            android:layout_marginStart="@dimen/dp_10_x"
             android:text="当前登录方式（手机号）"
             android:textColor="@color/text_333333"
             android:textSize="16sp"
@@ -118,8 +118,8 @@
 
         <TextView
             android:layout_width="wrap_content"
-            android:layout_marginStart="@dimen/dp_15_x"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_15_x"
             android:text="微信"
             android:textColor="@color/text_333333"
             android:textSize="16sp"/>
@@ -143,8 +143,8 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
-                android:paddingEnd="@dimen/dp_15_x"
                 android:gravity="center_vertical"
+                android:paddingEnd="@dimen/dp_15_x"
                 android:text="去绑定"
                 android:textColor="@color/text_468DE1"
                 android:textSize="14sp"/>
@@ -167,111 +167,114 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/select_white_0px"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/dp_15_x"
-        android:paddingStart="@dimen/dp_15_x">
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10_x"
+        android:paddingTop="@dimen/dp_10_x">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_8_80"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/dp_15_x"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_weixin"
+            android:visibility="invisible"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="修改登录密码"
-                android:textColor="@color/text_333333"
-                android:textSize="16sp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改登录密码"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/ic_me_arrow"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View style="@style/horizontal_line"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:src="@mipmap/ic_me_arrow"/>
     </LinearLayout>
+
+    <View
+        android:id="@+id/temp1"
+        style="@style/horizontal_line"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"/>
 
     <LinearLayout
         android:id="@+id/ll_modifi_phone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/item_selector_hint"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/dp_15_x"
-        android:paddingStart="@dimen/dp_15_x">
+        android:background="@drawable/select_white_0px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10_x"
+        android:paddingTop="@dimen/dp_10_x">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_8_80"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/dp_15_x"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_weixin"
+            android:visibility="invisible"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="修改手机号"
-                android:textColor="@color/text_333333"
-                android:textSize="16sp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="修改手机号"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/ic_me_arrow"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View style="@style/horizontal_line"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:src="@mipmap/ic_me_arrow"/>
     </LinearLayout>
+
+    <View
+        android:id="@+id/temp2"
+        style="@style/horizontal_line"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"/>
 
     <LinearLayout
         android:id="@+id/ll_wx_unbind"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:paddingEnd="@dimen/dp_15_x"
-        android:paddingStart="@dimen/dp_15_x"
+        android:background="@drawable/select_white_0px"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:paddingBottom="@dimen/dp_10_x"
+        android:paddingTop="@dimen/dp_10_x"
         android:visibility="gone">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_8_80"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+        <ImageView
+            android:layout_width="@dimen/dp_15_x"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/icon_weixin"
+            android:visibility="invisible"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="解除绑定微信号"
-                android:textColor="@color/text_333333"
-                android:textSize="16sp"/>
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="解除绑定微信号"
+            android:textColor="@color/text_333333"
+            android:textSize="16sp"/>
 
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:src="@mipmap/ic_me_arrow"/>
-            </RelativeLayout>
-        </LinearLayout>
-
-        <View style="@style/horizontal_line"/>
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:src="@mipmap/ic_me_arrow"/>
     </LinearLayout>
+
+    <View
+        android:id="@+id/temp"
+        style="@style/horizontal_line"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:visibility="gone"/>
 
     <View
         android:layout_width="match_parent"

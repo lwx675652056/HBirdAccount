@@ -1042,37 +1042,36 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         switch (view.getId()) {
             case R.id.tv_choose_zb:
                 //showMessage("请选择账本");
-                NetWorkManager.getInstance().setContext(getActivity())
-                        .getMyAccounts(token, new NetWorkManager.CallBack() {
+                NetWorkManager.getInstance().setContext(getActivity()).getMyAccounts(token, new NetWorkManager.CallBack() {
+                    @Override
+                    public void onSuccess(BaseReturn b) {
+                        AccountZbBean b1 = (AccountZbBean) b;
+                        final List<AccountZbBean.ResultBean> listZb = b1.getResult();
+                        new Dialog2ChooseZb(getActivity(), listZb, new Dialog2ChooseZb.onClickListener() {
                             @Override
-                            public void onSuccess(BaseReturn b) {
-                                AccountZbBean b1 = (AccountZbBean) b;
-                                final List<AccountZbBean.ResultBean> listZb = b1.getResult();
-                                new Dialog2ChooseZb(getActivity(), listZb, new Dialog2ChooseZb.onClickListener() {
-                                    @Override
-                                    public void onclicks(int i) {
-                                        String s = listZb.get(i).getAbName();
-                                        int typeBudget = listZb.get(i).getTypeBudget();
-                                        int abTypeId = listZb.get(i).getAbTypeId();
-                                        mTvChooseZb.setText(s);
+                            public void onclicks(int i) {
+                                String s = listZb.get(i).getAbName();
+                                int typeBudget = listZb.get(i).getTypeBudget();
+                                int abTypeId = listZb.get(i).getAbTypeId();
+                                mTvChooseZb.setText(s);
 
-                                        SPUtil.setPrefString(getActivity(), CommonTag.ACCOUNT_BOOK_ID, listZb.get(i).getId() + "");
-                                        SPUtil.setPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT, s);
-                                        SPUtil.setPrefInt(getActivity(), CommonTag.ACCOUNT_AB_TYPEID, listZb.get(i).getAbTypeId());
-                                        SPUtil.setPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, abTypeId + "");
-                                        SPUtil.setPrefString(getActivity(), CommonTag.INDEX_TYPE_BUDGET, typeBudget + "");
+                                SPUtil.setPrefString(getActivity(), CommonTag.ACCOUNT_BOOK_ID, listZb.get(i).getId() + "");
+                                SPUtil.setPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT, s);
+                                SPUtil.setPrefInt(getActivity(), CommonTag.ACCOUNT_AB_TYPEID, listZb.get(i).getAbTypeId());
+                                SPUtil.setPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, abTypeId + "");
+                                SPUtil.setPrefString(getActivity(), CommonTag.INDEX_TYPE_BUDGET, typeBudget + "");
 
-                                        //请求预算完成率接口
-                                        getYuSuanNet3();
-                                    }
-                                }).builder().show();
+                                //请求预算完成率接口
+                                getYuSuanNet3();
                             }
+                        }).builder().show();
+                    }
 
-                            @Override
-                            public void onError(String s) {
-                                ToastUtil.showShort(s);
-                            }
-                        });
+                    @Override
+                    public void onError(String s) {
+                        ToastUtil.showShort(s);
+                    }
+                });
                 break;
         }
     }

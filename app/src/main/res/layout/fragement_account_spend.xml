@@ -1,22 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white">
+    android:background="@color/white"
+    android:orientation="vertical">
 
-   <com.hbird.base.mvc.widget.DragGridView
-       android:id="@+id/draggridview"
-       android:layout_width="match_parent"
-       android:layout_height="match_parent"
-       android:paddingTop="@dimen/height_2_80"
-       android:layout_gravity="center_horizontal"
-       android:gravity="center|fill_horizontal"
-       android:paddingLeft="@dimen/width_4_80"
-       android:paddingRight="@dimen/width_4_80"
-       android:horizontalSpacing="8dp"
-       android:numColumns="4">
-   </com.hbird.base.mvc.widget.DragGridView>
-
+    <com.hbird.base.mvc.widget.DragGridView
+        android:id="@+id/draggridview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center|fill_horizontal"
+        android:horizontalSpacing="@dimen/dp_15_x"
+        android:numColumns="4"
+        android:overScrollMode="never"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:paddingStart="@dimen/dp_15_x"
+        android:scrollbars="none"/>
 </LinearLayout>

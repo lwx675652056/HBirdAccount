@@ -137,6 +137,7 @@ public class AccountComeFragementNew1 extends BaseFragement{
                             return;
                         }
                         Intent intent = new Intent();
+                        SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.CURRENT_ACCOUNT_ID, abTypeId);
                         intent.setClass(getActivity(),AddMoreTypeActivityNew.class);
                         intent.putExtra("TITLE","收入");
                         ArrayList<String> list = new ArrayList<>();

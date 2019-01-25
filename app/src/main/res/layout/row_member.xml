@@ -24,8 +24,8 @@
             android:layout_height="@dimen/dp_40_x"
             android:src="@mipmap/ic_me_normal_headr"
             android:visibility="@{position==0?View.VISIBLE:View.GONE}"
-            app:border_color="@color/colorPrimary"
-            app:border_width="1dp"
+            app:border_color="#D80200"
+            app:border_width="1.5dp"
             app:imageUrl="@{bean}"
             app:type="circle"/>
 
@@ -34,8 +34,8 @@
             android:layout_height="@dimen/dp_40_x"
             android:src="@mipmap/ic_me_normal_headr"
             android:visibility="@{position==0?View.GONE:View.VISIBLE}"
-            app:border_color="@color/colorYellow"
-            app:border_width="1dp"
+            app:border_color="#41AB14"
+            app:border_width="1.5dp"
             app:imageUrl="@{bean}"
             app:type="circle"/>
     </FrameLayout>

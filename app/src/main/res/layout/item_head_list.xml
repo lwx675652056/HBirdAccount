@@ -89,7 +89,7 @@
                 android:visibility="gone"
                 android:layout_margin="@dimen/width_2_80"
                 android:layout_marginLeft="@dimen/width_2_80"
-                android:src="@mipmap/icon_sysz_normal"/>
+                android:src="@drawable/select_setting"/>
         </LinearLayout>
     </LinearLayout>
 </LinearLayout>

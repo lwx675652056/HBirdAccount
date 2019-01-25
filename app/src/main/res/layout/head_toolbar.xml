@@ -9,22 +9,19 @@
             type="com.hbird.bean.TitleBean"/>
     </data>
 
-    <android.support.v7.widget.Toolbar
+    <FrameLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_45_x"
-        app:contentInsetLeft="0dp"
-        app:contentInsetStart="0dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+        android:layout_height="wrap_content">
 
         <FrameLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/fl_parent"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_45_x"
-            android:background="@{title.rightColor==-1?@color/colorPrimary:@color/white}">
+            android:background="@{title.rightColor==-1?@drawable/shape_main_bg:@color/white}">
 
             <TextView
                 android:id="@+id/tv_title"
@@ -55,5 +52,5 @@
                 android:paddingStart="@dimen/dp_15_x"
                 app:resId="@{title.rightResId}"/>
         </FrameLayout>
-    </android.support.v7.widget.Toolbar>
+    </FrameLayout>
 </layout>

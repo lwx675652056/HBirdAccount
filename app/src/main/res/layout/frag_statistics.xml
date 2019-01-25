@@ -168,10 +168,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_15_x"
                     android:drawablePadding="@dimen/dp_5_x"
-                    android:drawableStart="@{data.isAll?@drawable/shuju_icon_qiehuanwode_normal:@drawable/shuju_icon_qiehuanquanbu_normal}"
+                    android:drawableStart="@{data.isAll?@drawable/shuju_icon_qiehuanquanbu_normal:@drawable/shuju_icon_qiehuanwode_normal}"
                     android:onClick="@{listener.isAll}"
-                    android:text="@{data.isAll?@string/my_account:@string/all_account}"
-                    android:textColor="@{data.isAll?@color/color_D80200:@color/index_3}"
+                    android:text="@{data.isAll?@string/all_account:@string/my_account}"
+                    android:textColor="@{data.isAll?@color/index_3:@color/color_D80200}"
                     android:textSize="14sp"/>
             </LinearLayout>
 
@@ -186,25 +186,25 @@
                     android:id="@+id/recycler_view1"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:visibility="@{data.dateType==1?View.VISIBLE:View.GONE}"
                     android:overScrollMode="never"
-                    android:scrollbars="none"/>
+                    android:scrollbars="none"
+                    android:visibility="@{data.dateType==1?View.VISIBLE:View.GONE}"/>
                 <!--周的-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view2"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
-                    android:visibility="@{data.dateType==2?View.VISIBLE:View.GONE}"
-                    android:scrollbars="none"/>
+                    android:scrollbars="none"
+                    android:visibility="@{data.dateType==2?View.VISIBLE:View.GONE}"/>
                 <!--月的-->
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recycler_view3"
                     android:layout_width="wrap_content"
-                    android:visibility="@{data.dateType==3?View.VISIBLE:View.GONE}"
                     android:layout_height="wrap_content"
                     android:overScrollMode="never"
-                    android:scrollbars="none"/>
+                    android:scrollbars="none"
+                    android:visibility="@{data.dateType==3?View.VISIBLE:View.GONE}"/>
             </LinearLayout>
 
             <!--代码内动态添加 LineChartInViewPager-->
@@ -227,22 +227,24 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:gravity="center_vertical"
                 android:paddingBottom="@dimen/dp_15_x"
                 android:paddingStart="@dimen/dp_15_x"
                 android:paddingTop="@dimen/dp_15_x">
 
                 <ImageView
-                    android:layout_width="@dimen/dp_3_x"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/dp_5_x"
+                    android:layout_height="@dimen/dp_16_x"
                     android:src="@drawable/shape_main_button"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_10_x"
                     android:text="@{data.inCome?@string/income_ranking:@string/spend_ranking}"
                     android:textColor="#333333"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <!--排行榜的空白页面-->
@@ -298,21 +300,23 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="@dimen/dp_15_x"
                 android:paddingStart="@dimen/dp_15_x"
+                android:gravity="center_vertical"
                 android:paddingTop="@dimen/dp_15_x"
                 android:visibility="@{data.inCome?View.GONE:View.VISIBLE}">
 
                 <ImageView
-                    android:layout_width="@dimen/dp_3_x"
-                    android:layout_height="match_parent"
+                    android:layout_width="@dimen/dp_5_x"
+                    android:layout_height="@dimen/dp_16_x"
                     android:src="@drawable/shape_main_button"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_marginStart="@dimen/dp_10_x"
                     android:text="消费心情"
                     android:textColor="#333333"
-                    android:textSize="16sp"/>
+                    android:textSize="16sp"
+                    android:textStyle="bold"/>
             </LinearLayout>
 
             <LinearLayout
@@ -451,8 +455,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5_x"
-                        android:onClick="@{listener.pieChartRanking}"
                         android:background="@mipmap/home_icon_btqxzk_disabled"
+                        android:onClick="@{listener.pieChartRanking}"
                         android:padding="@dimen/dp_15_x">
 
 

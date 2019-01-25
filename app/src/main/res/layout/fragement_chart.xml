@@ -229,7 +229,6 @@
                             android:id="@+id/tv_paihangbang"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/ic_title_line"
                             android:drawablePadding="@dimen/width_2_80"
                             android:text="支出排行榜"
                             android:textColor="@color/text_333333"
@@ -267,7 +266,6 @@
                         <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:drawableLeft="@mipmap/ic_title_line"
                             android:drawablePadding="@dimen/width_2_80"
                             android:text="情绪消费统计"
                             android:textColor="@color/text_333333"

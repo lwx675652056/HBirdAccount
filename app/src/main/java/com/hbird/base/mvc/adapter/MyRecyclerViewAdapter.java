@@ -46,26 +46,19 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
             holder.mTv.setTextColor(context.getResources().getColor(R.color.white));
         }
 
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(onItemClickListener != null) {
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemClick(holder.itemView,pos);
-                }
-
+        holder.itemView.setOnClickListener(v -> {
+            if(onItemClickListener != null) {
+                int pos = holder.getLayoutPosition();
+                onItemClickListener.onItemClick(holder.itemView,pos);
             }
         });
-        holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                if(onItemClickListener!=null){
-                    int pos = holder.getLayoutPosition();
-                    onItemClickListener.onItemLongClick(holder.itemView,pos);
-                }
-                //此事件被消费 不会触发单击事件
-                return true;
+        holder.itemView.setOnLongClickListener(v -> {
+            if(onItemClickListener!=null){
+                int pos = holder.getLayoutPosition();
+                onItemClickListener.onItemLongClick(holder.itemView,pos);
             }
+            //此事件被消费 不会触发单击事件
+            return true;
         });
     }
     public void setItemClick(int i){
@@ -83,7 +76,6 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
         public ViewHolder(View itemView) {
             super(itemView);
             mTv = (TextView) itemView.findViewById(R.id.item_tv);
-
         }
     }
     //设置监听回调

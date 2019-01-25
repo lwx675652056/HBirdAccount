@@ -5,7 +5,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -19,10 +18,7 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
 
-
 import butterknife.BindView;
-import io.reactivex.Observable;
-import okhttp3.ResponseBody;
 
 /**
  * Created by Liul on 2018/8/15.
@@ -37,7 +33,7 @@ public class CanSettingMoneyActivity extends BaseActivity<BaseActivityPresenter>
     @BindView(R.id.right_title2)
     TextView mRightTitle;
     @BindView(R.id.iv_finish)
-    RelativeLayout mFinished;
+    TextView mFinished;
     @BindView(R.id.et_moneyToBig)
     EditText mMoneyBig;
     @BindView(R.id.et_moneyToLife)

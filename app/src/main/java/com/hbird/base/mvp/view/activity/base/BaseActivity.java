@@ -2,6 +2,7 @@ package com.hbird.base.mvp.view.activity.base;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -177,5 +178,28 @@ public abstract class BaseActivity<P extends BasePresenter> extends AppCompatAct
             mPresenter.destroy();
             mPresenter = null;
         }
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        super.startActivity(intent);
+
+        overridePendingTransition(R.anim.slide_in_from_right,R.anim.slide_out_to_left);
+    }
+    @Override
+    public void finish() {
+        super.finish();
+        overridePendingTransition(R.anim.slide_in_from_left,R.anim.slide_out_to_right);
+    }
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode, @Nullable Bundle options) {
+        super.startActivityForResult(intent, requestCode, options);
+        overridePendingTransition(R.anim.slide_in_from_right,R.anim.slide_out_to_left);
+    }
+
+    @Override
+    public void startActivityForResult(Intent intent, int requestCode) {
+        super.startActivityForResult(intent, requestCode);
+        overridePendingTransition(R.anim.slide_in_from_right,R.anim.slide_out_to_left);
     }
 }

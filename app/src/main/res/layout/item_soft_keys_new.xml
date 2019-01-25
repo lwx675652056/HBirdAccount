@@ -18,9 +18,8 @@
         <ImageView
             android:id="@+id/iv_account_icon"
             android:layout_width="@dimen/dp_60_x"
-            android:layout_height="@dimen/dp_60_x"
+            android:layout_height="@dimen/dp_55_x"
             android:layout_marginStart="@dimen/dp_5_x"
-            android:paddingBottom="@dimen/dp_10_x"
             android:paddingTop="@dimen/dp_10_x"
             android:src="@mipmap/ic_budget_bg_gray"
             app:layout_constraintStart_toStartOf="parent"
@@ -32,7 +31,6 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:orientation="vertical"
-            android:paddingBottom="@dimen/dp_10_x"
             android:paddingEnd="@dimen/dp_15_x"
             android:paddingTop="@dimen/dp_10_x"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -59,9 +57,10 @@
         </LinearLayout>
 
         <View
+            android:layout_marginTop="@dimen/dp_10_x"
             android:id="@+id/line"
             android:layout_width="0.5dp"
-            android:layout_height="@dimen/dp_40_x"
+            android:layout_height="@dimen/dp_30_x"
             android:background="@color/bg_cdcdcd"
             app:layout_constraintBottom_toBottomOf="@+id/iv_account_icon"
             app:layout_constraintStart_toEndOf="@+id/ll_choose_account"
@@ -72,6 +71,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_gravity="center_horizontal"
+            android:paddingTop="@dimen/dp_10_x"
             android:drawablePadding="@dimen/dp_5_x"
             android:drawableStart="@mipmap/ic_calendar_normal_select"
             android:gravity="center"
@@ -95,7 +95,7 @@
             android:id="@+id/input_board"
             android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:padding="@dimen/dp_15_x"
+            android:padding="@dimen/width_2_80"
             android:useDefaultMargins="false"
             app:layout_widthPercent="100%">
 

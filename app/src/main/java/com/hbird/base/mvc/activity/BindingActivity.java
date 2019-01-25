@@ -7,11 +7,9 @@ import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
-import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -50,13 +48,13 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
     @BindView(R.id.pwd)
     EditText mPwd;
     @BindView(R.id.setpwd_view)
-    CheckBox mSetpwd;
+    ImageView mSetpwd;
     @BindView(R.id.iv_login)
-    RelativeLayout mLogin;
+    TextView mLogin;
     @BindView(R.id.rl_password)
-    RelativeLayout mPassword;
-    @BindView(R.id.views)
-    View mViews;
+    LinearLayout mPassword;
+    @BindView(R.id.temp)
+    View temp;
 
     boolean bShowPassWord = false;
     //判断页面中 是否需要显示密码
@@ -64,7 +62,6 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
     private String token;
     private String phone;
     private TimeCount time;
-
 
     @Override
     protected int getContentLayout() {
@@ -82,13 +79,13 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
     protected void initData(Bundle savedInstanceState) {
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
         String type = getIntent().getStringExtra("TYPE");
-        if(TextUtils.equals(type,"phone")){
+        if (TextUtils.equals(type, "phone")) {
             mPassword.setVisibility(View.GONE);
-            mViews.setVisibility(View.GONE);
+            temp.setVisibility(View.GONE);
             passwod = false;
-        }else {
+        } else {
             mPassword.setVisibility(View.VISIBLE);
-            mViews.setVisibility(View.VISIBLE);
+            temp.setVisibility(View.VISIBLE);
             passwod = true;
         }
     }
@@ -98,10 +95,11 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
         mBack.setOnClickListener(this);
         mLogin.setOnClickListener(this);
     }
+
     @OnClick({R.id.iv_back, R.id.iv_login, R.id.setpwd_view, R.id.tv_submit})
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 finish();
                 break;
@@ -110,14 +108,14 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
                 String yzm = mYanZM.getText().toString().trim();
                 phone = mUserName.getText().toString().trim();
                 if (checkPhone()) return;
-                if(TextUtils.isEmpty(yzm)){
+                if (TextUtils.isEmpty(yzm)) {
                     showMessage("请输入验证码");
                     return;
                 }
-                String pwd="";
-                if(passwod){
+                String pwd = "";
+                if (passwod) {
                     pwd = mPwd.getText().toString().trim();
-                    if(TextUtils.isEmpty(pwd)){
+                    if (TextUtils.isEmpty(pwd)) {
                         showMessage("请输入密码");
                         return;
                     }
@@ -127,7 +125,7 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
                 ModifiPhoneNumBean mb = new ModifiPhoneNumBean();
                 mb.setMobile(phone);
                 mb.setVerifycode(yzm);
-                if(passwod){
+                if (passwod) {
                     mb.setPassword(pwd);
                 }
                 String json = new Gson().toJson(mb);
@@ -138,10 +136,10 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
                             public void onSuccess(BaseReturn b) {
                                 hideProgress();
                                 //绑定手机号
-                               showMessage("绑定成功");
+                                showMessage("绑定成功");
                                 Intent intent = new Intent();
-                                intent.putExtra("PHONE",phone);
-                                setResult(302,intent);
+                                intent.putExtra("PHONE", phone);
+                                setResult(302, intent);
                                 finish();
 
                             }
@@ -179,36 +177,41 @@ public class BindingActivity extends BaseActivity<BaseActivityPresenter> impleme
             //查看密码
             case R.id.setpwd_view:
                 bShowPassWord = !bShowPassWord;
-                if(bShowPassWord){
+                if (bShowPassWord) {
                     //如果选中，显示密码
                     mPwd.setTransformationMethod(HideReturnsTransformationMethod.getInstance());
                     mPwd.setSelection(mPwd.getText().length());
-                }else{
+                    mSetpwd.setImageResource(R.drawable.icon_mmkj_normal);
+                } else {
                     //否则隐藏密码
                     mPwd.setTransformationMethod(PasswordTransformationMethod.getInstance());
                     mPwd.setSelection(mPwd.getText().length());
+                    mSetpwd.setImageResource(R.drawable.icon_mmbkj_normal);
                 }
                 break;
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if(time!=null){
+        if (time != null) {
             time.cancel();//取消倒计时
         }
     }
+
     private boolean checkPhone() {
-        if(TextUtils.isEmpty(phone)){
+        if (TextUtils.isEmpty(phone)) {
             showMessage("请输入手机号");
             return true;
         }
-        if(phone.length()!=11){
+        if (phone.length() != 11) {
             showMessage("请检查手机号");
             return true;
         }
         return false;
     }
+
     //倒计时的类
     class TimeCount extends CountDownTimer {
         public TimeCount(long millisInFuture, long countDownInterval) {

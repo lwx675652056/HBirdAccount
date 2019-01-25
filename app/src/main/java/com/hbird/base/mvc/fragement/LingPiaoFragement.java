@@ -1,6 +1,5 @@
 package com.hbird.base.mvc.fragement;
 
-import android.annotation.TargetApi;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -67,11 +66,9 @@ import static com.umeng.socialize.bean.SHARE_MEDIA.WEIXIN_CIRCLE;
  * Created by Liul on 2018/10/10.
  * 领票票
  */
-
-
 public class LingPiaoFragement extends BaseFragement implements View.OnClickListener {
 
-    @BindView(R.id.webView)
+    @BindView(R.id.web_view)
     com.github.lzyzsd.jsbridge.BridgeWebView webView;
 
     private String url = UrlConstants.BASE_H5_URL;
@@ -88,12 +85,12 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     @Override
     public int setContentId() {
-        return R.layout.fragement_lingpiao;
+        return R.layout.act_get_ticket;
     }
 
     @Override
     public void initView() {
-        LinearLayout ll = getActivity().findViewById(R.id.ll_home_lingpiao);
+        LinearLayout ll = getActivity().findViewById(R.id.ll_parent);
         ll.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
 
         String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
@@ -118,7 +115,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if (isVisibleToUser){
+        if (isVisibleToUser) {
             activity.setBottomDH2Visiable();
             aaa = true;
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
@@ -131,7 +128,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
 
         //当前年
         yyyy = Integer.parseInt(DateUtils.getCurYear("yyyy"));
@@ -152,217 +148,168 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         webView.loadUrl(url);
 
         // 邀请好友
-        webView.registerHandler("inviteFriends", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                playVoice(R.raw.changgui02);
+        webView.registerHandler("inviteFriends", (data, function) -> showDialog());
 
-                showDialog();
-            }
+        // 记一笔
+        webView.registerHandler("writeANote", (data, function) -> {
+            playVoice(R.raw.changgui02);
+            startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
         });
-        webView.registerHandler("writeANote", new BridgeHandler() {
-            @TargetApi(Build.VERSION_CODES.KITKAT)
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //showMessage("记一笔");
-
-                playVoice(R.raw.changgui02);
-                startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
-            }
+        // 绑定手机号/微信号
+        webView.registerHandler("bindingNumber", (data, function) -> {
+            String phones = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYPHONE, "");
+            String weiXin = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYWEIXIN, "");
+            playVoice(R.raw.changgui02);
+            Intent intent3 = new Intent();
+            intent3.setClass(getActivity(), AccountSafeActivity.class);
+            intent3.putExtra("PHONE", phones);
+            intent3.putExtra("WEIXIN", weiXin);
+            startActivity(intent3);
         });
-        webView.registerHandler("bindingNumber", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //showMessage("绑定手机号/微信号");
-                String phones = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYPHONE, "");
-                String weiXin = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYWEIXIN, "");
-                playVoice(R.raw.changgui02);
-                Intent intent3 = new Intent();
-                intent3.setClass(getActivity(), AccountSafeActivity.class);
-                intent3.putExtra("PHONE", phones);
-                intent3.putExtra("WEIXIN", weiXin);
-                startActivity(intent3);
-            }
+        // 设置预算
+        webView.registerHandler("setBudget", (data, function) -> {
+            playVoice(R.raw.changgui02);
+            Intent intent3 = new Intent(getActivity(), BudgetActivity.class);
+            intent3.putExtra("MONTH", mm + "");
+            intent3.putExtra("YEAR", yyyy + "");
+            String money = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYMONEY, "");
+            intent3.putExtra("MONEY", money);
+            String accountBookId = SPUtil.getPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+            intent3.putExtra("accountBookId", accountBookId);
+            startActivity(intent3);
         });
-        webView.registerHandler("setBudget", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                // showMessage("设置预算");
-
-                playVoice(R.raw.changgui02);
-                Intent intent3 = new Intent(getActivity(), BudgetActivity.class);
-                intent3.putExtra("MONTH", mm + "");
-                intent3.putExtra("YEAR", yyyy + "");
-                String money = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYMONEY, "");
-                intent3.putExtra("MONEY", money);
-                String accountBookId = SPUtil.getPrefString(getActivity(), CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-                intent3.putExtra("accountBookId", accountBookId);
-                startActivity(intent3);
-            }
+        // 设置存钱效率
+        webView.registerHandler("settingEfficiency", (data, function) -> {
+            playVoice(R.raw.changgui02);
+            Intent intent1 = new Intent();
+            intent1.setClass(getActivity(), CanSettingMoneyActivity.class);
+            intent1.putExtra("MONTH", mm + "");
+            intent1.putExtra("YEAR", yyyy + "");
+            intent1.putExtra("LargeExpenditure", aa);
+            intent1.putExtra("LifeExpenditure", bb);
+            startActivity(intent1);
         });
-        webView.registerHandler("settingEfficiency", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //showMessage("设置存钱效率");
+        // 完善个人资料
+        webView.registerHandler("setPersonalInformation", (data, function) -> {
+            try {
+                String b1 = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYZILIAO, "");
                 playVoice(R.raw.changgui02);
                 Intent intent1 = new Intent();
-                intent1.setClass(getActivity(), CanSettingMoneyActivity.class);
-                intent1.putExtra("MONTH", mm + "");
-                intent1.putExtra("YEAR", yyyy + "");
-                intent1.putExtra("LargeExpenditure", aa);
-                intent1.putExtra("LifeExpenditure", bb);
-                startActivity(intent1);
-
-            }
-        });
-        webView.registerHandler("setPersonalInformation", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //showMessage("完善个人资料");
-                try {
-                    String b1 = SPUtil.getPrefString(getActivity(), CommonTag.H5PRIMKEYZILIAO, "");
-                    playVoice(R.raw.changgui02);
-                    Intent intent1 = new Intent();
-                    intent1.setClass(getActivity(), PersionnalInfoActivity.class);
-                    intent1.putExtra("JSON", b1);
-                    if (!TextUtils.isEmpty(b1)) {
-                        startActivity(intent1);
-                    }
-
-                } catch (Exception e) {
-                    //请求不到数据时 点击出现的崩溃 暂不处理
+                intent1.setClass(getActivity(), PersionnalInfoActivity.class);
+                intent1.putExtra("JSON", b1);
+                if (!TextUtils.isEmpty(b1)) {
+                    startActivity(intent1);
                 }
+            } catch (Exception e) {
+                //请求不到数据时 点击出现的崩溃 暂不处理
             }
         });
-        webView.registerHandler("jumpLink", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                //showMessage("轮播图");
-                LogUtil.e(data);
-                Html5Date bean = new Gson().fromJson(data, Html5Date.class);
-                String jumpType = bean.getJumpType();
-                if (TextUtils.equals("0", jumpType)) {
-                    String address = bean.getConnectionAddress();
-
-                    switch (address) {
-                        case "mxsy":
-                            playVoice(R.raw.changgui02);
-
-                            activity.setTiaozhuanFragement(0, 0);
-                            break;
-                        case "tbtj":
-                            activity.setTiaozhuanFragement(1, 0);
-                            break;
-                        case "tbfx":
-                            activity.setTiaozhuanFragement(1, 1);
-                            break;
-                        case "tbzc":
-                            activity.setTiaozhuanFragement(1, 2);
-                            break;
-                        case "jzsy":
-                            playVoice(R.raw.changgui02);
-                            startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
-                            break;
-                    }
-                } else if (TextUtils.equals("1", jumpType)) {
-                    String address = bean.getConnectionAddress();
-                    String shareTitle = bean.getShareTitle();
-                    String shareImage = bean.getShareImage();
-                    String shareContent = bean.getShareContent();
-                    Intent intent = new Intent();
-                    intent.setClass(getActivity(), H5WebViewActivity.class);
-                    intent.putExtra("URL", address);
-                    intent.putExtra("TITLE", shareTitle);
-                    intent.putExtra("SHAREIMAGE", shareImage);
-                    intent.putExtra("SHARECONTENT", shareContent);
-                    startActivity(intent);
+        // 轮播图
+        webView.registerHandler("jumpLink", (data, function) -> {
+            Html5Date bean = new Gson().fromJson(data, Html5Date.class);
+            String jumpType = bean.getJumpType();
+            if (TextUtils.equals("0", jumpType)) {
+                String address = bean.getConnectionAddress();
+                switch (address) {
+                    case "mxsy":
+                        playVoice(R.raw.changgui02);
+                        activity.setTiaozhuanFragement(0, 0);
+                        break;
+                    case "tbtj":
+                        activity.setTiaozhuanFragement(1, 0);
+                        break;
+                    case "tbfx":
+                        activity.setTiaozhuanFragement(1, 1);
+                        break;
+                    case "tbzc":
+                        activity.setTiaozhuanFragement(1, 2);
+                        break;
+                    case "jzsy":
+                        playVoice(R.raw.changgui02);
+                        startActivity(new Intent(getActivity(), ChooseAccountTypeActivity.class));
+                        break;
                 }
+            } else if (TextUtils.equals("1", jumpType)) {
+                String address = bean.getConnectionAddress();
+                String shareTitle = bean.getShareTitle();
+                String shareImage = bean.getShareImage();
+                String shareContent = bean.getShareContent();
+                Intent intent = new Intent();
+                intent.setClass(getActivity(), H5WebViewActivity.class);
+                intent.putExtra("URL", address);
+                intent.putExtra("TITLE", shareTitle);
+                intent.putExtra("SHAREIMAGE", shareImage);
+                intent.putExtra("SHARECONTENT", shareContent);
+                startActivity(intent);
+            }
 
-            }
         });
-        webView.registerHandler("toPointsMallPage", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Gone();
-                aaa = false;
-            }
+
+        // 积分商城
+        webView.registerHandler("toPointsMallPage", (data, function) -> {
+            activity.setBottomDH2Gone();
+            aaa = false;
+            LogUtil.e("URL：" + webView.getUrl());
         });
-        webView.registerHandler("toCheckInCalendarPage", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Gone();
-                aaa = false;
-            }
+        // 查看签到情况
+        webView.registerHandler("toCheckInCalendarPage", (data, function) -> {
+            activity.setBottomDH2Gone();
+            aaa = false;
+            LogUtil.e("URL：" + webView.getUrl());
         });
+        // 丰丰票说明
         webView.registerHandler("toTicketDescriptionPage", new BridgeHandler() {
             @Override
             public void handler(String data, CallBackFunction function) {
                 activity.setBottomDH2Gone();
                 aaa = false;
+                LogUtil.e("URL：" + webView.getUrl());
             }
         });
-        webView.registerHandler("toPointrecordPage", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Gone();
-                aaa = false;
-            }
+        // 积分记录
+        webView.registerHandler("toPointrecordPage", (data, function) -> {
+            activity.setBottomDH2Gone();
+            aaa = false;
+            LogUtil.e("URL：" + webView.getUrl());
         });
-        webView.registerHandler("goBankIndex", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Visiable();
-                aaa = true;
-            }
+        // 回到首页
+        webView.registerHandler("goBankIndex", (data, function) -> {
+            activity.setBottomDH2Visiable();
+            aaa = true;
+            LogUtil.e("URL：" + webView.getUrl());
         });
 
-
-        webView.registerHandler("confirmToExchangeRedEnvelope", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-//                String weixin = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYWEIXIN, "");
-                getCode();
-            }
-        });
+        // 获取微信code
+        webView.registerHandler("confirmToExchangeRedEnvelope", (data, function) -> getCode());
 
         // 日签
-        webView.registerHandler("signIn", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Gone();
-                aaa = false;
-            }
+        webView.registerHandler("signIn", (data, function) -> {
+            activity.setBottomDH2Gone();
+            aaa = false;
+            LogUtil.e("URL：" + webView.getUrl());
         });
 
         // 下载
-        webView.registerHandler("downloadImg", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                try {
-                    Utils.decoderBase64File(data, Constants.IMAGE_PATH+ "/temp.png");
-                    ToastUtil.showShort("保存成功");
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    ToastUtil.showShort("保存失败");
-                }
+        webView.registerHandler("downloadImg", (data, function) -> {
+            try {
+                Utils.decoderBase64File(data, Constants.IMAGE_PATH + "/temp.png");
+                ToastUtil.showShort("保存成功");
+            } catch (Exception e) {
+                e.printStackTrace();
+                ToastUtil.showShort("保存失败");
             }
         });
         // 分享
-        webView.registerHandler("shareImg", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                try {
-                    Utils.decoderBase64File(data, Constants.IMAGE_PATH+ "/temp.png");
-                    playVoice(R.raw.changgui02);
-                    File file = new File(Constants.IMAGE_PATH+ "/temp.png");
-                    UMImage imagelocal = new UMImage(getActivity(),  file);
-                    imagelocal.setThumb(new UMImage(getActivity(), file));
-                    new ShareAction(getActivity()).withMedia(imagelocal )
-                            .setPlatform(WEIXIN_CIRCLE)
-                            .setCallback(shareListener).share();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        webView.registerHandler("shareImg", (data, function) -> {
+            try {
+                Utils.decoderBase64File(data, Constants.IMAGE_PATH + "/temp.png");
+                playVoice(R.raw.changgui02);
+                File file = new File(Constants.IMAGE_PATH + "/temp.png");
+                UMImage imagelocal = new UMImage(getActivity(), file);
+                imagelocal.setThumb(new UMImage(getActivity(), file));
+                new ShareAction(getActivity()).withMedia(imagelocal).setPlatform(WEIXIN_CIRCLE).setCallback(shareListener).share();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
@@ -370,7 +317,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     private UMShareListener shareListener = new UMShareListener() {
         @Override
         public void onStart(SHARE_MEDIA platform) {
-
         }
 
         @Override
@@ -391,18 +337,16 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     @Override
     public void initListener() {
-        //mBack.setOnClickListener(this);
         webView.setOnKeyListener(backlistener);
-
     }
 
     @Override
     public void loadData() {
-
     }
 
     // 邀请码弹框
     private void showDialog() {
+        playVoice(R.raw.changgui02);
         InvitationDialog dialog = new InvitationDialog(getActivity());
         dialog.show();
     }
@@ -430,26 +374,25 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
 
     private void getXiaoLvNet(String token) {
-        NetWorkManager.getInstance().setContext(getActivity())
-                .getSaveEfficients(mm, 3, token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        SaveMoney2Return b1 = (SaveMoney2Return) b;
-                        try {
-                            if (null != b1.getResult()) {
-                                SaveMoney2Return.ResultBean.FixedSpendBean list = b1.getResult().getFixedSpend();
-                                aa = list.getFixedLargeExpenditure() + "";
-                                bb = list.getFixedLifeExpenditure() + "";
-                            }
-                        } catch (Exception e) {
-                        }
+        NetWorkManager.getInstance().setContext(getActivity()).getSaveEfficients(mm, 3, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                SaveMoney2Return b1 = (SaveMoney2Return) b;
+                try {
+                    if (null != b1.getResult()) {
+                        SaveMoney2Return.ResultBean.FixedSpendBean list = b1.getResult().getFixedSpend();
+                        aa = list.getFixedLargeExpenditure() + "";
+                        bb = list.getFixedLifeExpenditure() + "";
                     }
+                } catch (Exception e) {
+                }
+            }
 
-                    @Override
-                    public void onError(String s) {
-                        showMessage(s);
-                    }
-                });
+            @Override
+            public void onError(String s) {
+                showMessage(s);
+            }
+        });
     }
 
     private void inviteYou() {

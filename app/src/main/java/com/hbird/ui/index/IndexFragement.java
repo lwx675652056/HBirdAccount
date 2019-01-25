@@ -12,6 +12,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.OrientationHelper;
+import android.text.Html;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -305,6 +306,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
         // 日历
         public void calendar(View view) {
+            Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent = new Intent(getActivity(), ActCalendar.class);
             intent.putExtra("account_id", accountId);
             startActivity(intent);
@@ -341,9 +343,11 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         public void showMoney(View view) {
             data.setShowMoney(!data.isShowMoney());
             if (data.isShowMoney()) {
-                mChart.setCenterText("总支出\n-" + data.getSpendingMoney()); //设置中心文本
+                String textStr = "<font color=\"#808080\">总支出</font>\n" + data.getSpendingMoney();
+                mChart.setCenterText(Html.fromHtml(textStr)); //设置中心文本
             } else {
-                mChart.setCenterText("总支出\n****"); //设置中心文本
+                String textStr = "<font color=\"#808080\">总支出</font>\n总支出\n****";
+                mChart.setCenterText(Html.fromHtml(textStr)); //设置中心文本
             }
             mChart.postInvalidate();
         }
@@ -1125,7 +1129,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 data.setComparison("相比上月支出 " + s);
             }
         });
-        mChart.setCenterText("总支出\n-" + spend1); //设置中心文本
+        String textStr = "<font color=\"#808080\">总支出</font>\n" + spend1;
+        mChart.setCenterText(Html.fromHtml(textStr)); //设置中心文本
     }
 
     private void spin(float fromangle, float toangle, final int i) {
@@ -1183,13 +1188,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             entries1.add(new PieEntry((float) (100), ""));
         }
 
-        double a1 = 0;
+        double t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0;// 饼图显示的比例，太小的显示10%的大小
+        double a1 = 0; // 正确的百分比
         if (data.getSize() > 0) {// 至少有一条
             pieList.add(temp.get(0));
 
             data.setStr1(pieList.get(0).typeName);
             a1 = pieList.get(0).money / Double.parseDouble(data.getSpendingMoney());
-            entries1.add(new PieEntry((float) Utils.to4Digit(a1), ""));
+            t1 = Utils.to4Digit(a1);
+            entries1.add(new PieEntry(t1 < 0.1 ? (float) 0.1 : (float) t1, ""));
             data.setCop1(Utils.to2Digit(a1 * 100) + "%");
         }
         double a2 = 0;
@@ -1198,7 +1205,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             data.setStr2(pieList.get(1).typeName);
             a2 = pieList.get(1).money / Double.parseDouble(data.getSpendingMoney());
-            entries1.add(new PieEntry((float) Utils.to4Digit(a2), ""));
+            t2 = Utils.to4Digit(a2);
+            entries1.add(new PieEntry(t2 < 0.1 ? (float) 0.1 : (float) t2, ""));
             data.setCop2(Utils.to2Digit(a2 * 100) + "%");
         }
         double a3 = 0;
@@ -1207,7 +1215,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             data.setStr3(pieList.get(2).typeName);
             a3 = pieList.get(2).money / Double.parseDouble(data.getSpendingMoney());
-            entries1.add(new PieEntry((float) Utils.to4Digit(a3), ""));
+            t3 = Utils.to4Digit(a3);
+            entries1.add(new PieEntry(t3 < 0.1 ? (float) 0.1 : (float) t3, ""));
             data.setCop3(Utils.to2Digit(a3 * 100) + "%");
         }
         double a4 = 0;
@@ -1216,13 +1225,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             data.setStr4(pieList.get(3).typeName);
             a4 = pieList.get(3).money / Double.parseDouble(data.getSpendingMoney());
-            entries1.add(new PieEntry((float) Utils.to4Digit(a4), ""));
+            t4 = Utils.to4Digit(a4);
+            entries1.add(new PieEntry(t4 < 0.1 ? (float) 0.1 : (float) t4, ""));
             data.setCop4(Utils.to2Digit(a4 * 100) + "%");
         }
         if (data.getSize() > 4) {// 至少有五条以上
             data.setStr5("其它");
             double a5 = 1 - a1 - a2 - a3 - a4;
-            entries1.add(new PieEntry((float) Utils.to4Digit(a5), ""));
+            t5 = a4 / t4 * a5;
+            entries1.add(new PieEntry((float) t5, ""));
             data.setCop5(Utils.to2Digit(a5 * 100) + "%");
 
             StatisticsSpendTopArraysBean t = new StatisticsSpendTopArraysBean();

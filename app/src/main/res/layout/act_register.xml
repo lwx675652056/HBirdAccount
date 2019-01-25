@@ -96,10 +96,10 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="@dimen/dp_10_x"
                     android:background="@null"
+                    android:clickable="@{data.clickable}"
                     android:onClick="@{listener.getCode}"
                     android:paddingBottom="@dimen/dp_10_x"
                     android:paddingTop="@dimen/dp_10_x"
-                    android:clickable="@{data.clickable}"
                     android:text="@{data.time}"
                     android:textColor="@color/colorPrimary"
                     android:textSize="16sp"/>
@@ -169,17 +169,10 @@
                 android:layout_weight="1"/>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                style="@style/main_button"
                 android:layout_marginBottom="@dimen/dp_50_x"
-                android:background="@drawable/select_main_button"
-                android:gravity="center"
                 android:onClick="@{listener.register}"
-                android:paddingBottom="@dimen/dp_10_x"
-                android:paddingTop="@dimen/dp_10_x"
-                android:text="注册并登录"
-                android:textColor="@color/white"
-                android:textSize="16sp"/>
+                android:text="注册并登录"/>
         </LinearLayout>
 
     </LinearLayout>

@@ -104,24 +104,16 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
-                <View
-                    android:layout_width="@dimen/dp_40_x"
-                    android:layout_height="@dimen/dp_40_x"
-                    android:background="@drawable/circle_333333"/>
+                <View style="@style/main_type"/>
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/dp_15_x"
-                    android:layout_height="@dimen/dp_15_x"
-                    android:layout_gravity="center"
+                    style="@style/main_icon"
                     app:imageUrl="@{bean.icon}"/>
 
                 <com.hbird.widget.CircleView
                     android:id="@+id/imagess"
-                    android:layout_width="@dimen/dp_15_x"
-                    android:layout_height="@dimen/dp_15_x"
-                    android:layout_gravity="bottom|right"
-                    android:layout_marginStart="@dimen/dp_15_x"
+                    style="@style/main_head"
                     android:src="@mipmap/ic_me_normal_headr"
                     app:border_color="@color/bg_e6e6e6"
                     app:border_width="1dp"
@@ -199,6 +191,6 @@
             android:id="@+id/bottom_view"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_15_x"
-            android:background="#F5F5F5" />
+            android:background="#F5F5F5"/>
     </LinearLayout>
 </layout>

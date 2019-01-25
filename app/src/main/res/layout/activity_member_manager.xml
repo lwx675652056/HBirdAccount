@@ -1,93 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/line2">
+    android:background="#F6F6F6"
+    android:orientation="vertical">
+
     <include layout="@layout/activity_headers"/>
 
-    <ListView
-    android:id="@+id/lv"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@color/line2"
-    android:layout_marginTop="@dimen/width_4_80"
-    android:divider="@null"
-    android:listSelector="@android:color/transparent"
-    android:transcriptMode="normal">
+    <View style="@style/horizontal_line"/>
 
-    </ListView>
+    <ListView
+        android:id="@+id/lv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15_x"
+        android:divider="@null"
+        android:listSelector="@android:color/transparent"
+        android:transcriptMode="normal"/>
+
     <LinearLayout
         android:id="@+id/ll_add_member"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_10_80"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_15_x"
+        android:layout_marginEnd="@dimen/dp_15_x"
+        android:layout_marginStart="@dimen/dp_15_x"
+        android:background="@drawable/select_white_8px"
         android:gravity="center"
-        android:layout_marginLeft="@dimen/width_4_80"
-        android:layout_marginRight="@dimen/width_4_80"
-        android:background="@drawable/item_selector_white_hint">
+        android:paddingBottom="@dimen/dp_15_x"
+        android:paddingTop="@dimen/dp_15_x">
+
         <TextView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="添加成员"
-            android:textColor="@color/text_bdbdbd"
-            android:textSize="@dimen/text_size_6"
-            android:drawableLeft="@mipmap/icon_tjzb_normal"
+            android:layout_height="@dimen/dp_50_x"
+            android:drawablePadding="@dimen/dp_5_x"
+            android:drawableStart="@mipmap/icon_tjzb_normal"
             android:gravity="center"
-            android:drawablePadding="@dimen/width_2_80"
-            />
+            android:text="添加成员"
+            android:textColor="#BDBDBD"
+            android:textSize="16sp"/>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="bottom">
+        android:gravity="bottom"
+        android:orientation="vertical">
+
         <TextView
             android:id="@+id/tv_more_yao"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="最多可以邀请4人哦~"
+            android:layout_marginBottom="@dimen/dp_15_x"
             android:gravity="center_horizontal"
-            android:layout_marginBottom="@dimen/height_2_80"
-            android:textColor="@color/text_bdbdbd" />
+            android:text="最多可以邀请4人哦~"
+            android:textColor="@color/text_bdbdbd"/>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+
             <RelativeLayout
                 android:id="@+id/tv_editor"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@drawable/item_selector_white_hint"
+                android:background="@drawable/select_white_0px"
                 android:gravity="center_horizontal">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@drawable/item_text_hint"
-                    android:textSize="@dimen/text_size_8"
-                    android:padding="@dimen/width_3_80"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:drawableStart="@drawable/icon_edit"
                     android:gravity="center_horizontal"
+                    android:padding="@dimen/dp_15_x"
                     android:text="编辑"
-                    android:drawableLeft="@mipmap/ic_editors"
-                    android:drawablePadding="@dimen/width_2_80"/>
+                    android:textColor="@color/text_333333"
+                    android:textSize="16sp"/>
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/tv_del"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/colorPrimary"
-                android:visibility="gone"
-                android:gravity="center_horizontal">
+                android:background="@drawable/select_main_button_0px"
+                android:gravity="center_horizontal"
+                android:visibility="gone">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/white"
-                    android:textSize="@dimen/text_size_8"
-                    android:padding="@dimen/width_3_80"
+                    android:drawablePadding="@dimen/dp_5_x"
+                    android:drawableStart="@mipmap/ic_white_del"
                     android:gravity="center_horizontal"
+                    android:padding="@dimen/dp_15_x"
                     android:text="删除"
-                    android:drawableLeft="@mipmap/ic_white_del"
-                    android:drawablePadding="@dimen/width_2_80"/>
+                    android:textColor="@color/white"
+                    android:textSize="16sp"/>
             </RelativeLayout>
         </FrameLayout>
 

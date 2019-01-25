@@ -5,6 +5,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.ImageView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hbird.base.R;
@@ -54,7 +55,16 @@ public class InviteGridViewAdapter extends BaseAdapter{
             viewHolder = (ViewHolder)convertView.getTag();
         }
 
+        ImageView iv = null;
+        viewHolder.img.setVisibility(View.GONE);
         viewHolder.img2.setVisibility(View.GONE);
+        if (i == 0){
+            iv = viewHolder.img;
+            viewHolder.img.setVisibility(View.VISIBLE);
+        }else{
+            iv = viewHolder.img2;
+            viewHolder.img2.setVisibility(View.VISIBLE);
+        }
 
         GlideApp.with(mContext)
                 .load(TextUtils.isEmpty(list.get(i).getImgUrl())?R.mipmap.account_logo:list.get(i).getImgUrl())
@@ -62,13 +72,12 @@ public class InviteGridViewAdapter extends BaseAdapter{
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
                 .override(100,100)
-                .into(viewHolder.img);
+                .into(iv);
         return convertView;
     }
 
     public static class ViewHolder {
         cycleView img;
-        cycleView img2;// 没什么用   挡位置了，不知道是不是复用过，先隐藏
+        cycleView img2;
     }
-
 }

@@ -7,10 +7,11 @@
     <ImageView
         android:id="@+id/iv_back"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:padding="@dimen/height_2_80"
-        android:src="@mipmap/ic_back"/>
+        android:paddingStart="@dimen/dp_15_x"
+        android:paddingEnd="@dimen/dp_15_x"
+        android:src="@mipmap/nav_back_normal"/>
 
     <TextView
         android:id="@+id/center_title"

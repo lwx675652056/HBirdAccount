@@ -6,19 +6,15 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.hbird.base.R;
 import com.hbird.base.mvc.bean.MembersBean;
-import com.hbird.base.mvc.widget.cycleView;
 import com.ljy.devring.image.support.GlideApp;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.umeng.commonsdk.stateless.UMSLEnvelopeBuild.mContext;
 
 /**
  * Created by Liul(245904552@qq.com) on 2018/11/7.
@@ -29,17 +25,20 @@ public class MemberManagerAdapter extends BaseAdapter {
     private ArrayList<MembersBean> list;
     private boolean dots;
     private List<Boolean> checkedStatus = new ArrayList<>();
+    private int bottom;
 
-    public MemberManagerAdapter(Context context, boolean type, List<Boolean> checkedStatus){
+    public MemberManagerAdapter(Context context, boolean type, List<Boolean> checkedStatus) {
         this.context = context;
         this.dots = type;
+        bottom = context.getResources().getDimensionPixelSize(R.dimen.dp_15_x);
         list = new ArrayList<>();
-        if(checkedStatus!=null){
+        if (checkedStatus != null) {
             this.checkedStatus.clear();
             this.checkedStatus.addAll(checkedStatus);
         }
     }
-    public void setData(ArrayList<MembersBean> ls,boolean ss,List<Boolean> checkedStatus) {
+
+    public void setData(ArrayList<MembersBean> ls, boolean ss, List<Boolean> checkedStatus) {
         list.clear();
         list.addAll(ls);
         dots = ss;
@@ -48,6 +47,7 @@ public class MemberManagerAdapter extends BaseAdapter {
         notifyDataSetChanged();
 
     }
+
     public List<Boolean> getCheckedStatus() {
         return checkedStatus;
     }
@@ -56,14 +56,16 @@ public class MemberManagerAdapter extends BaseAdapter {
         this.checkedStatus = checkedStatus;
         notifyDataSetChanged();
     }
-    public void setClearStatus(){
+
+    public void setClearStatus() {
         //将状态清空 设置为false
-        if(checkedStatus!=null && checkedStatus.size()>0){
-            for(int i=0;i<checkedStatus.size();i++){
-                checkedStatus.set(i,false);
+        if (checkedStatus != null && checkedStatus.size() > 0) {
+            for (int i = 0; i < checkedStatus.size(); i++) {
+                checkedStatus.set(i, false);
             }
         }
     }
+
     @Override
     public int getCount() {
         return list.size();
@@ -81,58 +83,56 @@ public class MemberManagerAdapter extends BaseAdapter {
 
     @Override
     public View getView(final int i, View convertView, ViewGroup viewGroup) {
-        ViewHolder viewHolder =null;
-        if(null==convertView){
-            viewHolder =new ViewHolder();
+        ViewHolder viewHolder = null;
+        if (null == convertView) {
+            viewHolder = new ViewHolder();
             convertView = View.inflate(context, R.layout.adapter_member_manager, null);
-            viewHolder.MemberImg = (cycleView) convertView.findViewById(R.id.img);
-            viewHolder.memberName=(TextView) convertView.findViewById(R.id.tv_name);
-            viewHolder.memberTime=(TextView) convertView.findViewById(R.id.tv_time);
-            viewHolder.checkBox = (CheckBox)convertView.findViewById(R.id.cb_quanxuan) ;
-            viewHolder.linear = (RelativeLayout) convertView.findViewById(R.id.rl_linear) ;
+            viewHolder.MemberImg = convertView.findViewById(R.id.img);
+            viewHolder.memberName = convertView.findViewById(R.id.tv_name);
+            viewHolder.memberTime = convertView.findViewById(R.id.tv_time);
+            viewHolder.checkBox = convertView.findViewById(R.id.cb_quanxuan);
+            viewHolder.linear = convertView.findViewById(R.id.rl_linear);
 
             convertView.setTag(viewHolder);
-        }else {
-            viewHolder = (ViewHolder)convertView.getTag();
+        } else {
+            viewHolder = (ViewHolder) convertView.getTag();
         }
         GlideApp.with(context)
                 .load(list.get(i).getMemberImgUrl())
                 .skipMemoryCache(false)
                 .dontAnimate()
                 .diskCacheStrategy(DiskCacheStrategy.RESOURCE)
-                .override(100,100)
                 .into(viewHolder.MemberImg);
         viewHolder.memberName.setText(list.get(i).getMemberName());
         viewHolder.memberTime.setText(list.get(i).getMemberTime());
-        if(dots){
+        if (dots) {
             viewHolder.checkBox.setVisibility(View.VISIBLE);
-            if(checkedStatus.get(i)){
+            if (checkedStatus.get(i)) {
                 viewHolder.checkBox.setChecked(true);
-            }else {
+            } else {
                 viewHolder.checkBox.setChecked(false);
             }
             viewHolder.checkBox.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(checkedStatus.get(i)){
-                        checkedStatus.set(i,false);
-                    }else{
-                        checkedStatus.set(i,true);
+                    if (checkedStatus.get(i)) {
+                        checkedStatus.set(i, false);
+                    } else {
+                        checkedStatus.set(i, true);
                     }
                     notifyDataSetChanged();
                 }
             });
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)viewHolder.linear.getLayoutParams();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) viewHolder.linear.getLayoutParams();
             int margins = (int) context.getResources().getDimension(R.dimen.width_2_80);
-            lp.setMargins(margins,0,margins,margins);
-
-        }else {
+            lp.setMargins(margins, 0, margins, bottom);
+        } else {
             viewHolder.checkBox.setVisibility(View.GONE);
-            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)viewHolder.linear.getLayoutParams();
+            LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams) viewHolder.linear.getLayoutParams();
             int margins = (int) context.getResources().getDimension(R.dimen.width_4_80);
             int margins2 = (int) context.getResources().getDimension(R.dimen.width_2_80);
 
-            lp.setMargins(margins,0,margins,margins2);
+            lp.setMargins(margins, 0, margins, bottom);
         }
 
 
@@ -144,6 +144,6 @@ public class MemberManagerAdapter extends BaseAdapter {
         TextView memberName;
         TextView memberTime;
         CheckBox checkBox;
-        RelativeLayout linear;
+        LinearLayout linear;
     }
 }

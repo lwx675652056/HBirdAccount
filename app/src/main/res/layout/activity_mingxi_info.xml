@@ -57,8 +57,8 @@
 
                 <ImageView
                     android:id="@+id/iv_icon"
-                    android:layout_width="@dimen/dp_15_x"
-                    android:layout_height="@dimen/dp_15_x"/>
+                    android:layout_width="@dimen/dp_20_x"
+                    android:layout_height="@dimen/dp_20_x"/>
             </RelativeLayout>
 
             <TextView
@@ -70,7 +70,6 @@
                 android:text="意外收入"
                 android:textColor="#333333"
                 android:textSize="16sp"/>
-
 
             <TextView
                 android:id="@+id/tv_pay_num"
@@ -318,7 +317,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dp_10_x"
-                android:drawableStart="@mipmap/ic_editors"
+                android:drawableStart="@drawable/icon_edit"
                 android:padding="@dimen/dp_15_x"
                 android:text="编辑"
                 android:textColor="#333333"
@@ -343,7 +342,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:drawablePadding="@dimen/dp_15_x"
-                android:drawableStart="@mipmap/ic_delete"
+                android:drawableStart="@drawable/icon_delete"
                 android:padding="@dimen/dp_15_x"
                 android:text="删除"
                 android:textColor="#333333"

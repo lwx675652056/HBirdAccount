@@ -2,8 +2,10 @@ package com.hbird.ui.detailed;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.hbird.base.R;
 import com.hbird.base.databinding.ActAccountDetailedBinding;
@@ -32,6 +34,7 @@ import java.util.List;
 import java.util.Set;
 
 import sing.common.base.BaseActivity;
+import sing.common.util.StatusBarUtil;
 import sing.util.ToastUtil;
 
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
@@ -65,6 +68,11 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
         binding.setTitle(new TitleBean("账本明细"));
         binding.toolbar.ivBack.setOnClickListener(v -> finish());
         binding.setClick(new OnClick());
+        binding.toolbar.flParent.setBackground(ContextCompat.getDrawable(this, R.drawable.shape_main_bg));
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) binding.toolbar.flParent.getLayoutParams();
+        params.height += StatusBarUtil.getStateBarHeight(this);
+        binding.toolbar.flParent.setLayoutParams(params);
+        binding.toolbar.flParent.setPadding(0, StatusBarUtil.getStateBarHeight(this), 0, 0);
 
         accountId = getIntent().getExtras().getString("accountId", "");
 
@@ -80,6 +88,7 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
         adapter = new AccountDetailedAdapter(this, list, R.layout.row_account_detailed, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        binding.recyclerView.setItemAnimator(null);//设置动画为null来解决闪烁问题
 
         getData();
     }
@@ -204,7 +213,7 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
                 if (l != null && l.size() > 0) {
                     list.clear();
                     list.addAll(l);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemRangeChanged(0,list.size());
                     data.setNoData(false);
                 }else {
                     data.setNoData(true);

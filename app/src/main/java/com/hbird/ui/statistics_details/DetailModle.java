@@ -301,6 +301,7 @@ public class DetailModle extends BaseViewModel {
                 indexBeans2.setTypeName(dates.getTypeName());
                 indexBeans2.setReporterAvatar(dates.getReporterAvatar());
                 indexBeans2.setReporterNickName(dates.getReporterNickName());
+                indexBeans2.setUpdateBy(dates.getUpdateBy());
                 been.add(indexBeans2);
             }
         }

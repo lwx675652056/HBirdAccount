@@ -22,10 +22,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/height_4_80"
+        android:layout_marginTop="@dimen/dp_20_x"
         android:text="每个账本最多5人记录，还可邀请5人"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/text_size_4"/>
+        android:textSize="12sp"/>
 
     <com.hbird.base.mvc.widget.MyGridView
         android:id="@+id/grde_view"
@@ -44,23 +44,11 @@
         android:layout_marginBottom="@dimen/height_4_80"
         android:gravity="bottom">
 
-        <RelativeLayout
+        <TextView
             android:id="@+id/rl_wx_invite"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/height_6_80"
-            android:layout_gravity="bottom"
-            android:layout_marginLeft="@dimen/width_6_80"
-            android:layout_marginRight="@dimen/width_6_80"
-            android:background="@drawable/btn_bg_login">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="微信邀请记账"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_6"/>
-        </RelativeLayout>
+            style="@style/main_button"
+            android:layout_marginEnd="@dimen/dp_15_x"
+            android:layout_marginStart="@dimen/dp_15_x"
+            android:text="微信邀请记账"/>
     </RelativeLayout>
-
 </LinearLayout>

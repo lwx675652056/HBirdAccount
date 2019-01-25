@@ -41,6 +41,7 @@ import com.hbird.base.mvc.global.modle.GlobalVariables;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.APDUserDateDialog;
 import com.hbird.base.mvc.view.dialog.ChooseAccountDialog;
+import com.hbird.base.mvp.model.db.greendao.GreenDBManager;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.DBUtil;
@@ -52,7 +53,6 @@ import com.hbird.bean.AssetsBean;
 import com.hbird.common.Constants;
 import com.hbird.ui.account.ActEditAccount;
 import com.ljy.devring.DevRing;
-import com.ljy.devring.db.support.ITableManger;
 import com.ljy.devring.util.NetworkUtil;
 
 import java.text.DecimalFormat;
@@ -204,8 +204,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 
         time = DateUtil.dateToLong(mDate.getText().toString().trim());
 
-        mDownNum.setText("");
-        mDownNum.setVisibility(View.GONE);
+        mDownNum.setText("0.00");
     }
 
     @Override
@@ -374,12 +373,12 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             case R.id.bt_save_add:// 保存并继续添加
                 playVoice(R.raw.jizhangfinish);
                 moneyString = mUpNum.getText().toString().trim();
-                if (moneyString.equals("0.00")){
-                showMessage("请输记账金额");
-                return;
-            }
-            saveAndFinish(112);
-            break;
+                if (moneyString.equals("0.00")) {
+                    showMessage("请输记账金额");
+                    return;
+                }
+                saveAndFinish(112);
+                break;
             case R.id.anime_finish:
                 playVoice(R.raw.jizhangfinish);
                 moneyString = mUpNum.getText().toString().trim();
@@ -408,7 +407,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
                 mDownNum.setText(str);
                 if (TextUtils.isEmpty(str)) {
                     mUpNum.setText("0.00");
-                    mDownNum.setVisibility(View.GONE);
                 }
                 break;
             case R.id.anime_jian:
@@ -525,7 +523,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 //            req.setSpendHappiness(happys);
 //        }
         //本地数据库存储
-        ITableManger mManger = DevRing.tableManager(WaterOrderCollect.class);
+
 //        WaterOrderCollect w = new WaterOrderCollect();
 //        w.setId(UUID.randomUUID() + "");//流水记录号
         bean.setMoney(Double.parseDouble(moneyString));//单笔记账金额
@@ -569,7 +567,8 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 //        }
 //        String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
 //        w.setAssetsName(accountName);
-        b = mManger.updateOne(bean);
+        b = DevRing.tableManager(WaterOrderCollect.class).updateOne(bean);
+
         pullToSyncDate(resultCode);
     }
 
@@ -578,7 +577,6 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             //showMessage("手速太快了");
             return;
         }*/
-        mDownNum.setVisibility(View.VISIBLE);
         String money = GlobalVariables.getmInputMoney();
         if (GlobalVariables.getmHasDot() && GlobalVariables.getmInputMoney().length() > 2) {
             String dot = money.substring(money.length() - 3, money.length() - 2);
@@ -641,8 +639,7 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
     public void calculatorClear() {
         GlobalVariables.setmInputMoney("");
         mUpNum.setText("");
-        mDownNum.setText("");
-        mDownNum.setVisibility(View.GONE);
+        mDownNum.setText("0.00");
         GlobalVariables.setHasDot(false);
     }
 
@@ -730,6 +727,8 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         String times = String.valueOf(time);
         req.setSynDate(times);
 
+
+        ((GreenDBManager) DevRing.dbManager()).clearAllTableCache();
         // 本地数据库查找未上传数据 上传至服务器
         String sql = "SELECT * FROM WATER_ORDER_COLLECT where UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -737,6 +736,12 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         List<WaterOrderCollect> l = new ArrayList<>();
         if (null != cursor) {
             l = DBUtil.changeToList(cursor, l, WaterOrderCollect.class);
+        }
+
+        if (l == null || l.size() == 0) {
+            // 临时的
+            l = new ArrayList<>();
+            l.add(bean);
         }
 
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
@@ -847,9 +852,11 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             public void onSuccess(BaseReturn b2) {
                 GloableReturn b1 = (GloableReturn) b2;
                 if (b) {  //创建成功
-                    setResult(104);
                     calculatorClear();
                     ToastUtil.showShort("修改成功");
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.START_INTENT_A, bean);
+                    setResult(104, intent);
                     finish();
                 } else {
                     showMessage("创建失败");
@@ -859,7 +866,9 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             @Override
             public void onError(String s) {
                 if (b) {  //创建成功
-                    setResult(104);
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.START_INTENT_A, bean);
+                    setResult(104, intent);
                     calculatorClear();
                     ToastUtil.showShort("修改成功");
                     finish();

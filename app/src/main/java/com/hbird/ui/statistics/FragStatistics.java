@@ -169,6 +169,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     // 点击了排行
     private void onClickRanking(StatisticsSpendTopArraysBean b) {
+        Utils.playVoice(getActivity(), R.raw.changgui02);
         Intent intent = new Intent(getActivity(), ActRankingDetails.class);
         intent.putExtra(Constants.START_INTENT_A, b.typeName);
         intent.putExtra(Constants.START_INTENT_B, String.valueOf(b.money));
@@ -834,7 +835,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         }
         mChart.setRotationAngle(90); //初始旋转角度
 
-        String textStr = "<font color=\"#808080\">总消费笔数</font>\n" + (totalCount == 0 ? "0" : totalCount) + "笔";
+        String textStr = "<font color=\"#808080\">总笔数</font><br/>" + (totalCount == 0 ? "0" : totalCount) + "笔";
         mChart.setCenterText(Html.fromHtml(textStr)); //设置中心文本
         mChart.invalidate();
     }

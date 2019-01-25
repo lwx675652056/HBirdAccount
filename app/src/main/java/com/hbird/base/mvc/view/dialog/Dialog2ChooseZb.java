@@ -7,17 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.hbird.base.R;
 import com.hbird.base.mvc.adapter.DialogChooseAdapter;
 import com.hbird.base.mvc.bean.ReturnBean.AccountZbBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,8 +44,7 @@ public class Dialog2ChooseZb {
     }
 
     public Dialog2ChooseZb builder() {
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.dialog_choose_zb_view, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_choose_zb_view, null);
 
         lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
         lv = (ListView) view.findViewById(R.id.lv);

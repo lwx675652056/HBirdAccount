@@ -72,6 +72,17 @@ public class MemberManagerActivity extends BaseActivity<BaseActivityPresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         centerTitle.setText("成员管理");
+        rightTitle2.setText("取消");
+        rightTitle2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                playVoice(R.raw.changgui02);
+                adapter.setData(memberList, false, checkedStatus);
+                tvDel.setVisibility(View.GONE);
+                tvEditor.setVisibility(View.VISIBLE);
+                rightTitle2.setVisibility(View.GONE);
+            }
+        });
         rightTitle2.setVisibility(View.GONE);
     }
 
@@ -79,7 +90,6 @@ public class MemberManagerActivity extends BaseActivity<BaseActivityPresenter> {
     protected void initData(Bundle savedInstanceState) {
         id = getIntent().getStringExtra("ID");
         token = SPUtil.getPrefString(MemberManagerActivity.this, CommonTag.GLOABLE_TOKEN, "");
-
     }
 
     @Override
@@ -91,129 +101,123 @@ public class MemberManagerActivity extends BaseActivity<BaseActivityPresenter> {
     protected void onResume() {
         super.onResume();
         setMemberDate();
-
     }
 
     private void setMemberDate() {
-        NetWorkManager.getInstance().setContext(MemberManagerActivity.this)
-                .getMemberInfo(token,id, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        AccountMemberBeans b1 = (AccountMemberBeans) b;
+        NetWorkManager.getInstance().setContext(MemberManagerActivity.this).getMemberInfo(token, id, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                AccountMemberBeans b1 = (AccountMemberBeans) b;
 
-                        members = b1.getResult().getMembers();
-                        if (members != null){
-                            if(members.size()>3){
-                                llAddMember.setVisibility(View.GONE);
-                            }else {
-                                llAddMember.setVisibility(View.VISIBLE);
-                            }
-
-                            memberList = new ArrayList<>();
-                            for(int i = 0; i< members.size(); i++){
-                                MembersBean bean = new MembersBean();
-                                bean.setMemberName(members.get(i).getNickName());
-                                bean.setMemberImgUrl(members.get(i).getAvatarUrl());
-                                long createDate = members.get(i).getCreateDate();
-                                String day = DateUtils.getYearMonthDay(createDate);
-                                bean.setMemberTime(day+"加入");
-                                bean.setId(members.get(i).getId()+"");
-                                memberList.add(bean);
-                            }
-
-                            checkedStatus = new ArrayList<>();
-                            checkedStatus.clear();
-                            for (int i = 0; i < memberList.size(); i++) {
-                                checkedStatus.add(false);
-                            }
-                            adapter = new MemberManagerAdapter(MemberManagerActivity.this, false,checkedStatus);
-                            lv.setAdapter(adapter);
-                            adapter.setData(memberList,false,checkedStatus);
-                        }
+                members = b1.getResult().getMembers();
+                if (members != null) {
+                    if (members.size() > 3) {
+                        llAddMember.setVisibility(View.GONE);
+                    } else {
+                        llAddMember.setVisibility(View.VISIBLE);
                     }
 
-                    @Override
-                    public void onError(String s) {
-
+                    memberList = new ArrayList<>();
+                    for (int i = 0; i < members.size(); i++) {
+                        MembersBean bean = new MembersBean();
+                        bean.setMemberName(members.get(i).getNickName());
+                        bean.setMemberImgUrl(members.get(i).getAvatarUrl());
+                        long createDate = members.get(i).getCreateDate();
+                        String day = DateUtils.getYearMonthDay(createDate);
+                        bean.setMemberTime(day + "加入");
+                        bean.setId(members.get(i).getId() + "");
+                        memberList.add(bean);
                     }
-                });
+
+                    checkedStatus = new ArrayList<>();
+                    checkedStatus.clear();
+                    for (int i = 0; i < memberList.size(); i++) {
+                        checkedStatus.add(false);
+                    }
+                    adapter = new MemberManagerAdapter(MemberManagerActivity.this, false, checkedStatus);
+                    lv.setAdapter(adapter);
+
+                    tvDel.setVisibility(View.GONE);
+                    tvEditor.setVisibility(View.VISIBLE);
+                    rightTitle2.setVisibility(View.GONE);
+
+                    adapter.setData(memberList, false, checkedStatus);
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+
+            }
+        });
     }
 
-    @OnClick({R.id.iv_back, R.id.ll_add_member, R.id.tv_editor,R.id.tv_del})
+    @OnClick({R.id.iv_back, R.id.ll_add_member, R.id.tv_editor, R.id.tv_del})
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.ll_add_member:
-                //showMessage("添加成员");
+            case R.id.ll_add_member:// 添加成员
                 playVoice(R.raw.changgui02);
                 Intent intent = new Intent();
-                intent.setClass(MemberManagerActivity.this,InviteJiZhangActivity.class);
-                intent.putExtra("ID",id);
+                intent.setClass(MemberManagerActivity.this, InviteJiZhangActivity.class);
+                intent.putExtra("ID", id);
                 startActivity(intent);
                 break;
-            case R.id.tv_editor:
-                //showMessage("编辑");
+            case R.id.tv_editor: // 编辑
                 playVoice(R.raw.changgui02);
-                adapter.setData(memberList,true,checkedStatus);
+                adapter.setData(memberList, true, checkedStatus);
                 tvDel.setVisibility(View.VISIBLE);
                 tvEditor.setVisibility(View.GONE);
+                rightTitle2.setVisibility(View.VISIBLE);
                 break;
-            case R.id.tv_del:
-                //showMessage("删除");
+            case R.id.tv_del:// 删除
                 playVoice(R.raw.changgui02);
                 List<Boolean> checkedStatus = adapter.getCheckedStatus();
-                String m="";
                 listCheck = new ArrayList<>();
                 listCheck.clear();
                 for (int i = 0; i < checkedStatus.size(); i++) {
-                    if(checkedStatus.get(i)){
-                        listCheck.add(members.get(i).getId()+"");
+                    if (checkedStatus.get(i)) {
+                        listCheck.add(members.get(i).getId() + "");
                     }
                 }
-                //showMessage("您选择了条目"+m);
-//                tvDel.setVisibility(View.GONE);
-//                tvEditor.setVisibility(View.VISIBLE);
-//                adapter.setData(memberList,false,checkedStatus);
-                //删除成员接口
                 delMembers();
-
                 break;
         }
     }
 
     private void delMembers() {
-        if(listCheck.size()==0){
+        if (listCheck.size() == 0) {
             showMessage("请选择成员");
             return;
         }
         showProgress("");
-        NetWorkManager.getInstance().setContext(MemberManagerActivity.this)
-                .clearMemberInfo(id,listCheck,token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GloableReturn b1 = (GloableReturn) b;
-                        hideProgress();
-                        setMemberDate();
+        NetWorkManager.getInstance().setContext(MemberManagerActivity.this).clearMemberInfo(id, listCheck, token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                GloableReturn b1 = (GloableReturn) b;
+                hideProgress();
+                setMemberDate();
 
-                        for(Iterator<MembersBean> it = memberList.iterator(); it.hasNext();){
-                            MembersBean s = it.next();
-                            if(listCheck.contains(s.getId())){
-                                it.remove();
-                            }
-                        }
-                        tvDel.setVisibility(View.GONE);
-                        tvEditor.setVisibility(View.VISIBLE);
-                        adapter.setData(memberList,false,checkedStatus);
+                for (Iterator<MembersBean> it = memberList.iterator(); it.hasNext(); ) {
+                    MembersBean s = it.next();
+                    if (listCheck.contains(s.getId())) {
+                        it.remove();
                     }
+                }
+                tvDel.setVisibility(View.GONE);
+                tvEditor.setVisibility(View.VISIBLE);
+                rightTitle2.setVisibility(View.GONE);
+                adapter.setData(memberList, false, checkedStatus);
+            }
 
-                    @Override
-                    public void onError(String s) {
-                        showMessage(s);
-                        hideProgress();
-                    }
-                });
+            @Override
+            public void onError(String s) {
+                showMessage(s);
+                hideProgress();
+            }
+        });
     }
 }

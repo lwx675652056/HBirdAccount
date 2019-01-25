@@ -16,7 +16,8 @@ public class StatusBarUtil {
 
     /**
      * 修改状态栏为全透明
-     * 
+     *  
+     *
      * @param activity
      */
     @TargetApi(19)
@@ -42,7 +43,8 @@ public class StatusBarUtil {
 
     /**
      * 修改状态栏颜色，支持4.4以上版本
-     * 
+     *  
+     *
      * @param activity
      * @param colorId
      */
@@ -52,7 +54,7 @@ public class StatusBarUtil {
             // window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
             window.setStatusBarColor(activity.getResources().getColor(colorId));
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-        // 使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
+            // 使用SystemBarTint库使4.4版本状态栏变色，需要先将状态栏设置为透明
             transparencyBar(activity);
             SystemBarTintManager tintManager = new SystemBarTintManager(activity);
             tintManager.setStatusBarTintEnabled(true);
@@ -121,7 +123,7 @@ public class StatusBarUtil {
      * 可以用来判断是否为Flyme用户
      *
      * @param window 需要设置的窗口
-     * @param dark  是否把状态栏字体及图标颜色设置为深色
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
     public static boolean FlymeSetStatusBarLightMode(Window window, boolean dark) {
@@ -156,7 +158,7 @@ public class StatusBarUtil {
      * 设置状态栏字体图标为深色，需要MIUIV6以上
      *
      * @param window 需要设置的窗口
-     * @param dark  是否把状态栏字体及图标颜色设置为深色
+     * @param dark   是否把状态栏字体及图标颜色设置为深色
      * @return boolean 成功执行返回true
      */
     public static boolean MIUISetStatusBarLightMode(Window window, boolean dark) {
@@ -175,6 +177,19 @@ public class StatusBarUtil {
                     extraFlagField.invoke(window, 0, darkModeFlag);//清除黑色字体
                 }
                 result = true;
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M ) {
+                    //开发版 7.7.13 及以后版本采用了系统API，旧方法无效但不会报错，所以两个方式都要加上
+                    if (dark) {
+                        window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+                    } else {
+                        window.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+                        window.clearFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+                        window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+                    }
+                }
             } catch (Exception e) {
 
             }

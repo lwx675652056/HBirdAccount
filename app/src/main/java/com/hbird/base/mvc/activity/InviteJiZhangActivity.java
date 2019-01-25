@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -55,8 +54,6 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
     TextView tvDesc;
     @BindView(R.id.grde_view)
     MyGridView grdeView;
-    @BindView(R.id.rl_wx_invite)
-    RelativeLayout rlWxInvite;
     private String id;
     private String token;
     private String nickName1;
@@ -76,61 +73,59 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        token = SPUtil.getPrefString(InviteJiZhangActivity.this, CommonTag.GLOABLE_TOKEN,"");
+        token = SPUtil.getPrefString(InviteJiZhangActivity.this, CommonTag.GLOABLE_TOKEN, "");
         id = getIntent().getStringExtra("ID");
         getAccountMembers();
         getUserInfos();
     }
 
     private void getAccountMembers() {
-        NetWorkManager.getInstance().setContext(InviteJiZhangActivity.this)
-                .getAccountMember(token,id, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        AccountMembersBean b1 = (AccountMembersBean) b;
+        NetWorkManager.getInstance().setContext(InviteJiZhangActivity.this).getAccountMember(token, id, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                AccountMembersBean b1 = (AccountMembersBean) b;
 
-                        String yourSelf = b1.getResult().getYourSelf();
-                        String owner = b1.getResult().getOwner();
-                        List<String> members = b1.getResult().getMembers();
-                        if(null != owner){
-                            members.add(owner);
-                        }else {
-                            //代表我是管理员
+                String yourSelf = b1.getResult().getYourSelf();
+                String owner = b1.getResult().getOwner();
+                List<String> members = b1.getResult().getMembers();
+                if (null != owner) {
+                    members.add(owner);
+                } else {
+                    //代表我是管理员
+                }
+                ArrayList<String> list = new ArrayList<>();
+                list.clear();
+                if (yourSelf != null) {
+                    list.add(yourSelf);
+                } else {
+                    list.add("");
+                }
+                if (members != null) {
+                    list.addAll(members);
+                }
 
+                //如果list>1 表示有成员 需要展示头像 隐藏邀请记账 收起
+                if (list != null) {
+                    if (list.size() > 0) {
+                        //初始化 邀请来的好友
+                        ArrayList<IndexFirends> indexFirends = new ArrayList<>();
+                        indexFirends.clear();
+                        for (int i = 0; i < list.size(); i++) {
+                            IndexFirends indexBean = new IndexFirends();
+                            indexBean.setImgUrl(list.get(i));
+                            indexFirends.add(indexBean);
                         }
-                        ArrayList<String> list = new ArrayList<>();
-                        list.clear();
-                        if(yourSelf!=null){
-                            list.add(yourSelf);
-                        }else{
-                            list.add("");
-                        }
-                        if(members != null){
-                            list.addAll(members);
-                        }
-
-                        //如果list>1 表示有成员 需要展示头像 隐藏邀请记账 收起
-                        if(list!=null){
-                            if(list.size()>0){
-                                //初始化 邀请来的好友
-                                ArrayList<IndexFirends> indexFirends = new ArrayList<>();
-                                indexFirends.clear();
-                                for (int i=0;i<list.size();i++){
-                                    IndexFirends indexBean = new IndexFirends();
-                                    indexBean.setImgUrl(list.get(i));
-                                    indexFirends.add(indexBean);
-                                }
-                                InviteGridViewAdapter grideView = new InviteGridViewAdapter(InviteJiZhangActivity.this,indexFirends);
-                                grdeView.setAdapter(grideView);
-                                tvDesc.setText("每个账本最多5人记录，还可邀请"+(5-indexFirends.size())+"人");
-                            }
-                        }
+                        InviteGridViewAdapter grideView = new InviteGridViewAdapter(InviteJiZhangActivity.this, indexFirends);
+                        grdeView.setAdapter(grideView);
+                        tvDesc.setText("每个账本最多5人记录，还可邀请" + (5 - indexFirends.size()) + "人");
                     }
+                }
+            }
 
-                    @Override
-                    public void onError(String s) {
-                    }
-                });
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     @Override
@@ -144,8 +139,7 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.rl_wx_invite:
-                //showMessage("邀请好友记账");
+            case R.id.rl_wx_invite:// 邀请好友记账
                 playVoice(R.raw.changgui02);
                 InviteYou();
                 break;
@@ -159,16 +153,16 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
                     public void onSuccess(BaseReturn b) {
                         GeRenInfoReturn b1 = (GeRenInfoReturn) b;
                         nickName1 = b1.getResult().getNickName();
-                        if (TextUtils.isEmpty(nickName1)){
+                        if (TextUtils.isEmpty(nickName1)) {
                             StringBuffer sb = new StringBuffer();
                             String temp = b1.getResult().getMobile();
-                            if (temp != null && !temp.equals("")){// 手机号不为空
-                                sb.append(temp.substring(0,3))
+                            if (temp != null && !temp.equals("")) {// 手机号不为空
+                                sb.append(temp.substring(0, 3))
                                         .append("****")
-                                        .append(temp.substring(7,temp.length()));
+                                        .append(temp.substring(7, temp.length()));
                                 nickName1 = sb.toString();
-                            }else{
-                                nickName1 = b1.getResult().getId()+"";
+                            } else {
+                                nickName1 = b1.getResult().getId() + "";
                             }
 
                             LogUtil.e(nickName1);
@@ -191,7 +185,7 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
         // 正式版:0，测试版:1，体验版:2
         miniProgram.miniprogramType = UrlConstants.IS_RELEASE ? WXMiniProgramObject.MINIPTOGRAM_TYPE_RELEASE : WXMiniProgramObject.MINIPROGRAM_TYPE_TEST;
         miniProgram.userName = "gh_84f06fbaa705";//小程序端提供参数 小程序ID
-        if (TextUtils.isEmpty(ids+"")) {
+        if (TextUtils.isEmpty(ids + "")) {
             return;
         }
         String bookId = SPUtil.getPrefString(InviteJiZhangActivity.this, CommonTag.ACCOUNT_BOOK_ID, "");//账本ID
@@ -206,12 +200,12 @@ public class InviteJiZhangActivity extends BaseActivity<BasePresenter> {
         req.setAbTypeId(abTypeId);
         req.setUsername(nickName1);
         req.setUserAvatar(avatarUrl);
-        req.setCreateId(ids+"");
+        req.setCreateId(ids + "");
         String ss = new Gson().toJson(req);
         miniProgram.path = "pages/details/index/main?isJoin=" + ss;//小程序端提供参数
-        LogUtil.e("小程序端提供参数:"+ ss);
+        LogUtil.e("小程序端提供参数:" + ss);
         WXMediaMessage mediaMessage = new WXMediaMessage(miniProgram);
-        mediaMessage.title = nickName1 + "邀请你加入『"+bookName+"』账本";//自定义
+        mediaMessage.title = nickName1 + "邀请你加入『" + bookName + "』账本";//自定义
         mediaMessage.description = "不乱花，更自在。Save small.Live smart.";
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.mipmap.wxmini);
         Bitmap sendBitmap = Bitmap.createScaledBitmap(bitmap, 500, 400, true);

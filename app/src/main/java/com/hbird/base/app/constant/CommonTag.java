@@ -116,7 +116,7 @@ public class CommonTag {
     public static final  String INDEX_CURRENT_ACCOUNT = "index_current_account";
     //当前账本ID
     public static final  String INDEX_CURRENT_ACCOUNT_ID= "index_current_account_id";
-
+    // 我的--设置账本类型--账本类型ID
     public static final  String CURRENT_ACCOUNT_ID= "current_account_id";
     //当前账本类型
     public static final  String INDEX_CURRENT_ACCOUNT_TYPE= "index_current_account_type";

@@ -11,6 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/dp_5_x"
         android:background="#ffffff"
         android:gravity="center_horizontal">
 
@@ -19,23 +20,18 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingTop="@dimen/height_1_80"     >
+            android:paddingTop="@dimen/dp_10_x">
 
             <RelativeLayout
                 android:id="@+id/rl_parent"
-                android:layout_width="@dimen/width_10_80"
-                android:layout_height="@dimen/width_10_80"
+                style="@style/main_type"
                 android:background="@drawable/gray_circle">
 
                 <ImageView
                     android:id="@+id/icon_img"
-                    android:layout_width="@dimen/width_6_80"
-                    android:layout_height="@dimen/width_6_80"
-                    android:layout_centerInParent="true"
-                    android:layout_marginTop="15dp"
-                    android:padding="4dp"/>
+                    style="@style/main_icon"
+                    android:layout_centerInParent="true"/>
             </RelativeLayout>
-
 
             <TextView
                 android:id="@+id/name_tv"
