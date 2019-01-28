@@ -41,7 +41,7 @@ public class ClippingPageActivity extends BaseActivity<BasePresenter> {
     @Override
     protected void initView(Bundle savedInstanceState) {
         StatusBarUtil.clearStatusBarDarkMode(getWindow());
-        initBarColor(Color.parseColor("#F15C3C"),Color.parseColor("#F15C3C"));
+        initBarColor(Color.parseColor("#F15C3C"), Color.parseColor("#F15C3C"));
     }
 
     @Override
@@ -52,37 +52,28 @@ public class ClippingPageActivity extends BaseActivity<BasePresenter> {
         imageView = (PerfectControlImageView) findViewById(R.id.targetImage);
 
         if ("takePicture".equals(getIntent().getStringExtra("type"))) {
-
             bitmap = BitmapUtils.DecodLocalFileImage(ConstantSet.LOCALFILE + ConstantSet.USERTEMPPIC, this);
-
         } else {
-
-            String path=getIntent().getStringExtra("path");
-
+            String path = getIntent().getStringExtra("path");
             bitmap = BitmapUtils.DecodLocalFileImage(path, this);
-
         }
 
         if (bitmap != null) {
-
-
             imageView.setImageBitmap(bitmap);
         }
     }
 
     @Override
     protected void initEvent() {
-
     }
 
     /**
      * 初始化title
      */
     private void initTitle() {
-
         ImageView rightImage = (ImageView) findViewById(R.id.id_img_right);
         TextView title = (TextView) findViewById(R.id.id_title);
-        TextView righttext=(TextView)findViewById(R.id.id_text_right);
+        TextView righttext = (TextView) findViewById(R.id.id_text_right);
         ImageView back = (ImageView) findViewById(R.id.id_back);
         rightImage.setVisibility(View.GONE);
         righttext.setVisibility(View.VISIBLE);
@@ -90,7 +81,6 @@ public class ClippingPageActivity extends BaseActivity<BasePresenter> {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 ClippingPageActivity.this.finish();
             }
         });
@@ -99,17 +89,16 @@ public class ClippingPageActivity extends BaseActivity<BasePresenter> {
         righttext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                SpinnerProgressDialoag sp=new SpinnerProgressDialoag(ClippingPageActivity.this);
+                SpinnerProgressDialoag sp = new SpinnerProgressDialoag(ClippingPageActivity.this);
                 sp.show();
-                Bitmap bitmap=cuttingFrameView.takeScreenShot(ClippingPageActivity.this);
+                Bitmap bitmap = cuttingFrameView.takeScreenShot(ClippingPageActivity.this);
                 String url = SDCardUtils.saveMyBitmap(ConstantSet.LOCALFILE, ConstantSet.USERPIC, bitmap);
-                Intent it=new Intent();
-                ByteArrayOutputStream baos=new ByteArrayOutputStream();
+                Intent it = new Intent();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte [] bitmapByte =baos.toByteArray();
+                byte[] bitmapByte = baos.toByteArray();
                 it.putExtra("result", bitmapByte);
-                it.putExtra("url" , url);
+                it.putExtra("url", url);
                 setResult(RESULT_OK, it);
                 sp.dismiss();
                 ClippingPageActivity.this.finish();

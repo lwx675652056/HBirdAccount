@@ -1,50 +1,48 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              xmlns:ripple="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:background="@color/white"
-              android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:ripple="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
 
     <include layout="@layout/activity_headers"/>
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2"/>
+    <View style="@style/horizontal_line"/>
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_16_80"
-        android:layout_marginTop="@dimen/height_1_80"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_15_x"
+        android:layout_marginTop="@dimen/dp_15_x"
         android:gravity="center"
         android:orientation="vertical">
 
         <com.hbird.base.mvc.widget.cycleView
             android:id="@+id/imagess"
-            android:layout_width="@dimen/width_20_80"
-            android:layout_height="@dimen/width_20_80"
+            android:layout_width="@dimen/dp_80_x"
+            android:layout_height="@dimen/dp_80_x"
             android:layout_gravity="bottom|center"
             android:src="@mipmap/ic_me_normal_headr"
             app:border_color="@color/bg_e6e6e6"
-            app:border_width="2dp"
+            app:border_width="1dp"
             app:type="circle"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/height_1_80"
+            android:layout_marginTop="@dimen/dp_10_x"
             android:text="点击更换头像"
-            android:textColor="@color/text_bdbdbd"
-            android:textSize="@dimen/text_size_4"/>
+            android:textColor="#BDBDBD"
+            android:textSize="14sp"/>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_1_80"
-        android:layout_marginTop="@dimen/height_2_80"
-        android:background="@color/line2"/>
+        android:layout_height="@dimen/dp_10_x"
+        android:background="#F0F0F0"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -58,71 +56,60 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <com.hbird.base.mvc.widget.RippleView
+            <LinearLayout
+                android:id="@+id/ll_nicheng"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-                <LinearLayout
-                    android:id="@+id/ll_nicheng"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="昵称："
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <EditText
+                    android:id="@+id/tv_nicheng"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:background="@null"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:hint="请输入昵称"
+                    android:text=""
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
+
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="昵称："
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <EditText
-                        android:id="@+id/tv_nicheng"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:background="@null"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:hint="请输入昵称"
-                        android:text=""
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/height_8_80"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingLeft="@dimen/width_4_80"
-                android:paddingRight="@dimen/width_4_80">
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -153,305 +140,226 @@
             </LinearLayout>
 
             <View
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
+
+            <LinearLayout
+                android:id="@+id/ll_gender"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-            <com.hbird.base.mvc.widget.RippleView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="性别:"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_gender"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:id="@+id/tv_sex"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:text="--"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="性别:"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <TextView
-                        android:id="@+id/tv_sex"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:text="--"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
+
+            <LinearLayout
+                android:id="@+id/ll_birthday"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-            <com.hbird.base.mvc.widget.RippleView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="生日:"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_birthday"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:id="@+id/tv_birthday"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:text="--"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="生日:"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <TextView
-                        android:id="@+id/tv_birthday"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:text="--"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
+
+            <LinearLayout
+                android:id="@+id/ll_city"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-            <com.hbird.base.mvc.widget.RippleView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="城市:"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_city"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:id="@+id/tv_city"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:text="--"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="城市:"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <TextView
-                        android:id="@+id/tv_city"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:text="--"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
+
+            <LinearLayout
+                android:id="@+id/ll_business"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-            <com.hbird.base.mvc.widget.RippleView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="行业:"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_business"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:id="@+id/tv_hangye"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:text="--"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="行业:"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <TextView
-                        android:id="@+id/tv_hangye"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:text="--"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
+                style="@style/horizontal_line"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
+
+
+            <LinearLayout
+                android:id="@+id/ll_job"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
+                android:layout_height="@dimen/height_8_80"
+                android:background="@drawable/select_white_0px"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x">
 
-            <com.hbird.base.mvc.widget.RippleView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:rv_color="@color/text_333333"
-                ripple:rv_rippleDuration="200"
-                ripple:rv_type="rectangle"
-                ripple:rv_zoom="false">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="职位:"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                <LinearLayout
-                    android:id="@+id/ll_job"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
-                    android:background="@drawable/item_selector_hint"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:paddingLeft="@dimen/width_4_80"
-                    android:paddingRight="@dimen/width_4_80">
+                <TextView
+                    android:id="@+id/tv_zhiwei"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/width_2_80"
+                    android:text="--"
+                    android:textColor="@color/text_333333"
+                    android:textSize="@dimen/text_size_6"/>
 
-                    <TextView
+                <RelativeLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="职位:"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <TextView
-                        android:id="@+id/tv_zhiwei"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
-                        android:text="--"
-                        android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
-
-                    <RelativeLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
-                </LinearLayout>
-            </com.hbird.base.mvc.widget.RippleView>
+                        android:layout_alignParentRight="true"
+                        android:src="@mipmap/ic_me_arrow"/>
+                </RelativeLayout>
+            </LinearLayout>
 
             <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginBottom="@dimen/height_2_80"
-                android:layout_marginLeft="@dimen/width_4_80"
-                android:layout_marginRight="@dimen/width_4_80"
-                android:background="@color/line2"/>
-
-            <!-- <RelativeLayout
-                 android:id="@+id/rl_bottom_btn"
-                 android:layout_width="match_parent"
-                 android:layout_height="wrap_content"
-                 android:layout_marginTop="@dimen/height_3_80"
-                 android:layout_marginBottom="@dimen/height_2_80"
-                 android:layout_marginLeft="@dimen/width_4_80"
-                 android:layout_marginRight="@dimen/width_4_80"
-                 android:background="@drawable/button_orange_bg_selector">
-                 <TextView
-                     android:id="@+id/bt_my_login"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:text="退出登录"
-                     android:layout_centerInParent="true"
-                     android:textColor="@color/white"
-                     android:textSize="18sp" />
-             </RelativeLayout>-->
-
+                style="@style/horizontal_line"
+                android:layout_marginBottom="@dimen/dp_20_x"
+                android:layout_marginEnd="@dimen/dp_15_x"
+                android:layout_marginStart="@dimen/dp_15_x"/>
         </LinearLayout>
-
     </ScrollView>
-
-
 </LinearLayout>

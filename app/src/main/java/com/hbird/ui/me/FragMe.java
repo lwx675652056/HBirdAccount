@@ -27,7 +27,6 @@ import com.hbird.base.mvc.activity.AccountAlertActivity;
 import com.hbird.base.mvc.activity.ActChooseAccountType;
 import com.hbird.base.mvc.activity.AskFriendsActivity;
 import com.hbird.base.mvc.activity.NotificationMessageActivity;
-import com.hbird.base.mvc.activity.PersionnalInfoActivity;
 import com.hbird.base.mvc.activity.SettingsActivity;
 import com.hbird.base.mvc.activity.ShaiChengJiuActivity;
 import com.hbird.base.mvc.activity.SuggestFanKuiActivity;
@@ -47,6 +46,7 @@ import com.hbird.base.util.SobotUtils;
 import com.hbird.base.util.Util;
 import com.hbird.common.Constants;
 import com.hbird.ui.address.ActEditAddress;
+import com.hbird.ui.info.ActEditInfo;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.FileUtil;
@@ -134,7 +134,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
     public class OnClick {
         // 设置
-        public void setting(View view){
+        public void setting(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent5 = new Intent(getActivity(), SettingsActivity.class);
             if (null != b1) {
@@ -143,14 +143,16 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             }
             startActivity(intent5);
         }
+
         // 个人信息
         public void userInfo(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            Intent intent1 = new Intent(getActivity(), PersionnalInfoActivity.class);
+//            Intent intent1 = new Intent(getActivity(), PersionnalInfoActivity.class);
+            Intent intent1 = new Intent(getActivity(), ActEditInfo.class);
             if (null != b1) {
                 String json = new Gson().toJson(b1);
                 intent1.putExtra("JSON", json);
-                startActivity(intent1);
+                startActivityForResult(intent1, 1001);
             }
         }
 
@@ -214,7 +216,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         // 丰丰通知
         public void notification(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            startActivityForResult(new Intent(getActivity(), NotificationMessageActivity.class),1000);
+            startActivityForResult(new Intent(getActivity(), NotificationMessageActivity.class), 1000);
         }
 
         // 联系客服
@@ -320,8 +322,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             binding.flParent1.setVisibility(View.VISIBLE);
             binding.flParent2.setVisibility(View.GONE);
 
-            float alpha = (float)scrollY / height;
-            binding.flParent1.setAlpha(alpha>1?1:alpha);
+            float alpha = (float) scrollY / height;
+            binding.flParent1.setAlpha(alpha > 1 ? 1 : alpha);
 
             data.setShowLine(false);
         }
@@ -525,8 +527,10 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1000 && resultCode == Activity.RESULT_OK){
+        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
             getMessage();
+        } else if (requestCode == 1001 && resultCode == Activity.RESULT_OK) {
+            getUserInfo();
         }
     }
 }

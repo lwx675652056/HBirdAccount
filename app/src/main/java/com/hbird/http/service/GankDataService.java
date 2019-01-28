@@ -17,6 +17,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Query;
 
 
@@ -96,6 +97,16 @@ public interface GankDataService {
     @Headers({"Content-Type: application/json","Accept: application/json"})
     @GET("getABAll/android")
     Observable<HttpResult<List<AccountBean>>> getAllzb(@Header("X-AUTH-TOKEN") String token);
+
+    // 获取七牛云的鉴权凭证
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @POST("getQiNiuAuth/android")
+    Observable<HttpResult<String>> postQiNiuToken(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
+
+    // 个人信息管理
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @PUT("updateUserInfo/android")
+    Observable<HttpResult<String>> putPersionnalInfo(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
 
 
     // 获取收入类型标签

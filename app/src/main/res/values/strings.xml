@@ -100,5 +100,9 @@
     <string name="income_ranking">收入排行榜</string>
     <string name="open_more">展开更多</string>
     <string name="close_all">收起</string>
+    <string name="nan">男</string>
+    <string name="nv">女</string>
+    <string name="one">1</string>
+    <string name="two">2</string>
 
 </resources>

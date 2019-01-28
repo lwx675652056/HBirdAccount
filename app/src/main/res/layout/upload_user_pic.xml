@@ -1,44 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:background="@color/white"
+    android:layout_height="wrap_content"
     android:layout_gravity="bottom"
-    android:layout_height="wrap_content">
+    android:background="@color/white"
+    android:orientation="vertical">
+
     <TextView
-        android:clickable="true"
         android:id="@+id/Photograph"
-        android:gravity="center"
-        android:text="拍照"
         style="@style/first_page_text_other"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_15_x"
+        android:text="拍照"/>
+
+    <View style="@style/horizontal_line"/>
+
     <TextView
-        android:clickable="true"
         android:id="@+id/selectImage_from_local"
-        android:gravity="center"
-        android:text="从相册选择"
         style="@style/first_page_text_other"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_6_80" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/line2" />
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_15_x"
+        android:text="从相册选择"/>
+
+    <View style="@style/horizontal_line"/>
 
     <TextView
-        android:clickable="true"
         android:id="@+id/dimiss_dialoag"
-        android:gravity="center"
-        android:text="取消"
         style="@style/first_page_text_other"
         android:layout_width="match_parent"
-        android:layout_marginBottom="@dimen/height_0_80"
-        android:layout_height="@dimen/height_6_80" />
-
-
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:padding="@dimen/dp_15_x"
+        android:text="取消"/>
 </LinearLayout>

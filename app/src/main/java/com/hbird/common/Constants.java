@@ -7,6 +7,10 @@ public class Constants {
     public static final String BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/accounthbird";
     public static final String IMAGE_PATH = BASE_PATH + "/image";
 
+    /** 拍照的临时文件 */
+    public static final String TAKE_PHOTO_PATH = IMAGE_PATH + "/temp.jpg";
+    /** 剪切图片 */
+    public static final String CUT_PHOTO_PATH = IMAGE_PATH + "/cut.jpg";
 
     public static final String FENGFENG_ID = "fengfeng_id";// 保存的丰丰票ID
     public static final String MY_ACCOUNT = "my_account";// 保存的我的已添加所有账户，记账用

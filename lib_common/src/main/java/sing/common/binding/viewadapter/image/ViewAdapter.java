@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 
 
@@ -20,6 +21,19 @@ public final class ViewAdapter {
             Glide.with(imageView.getContext())
                     .load(url)
                     .apply(new RequestOptions().placeholder(placeholderRes))
+                    .into(imageView);
+        }
+    }
+
+    @BindingAdapter(value = {"imageUrlNoCache", "placeholderRes"}, requireAll = false)
+    public static void setImageUriNoCache(ImageView imageView, String url, int placeholderRes) {
+        if (!TextUtils.isEmpty(url)) {
+            //使用Glide框架加载图片
+            Glide.with(imageView.getContext())
+                    .load(url)
+                    .apply(new RequestOptions().placeholder(placeholderRes))
+                    .apply(new RequestOptions().skipMemoryCache(true))
+                    .apply(new RequestOptions().diskCacheStrategy(DiskCacheStrategy.NONE))
                     .into(imageView);
         }
     }

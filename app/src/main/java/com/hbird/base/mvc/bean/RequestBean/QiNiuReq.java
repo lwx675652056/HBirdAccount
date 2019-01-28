@@ -9,6 +9,13 @@ import com.hbird.base.mvc.bean.BaseBean;
 public class QiNiuReq extends BaseBean {
    private int Flag;
 
+    public QiNiuReq() {
+    }
+
+    public QiNiuReq(int flag) {
+        Flag = flag;
+    }
+
     public int getFlag() {
         return Flag;
     }

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools"
           package="com.hbird.base">
 
     <uses-permission android:name="android.permission.CAMERA"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <!--允许程序震动-->
     <uses-permission android:name="android.permission.android.permission.VIBRATE"/>
-    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>
-    <uses-permission android:name="android.permission.WRITE_SETTINGS"/>
+    <!--<uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS"/>-->
+    <!--<uses-permission android:name="android.permission.WRITE_SETTINGS"/>-->
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
@@ -36,15 +37,15 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES"/>
 
-    <uses-permission android:name="android.permission.READ_LOGS"/>
+    <!--<uses-permission android:name="android.permission.READ_LOGS"/>-->
 
     <application
         android:name=".app.RingApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_logo"
-        android:resizeableActivity="false"
         android:label="@string/app_name"
         android:networkSecurityConfig="@xml/network_security_config"
+        android:resizeableActivity="false"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".mvp.view.activity.sys.SplashActivity">
@@ -124,6 +125,11 @@
         <!--登录-->
         <activity
             android:name="com.hbird.ui.login_register.ActLogin"
+            android:screenOrientation="portrait"/>
+
+        <!--个人信息管理-->
+        <activity
+            android:name="com.hbird.ui.info.ActEditInfo"
             android:screenOrientation="portrait"/>
 
         <activity
@@ -267,6 +273,15 @@
             </intent-filter>
         </receiver>
 
+        <!--<provider-->
+            <!--android:name="android.support.v4.content.FileProvider"-->
+            <!--android:authorities="com.hbird.base.fileProvider"-->
+            <!--android:exported="false"-->
+            <!--android:grantUriPermissions="true">-->
+            <!--<meta-data-->
+                <!--android:name="android.support.FILE_PROVIDER_PATHS"-->
+                <!--tools:replace="android:authorities"/>-->
+        <!--</provider>-->
     </application>
 
 </manifest>
