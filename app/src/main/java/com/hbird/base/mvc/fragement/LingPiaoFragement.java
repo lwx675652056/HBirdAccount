@@ -5,14 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.github.lzyzsd.jsbridge.BridgeHandler;
-import com.github.lzyzsd.jsbridge.CallBackFunction;
 import com.github.lzyzsd.jsbridge.DefaultHandler;
 import com.google.gson.Gson;
 import com.hbird.base.R;
@@ -38,8 +36,8 @@ import com.hbird.base.util.Util;
 import com.hbird.base.wxapi.WXEntryActivity;
 import com.hbird.common.Constants;
 import com.hbird.ui.MainActivity;
-import com.hbird.ui.ticket.ActGetTicket;
 import com.hbird.util.Utils;
+import com.ljy.devring.DevRing;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
@@ -80,9 +78,9 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     private String bb = "";
     private String ids;
     private String name;
-    private int firstCome = 0;
-    MainActivity activity;
-    private boolean aaa;
+    private MainActivity activity;
+
+    private boolean isIndex = true;// 是否在首页
 
     @Override
     public int setContentId() {
@@ -102,24 +100,15 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     }
 
     @Override
-    public void onResume() {
-        firstCome = firstCome + 1;
-        if (firstCome > 1) {
-            webView.loadUrl(url);
-            aaa = true;
-            activity.setBottomDH2Visiable();
-        }
-        super.onResume();
-    }
-
-
-    @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            activity.setBottomDH2Visiable();
-            aaa = true;
+            toSencoud(false);
+
             StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+
+            String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
+            getXiaoLvNet(token);
         }
     }
 
@@ -150,7 +139,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
         // 邀请好友
         webView.registerHandler("inviteFriends", (data, function) -> showDialog());
-
         // 记一笔
         webView.registerHandler("writeANote", (data, function) -> {
             playVoice(R.raw.changgui02);
@@ -247,48 +235,22 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         });
 
         // 积分商城
-        webView.registerHandler("toPointsMallPage", (data, function) -> {
-            activity.setBottomDH2Gone();
-            aaa = false;
-            LogUtil.e("URL：" + webView.getUrl());
-        });
+        webView.registerHandler("toPointsMallPage", (data, function) -> toSencoud(true));
+
         // 查看签到情况
-        webView.registerHandler("toCheckInCalendarPage", (data, function) -> {
-            activity.setBottomDH2Gone();
-            aaa = false;
-            LogUtil.e("URL：" + webView.getUrl());
-        });
+        webView.registerHandler("toCheckInCalendarPage", (data, function) -> toSencoud(true));
         // 丰丰票说明
-        webView.registerHandler("toTicketDescriptionPage", new BridgeHandler() {
-            @Override
-            public void handler(String data, CallBackFunction function) {
-                activity.setBottomDH2Gone();
-                aaa = false;
-                LogUtil.e("URL：" + webView.getUrl());
-            }
-        });
+        webView.registerHandler("toTicketDescriptionPage", (data, function) -> toSencoud(true));
         // 积分记录
-        webView.registerHandler("toPointrecordPage", (data, function) -> {
-            activity.setBottomDH2Gone();
-            aaa = false;
-            LogUtil.e("URL：" + webView.getUrl());
-        });
+        webView.registerHandler("toPointrecordPage", (data, function) -> toSencoud(true));
         // 回到首页
-        webView.registerHandler("goBankIndex", (data, function) -> {
-            activity.setBottomDH2Visiable();
-            aaa = true;
-            LogUtil.e("URL：" + webView.getUrl());
-        });
+        webView.registerHandler("goBankIndex", (data, function) -> toSencoud(false));
+
+        // 日签
+        webView.registerHandler("signIn", (data, function) -> toSencoud(true));
 
         // 获取微信code
         webView.registerHandler("confirmToExchangeRedEnvelope", (data, function) -> getCode());
-
-        // 日签
-        webView.registerHandler("signIn", (data, function) -> {
-            activity.setBottomDH2Gone();
-            aaa = false;
-            LogUtil.e("URL：" + webView.getUrl());
-        });
 
         // 下载
         webView.registerHandler("downloadImg", (data, function) -> {
@@ -338,7 +300,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     @Override
     public void initListener() {
-        webView.setOnKeyListener(backlistener);
     }
 
     @Override
@@ -360,19 +321,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
                 break;
         }
     }
-
-    @Override
-    public void loadDate() {
-        String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
-        getXiaoLvNet(token);
-        //如果第一次 不执行此方法 。。。。。。
-        if (firstCome > 1) {
-            webView.loadUrl(url);
-            aaa = true;
-        }
-        firstCome = firstCome + 1;
-    }
-
 
     private void getXiaoLvNet(String token) {
         NetWorkManager.getInstance().setContext(getActivity()).getSaveEfficients(mm, 3, token, new NetWorkManager.CallBack() {
@@ -396,6 +344,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         });
     }
 
+    // 邀请好友
     private void inviteYou() {
         IWXAPI api = WXAPIFactory.createWXAPI(getActivity(), com.hbird.base.app.constant.CommonTag.WEIXIN_APP_ID);
         WXMiniProgramObject miniProgram = new WXMiniProgramObject();
@@ -420,55 +369,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         req.message = mediaMessage;
         api.sendReq(req);
     }
-
-    private View.OnKeyListener backlistener = new View.OnKeyListener() {
-
-        @Override
-        public boolean onKey(View view, int i, KeyEvent keyEvent) {
-            boolean keyBack = false;
-            if (keyEvent.getAction() == KeyEvent.ACTION_DOWN) {
-                if (i == KeyEvent.KEYCODE_BACK) {
-                    String url = webView.getUrl();
-                    boolean index = url.contains("index");
-                    if (index) {
-                        return keyBack;
-                    }
-                    String title = webView.getTitle();
-                    if (webView.canGoBack()) {
-                        if (aaa) {
-                            return keyBack;
-                        }
-                        webView.goBack();
-                        if (webView.canGoBack()) {
-                            String url1 = webView.getUrl();
-                            boolean index2 = url1.contains("secondarypage");
-                            if (index2) {
-                                aaa = true;
-                                activity.setBottomDH2Visiable();
-                            }
-                        } else {
-                            activity.setBottomDH2Visiable();
-                            aaa = true;
-                            keyBack = false;
-                        }
-                        keyBack = true;
-                    } else {
-                        activity.setBottomDH2Visiable();
-                        aaa = true;
-                        keyBack = false;
-                    }
-                } else {
-                    activity.setBottomDH2Visiable();
-                    aaa = true;
-                    keyBack = false;
-                }
-            } else {
-                activity.setBottomDH2Visiable();
-                keyBack = false;
-            }
-            return keyBack;
-        }
-    };
 
     private void getCode() {
         //先判断是否安装微信APP,按照微信的说法，目前移动应用上微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
@@ -513,11 +413,38 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         });
     }
 
-    // 去二级页面
-    private void toNext(){
-        playVoice(R.raw.changgui02);
-        Intent intent = new Intent(getActivity(), ActGetTicket.class);
-        intent.putExtra(Constants.START_INTENT_A,webView.getUrl());
-        startActivity(intent);
+    private void toSencoud(boolean isSencoud) {
+        LogUtil.e("URL：" + webView.getUrl());
+        if (isSencoud) {// 二级页面
+            activity.setBottomDH2Gone();
+            isIndex = false;
+        } else {// 首页
+            activity.setBottomDH2Visiable();
+            isIndex = true;
+        }
+    }
+
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (!isIndex){
+            if (webView.canGoBack()){
+                webView.goBack();
+                isIndex = !webView.canGoBack();// 还能后退就说明是二级页面
+            }else{
+                isIndex = true;
+            }
+        }else{// 当前在首页
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                activity.finish();
+                DevRing.activityListManager().exitApp();
+            }
+        }
+
+        toSencoud(!isIndex);
     }
 }

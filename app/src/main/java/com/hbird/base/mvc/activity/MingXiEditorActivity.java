@@ -513,7 +513,14 @@ public class MingXiEditorActivity extends BaseActivity<BaseActivityPresenter> im
         event.setMoney(Double.parseDouble(money));
         event.setTypeName(typeName);
         event.setOrderType(orderType);
-        event.setRemark(remark);
+        if (null != encode) {
+            String decode = Utils.decode(encode).toString().trim();
+            event.setRemark(decode);
+        } else {
+            event.setRemark(remark);
+        }
+
+
         event.setTypeId(typeId);
         event.setTypePid(typePid);
         event.setTypePname(typePname);

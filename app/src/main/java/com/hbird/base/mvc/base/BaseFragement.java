@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.hbird.base.app.constant.CommonTag;
+import com.hbird.base.listener.OnBackListener;
 import com.hbird.base.mvc.view.dialog.DialogToGig;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.ToastUtils;
@@ -20,7 +21,7 @@ import sing.common.util.LogUtil;
 /**
  * Created by Liul on 2018/6/28.
  */
-public abstract class BaseFragement extends Fragment implements UiInterface {
+public abstract class BaseFragement extends Fragment implements UiInterface, OnBackListener {
 
     protected boolean isVisible;
     public boolean isPrepared;
@@ -171,5 +172,10 @@ public abstract class BaseFragement extends Fragment implements UiInterface {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        // do some thing
     }
 }

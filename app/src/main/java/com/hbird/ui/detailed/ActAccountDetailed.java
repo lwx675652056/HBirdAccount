@@ -89,7 +89,11 @@ public class ActAccountDetailed extends BaseActivity<ActAccountDetailedBinding, 
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setItemAnimator(null);//设置动画为null来解决闪烁问题
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         getData();
     }
 

@@ -5,6 +5,8 @@
 
         <import type="android.view.View"/>
 
+        <import type="android.text.TextUtils"/>
+
         <variable
             name="bean"
             type="com.hbird.bean.AccountDetailedBean"/>
@@ -130,7 +132,7 @@
                 android:layout_marginStart="@dimen/dp_10_x"
                 android:layout_weight="1"
                 android:singleLine="true"
-                android:text="@{bean.typeName}"
+                android:text="@{TextUtils.isEmpty(bean.remark)?bean.typeName:bean.remark}"
                 android:textColor="#333333"
                 android:textSize="14sp"/>
 

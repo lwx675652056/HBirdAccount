@@ -245,7 +245,8 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 
             @Override
             public void afterTextChanged(Editable s) {
-                bean.setRemark(Utils.encode(s.toString()));
+                bean.setRemark(mRecord.getText().toString());
+
                 mRecordNum.setText(mRecord.getText().toString().length() + "/20");
                 if (temp.length() >= 20) {
                     showMessage("最多只能输入20字符");

@@ -131,12 +131,6 @@
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"/>
 
-        <!--领票票二级页面-->
-        <activity
-            android:name="com.hbird.ui.ticket.ActGetTicket"
-            android:screenOrientation="portrait"
-            android:theme="@style/TranslucentTheme"/>
-
         <!--<activity android:name=".mvc.activity.OpenClickActivity"
             android:exported="true">
             <intent-filter>

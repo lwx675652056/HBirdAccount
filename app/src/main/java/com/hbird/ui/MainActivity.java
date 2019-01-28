@@ -13,7 +13,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -251,21 +250,6 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
         }
     }
 
-    private long exitTime = 0;
-
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if ((System.currentTimeMillis() - exitTime) > 2000) {
-                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
-                exitTime = System.currentTimeMillis();
-            } else {
-                DevRing.activityListManager().exitApp();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
 
     private void regReceiver() {
         IntentFilter filter = new IntentFilter();
@@ -415,5 +399,23 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
                 name = "jpush";
         }
         return name;
+    }
+
+
+    private long exitTime = 0;
+
+    @Override
+    public void onBackPressed() {
+        if (lpFragement != null && lpFragement.getUserVisibleHint()) {
+            lpFragement.onBackPressed();
+        } else {
+            if ((System.currentTimeMillis() - exitTime) > 2000) {
+                Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
+                exitTime = System.currentTimeMillis();
+            } else {
+                finish();
+                DevRing.activityListManager().exitApp();
+            }
+        }
     }
 }
