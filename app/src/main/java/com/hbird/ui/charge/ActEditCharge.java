@@ -674,9 +674,11 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         boolean netWorkAvailable = NetworkUtil.isNetWorkAvailable(this);
         if (!netWorkAvailable) {
             if (b) {  //创建成功
-                setResult(104);
                 calculatorClear();
                 ToastUtil.showShort("修改成功");
+                Intent intent = new Intent();
+                intent.putExtra(Constants.START_INTENT_A, bean);
+                setResult(104, intent);
                 finish();
             } else {
                 showMessage("创建失败");
@@ -708,9 +710,11 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             @Override
             public void onError(String s) {
                 if (b) {  //创建成功
-                    setResult(104);
                     calculatorClear();
                     ToastUtil.showShort("修改成功");
+                    Intent intent = new Intent();
+                    intent.putExtra(Constants.START_INTENT_A, bean);
+                    setResult(104, intent);
                     finish();
                 } else {
                     showMessage("创建失败");
@@ -866,11 +870,11 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
             @Override
             public void onError(String s) {
                 if (b) {  //创建成功
+                    calculatorClear();
+                    ToastUtil.showShort("修改成功");
                     Intent intent = new Intent();
                     intent.putExtra(Constants.START_INTENT_A, bean);
                     setResult(104, intent);
-                    calculatorClear();
-                    ToastUtil.showShort("修改成功");
                     finish();
                 } else {
                     showMessage("创建失败");

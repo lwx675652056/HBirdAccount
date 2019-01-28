@@ -398,7 +398,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             typeBudget = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, "");
             String abMoren = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, "");
-            binding.abMoren.setText(abMoren);
+            if (binding.abMoren != null) {
+                binding.abMoren.setText(abMoren);
+            }
             zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
             accountId = zhangbenId;
 

@@ -28,7 +28,6 @@ import com.hbird.base.mvc.activity.PersionnalInfoActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.SaveMoney2Return;
 import com.hbird.base.mvc.net.NetWorkManager;
-import com.hbird.base.mvc.view.dialog.InvitationDialog;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
@@ -68,8 +67,8 @@ public class ActGetTicket extends BaseActivity implements View.OnClickListener {
 
     @BindView(R.id.web_view)
     com.github.lzyzsd.jsbridge.BridgeWebView webView;
-
     private String url = UrlConstants.BASE_H5_URL;
+    private String token;
 
     private int mm = 1;//默认
     private int yyyy;
@@ -91,11 +90,7 @@ public class ActGetTicket extends BaseActivity implements View.OnClickListener {
         LinearLayout ll =  findViewById(R.id.ll_parent);
         ll.setPadding(0, StatusBarUtil.getStateBarHeight(this), 0, 0);
 
-        String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
-        String version = Utils.getVersion(this);
-        url = url + token + "&currentVersion=" + version;
-        LogUtil.e("领票票URL:---" + url);
-//        activity = (MainActivity) getActivity();
+        token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
     }
 
     @Override
@@ -112,22 +107,19 @@ public class ActGetTicket extends BaseActivity implements View.OnClickListener {
 
     @Override
     protected void initData(Bundle savedInstanceState) {
-        String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
-        getXiaoLvNet(token);
-        //如果第一次 不执行此方法 。。。。。。
-        if (firstCome > 1) {
-            webView.loadUrl(url);
-            aaa = true;
-        }
-        firstCome = firstCome + 1;
-
         StatusBarUtil.clearStatusBarDarkMode(this.getWindow()); // 导航栏白色字体
+
+        url = getIntent().getExtras().getString(Constants.START_INTENT_A,UrlConstants.BASE_H5_URL);
+        LogUtil.e("领票票二级页面URL:---" + url);
+
+        token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
+
+        getXiaoLvNet(token);
 
         WebSettings settings = webView.getSettings();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             settings.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-
         //当前年
         yyyy = Integer.parseInt(DateUtils.getCurYear("yyyy"));
         //当前月
@@ -147,7 +139,8 @@ public class ActGetTicket extends BaseActivity implements View.OnClickListener {
         webView.loadUrl(url);
 
         // 邀请好友
-        webView.registerHandler("inviteFriends", (data, function) -> showDialog());
+        webView.registerHandler("inviteFriends", (data, function) -> {
+        });
 
         // 记一笔
         webView.registerHandler("writeANote", (data, function) -> {
@@ -337,12 +330,6 @@ public class ActGetTicket extends BaseActivity implements View.OnClickListener {
         webView.setOnKeyListener(backlistener);
     }
 
-    // 邀请码弹框
-    private void showDialog() {
-        playVoice(R.raw.changgui02);
-        InvitationDialog dialog = new InvitationDialog(this);
-        dialog.show();
-    }
 
     @Override
     public void onClick(View view) {

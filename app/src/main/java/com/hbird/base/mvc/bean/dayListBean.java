@@ -332,6 +332,37 @@ public class dayListBean extends BaseReturn {
                 public void setAssetsName(String assetsName) {
                     this.assetsName = assetsName;
                 }
+
+                @Override
+                public String toString() {
+                    return "{" +
+                            "orderType:" + orderType +
+                            ", icon:'" + icon + '\'' +
+                            ", typeName:'" + typeName + '\'' +
+                            ", isStaged:" + isStaged +
+                            ", remark:'" + remark + '\'' +
+                            ", spendHappiness:" + spendHappiness +
+                            ", money:" + money +
+                            ", typePid:'" + typePid + '\'' +
+                            ", typeId:'" + typeId + '\'' +
+                            ", id:'" + id + '\'' +
+                            ", accountBookId:" + accountBookId +
+                            ", chargeDate:" + chargeDate +
+                            ", createDate:" + createDate +
+                            ", updateDate:" + updateDate +
+                            ", createBy:" + createBy +
+                            ", createName:'" + createName + '\'' +
+                            ", updateBy:" + updateBy +
+                            ", updateName:'" + updateName + '\'' +
+                            ", userPrivateLabelId:" + userPrivateLabelId +
+                            ", abName:'" + abName + '\'' +
+                            ", assetsId:" + assetsId +
+                            ", assetsName:'" + assetsName + '\'' +
+                            ", typePname:'" + typePname + '\'' +
+                            ", reporterAvatar:'" + reporterAvatar + '\'' +
+                            ", reporterNickName:'" + reporterNickName + '\'' +
+                            '}';
+                }
             }
         }
     }

@@ -144,10 +144,15 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
 
         adapter = new AccountDetailedAdapter(this, list, R.layout.row_account_detailed, (position, data, type) -> onItemClick((AccountDetailedBean) data, type));
+
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         getData(currentDate);
     }
 
@@ -186,12 +191,13 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             bean.setAbName(data.getAbName());//所属账本名称
             bean.setAssetsId(data.getAssetsId());
             bean.setAssetsName(data.getAssetsName());
+
             alertDialog(bean);
         }
     }
 
 
-    private void alertDialog( WaterOrderCollect bean) {
+    private void alertDialog(WaterOrderCollect bean) {
         new DialogUtils(this)
                 .builder()
                 .setTitle("温馨提示")
@@ -228,18 +234,13 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                 }
                 if (!TextUtils.isEmpty(ids)) {
                     String substring = ids.substring(0, ids.length() - 1);
-                    sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                            ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                            ", remark, USER_PRIVATE_LABEL_ID, ASSETS_NAME,REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+                    sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                             " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")" + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " and ASSETS_ID=" + data.getAssetsType() + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
                 }
             }
         } else {
-            sql = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                    ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                    ", remark, USER_PRIVATE_LABEL_ID, ASSETS_NAME,REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+            sql = "SELECT * FROM WATER_ORDER_COLLECT " +
                     " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " and ASSETS_ID=" + data.getAssetsType() + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
@@ -296,9 +297,10 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 
                     list.clear();
                     for (int i = 0; i < dates.size(); i++) {
-                        AccountDetailedBean temp = new AccountDetailedBean();
-                        temp.setBean(dates.get(i));
-                        list.add(temp);
+//                        AccountDetailedBean temp = new AccountDetailedBean();
+//                        temp.setBean(dates.get(i));
+//                        list.add(temp);
+                        list.add(JSON.parseObject(dates.get(i).toString(),AccountDetailedBean.class));
                     }
 //                    Collections.sort(list);
                     binding.recyclerView.setVisibility(View.VISIBLE);
@@ -425,7 +427,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             indexBaseListBean indexBeans = new indexBaseListBean();
             if (dayArrays != null && dayArrays.size() > 0) {
                 ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, 0,"");
+                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, 0, "");
                 indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
                 xBean.setDayIncome(arrays.get(i).getDayIncome());
                 xBean.setDaySpend(arrays.get(i).getDaySpend());
@@ -436,26 +438,32 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             }
             for (int j = 0; j < dayArrays.size(); j++) {
                 indexBaseListBean indexBeans2 = new indexBaseListBean();
-                dayListBean.ResultBean.ArraysBean.DayArraysBean dates = dayArrays.get(j);
-                indexBeans2.setTag(1);//1为数据条目 （自定义标签）
-                indexBeans2.setOrderType(dates.getOrderType());
-                indexBeans2.setIcon(dates.getIcon());
-                indexBeans2.setTypeName(dates.getTypeName());
-                indexBeans2.setIsStaged(dates.getIsStaged());
-                indexBeans2.setRemark(dates.getRemark());
-                if (null != dates.getSpendHappiness()) {
-                    indexBeans2.setSpendHappiness(dates.getSpendHappiness());
-                }
-                indexBeans2.setMoney(dates.getMoney());
-                indexBeans2.setTypePid(dates.getTypePid());
-                indexBeans2.setTypeId(dates.getTypeId());
-                indexBeans2.setId(dates.getId());
-                indexBeans2.setAccountBookId(dates.getAccountBookId());
-                indexBeans2.setChargeDate(dates.getChargeDate());
-                indexBeans2.setCreateDate(dates.getCreateDate());
-                indexBeans2.setTypeName(dates.getTypeName());
-                indexBeans2.setReporterAvatar(dates.getReporterAvatar());
-                indexBeans2.setReporterNickName(dates.getReporterNickName());
+//                dayListBean.ResultBean.ArraysBean.DayArraysBean dates = dayArrays.get(j);
+                String dates = dayArrays.get(j).toString();
+//                indexBeans2.setTag(1);//1为数据条目 （自定义标签）
+//                indexBeans2.setOrderType(dates.getOrderType());
+//                indexBeans2.setIcon(dates.getIcon());
+//                indexBeans2.setTypeName(dates.getTypeName());
+//                indexBeans2.setIsStaged(dates.getIsStaged());
+//                indexBeans2.setRemark(dates.getRemark());
+//                if (null != dates.getSpendHappiness()) {
+//                    indexBeans2.setSpendHappiness(dates.getSpendHappiness());
+//                }
+//                indexBeans2.setMoney(dates.getMoney());
+//                indexBeans2.setTypePid(dates.getTypePid());
+//                indexBeans2.setTypeId(dates.getTypeId());
+//                indexBeans2.setId(dates.getId());
+//                indexBeans2.setAccountBookId(dates.getAccountBookId());
+//                indexBeans2.setChargeDate(dates.getChargeDate());
+//                indexBeans2.setCreateDate(dates.getCreateDate());
+//                indexBeans2.setTypeName(dates.getTypeName());
+//                indexBeans2.setReporterAvatar(dates.getReporterAvatar());
+//                indexBeans2.setReporterNickName(dates.getReporterNickName());
+//                indexBeans2.setUserPrivateLabelId(dates.getUserPrivateLabelId());
+//                indexBeans2.setAssetsId(dates.getAssetsId());
+//                indexBeans2.setCreateBy(dates.getCreateBy());
+                indexBeans2 = JSON.parseObject(dates,indexBaseListBean.class);
+                indexBeans2.setTag(1);
                 been.add(indexBeans2);
             }
         }
@@ -661,7 +669,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         req.setSynDate(times);
 
         //本地数据库查找未上传数据 上传至服务器
-        String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.ACCOUNT_BOOK_ID = " + accountId + " AND wo.UPDATE_DATE >= " + time;
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT wo where wo.UPDATE_DATE >= " + time;
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
         List<OffLineReq.SynDataBean> myList = new ArrayList<>();
         myList.clear();
@@ -710,6 +718,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                 synDataBean.setUseDegree(s1.getUseDegree());
                 synDataBean.setUpdateName(s1.getUpdateName());
                 synDataBean.setUserPrivateLabelId(s1.getUserPrivateLabelId());
+                synDataBean.setCreateBy(s1.getCreateBy());
+                synDataBean.setAssetsId(s1.getAssetsId());
                 myList2.add(synDataBean);
             }
             req2.setSynData(myList2);

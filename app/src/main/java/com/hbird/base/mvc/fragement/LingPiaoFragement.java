@@ -38,6 +38,7 @@ import com.hbird.base.util.Util;
 import com.hbird.base.wxapi.WXEntryActivity;
 import com.hbird.common.Constants;
 import com.hbird.ui.MainActivity;
+import com.hbird.ui.ticket.ActGetTicket;
 import com.hbird.util.Utils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
@@ -510,5 +511,13 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
                 webView.loadUrl("javascript:getAndroidData(" + result + ")");
             }
         });
+    }
+
+    // 去二级页面
+    private void toNext(){
+        playVoice(R.raw.changgui02);
+        Intent intent = new Intent(getActivity(), ActGetTicket.class);
+        intent.putExtra(Constants.START_INTENT_A,webView.getUrl());
+        startActivity(intent);
     }
 }

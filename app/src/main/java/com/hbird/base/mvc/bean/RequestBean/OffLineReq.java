@@ -328,5 +328,42 @@ public class OffLineReq extends BaseBean {
         public void setUpdateDate(Date updateDate) {
             this.updateDate = updateDate;
         }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "typeName:'" + typeName + '\'' +
+                    ", id:'" + id + '\'' +
+                    ", isStaged:" + isStaged +
+                    ", useDegree:" + useDegree +
+                    ", pictureUrl:'" + pictureUrl + '\'' +
+                    ", stagedInfo:" + stagedInfo +
+                    ", parentId:'" + parentId + '\'' +
+                    ", remark:'" + remark + '\'' +
+                    ", accountBookId:" + accountBookId +
+                    ", chargeDate:" + chargeDate +
+                    ", orderType:" + orderType +
+                    ", money:" + money +
+                    ", createDate:" + createDate +
+                    ", createName:'" + createName + '\'' +
+                    ", typeId:'" + typeId + '\'' +
+                    ", spendHappiness:" + spendHappiness +
+                    ", typePid:'" + typePid + '\'' +
+                    ", typePname:'" + typePname + '\'' +
+                    ", updateDate:" + updateDate +
+                    ", delflag:" + delflag +
+                    ", createBy:" + createBy +
+                    ", delDate:" + delDate +
+                    ", updateBy:" + updateBy +
+                    ", updateName:'" + updateName + '\'' +
+                    ", icon:'" + icon + '\'' +
+                    ", userPrivateLabelId:" + userPrivateLabelId +
+                    ", reporterAvatar:'" + reporterAvatar + '\'' +
+                    ", reporterNickName:'" + reporterNickName + '\'' +
+                    ", abName:'" + abName + '\'' +
+                    ", assetsId:" + assetsId +
+                    ", assetsName:'" + assetsName + '\'' +
+                    '}';
+        }
     }
 }

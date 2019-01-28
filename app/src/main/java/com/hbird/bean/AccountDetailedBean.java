@@ -10,6 +10,7 @@ import com.hbird.base.util.DateUtil;
 import com.hbird.base.util.DateUtils;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 public class AccountDetailedBean extends BaseObservable implements Comparable<AccountDetailedBean> {
@@ -40,6 +41,52 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
     public String abName;
     public Integer assetsId;
     public String assetsName;
+
+
+    public Integer useDegree;
+    public Integer parentId;
+    public String pictureUrl;
+    public Date updateDate;
+    public Integer delflag;
+    public Date delDate;
+
+    @Override
+    public String toString() {
+        return "{" +
+                "tag:" + tag +
+                ", delDate:" + delDate +
+                ", delflag:" + delflag +
+                ", updateDate:" + updateDate +
+                ", pictureUrl:" + pictureUrl +
+                ", parentId:" + parentId +
+                ", useDegree:" + useDegree +
+                ", orderType:" + orderType +
+                ", icon:'" + icon + '\'' +
+                ", typeName:'" + typeName + '\'' +
+                ", isStaged:" + isStaged +
+                ", remark:'" + remark + '\'' +
+                ", spendHappiness:" + spendHappiness +
+                ", money:" + money +
+                ", typePid:'" + typePid + '\'' +
+                ", typeId:'" + typeId + '\'' +
+                ", id:'" + id + '\'' +
+                ", accountBookId:" + accountBookId +
+                ", chargeDate:" + chargeDate +
+                ", createDate:" + createDate +
+                ", typePname:'" + typePname + '\'' +
+                ", indexBeen:" + indexBeen +
+                ", reporterAvatar:'" + reporterAvatar + '\'' +
+                ", reporterNickName:'" + reporterNickName + '\'' +
+                ", createBy:" + createBy +
+                ", createName:'" + createName + '\'' +
+                ", updateBy:" + updateBy +
+                ", updateName:'" + updateName + '\'' +
+                ", userPrivateLabelId:" + userPrivateLabelId +
+                ", abName:'" + abName + '\'' +
+                ", assetsId:" + assetsId +
+                ", assetsName:'" + assetsName + '\'' +
+                '}';
+    }
 
     @Override
     public int compareTo(@NonNull AccountDetailedBean o) {
@@ -91,6 +138,16 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
         public void setDayTime(long dayTime) {
             this.dayTime = dayTime;
             notifyPropertyChanged(BR.dayTime);
+        }
+
+        @Override
+        public String toString() {
+            return "{" +
+                    "daySpend:" + daySpend +
+                    ", dayIncome:" + dayIncome +
+                    ", dayTime:" + dayTime +
+                    ", weekDay:'" + weekDay + '\'' +
+                    '}';
         }
     }
 
@@ -146,12 +203,60 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
 
     @Bindable
     public String getRemark() {
-        return remark;
+        return (remark == null || remark.equals("null") ? "" : remark);
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
         notifyPropertyChanged(BR.remark);
+    }
+
+    public Integer getUseDegree() {
+        return useDegree == null ? -1 : useDegree;
+    }
+
+    public void setUseDegree(Integer useDegree) {
+        this.useDegree = useDegree;
+    }
+
+    public Integer getParentId() {
+        return (parentId == null || parentId.equals("null") ? 0 : parentId);
+    }
+
+    public void setParentId(Integer parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getPictureUrl() {
+        return (pictureUrl.equals("null") || pictureUrl == null) ? "" : pictureUrl;
+    }
+
+    public void setPictureUrl(String pictureUrl) {
+        this.pictureUrl = pictureUrl;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
+    }
+
+    public Integer getDelflag() {
+        return (delflag == null || delflag.equals("")) ? 0 : delflag;
+    }
+
+    public void setDelflag(Integer delflag) {
+        this.delflag = delflag;
+    }
+
+    public Date getDelDate() {
+        return delDate;
+    }
+
+    public void setDelDate(Date delDate) {
+        this.delDate = delDate;
     }
 
     @Bindable
@@ -306,7 +411,7 @@ public class AccountDetailedBean extends BaseObservable implements Comparable<Ac
 
     @Bindable
     public String getUpdateName() {
-        return updateName;
+        return (updateName == null || updateName.equals("null") ? "" : updateName);
     }
 
     public void setUpdateName(String updateName) {
