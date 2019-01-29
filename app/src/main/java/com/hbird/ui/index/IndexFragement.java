@@ -398,8 +398,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
-            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
-
+//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
             if (popOnces >= 0) {  //继续弹窗
                 tanDialog(windowPop);
             }
@@ -429,7 +429,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             shouldSetChat = false;
         }
     }
-
 
     public void loadDataForNet(boolean showDialog) {
         //获取首页明细数据
@@ -894,7 +893,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, datas.getStringExtra("TITLE"));
             SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, zhangbenId);
             String temp = datas.getStringExtra("abTypeId");
-            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE,temp == null?"null":temp);
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, temp == null ? "null" : temp);
             SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, datas.getStringExtra("typeBudget"));
 
             getIndexInfo();
@@ -903,7 +902,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             first = true;
             iii = -1;
             pieChatList.clear();
-            binding.setPiechat(null);
+            bean = null;
+            binding.setPiechat(bean);
             data.setSelestStr("");
             pieChatAdapter.notifyDataSetChanged();
 
@@ -1198,6 +1198,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         mChart.invalidate();
     }
 
+    private StatisticsSpendTopArraysBean bean;// 选择的饼图，没选择为空
+
     private void spin(float fromangle, float toangle, final int i) {
         mChart.setRotationAngle(fromangle);
         ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(mChart, "rotationAngle", fromangle, toangle);
@@ -1210,7 +1212,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             public void onAnimationEnd(Animator animation) {
                 pieChatList.clear();
                 if (pieList.size() > i) {
-                    binding.setPiechat(pieList.get(i));
+                    bean = pieList.get(i);
+                    binding.setPiechat(bean);
                     data.setSelestStr(pieList.get(i).typeName);
                     if (i == 4) {// 其它
                         List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeName(), pieList.get(1).getTypeName(), pieList.get(2).getTypeName(), pieList.get(3).getTypeName(), data.getYyyy(), data.getMm(), accountId);
@@ -1241,7 +1244,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         data.setStr5("--");
         data.setCop5("");
         data.setSelect(iii);// 没有选择任何
-        binding.setPiechat(null);
+        binding.setPiechat(bean);
         data.setSelestStr("");
 
         List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId);

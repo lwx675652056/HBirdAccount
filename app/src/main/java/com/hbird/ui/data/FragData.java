@@ -101,7 +101,8 @@ public class FragData extends BaseFragment<FragDataBinding, BaseViewModel> {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);
         }
 
         if (chartFragement != null) {

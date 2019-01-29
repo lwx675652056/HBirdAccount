@@ -54,8 +54,7 @@ public class Dialog2ChooseZb {
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
         int margins = (int) context.getResources().getDimension(R.dimen.height_40_80);
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
-                .getWidth() * 0.85), margins));
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display.getWidth() * 0.85), margins));
         lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -67,16 +66,16 @@ public class Dialog2ChooseZb {
     }
 
 
- /*   public Dialog2ChooseZb setMsg(String s) {
-        if ("".equals(s)) {
-            content.setText("");
-        } else {
-            content.setText(s);
-        }
+    /*   public Dialog2ChooseZb setMsg(String s) {
+           if ("".equals(s)) {
+               content.setText("");
+           } else {
+               content.setText(s);
+           }
 
-        return this;
-    }*/
-    public interface onClickListener{
+           return this;
+       }*/
+    public interface onClickListener {
         void onclicks(int i);
     }
 
@@ -85,7 +84,7 @@ public class Dialog2ChooseZb {
         dialog.show();
     }
 
-    public boolean isShow(){
+    public boolean isShow() {
         return dialog.isShowing();
     }
 }

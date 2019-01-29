@@ -105,8 +105,8 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         if (isVisibleToUser) {
             toSencoud(false);
 
-            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
-
+//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);
             String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
             getXiaoLvNet(token);
         }

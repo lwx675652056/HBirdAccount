@@ -92,7 +92,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);// 导航栏白色字体
 
             data.setShowLine(false);
             data.setFengniaoId(-1);// 空值
@@ -301,7 +302,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     // scrollView 滑动监听
     private void onScroll(int scrollY) {
         if (scrollY < 50) {
-            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
+//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);// 导航栏白色字体
 
             binding.flParent1.setVisibility(View.GONE);
             binding.flParent2.setVisibility(View.VISIBLE);
@@ -309,7 +311,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
             data.setShowLine(false);
         } else if (scrollY >= height) {
-            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),true);// 导航栏黑色字体
+//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());
 
             binding.flParent1.setVisibility(View.VISIBLE);
             binding.flParent2.setVisibility(View.GONE);
@@ -317,7 +320,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
             data.setShowLine(true);
         } else {
-            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(),true);// 导航栏黑色字体
+//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
 
             binding.flParent1.setVisibility(View.VISIBLE);
             binding.flParent2.setVisibility(View.GONE);

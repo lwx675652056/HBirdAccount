@@ -9,12 +9,10 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/shape_choose_zhangben"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        android:paddingBottom="@dimen/dp_15_x"
-        android:paddingTop="@dimen/dp_15_x">
+        android:layout_height="@dimen/height_7_80"
+        android:background="@drawable/shape_choose_zhangben1"
+        android:gravity="center"
+        android:orientation="horizontal" >
 
         <TextView
             android:layout_width="wrap_content"
