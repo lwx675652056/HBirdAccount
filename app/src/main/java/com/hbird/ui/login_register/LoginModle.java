@@ -298,6 +298,9 @@ public class LoginModle extends BaseViewModel {
                                     SPUtil.setPrefString(getApplication(), CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, bean.abTypeId + "");
                                     SPUtil.setPrefString(getApplication(), CommonTag.INDEX_TYPE_BUDGET, bean.typeBudget + "");
                                     SPUtil.setPrefString(getApplication(), CommonTag.CURRENT_ACCOUNT_ID, bean.abTypeId + "");
+
+                                    SharedPreferencesUtil.put(CommonTag.INDEX_CURRENT_ACCOUNT_ID, bean.id);
+                                    SharedPreferencesUtil.put(CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, String.valueOf(bean.abTypeId));
                                 }
                             }
                         }

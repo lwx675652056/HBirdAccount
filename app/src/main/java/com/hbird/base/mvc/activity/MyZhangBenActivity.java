@@ -165,7 +165,7 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
             playVoice(R.raw.changgui02);
             if (l == 0 || l == data.size() - 1) {
                 showMessage("不可删除");
-            }else{
+            } else {
                 alertDialog(i, 0);
             }
             return true;
@@ -194,23 +194,21 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
     }
 
     private void delAccount(int i) {
-        if (data.size()-1<i){
+        if (data.size() - 1 < i) {
             return;
         }
-        final String accountBookId = SPUtil.getPrefString(this, CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        NetWorkManager.getInstance().setContext(MyZhangBenActivity.this)
-                .delAccounts(data.get(i).getId(), token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        GloableReturn b1 = (GloableReturn) b;
-                        String sql = "delete from WATER_ORDER_COLLECT where  ACCOUNT_BOOK_ID = " + accountBookId;
-                        boolean b2 = DevRing.tableManager(WaterOrderCollect.class).execSQL(sql);
-                    }
+        NetWorkManager.getInstance().setContext(MyZhangBenActivity.this).delAccounts(data.get(i).getId(), token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                GloableReturn b1 = (GloableReturn) b;
+                String sql = "delete from WATER_ORDER_COLLECT where  ACCOUNT_BOOK_ID = " + data.get(i).getId();
+                boolean b2 = DevRing.tableManager(WaterOrderCollect.class).execSQL(sql);
+            }
 
-                    @Override
-                    public void onError(String s) {
-                    }
-                });
+            @Override
+            public void onError(String s) {
+            }
+        });
     }
 
     @Override
@@ -240,59 +238,58 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
     }
 
     private void getMyAccount() {
-        NetWorkManager.getInstance().setContext(MyZhangBenActivity.this)
-                .getMyAccounts(token, new NetWorkManager.CallBack() {
-                    @Override
-                    public void onSuccess(BaseReturn b) {
-                        AccountZbBean b1 = (AccountZbBean) b;
-                        result = b1.getResult();
-                        if (null != result) {
-                            data = new ArrayList<>();
-                            data.clear();
-                            Set<String> set = new LinkedHashSet<>();
-                            set.clear();
-                            for (int i = 0; i < result.size() + 1; i++) {
-                                if (i == 0) {
-                                    ZhangBenMsgBean bean = new ZhangBenMsgBean();
-                                    bean.setZbImg("");
-                                    bean.setZbName("总明细账本");
-                                    bean.setZbType("总账本");
-                                    bean.setZbUTime("");
-                                    data.add(bean);
-                                } else {
-                                    ZhangBenMsgBean bean = new ZhangBenMsgBean();
-                                    bean.setZbImg(result.get(i - 1).getIcon());
-                                    bean.setZbName(result.get(i - 1).getAbName());
-                                    bean.setZbType(result.get(i - 1).getAbTypeName());
-                                    bean.setZbUTime(result.get(i - 1).getUpdateDate() + "");
-                                    bean.setId(result.get(i - 1).getId() + "");
-                                    data.add(bean);
-                                    set.add(result.get(i - 1).getId() + "");
-                                }
-                            }
-                            if (null != set && set.size() > 0) {
-                                SPUtil.setStringSet(MyZhangBenActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
-                            }
-
-                            int k = 0;
-                            for (int i = 0; i < data.size(); i++) {
-                                if (TextUtils.equals(data.get(i).getId(), id)) {
-                                    k = i;
-                                }
-                            }
-                            adapter = new MyZhangBenAdapter(MyZhangBenActivity.this, data);
-                            swipe.setAdapter(adapter);
-                            adapter.setData(k);
-
-                            swipe.setListViewMode(RefreshSwipeMenuListView.HEADER);
+        NetWorkManager.getInstance().setContext(MyZhangBenActivity.this).getMyAccounts(token, new NetWorkManager.CallBack() {
+            @Override
+            public void onSuccess(BaseReturn b) {
+                AccountZbBean b1 = (AccountZbBean) b;
+                result = b1.getResult();
+                if (null != result) {
+                    data = new ArrayList<>();
+                    data.clear();
+                    Set<String> set = new LinkedHashSet<>();
+                    set.clear();
+                    for (int i = 0; i < result.size() + 1; i++) {
+                        if (i == 0) {
+                            ZhangBenMsgBean bean = new ZhangBenMsgBean();
+                            bean.setZbImg("");
+                            bean.setZbName("总明细账本");
+                            bean.setZbType("总账本");
+                            bean.setZbUTime("");
+                            data.add(bean);
+                        } else {
+                            ZhangBenMsgBean bean = new ZhangBenMsgBean();
+                            bean.setZbImg(result.get(i - 1).getIcon());
+                            bean.setZbName(result.get(i - 1).getAbName());
+                            bean.setZbType(result.get(i - 1).getAbTypeName());
+                            bean.setZbUTime(result.get(i - 1).getUpdateDate() + "");
+                            bean.setId(result.get(i - 1).getId() + "");
+                            data.add(bean);
+                            set.add(result.get(i - 1).getId() + "");
                         }
                     }
-
-                    @Override
-                    public void onError(String s) {
-
+                    if (null != set && set.size() > 0) {
+                        SPUtil.setStringSet(MyZhangBenActivity.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
                     }
-                });
+
+                    int k = 0;
+                    for (int i = 0; i < data.size(); i++) {
+                        if (TextUtils.equals(data.get(i).getId(), id)) {
+                            k = i;
+                        }
+                    }
+                    adapter = new MyZhangBenAdapter(MyZhangBenActivity.this, data);
+                    swipe.setAdapter(adapter);
+                    adapter.setData(k);
+
+                    swipe.setListViewMode(RefreshSwipeMenuListView.HEADER);
+                }
+            }
+
+            @Override
+            public void onError(String s) {
+
+            }
+        });
     }
 
     /**

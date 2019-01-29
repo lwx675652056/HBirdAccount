@@ -586,10 +586,14 @@
                             </LinearLayout>
                         </LinearLayout>
 
-                        <com.github.mikephil.chart_3_0_1v.charts.PieChart
-                            android:id="@+id/pie_chart"
-                            android:layout_width="@dimen/dp_150_x"
-                            android:layout_height="@dimen/dp_150_x"/>
+                        <LinearLayout
+                            android:id="@+id/aaa"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"></LinearLayout>
+                        <!--<com.github.mikephil.chart_3_0_1v.charts.PieChart-->
+                            <!--android:id="@+id/pie_chart"-->
+                            <!--android:layout_width="@dimen/dp_150_x"-->
+                            <!--android:layout_height="@dimen/dp_150_x"/>-->
                     </LinearLayout>
 
                     <FrameLayout

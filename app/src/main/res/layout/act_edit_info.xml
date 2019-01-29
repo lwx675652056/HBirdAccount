@@ -23,7 +23,6 @@
 
         <View style="@style/horizontal_line"/>
 
-
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -71,9 +70,8 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@color/white"
-                    android:gravity="center_vertical"
                     android:onClick="@{listener.changeNickName}"
                     android:orientation="horizontal"
                     android:paddingEnd="@dimen/dp_15_x"
@@ -81,7 +79,8 @@
 
                     <TextView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
                         android:text="昵称："
                         android:textColor="@color/text_333333"
                         android:textSize="16sp"/>
@@ -90,21 +89,22 @@
                         android:id="@+id/et_nickName"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
                         android:layout_weight="1"
                         android:background="@null"
                         android:focusable="true"
                         android:focusableInTouchMode="true"
                         android:hint="请输入昵称"
                         android:onClick="@{listener.changeNickName}"
+                        android:paddingBottom="@dimen/dp_15_x"
+                        android:paddingTop="@dimen/dp_15_x"
                         android:text="@{data.nickName}"
                         android:textColor="@color/text_333333"
                         android:textSize="16sp"/>
 
                     <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentRight="true"
+                        android:layout_height="match_parent"
                         android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
@@ -115,38 +115,35 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:gravity="center_vertical"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="蜂鸟ID:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_ids"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{String.valueOf(data.fengniaoId)}"
                         android:textColor="@color/text_bdbdbd"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View
@@ -155,42 +152,37 @@
                     android:layout_marginStart="@dimen/dp_15_x"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_gender"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/select_white_0px"
                     android:gravity="center_vertical"
                     android:onClick="@{listener.changeSex}"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="性别:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
-                        android:id="@+id/tv_sex"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{data.sex.equals(@string/one)?@string/nan:(data.sex.equals(@string/two)?@string/nv:@string/no_money)}"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View
@@ -199,42 +191,38 @@
                     android:layout_marginStart="@dimen/dp_15_x"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_birthday"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/select_white_0px"
                     android:gravity="center_vertical"
                     android:onClick="@{listener.changeBirthday}"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="生日:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
                         android:id="@+id/tv_birthday"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{data.birthday}"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View
@@ -243,42 +231,37 @@
                     android:layout_marginStart="@dimen/dp_15_x"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_city"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/select_white_0px"
                     android:gravity="center_vertical"
                     android:onClick="@{listener.changeCity}"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="城市:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
-                        android:id="@+id/tv_city"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{data.province+@string/empty+data.city}"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View
@@ -287,42 +270,37 @@
                     android:layout_marginStart="@dimen/dp_15_x"/>
 
                 <LinearLayout
-                    android:id="@+id/ll_business"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/select_white_0px"
                     android:gravity="center_vertical"
                     android:onClick="@{listener.changeProfession}"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="行业:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
-                        android:id="@+id/tv_hangye"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{data.profession}"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View
@@ -330,44 +308,38 @@
                     android:layout_marginEnd="@dimen/dp_15_x"
                     android:layout_marginStart="@dimen/dp_15_x"/>
 
-
                 <LinearLayout
-                    android:id="@+id/ll_job"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/height_8_80"
+                    android:layout_height="wrap_content"
                     android:background="@drawable/select_white_0px"
                     android:gravity="center_vertical"
                     android:onClick="@{listener.changeProfion}"
                     android:orientation="horizontal"
+                    android:paddingBottom="@dimen/dp_15_x"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:paddingStart="@dimen/dp_15_x">
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:paddingTop="@dimen/dp_15_x">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="职位:"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
                     <TextView
-                        android:id="@+id/tv_zhiwei"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_marginLeft="@dimen/width_2_80"
+                        android:layout_marginStart="@dimen/dp_15_x"
+                        android:layout_weight="1"
                         android:text="@{data.profion}"
                         android:textColor="@color/text_333333"
-                        android:textSize="@dimen/text_size_6"/>
+                        android:textSize="16sp"/>
 
-                    <RelativeLayout
+                    <ImageView
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_alignParentRight="true"
-                            android:src="@mipmap/ic_me_arrow"/>
-                    </RelativeLayout>
+                        android:layout_height="wrap_content"
+                        android:src="@mipmap/ic_me_arrow"/>
                 </LinearLayout>
 
                 <View

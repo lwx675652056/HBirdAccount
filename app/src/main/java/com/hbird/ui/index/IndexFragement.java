@@ -17,6 +17,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.github.mikephil.chart_3_0_1v.charts.PieChart;
 import com.github.mikephil.chart_3_0_1v.data.Entry;
@@ -110,6 +111,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private boolean isFirst;
     private boolean comeInForLogin;
     private boolean timeB = false;
+    private boolean shouldSetChat = true;
     private final int FIRST_LENGHT = 4000;
     private TabRadioButton jizhangs;
     private int popOnces = 0;//首页展示弹窗次数
@@ -180,15 +182,16 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView1.setItemAnimator(null);//设置动画为null来解决闪烁问题
 
-        zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
-        LogUtil.e("zhangbenId:" + zhangbenId);
-        if (TextUtils.isEmpty(zhangbenId)) {
-            //账本id
-            accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-            zhangbenId = accountId;
-        }
+        accountId = (String) SharedPreferencesUtil.get(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+//        zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+//        LogUtil.e("zhangbenId:" + zhangbenId);
+//        if (TextUtils.isEmpty(zhangbenId)) {
+//            账本id
+//            accountId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
+        zhangbenId = accountId;
+//        }
         //账本id
-        accountId = zhangbenId;
+//        accountId = zhangbenId;
         LogUtil.e("accountId:" + accountId);
 
         yyyy = parseInt(DateUtils.getCurYear("yyyy"));
@@ -240,10 +243,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             @Override
             public void onRefresh(MaterialRefreshLayout materialRefreshLayout) {
                 timeB = true;
+                shouldSetChat = true;
                 getIndexInfo();
                 loadDataForNet(false);
             }
         });
+
+        getIndexInfo();
+        loadDataForNet(true);
+        setChart();
     }
 
     // 点击记账的条目
@@ -299,7 +307,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent2 = new Intent();
             intent2.setClass(getActivity(), MyZhangBenActivity.class);
-            String id = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
+            String id = (String) SharedPreferencesUtil.get(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
             intent2.putExtra("ID", id);
             startActivityForResult(intent2, 131);
         }
@@ -401,9 +409,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             if (binding.abMoren != null) {
                 binding.abMoren.setText(abMoren);
             }
-            zhangbenId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-            accountId = zhangbenId;
-
+            accountId = (String) SharedPreferencesUtil.get(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+            zhangbenId = accountId;
+            shouldSetChat = false;
             getIndexInfo();
             loadDataForNet(true);
         }
@@ -412,11 +420,14 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     @Override
     public void onResume() {
         super.onResume();
-        getIndexInfo();
         if (popOnces >= 0) {
             tanDialog(windowPop);
         }
-        loadDataForNet(true);
+        if (first) {
+            shouldSetChat = true;
+        } else {
+            shouldSetChat = false;
+        }
     }
 
 
@@ -679,7 +690,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 data.setSpendingMoney(String.valueOf(spend));// 支出
                 data.setInComeMoney(String.valueOf(income));// 收入
 
-                setChart();
+                if (shouldSetChat) {
+                    setChart();
+                }
             }
         });
 
@@ -863,21 +876,60 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int requestCode, int resultCode, Intent datas) {
+        super.onActivityResult(requestCode, resultCode, datas);
 
         if (requestCode == 131 && resultCode == 130) {
-            binding.abMoren.setText(data.getStringExtra("TITLE"));
-            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, data.getStringExtra("TITLE"));
-            zhangbenId = data.getStringExtra("ID");
+            binding.abMoren.setText(datas.getStringExtra("TITLE"));
+            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, datas.getStringExtra("TITLE"));
+            zhangbenId = datas.getStringExtra("ID");
             accountId = zhangbenId;
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, zhangbenId);
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, zhangbenId);
-            typeBudget = data.getStringExtra("typeBudget");
-            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, data.getStringExtra("abTypeId"));
-            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, data.getStringExtra("typeBudget"));
+            typeBudget = datas.getStringExtra("typeBudget");
+            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE, datas.getStringExtra("abTypeId"));
+            SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, datas.getStringExtra("typeBudget"));
+
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, zhangbenId);
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, datas.getStringExtra("TITLE"));
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, zhangbenId);
+            String temp = datas.getStringExtra("abTypeId");
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_TYPE,temp == null?"null":temp);
+            SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.INDEX_TYPE_BUDGET, datas.getStringExtra("typeBudget"));
+
+            getIndexInfo();
+            loadDataForNet(true);
+
+            first = true;
+            iii = -1;
+            pieChatList.clear();
+            binding.setPiechat(null);
+            data.setSelestStr("");
+            pieChatAdapter.notifyDataSetChanged();
+
+            setChart();
+        } else if (requestCode == 101) {
+            setChart();
+
+            pieChatList.clear();
+            if (pieList.size() > iii) {
+                binding.setPiechat(pieList.get(iii));
+                data.setSelestStr(pieList.get(iii).typeName);
+                if (iii == 4) {// 其它
+                    List<WaterOrderCollect> temp = viewModel.getOthereRanking(pieList.get(0).getTypeName(), pieList.get(1).getTypeName(), pieList.get(2).getTypeName(), pieList.get(3).getTypeName(), data.getYyyy(), data.getMm(), accountId);
+                    pieChatList.addAll(temp);
+                } else {
+                    List<WaterOrderCollect> temp = viewModel.getTypeRanking(pieList.get(iii).getTypeName(), data.getYyyy(), data.getMm(), accountId);
+                    pieChatList.addAll(temp);
+                }
+            }
+            pieChatAdapter.notifyDataSetChanged();
+
+            resumSetChat = false;
         }
     }
+
+    private boolean resumSetChat = true;
 
     private void setHasRed(String id, final int m) {
         //首页公告已读接口
@@ -1066,7 +1118,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private PieChart mChart;
 
     private void initChart() {
-        mChart = binding.pieChart;
+        mChart = new PieChart(getActivity());
+        int width_150 = getResources().getDimensionPixelSize(R.dimen.dp_150_x);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width_150, width_150);
+        mChart.setLayoutParams(params);
+        binding.aaa.removeAllViews();
+        binding.aaa.addView(mChart);
 
         //mChart的半径是根据整体的控件大小来动态计算的，设置外边距等都会影响到圆的半径
         mChart.getDescription().setEnabled(false);
@@ -1094,6 +1151,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     data.setSelect(i);
                 }
 
+                fromangle = start;
+                toangle = end;
+                iii = i;
                 spin(start, end, i);
             }
 
@@ -1107,6 +1167,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     private boolean first = true;// 第一次需要初始化饼图，之后不再初始化只设置值
+    private float fromangle, toangle;
+    private int iii = -1;
 
     private void setChart() {
         if (first) {
@@ -1133,6 +1195,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         });
         String textStr = "<font color=\"#808080\">总支出</font>\n" + spend1;
         mChart.setCenterText(Html.fromHtml(textStr)); //设置中心文本
+        mChart.invalidate();
     }
 
     private void spin(float fromangle, float toangle, final int i) {
@@ -1177,7 +1240,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         data.setCop4("");
         data.setStr5("--");
         data.setCop5("");
-        data.setSelect(-1);// 没有选择任何
+        data.setSelect(iii);// 没有选择任何
         binding.setPiechat(null);
         data.setSelestStr("");
 

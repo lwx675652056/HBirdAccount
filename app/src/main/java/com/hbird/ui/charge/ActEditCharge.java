@@ -53,6 +53,7 @@ import com.hbird.bean.AssetsBean;
 import com.hbird.common.Constants;
 import com.hbird.ui.account.ActEditAccount;
 import com.ljy.devring.DevRing;
+import com.ljy.devring.base.activity.IBaseActivity;
 import com.ljy.devring.util.NetworkUtil;
 
 import java.text.DecimalFormat;
@@ -73,7 +74,7 @@ import sing.util.ToastUtil;
  * @date: 2019/1/14 15:55
  * @Description: 修改明细
  */
-public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
+public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener,IBaseActivity {
 
     @BindView(R.id.tv_center_title)
     TextView mCenterTitle;
@@ -985,4 +986,13 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
         return false;
     }
 
+    @Override
+    public boolean isUseEventBus() {
+        return false;
+    }
+
+    @Override
+    public boolean isUseFragment() {
+        return false;
+    }
 }
