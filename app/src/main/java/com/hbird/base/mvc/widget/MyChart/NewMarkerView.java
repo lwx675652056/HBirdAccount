@@ -7,6 +7,7 @@ package com.hbird.base.mvc.widget.MyChart;
 
 
 import android.content.Context;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.github.mikephil.chart_3_0_1v.components.MarkerView;
@@ -26,13 +27,15 @@ import com.hbird.base.R;
 public class NewMarkerView extends MarkerView {
 
     private TextView tvContent;
+    private RelativeLayout rlParent;
     private CallBack mCallBack;
     private Boolean needFormat=true;
 
     public NewMarkerView(Context context, int layoutResource) {
         super(context, layoutResource);
 
-        tvContent = (TextView) findViewById(R.id.tvContent);
+        tvContent = findViewById(R.id.tvContent);
+        rlParent = findViewById(R.id.rl_parent);
     }
 
     /*部分数据不需要格式化处理*/
@@ -86,5 +89,9 @@ public class NewMarkerView extends MarkerView {
 
     public TextView getTvContent() {
         return tvContent;
+    }
+
+    public void hideParent(){
+        rlParent.setVisibility(GONE);
     }
 }

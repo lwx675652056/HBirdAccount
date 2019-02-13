@@ -43,8 +43,6 @@ public class EmptyLineChartRendererNew extends LineChartRenderer {
                 yVals.clear();
             }
         }
-
-
     }
 
     /**

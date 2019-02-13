@@ -5,6 +5,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -19,7 +20,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.chart_3_0_1v.charts.LineChart;
+import com.github.mikephil.chart_3_0_1v.charts.EmptyLineChartRendererNew;
 import com.github.mikephil.chart_3_0_1v.charts.PieChart;
 import com.github.mikephil.chart_3_0_1v.components.Legend;
 import com.github.mikephil.chart_3_0_1v.components.XAxis;
@@ -30,6 +31,7 @@ import com.github.mikephil.chart_3_0_1v.data.PieData;
 import com.github.mikephil.chart_3_0_1v.data.PieDataSet;
 import com.github.mikephil.chart_3_0_1v.data.PieEntry;
 import com.github.mikephil.chart_3_0_1v.highlight.Highlight;
+import com.github.mikephil.chart_3_0_1v.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
 import com.github.mikephil.charting.animation.Easing;
 import com.hbird.base.R;
@@ -40,7 +42,6 @@ import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.bean.YearAndMonthBean;
 import com.hbird.base.mvc.bean.YoyListEntity;
 import com.hbird.base.mvc.widget.MyChart.LineChartEntity;
-import com.hbird.base.mvc.widget.MyChart.NewMarkerView;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
@@ -49,7 +50,8 @@ import com.hbird.common.Constants;
 import com.hbird.ui.statistics_details.ActPieChartRanking;
 import com.hbird.ui.statistics_details.ActRankingDetails;
 import com.hbird.util.Utils;
-import com.hbird.widget.LineChartInViewPager;
+import com.hbird.widget.LineChartDrawMarkers;
+import com.hbird.widget.RoundMarker;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -57,7 +59,6 @@ import java.util.Date;
 import java.util.List;
 
 import sing.common.base.BaseFragment;
-import sing.common.util.StringUtils;
 
 import static com.hbird.base.util.Utils.getDateByWeeks;
 
@@ -589,7 +590,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
     private void initChart(int pos, ArrayList<YearAndMonthBean> list) {
         mFormat = new DecimalFormat("#,###.##");
         binding.flParent.removeAllViews();
-        LineChartInViewPager lineCharts = new LineChartInViewPager(getActivity());
+        LineChartDrawMarkers lineCharts = new LineChartDrawMarkers(getActivity());
         lineCharts.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
         binding.flParent.addView(lineCharts);
 
@@ -606,7 +607,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
                     e.printStackTrace();
                     f = 0;
                 }
-                Entry entry = new Entry(i + 1, f);
+                Entry entry = new Entry(i + 1, f,getResources().getDrawable(R.drawable.home_icon_chakan_normal));
                 values1.add(entry);
             }
         }
@@ -634,12 +635,28 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
     }
 
     // 双平滑曲线传入数据，添加markview，添加实体类单位
-    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChart lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, int pos, final ArrayList<YearAndMonthBean> list) {
+    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChartDrawMarkers lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, int pos, final ArrayList<YearAndMonthBean> list) {
         List<Entry>[] entries = new ArrayList[2];
         entries[0] = values1;
         entries[1] = values2;
         LineChartEntity lineChartEntity = new LineChartEntity(lineChart, entries, labels, colors, Color.parseColor("#999999"), 12f);
-        lineChartEntity.drawCircle(true);
+
+        List<ILineDataSet> sets = lineChart.getData().getDataSets();
+        for (ILineDataSet iSet : sets) {
+            LineDataSet set = (LineDataSet) iSet;
+            set.setDrawCircles(true);
+
+            // 不显示
+            set.setLineWidth(0.2f); // 线宽
+            set.setColor(Color.RED);// 线条显示颜色
+
+            set.setCircleRadius(2f);// 显示的圆形大小
+            set.setCircleColor(Color.parseColor("#E8311B"));// 圆形的颜色
+
+            set.setHighLightColor(Color.parseColor("#E8311B")); // 高亮的线的颜色
+        }
+
+
 
         lineChart.setScaleMinima(1.0f, 1.0f);
         toggleFilled(lineChartEntity, drawables, colors);
@@ -649,6 +666,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChart.setTouchEnabled(true); //可点击
         //lineChart.setPinchZoom(false);
         lineChart.setBackgroundColor(Color.WHITE); //设置背景颜色
+
         //移到某个位置
         lineChart.moveViewToX(pos);
         //日月切换时重新设定缩放倍数(还没来得及尝试此方法是否有用)
@@ -675,9 +693,18 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             //xl.setGranularity(50f);
             xl.setTextSize(8);
             //axisLeft.setAxisLineWidth(50f);
+        } else if (data.getDateType() == 1) {// 日
+            lineChart.setDragEnabled(false);//设置是否可拖拽
+            //缩放第一种方式
+            Matrix matrix = new Matrix();
+            //1f代表不缩放
+            matrix.postScale(1f, 1f);
+            lineChart.getViewPortHandler().refresh(matrix, lineChart, false);
+            //重设所有缩放和拖动，使图表完全适合它的边界（完全缩小）。
+            lineChart.fitScreen();
         }
         //设置 不展示没有数据的点  未成功 暂时注释 后期调试
-        //lineChart.setRenderer(new EmptyLineChartRendererNew(lineChart));
+        lineChart.setRenderer(new EmptyLineChartRendererNew(lineChart));
         /**
          * 这里切换平滑曲线或者折现图
          */
@@ -685,6 +712,30 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChartEntity.setLineMode(LineDataSet.Mode.LINEAR);
         lineChartEntity.initLegend(Legend.LegendForm.CIRCLE, 12f, Color.parseColor("#999999"));
         lineChartEntity.updateLegendOrientation(Legend.LegendVerticalAlignment.TOP, Legend.LegendHorizontalAlignment.RIGHT, Legend.LegendOrientation.HORIZONTAL);
+
+
+        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+                //查看覆盖物是否被回收
+                if (lineChart.isMarkerAllNull()) {
+                    //重新绑定覆盖物
+                    lineChart.setRoundMarker(new RoundMarker(getActivity(),R.layout.custom_marker_view));
+                    //并且手动高亮覆盖物
+                    lineChart.highlightValue(h);
+                }
+
+                setDateToCharts((int) e.getX()-1, list);
+            }
+
+            @Override
+            public void onNothingSelected() {
+
+            }
+        });
+
+        // 添加覆盖物
+        lineChart.setRoundMarker(new RoundMarker(getActivity(),R.layout.custom_marker_view));
 
         lineChartEntity.setAxisFormatter((value, axis) -> {
                     //设置折线图最底部月份显示
@@ -722,50 +773,51 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         //设置折线图最右边的百分比
         lineChartEntity.setDataValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "");
 
-        final NewMarkerView markerView = new NewMarkerView(getActivity(), R.layout.custom_marker_view_layout);
-        markerView.setCallBack(new NewMarkerView.CallBack() {
-            @Override
-            public void onCallBack(float x, String value) {
-                int index = (int) (x);
-                if (index < 0) {
-                    return;
-                }
-                if (index > yoyList.size() && index > realList.size()) {
-                    return;
-                }
-                String textTemp = "";
 
-                if (index <= yoyList.size()) {
-                    if (!StringUtils.isEmpty(textTemp)) {
-                    }
-                    if (data.getDateType() == 2) {
-                        textTemp += yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-                    } else {
-                        textTemp += yoyList.get(index - 1).getYear() + "." + yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-                    }
-                }
+//        final NewMarkerView markerView = new NewMarkerView(getActivity(), R.layout.custom_marker_view);
+//        markerView.setCallBack(new NewMarkerView.CallBack() {
+//            @Override
+//            public void onCallBack(float x, String value) {
+//                int index = (int) (x);
+//                if (index < 0) {
+//                    return;
+//                }
+//                if (index > yoyList.size() && index > realList.size()) {
+//                    return;
+//                }
+//                String textTemp = "";
 
-                if (index <= realList.size()) {
-                    textTemp += "\n";
-                    textTemp += realList.get(index - 1).getYear() + "." + index + "  " + mFormat.format(Float.parseFloat(realList.get(index - 1).getAmount())) + unit;
-                }
-                markerView.getTvContent().setText(textTemp);
-
-                if (!aa) {
-                    setDateToCharts(index - 1, list);
-                    aa = true;
-                    aaa = index;
-                }
-                if (index != aaa) {
-                    Utils.playVoice(getActivity(), R.raw.changgui01);
-                    setDateToCharts(index - 1, list);
-                    aaa = index;
-                }
-
-            }
-        });
-
-        lineChartEntity.setMarkView(markerView);
+//                if (index <= yoyList.size()) {
+//                    if (!StringUtils.isEmpty(textTemp)) {
+//                    }
+//                    if (data.getDateType() == 2) {
+//                        textTemp += yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
+//                    } else {
+//                        textTemp += yoyList.get(index - 1).getYear() + "." + yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
+//                    }
+//                }
+//
+//                if (index <= realList.size()) {
+//                    textTemp += "\n";
+//                    textTemp += realList.get(index - 1).getYear() + "." + index + "  " + mFormat.format(Float.parseFloat(realList.get(index - 1).getAmount())) + unit;
+//                }
+//                markerView.getTvContent().setText(textTemp);
+//
+//                if (!aa) {
+//                    setDateToCharts(index - 1, list);
+//                    aa = true;
+//                    aaa = index;
+//                }
+//                if (index != aaa) {
+//                    Utils.playVoice(getActivity(), R.raw.changgui01);
+//                    setDateToCharts(index - 1, list);
+//                    aaa = index;
+//                }
+//
+//            }
+//        });
+//
+//        lineChartEntity.setMarkView(markerView);
         setDateToCharts(pos, list);
         lineChart.getData().setDrawValues(false);
     }
@@ -787,7 +839,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         mChart = binding.pieChart;
 
         //mChart的半径是根据整体的控件大小来动态计算的，设置外边距等都会影响到圆的半径
-        mChart.getDescription().setEnabled(false);
+        mChart.getDescription().setEnabled(false); // 不显示数据描述
         mChart.getLegend().setEnabled(false);  //禁止显示图例
         mChart.setCenterTextSize(14f); //设置文本字号
         mChart.setHoleRadius(50f); //设置中心孔半径占总圆的百分比

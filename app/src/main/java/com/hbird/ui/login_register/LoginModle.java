@@ -123,6 +123,7 @@ public class LoginModle extends BaseViewModel {
                             // 设置登录用户ID API（GrowingIO统计）
                             GrowingIO.getInstance().setUserId(mobile);
                         } else {
+                            callBack.getSuccess(false);
                             ToastUtil.showShort(value.msg);
                         }
                     }
@@ -168,6 +169,7 @@ public class LoginModle extends BaseViewModel {
                             // 设置登录用户ID API（GrowingIO统计）
                             GrowingIO.getInstance().setUserId(mobile);
                         } else {
+                            callBack.getSuccess(false);
                             ToastUtil.showShort(value.msg);
                         }
                     }

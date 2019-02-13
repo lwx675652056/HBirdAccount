@@ -36,6 +36,13 @@ import sing.common.util.LogUtil;
 
 public class IndexFragementModle extends BaseViewModel {
 
+    // 查询某月的总支出
+//    sql = "select sum(money) money from WATER_ORDER_COLLECT"
+//            + " where account_book_id= '" + accountId
+//                    + "' AND delflag = 0 "
+//                            + "AND order_type = 1 "
+//                            + " AND CHARGE_DATE >= 1548950400000"
+//                            + " AND CHARGE_DATE< 1551369600000;";
     public IndexFragementModle(@NonNull Application application) {
         super(application);
     }

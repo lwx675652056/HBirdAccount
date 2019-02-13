@@ -9,7 +9,7 @@ package com.hbird.base.app.constant;
 public interface UrlConstants {
     boolean IS_RELEASE = false;//是否正式环境运行 true为正式，分享到小程序用到了
 
-//    String PLATFORM_CONFIG_URL = "https://api.fengniaojizhang.com/rest/api/v1/";//生产环境
+//    String PLATFORM_CONFIG_URL = "https://api.fengniaojizhang.com/rest/api/v1/";//正式环境
 //    String BASE_H5_URL ="https://api.fengniaojizhang.com/h5/index.html?token=";//正式领票H5
 
     String PLATFORM_CONFIG_URL = "https://api.galaxyhouse.cn/rest/api/v1/";//测试环境

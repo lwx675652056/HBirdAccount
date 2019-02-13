@@ -50,9 +50,25 @@ public class ActLogin extends BaseActivity<ActLoginBinding, LoginModle> {
                 runOnUiThread(() -> dialog.show());
             }
             if (data.isPassword()) {//密码登录
-                viewModel.login(data.getPhone(), data.getPassword(), toHome -> toStart(toHome));
+                viewModel.login(data.getPhone(), data.getPassword(), toHome -> {
+                    if (toHome) {
+                        toStart(toHome);
+                    } else {
+                        if (dialog != null && dialog.isShowing()) {
+                            runOnUiThread(() -> dialog.dismiss());
+                        }
+                    }
+                });
             } else { //验证码登录
-                viewModel.loginByVerifyCode(data.getPhone(), data.getCode(), toHome -> toStart(toHome));
+                viewModel.loginByVerifyCode(data.getPhone(), data.getCode(), toHome -> {
+                    if (toHome) {
+                        toStart(toHome);
+                    } else {
+                        if (dialog != null && dialog.isShowing()) {
+                            runOnUiThread(() -> dialog.dismiss());
+                        }
+                    }
+                });
             }
         }
 
