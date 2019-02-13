@@ -1,0 +1,61 @@
+<layout>
+
+    <data>
+
+        <variable
+            name="listener"
+            type="com.hbird.ui.index.ActMyAccount.OnClick"/>
+    </data>
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_45_x"
+            android:background="@color/white"
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_centerVertical="true"
+                android:onClick="@{listener.finish}"
+                android:paddingEnd="@dimen/dp_15_x"
+                android:paddingStart="@dimen/dp_15_x"
+                android:src="@mipmap/nav_back_normal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:layout_gravity="center"
+                android:text="我的账本"
+                android:textColor="#333333"
+                android:textSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:gravity="center"
+                android:onClick="@{listener.add}"
+                android:padding="@dimen/dp_10_x"
+                android:text="添加 + "
+                android:textColor="@color/colorPrimary"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+        </RelativeLayout>
+
+        <View style="@style/horizontal_line"/>
+
+        <com.hbird.widget.swipe_recyclerView.SwipeRecyclerView
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+    </LinearLayout>
+</layout>

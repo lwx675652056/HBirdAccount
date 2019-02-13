@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.method.HideReturnsTransformationMethod;
@@ -49,9 +48,6 @@ public class ActFindPassword extends BaseActivity<ActFindPasswordBinding,FindPas
         binding.setListener(new OnClick());
 
         TitleBean t = new TitleBean("找回密码");
-        t.setBg_color(R.color.white);
-        t.setRightColor(Color.parseColor("#333333"));
-        t.setBackIcon(ContextCompat.getDrawable(this, R.mipmap.nav_back_normal));
         binding.setTitle(t);
         binding.toolbar.ivBack.setOnClickListener(v -> onBackPressed());
 

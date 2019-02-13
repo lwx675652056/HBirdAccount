@@ -207,14 +207,12 @@ public class IndexFragementModle extends BaseViewModel {
                 }
                 if (!TextUtils.isEmpty(ids)) {
                     String substring = ids.substring(0, ids.length() - 1);
-                    sql = "SELECT id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
-                            ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
-                            ", remark, USER_PRIVATE_LABEL_ID,ASSETS_NAME, REPORTER_AVATAR, REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT "
+                    sql = "SELECT * FROM WATER_ORDER_COLLECT "
                             + " where ACCOUNT_BOOK_ID in " + "(" + substring + ")"
                             + " AND DELFLAG = 0"
                             + " AND CHARGE_DATE >= " + MonthFirstDay
                             + " and CHARGE_DATE < " + MonthLastDays
-                            + " ORDER BY CHARGE_DATE DESC, CREATE_DATE DESC";
+                            + " ORDER BY CHARGE_DATE DESC, CREATE_DATE DESC LIMIT 3;";
                 }
             }
         } else {
@@ -223,7 +221,7 @@ public class IndexFragementModle extends BaseViewModel {
                     + " AND  DELFLAG = 0"
                     + " AND CHARGE_DATE >= " + MonthFirstDay
                     + " and CHARGE_DATE < " + MonthLastDays
-                    + " ORDER BY CHARGE_DATE DESC, CREATE_DATE DESC";
+                    + " ORDER BY CHARGE_DATE DESC, CREATE_DATE DESC LIMIT 3;";
         }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);

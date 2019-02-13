@@ -20,8 +20,8 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
-import com.hbird.base.util.Utils;
 import com.hbird.ui.login_register.ActLogin;
+import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
 import com.ljy.devring.util.RingToast;
 import com.sobot.chat.SobotApi;
@@ -278,7 +278,7 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
 
     private void doWeChatLogin() {
         //先判断是否安装微信APP,按照微信的说法，目前移动应用上微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
-        if (!ActLogin.isWeChatAppInstalled(this)) {
+        if (!Utils.isWeChatAppInstalled(this)) {
             RingToast.show("您还未安装微信客户端");
         } else {
             SendAuth.Req req = new SendAuth.Req();

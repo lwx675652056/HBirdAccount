@@ -1,5 +1,5 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/sobot_container"
     android:layout_width="match_parent"
     android:layout_height="360dp"
@@ -27,7 +27,7 @@
                 android:gravity="center"
                 android:text="@string/sobot_switch_robot_title"
                 android:textColor="#000000"
-                android:textSize="14sp" />
+                android:textSize="14sp"/>
         </LinearLayout>
 
         <LinearLayout
@@ -40,12 +40,12 @@
                 android:layout_height="15dp"
                 android:layout_gravity="center_vertical"
                 android:layout_marginLeft="16dp"
-                android:background="@drawable/sobot_icon_evaluation_cancel" />
+                android:background="@drawable/sobot_icon_evaluation_cancel"/>
         </LinearLayout>
     </RelativeLayout>
 
     <GridView
         android:id="@+id/sobot_gv"
-        style="@style/sobot_grid_view" />
+        style="@style/sobot_grid_view"/>
 
 </LinearLayout>

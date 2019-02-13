@@ -108,4 +108,10 @@
         </attr>
         <attr name="isLoadMore" format="boolean"></attr>
     </declare-styleable>
+
+    <declare-styleable name="SwipeMenuLayout">
+        <attr name="leftViewId" format="reference|integer"/>
+        <attr name="rightViewId" format="reference|integer"/>
+        <attr name="contentViewId" format="reference|integer"/>
+    </declare-styleable>
 </resources>

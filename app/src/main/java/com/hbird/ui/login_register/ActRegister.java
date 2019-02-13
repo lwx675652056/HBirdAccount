@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.os.CountDownTimer;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.Html;
 import android.text.TextUtils;
@@ -57,11 +56,7 @@ public class ActRegister extends BaseActivity<ActRegisterBinding, RegisterModle>
         binding.setData(data);
         binding.setListener(new OnClick());
 
-        TitleBean t = new TitleBean("登录注册");
-        t.setBg_color(R.color.white);
-        t.setRightColor(Color.parseColor("#333333"));
-        t.setBackIcon(ContextCompat.getDrawable(this, R.mipmap.nav_back_normal));
-        binding.setTitle(t);
+        binding.setTitle(new TitleBean("登录注册"));
         binding.toolbar.ivBack.setOnClickListener(v -> onBackPressed());
 
         String strs = "注册即同意 " + "<font color='#2F54EB'>" + "《蜂鸟记账使用协议》" + "</font>";

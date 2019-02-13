@@ -108,9 +108,16 @@ public interface GankDataService {
     @PUT("updateUserInfo/android")
     Observable<HttpResult<String>> putPersionnalInfo(@Header("X-AUTH-TOKEN") String token, @Body RequestBody body);
 
+    // 微信登录
+    @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头
+    @POST("loginByWeChat/android")
+    Observable<HttpResult<String>> loginByWeChat(@Body RequestBody body);
+
 
     // 获取收入类型标签
     @GET("getHadABType/android")
     Observable<String> getHadABType(@Header("X-AUTH-TOKEN") String token);
+
+
 
 }

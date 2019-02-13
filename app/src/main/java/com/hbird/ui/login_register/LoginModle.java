@@ -105,7 +105,6 @@ public class LoginModle extends BaseViewModel {
                 .login(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> showDialog())
                 .subscribe(new Observer<HttpResult<String>>() {
 
                     @Override
@@ -115,7 +114,6 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onNext(HttpResult<String> value) {
-                        dismissDialog();
                         LogUtil.e(value.toString());
                         if (value.code == 200) {
                             SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.CURRENT_LOGIN_METHOD, "sj");
@@ -131,14 +129,12 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        dismissDialog();
                         ToastUtil.showShort(e.getMessage());
                         e.printStackTrace();
                     }
 
                     @Override
                     public void onComplete() {
-
                     }
                 });
     }
@@ -153,7 +149,6 @@ public class LoginModle extends BaseViewModel {
                 .loginByVerifyCode(body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> showDialog())
                 .subscribe(new Observer<HttpResult<String>>() {
 
                     @Override
@@ -163,7 +158,6 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onNext(HttpResult<String> value) {
-                        dismissDialog();
                         LogUtil.e(value.toString());
                         if (value.code == 200) {
                             SharedPreferencesUtil.put(com.hbird.base.app.constant.CommonTag.CURRENT_LOGIN_METHOD, "sj");
@@ -180,7 +174,6 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        dismissDialog();
                         ToastUtil.showShort(e.getMessage());
                         e.printStackTrace();
                     }
@@ -330,7 +323,7 @@ public class LoginModle extends BaseViewModel {
                 .postCheckChargeTypes(token, body)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnSubscribe(disposable -> showDialog())
+//                .doOnSubscribe(disposable -> showDialog())
                 .subscribe(new Observer<HttpResult<SystemBiaoqReturn.ResultBean>>() {
                     @Override
                     public void onSubscribe(Disposable d) {
@@ -339,7 +332,7 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onNext(HttpResult<SystemBiaoqReturn.ResultBean> value) {
-                        dismissDialog();
+//                        dismissDialog();
                         LogUtil.e(value.toString());
 
                         //获取到所有常用收入支出类目 （并插入到本地数据库）
@@ -353,7 +346,7 @@ public class LoginModle extends BaseViewModel {
 
                     @Override
                     public void onError(Throwable e) {
-                        dismissDialog();
+//                        dismissDialog();
                         ToastUtil.showShort(e.getMessage());
                         e.printStackTrace();
                     }
@@ -399,27 +392,27 @@ public class LoginModle extends BaseViewModel {
         SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.SYNINTERVAL, synInterval);
         //个人账户账本id
         List<SystemBiaoqReturn.ResultBean.AbsBean> abs = result.getAbs();
-        Set<String> set = new LinkedHashSet<String>();
+        Set<String> set = new LinkedHashSet<>();
         set.clear();
         if (null != abs) {
             for (int i = 0; i < abs.size(); i++) {
                 String accountBookId = abs.get(i).getId() + "";
-                if (i == 0) {
-                    //默认账本id
-                    String s = SPUtil.getPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
-                    boolean firstGuide = SPUtil.getPrefBoolean(getApplication(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, true);
-                    if (firstGuide) {
-                        SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
-                        SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
-                        SPUtil.setPrefInt(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
-                    } else {
-                        if (TextUtils.isEmpty(s)) {
-                            SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
-                            SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
-                            SPUtil.setPrefInt(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
-                        }
-                    }
-                }
+//                if (i == abs.size()-1) {
+//                    //默认账本id
+//                    String s = SPUtil.getPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
+//                    boolean firstGuide = SPUtil.getPrefBoolean(getApplication(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, true);
+//                    if (firstGuide) {
+//                        SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
+//                        SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
+//                        SPUtil.setPrefInt(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
+//                    } else {
+//                        if (TextUtils.isEmpty(s)) {
+//                            SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, accountBookId);
+//                            SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, accountBookId);
+//                            SPUtil.setPrefInt(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_AB_TYPEID, abs.get(i).getAbTypeId());
+//                        }
+//                    }
+//                }
                 set.add(accountBookId);
             }
         }
@@ -443,7 +436,48 @@ public class LoginModle extends BaseViewModel {
         } else {
             callBack.getSuccess(false);
         }
-        finish();
+    }
+
+    public void getAccessToken(String code,String deviceId,String channelName,CallBack callBack ) {
+        String mobileType = android.os.Build.MODEL;
+        String jsonInfo = "{\"code\":\"" + code + "\", \"mobileDevice\":\"" + deviceId + "\", \"mobileManufacturer\":\"" + mobileType + "\", \"androidChannel\":\"" + channelName + "\"}";
+        RequestBody body = RequestBody.create(MediaType.parse("application/json; charset=utf-8"), jsonInfo);
+
+        ApiClient.getGankDataService()
+                .loginByWeChat(body)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+//                .doOnSubscribe(disposable -> showDialog())
+                .subscribe(new Observer<HttpResult<String>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<String> value) {
+                        //登录成功
+                        if (value.code == 200) {
+                            //统计用户时以设备为标准 统计应用自身的账号（友盟统计）
+                            MobclickAgent.onProfileSignIn("微信登录", value.result);
+                            // 设置登录用户ID API（GrowingIO统计）
+                            GrowingIO.getInstance().setUserId("微信登录：" + value.result);
+                            SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.CURRENT_LOGIN_METHOD, "wx");
+
+                            saveInfo(value.result,callBack);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        ToastUtil.showShort(e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                    }
+                });
     }
 
     @Override
@@ -454,5 +488,9 @@ public class LoginModle extends BaseViewModel {
 
     public interface CallBack {
         void getSuccess(boolean toHome);
+    }
+
+    public interface CallBack1 {
+        void success(String str);
     }
 }

@@ -28,7 +28,7 @@
 
         <include
             android:id="@+id/toolbar"
-            layout="@layout/head_toolbar"
+            layout="@layout/head_toolbar_white"
             bind:setTitle="@{title}"/>
 
         <View style="@style/horizontal_line"/>

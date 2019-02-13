@@ -104,8 +104,7 @@
         <!--注册-->
         <activity
             android:name="com.hbird.ui.login_register.ActRegister"
-            android:screenOrientation="portrait"
-            android:theme="@style/TranslucentTheme"/>
+            android:screenOrientation="portrait"/>
 
         <!--找回密码-->
         <activity
@@ -125,6 +124,10 @@
         <!--登录-->
         <activity
             android:name="com.hbird.ui.login_register.ActLogin"
+            android:screenOrientation="portrait"/>
+        <!--我的账本-->
+        <activity
+            android:name="com.hbird.ui.index.ActMyAccount"
             android:screenOrientation="portrait"/>
 
         <!--个人信息管理-->
@@ -177,9 +180,11 @@
         <activity
             android:name="com.hbird.ui.charge.ActEditCharge"
             android:windowSoftInputMode="adjustPan|stateHidden"/>
+        <!--记账提醒-->
         <activity
-            android:name=".mvc.activity.AccountAlertActivity"
-            android:launchMode="singleInstance"/>
+            android:launchMode="singleInstance"
+            android:name=".mvc.activity.AccountAlertActivity"/>
+
         <activity
             android:name=".mvc.activity.SuggestFanKuiActivity"
             android:windowSoftInputMode="adjustNothing"/>

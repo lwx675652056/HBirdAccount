@@ -75,7 +75,7 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
         switch (view.getId()){
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
-                finish();
+                onBackPressed();
                 break;
             case R.id.iv_btn:
             case R.id.ll_open_password:// 开启记账提醒
@@ -134,5 +134,12 @@ public class AccountAlertActivity extends BaseActivity<BaseActivityPresenter> im
     public static String getTime(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("HH:mm");
         return format.format(date);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // singleInstance 模式必须这么写
+        overridePendingTransition( R.anim.slide_in_from_left,R.anim.slide_out_to_right);
     }
 }

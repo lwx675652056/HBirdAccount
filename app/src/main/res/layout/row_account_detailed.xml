@@ -160,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_10_x"
                 android:text="@{@string/subtraction+bean.money}"
-                android:textColor="@color/text_333333"
+                android:textColor="#2F54EB"
                 android:textSize="16sp"
                 android:visibility="@{bean.orderType==1?View.VISIBLE:View.GONE}"/>
             <!--收入-->

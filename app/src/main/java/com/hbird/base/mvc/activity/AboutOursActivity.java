@@ -71,7 +71,7 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
     @Override
     protected void initData(Bundle savedInstanceState) {
         version2 = Utils.getVersion(this);
-        mVersion.setText("V"+version2);
+        mVersion.setText("V" + version2);
     }
 
     @Override
@@ -82,18 +82,16 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
                 finish();
                 break;
-            case R.id.iv_guanzhu:
-                //showMessage("关注喽！");
+            case R.id.iv_guanzhu:// 关注
                 playVoice(R.raw.changgui02);
-                ClipboardManager cmb = (ClipboardManager)getSystemService(Context.CLIPBOARD_SERVICE);
+                ClipboardManager cmb = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
                 cmb.setText("fengniaojizhang01");
                 showMessage("已将公众号复制到粘贴板，请打开微信搜索关注");
-                //updateVersion();
                 break;
         }
     }
@@ -101,23 +99,22 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
     private void updateVersion() {
         String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
         final String version = "0.0.1";//测试用
-        if(TextUtils.isEmpty(version2)){
+        if (TextUtils.isEmpty(version2)) {
             return;
         }
-        NetWorkManager.getInstance().setContext(this).
-                getCheckVersion(token, version, new NetWorkManager.CallBack() {
+        NetWorkManager.getInstance().setContext(this).getCheckVersion(token, version, new NetWorkManager.CallBack() {
 
             private String url;
 
             @Override
             public void onSuccess(BaseReturn b) {
                 CheckVersionReturn b1 = (CheckVersionReturn) b;
-                if(null!=b1.getResult()){
+                if (null != b1.getResult()) {
                     final CheckVersionReturn.ResultBean result = b1.getResult();
                     String ver = result.getVersion();
-                    showMessage(ver.compareTo(version)+"");
+                    showMessage(ver.compareTo(version) + "");
                     url = result.getUrl();
-                    if(ver.compareTo(version)>0){
+                    if (ver.compareTo(version) > 0) {
                         //执行下载操作
                         new updateDialog(AboutOursActivity.this).builder()
                                 .setMsg(result.getUpdateLog())
@@ -126,8 +123,8 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
                                     public void onClick(View view) {
                                         playVoice(R.raw.changgui02);
                                         Intent intent = new Intent();
-                                        SPUtil.setPrefString(getApplicationContext(), CommonTag.UPDATE_URL,url);
-                                        intent.setClass(getApplicationContext(),DownLoadService.class);
+                                        SPUtil.setPrefString(getApplicationContext(), CommonTag.UPDATE_URL, url);
+                                        intent.setClass(getApplicationContext(), DownLoadService.class);
                                         startService(intent);
                                     }
                                 })
@@ -136,7 +133,7 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
                                     public void onClick(View view) {
                                         playVoice(R.raw.changgui02);
                                         int status = result.getInstallStatus();
-                                        if(status==1){
+                                        if (status == 1) {
                                             //强制更新  否则退出程序
                                             DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN, "");
                                             DevRing.cacheManager().spCache(com.hbird.base.app.constant.CommonTag.SPCACH).put(CommonTag.GLOABLE_TOKEN_EXPIRE, "");
@@ -156,10 +153,10 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
                         }
                         downloadFile(mFileSave,url);*/
 
-                    }else {
+                    } else {
                         showMessage("当前已经是最新版本了");
                     }
-                }else {
+                } else {
                     showMessage("当前已经是最新版本了");
                 }
             }
@@ -173,9 +170,10 @@ public class AboutOursActivity extends BaseActivity<BaseActivityPresenter> imple
 
     /**
      * 下载文件
+     *
      * @param file 下载内容将保存到该目标文件
      */
-    public void downloadFile(File file,String url) {
+    public void downloadFile(File file, String url) {
         //不为空则不重新构造DownloadObserver，避免创造了多个进度监听回调
         if (mDownloadObserver == null) {
             //DownloadObserver构造函数传入要要监听的下载地址

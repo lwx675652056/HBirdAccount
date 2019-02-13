@@ -50,7 +50,6 @@ import com.hbird.base.mvc.bean.ReturnBean.indexDatasReturn;
 import com.hbird.base.mvc.bean.indexBaseListBean;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
-import com.hbird.base.mvc.view.dialog.DialogToGig;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvc.view.dialog.IndexCommonDialog;
 import com.hbird.base.mvc.view.dialog.InvitationFirendDialog;
@@ -146,9 +145,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         return 0;
     }
 
-
     @Override
     public void initData() {
+        LogUtil.e("1111","1");
         ViewGroup.LayoutParams params = binding.llParent1.getLayoutParams();
         params.height += StatusBarUtil.getStateBarHeight(getActivity());
         binding.llParent1.setLayoutParams(params);
@@ -195,7 +194,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         LogUtil.e("accountId:" + accountId);
 
         yyyy = parseInt(DateUtils.getCurYear("yyyy"));
-
         mMonth = DateUtils.date2Str(new Date(), "MM");
         String s = mMonth.substring(0, 2);
         mm = parseInt(s);
@@ -216,8 +214,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             try {
                 if (!TextUtils.isEmpty(jiange)) {
                     double v = Double.parseDouble(jiange);
-                    if (l > v) {
-                        //超过了最大间隔时间则自动上传
+                    if (l > v) {  //超过了最大间隔时间则自动上传
                         timeB = true;
                     }
                 }
@@ -249,8 +246,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             }
         });
 
-        getIndexInfo();
         loadDataForNet(true);
+        getIndexInfo();
         setChart();
     }
 
@@ -307,6 +304,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             Utils.playVoice(getActivity(), R.raw.changgui02);
             Intent intent2 = new Intent();
             intent2.setClass(getActivity(), MyZhangBenActivity.class);
+//            intent2.setClass(getActivity(), ActMyAccount.class);
             String id = (String) SharedPreferencesUtil.get(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
             intent2.putExtra("ID", id);
             startActivityForResult(intent2, 131);
@@ -398,8 +396,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser && getActivity() != null) {
-//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow()); // 导航栏黑色字体
             StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
+
             if (popOnces >= 0) {  //继续弹窗
                 tanDialog(windowPop);
             }
@@ -412,6 +410,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             accountId = (String) SharedPreferencesUtil.get(com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
             zhangbenId = accountId;
             shouldSetChat = false;
+
             getIndexInfo();
             loadDataForNet(true);
         }
@@ -428,6 +427,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         } else {
             shouldSetChat = false;
         }
+
+        LogUtil.e("1111","1");
     }
 
     public void loadDataForNet(boolean showDialog) {
@@ -464,20 +465,20 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         }
     }
 
-    private DialogToGig dialogToGig;
-
-    public void showGifProgress(String title) {
-        if (dialogToGig == null) {
-            dialogToGig = new DialogToGig(getActivity());
-        }
-        dialogToGig.builder().show();
-    }
-
-    public void hideGifProgress() {
-        if (dialogToGig != null) {
-            dialogToGig.hide();
-        }
-    }
+//    private DialogToGig dialogToGig;
+//
+//    public void showGifProgress(String title) {
+//        if (dialogToGig == null) {
+//            dialogToGig = new DialogToGig(getActivity());
+//        }
+//        dialogToGig.builder().show();
+//    }
+//
+//    public void hideGifProgress() {
+//        if (dialogToGig != null) {
+//            dialogToGig.hide();
+//        }
+//    }
 
     private void pullToSyncDate(boolean showDialog) {
         //判断当前网络状态
@@ -486,7 +487,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             return;
         }
         if (showDialog) {
-            showGifProgress("");
+            showDialog();
         }
         if (AppUtil.getVersionCode(getActivity()) < 10) {
             comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
@@ -516,7 +517,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 //插入本地数据库
                 DBUtil.insertLocalDB(synData);
                 SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, false);
-                hideGifProgress();
+                dismissDialog();
                 binding.refresh.finishRefresh();
 
                 if (isFirst) {
@@ -537,7 +538,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             @Override
             public void onError(String s) {
-                hideGifProgress();
+                dismissDialog();
                 ToastUtil.showShort(s);
             }
         });
@@ -878,7 +879,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     public void onActivityResult(int requestCode, int resultCode, Intent datas) {
         super.onActivityResult(requestCode, resultCode, datas);
 
-        if (requestCode == 131 && resultCode == 130) {
+        if (requestCode == 131 && resultCode == 130) {// 选择账户
             binding.abMoren.setText(datas.getStringExtra("TITLE"));
             SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT, datas.getStringExtra("TITLE"));
             zhangbenId = datas.getStringExtra("ID");
@@ -908,7 +909,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             pieChatAdapter.notifyDataSetChanged();
 
             setChart();
-        } else if (requestCode == 101) {
+        } else if (requestCode == 101) {// 明细回来的
             setChart();
 
             pieChatList.clear();
@@ -924,12 +925,11 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 }
             }
             pieChatAdapter.notifyDataSetChanged();
-
-            resumSetChat = false;
+        }else if (requestCode == 141){// 记账回来的
+            getIndexInfo();
+            loadDataForNet(false);
         }
     }
-
-    private boolean resumSetChat = true;
 
     private void setHasRed(String id, final int m) {
         //首页公告已读接口

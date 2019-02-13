@@ -212,6 +212,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         public void accountAlert(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
             startActivity(new Intent(getActivity(), AccountAlertActivity.class));
+            // singleInstance 模式必须这么写
+            getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
         }
 
         // 丰丰通知
@@ -229,6 +231,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             } else {
                 SobotUtils.startSobot(getActivity());
             }
+            getActivity().overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
         }
 
         // 收货地址

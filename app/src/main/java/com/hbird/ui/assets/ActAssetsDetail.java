@@ -79,7 +79,7 @@ import static java.lang.Integer.parseInt;
 public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseViewModel> implements IBaseActivity {
 
     private String token;
-    private String accountId;
+//    private String accountId;
 
     private AssetsDetailData data;// 页面的值
     private AssetsBean bean;// 传过来的值
@@ -92,6 +92,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
     private int[] currentDate = CalendarUtil.getCurrentDate();
     private int width_15;
     private int maxWidth = -1;
+    private String persionId;// 个人的ID
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -105,7 +106,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 
     @Override
     public void initData() {
-        accountId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
+        persionId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.USER_INFO_PERSION, "");
+//        accountId = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.INDEX_CURRENT_ACCOUNT_ID, "");
         currentDate = CalendarUtil.getCurrentDate();
         width_15 = getResources().getDimensionPixelSize(R.dimen.dp_15_x);
         maxWidth = ScreenUtil.getScreenWidth(this) - width_15 * 6 - width_15 * 3 - width_15 / 15;
@@ -222,26 +224,37 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 
         String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
         String sql = "";
-        if (TextUtils.isEmpty(accountId)) {
-            Set<String> set = new LinkedHashSet<>();
-            Set<String> prefSet = SPUtil.getPrefSet(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
-            if (prefSet != null) {
-                String ids = "";
-                Iterator<String> iterator = prefSet.iterator();
-                while (iterator.hasNext()) {
-                    String s = iterator.next();
-                    ids += s + ",";
-                }
-                if (!TextUtils.isEmpty(ids)) {
-                    String substring = ids.substring(0, ids.length() - 1);
-                    sql = "SELECT * FROM WATER_ORDER_COLLECT " +
-                            " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")" + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " and ASSETS_ID=" + data.getAssetsType() + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-                }
-            }
-        } else {
-            sql = "SELECT * FROM WATER_ORDER_COLLECT " +
-                    " where  ACCOUNT_BOOK_ID=" + accountId + " AND  DELFLAG = 0 " + "AND CHARGE_DATE >=" + MonthFirstDay + " and CHARGE_DATE<" + MonthLastDays + " and ASSETS_ID=" + data.getAssetsType() + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-        }
+//        if (TextUtils.isEmpty(accountId)) {
+//            Set<String> set = new LinkedHashSet<>();
+//            Set<String> prefSet = SPUtil.getPrefSet(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
+//            if (prefSet != null) {
+//                String ids = "";
+//                Iterator<String> iterator = prefSet.iterator();
+//                while (iterator.hasNext()) {
+//                    String s = iterator.next();
+//                    ids += s + ",";
+//                }
+//                if (!TextUtils.isEmpty(ids)) {
+//                    String substring = ids.substring(0, ids.length() - 1);
+//                    sql = "SELECT * FROM WATER_ORDER_COLLECT "
+////                            " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")"
+//                            + " where DELFLAG = 0"
+//                            + " AND CHARGE_DATE >=" + MonthFirstDay
+//                            + " and CHARGE_DATE<" + MonthLastDays
+//                            + " and ASSETS_ID=" + data.getAssetsType()
+//                            + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
+//                }
+//            }
+//        } else {
+            sql = "SELECT * FROM WATER_ORDER_COLLECT "
+//                    + " where ACCOUNT_BOOK_ID=" + accountId
+                    + " where DELFLAG = 0 "
+                    + "AND CHARGE_DATE >=" + MonthFirstDay
+                    + " AND CHARGE_DATE<" + MonthLastDays
+                    + " AND CREATE_BY = " + persionId
+                    + " AND ASSETS_ID=" + data.getAssetsType()
+                    + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
+//        }
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
 
@@ -300,7 +313,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 //                        AccountDetailedBean temp = new AccountDetailedBean();
 //                        temp.setBean(dates.get(i));
 //                        list.add(temp);
-                        list.add(JSON.parseObject(dates.get(i).toString(),AccountDetailedBean.class));
+                        list.add(JSON.parseObject(dates.get(i).toString(), AccountDetailedBean.class));
                     }
 //                    Collections.sort(list);
                     binding.recyclerView.setVisibility(View.VISIBLE);
@@ -399,19 +412,19 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                 }
             }
             //获取月份统计数据
-            if (!TextUtils.isEmpty(accountId)) {
-                Map<String, BigDecimal> account = getAccount(Integer.parseInt(accountId));
-                ja.put("arrays", array2);
-                ja.put("monthSpend", account.get("spend"));
-                ja.put("monthIncome", account.get("income"));
-                return ja;
-            } else {
+//            if (!TextUtils.isEmpty(accountId)) {
+//                Map<String, BigDecimal> account = getAccount(Integer.parseInt(accountId));
+//                ja.put("arrays", array2);
+//                ja.put("monthSpend", account.get("spend"));
+//                ja.put("monthIncome", account.get("income"));
+//                return ja;
+//            } else {
                 Map<String, BigDecimal> account = getAccounts();
                 ja.put("arrays", array2);
                 ja.put("monthSpend", account.get("spend"));
                 ja.put("monthIncome", account.get("income"));
                 return ja;
-            }
+//            }
 
         }
         return ja;
@@ -462,7 +475,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 //                indexBeans2.setUserPrivateLabelId(dates.getUserPrivateLabelId());
 //                indexBeans2.setAssetsId(dates.getAssetsId());
 //                indexBeans2.setCreateBy(dates.getCreateBy());
-                indexBeans2 = JSON.parseObject(dates,indexBaseListBean.class);
+                indexBeans2 = JSON.parseObject(dates, indexBaseListBean.class);
                 indexBeans2.setTag(1);
                 been.add(indexBeans2);
             }
@@ -486,6 +499,9 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             int count = cursor.getCount();
             if (cursor.moveToFirst()) {
                 String spend = cursor.getString(0);
+                if (spend == null){
+                    spend = "0";
+                }
                 listBySql.put("spend", new BigDecimal(spend));
                 String income = cursor.getString(1);
                 listBySql.put("income", new BigDecimal(income));

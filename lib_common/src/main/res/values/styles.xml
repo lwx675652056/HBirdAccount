@@ -72,7 +72,7 @@
     </style>
 
     <!-- Activity主题，防止专场动画黑屏 -->
-    <style name="activityTheme" parent="@android:style/Theme"></style>
+    <style name="activityTheme" parent="@android:style/Theme"/>
 
 
     <!-- 黑色字体-->

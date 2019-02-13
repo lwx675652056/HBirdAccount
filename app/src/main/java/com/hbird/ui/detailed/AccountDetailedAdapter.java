@@ -1,7 +1,6 @@
 package com.hbird.ui.detailed;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -68,13 +67,15 @@ public class AccountDetailedAdapter extends BaseRecyclerAdapter<AccountDetailedB
             binding.bottomView.setVisibility(View.GONE);
         }
 
-        if (accountDetailedBean != null) {
-            if (accountDetailedBean.getUpdateBy() == null || accountDetailedBean.getUpdateBy() == persionId) {
-                binding.imagess.setBorderColor(Color.parseColor("#D80200"));
-            } else {
-                binding.imagess.setBorderColor(Color.parseColor("#41AB14"));
-            }
-        }
+//        if (accountDetailedBean != null) {
+//            if (accountDetailedBean.getUpdateBy() == null || accountDetailedBean.getUpdateBy() == persionId) {
+//                binding.imagess.setBorderColor(Color.parseColor("#D80200"));
+//            } else {
+//                binding.imagess.setBorderColor(Color.parseColor("#41AB14"));
+//            }
+//        }
+
+        binding.imagess.setVisibility(View.GONE);// 资产没有小头像
 
         binding.llContent.setOnClickListener(v -> listener.onClick(position,accountDetailedBean,0));
         binding.llContent.setOnLongClickListener(v -> {

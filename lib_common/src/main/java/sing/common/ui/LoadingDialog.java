@@ -50,7 +50,6 @@ public class LoadingDialog {
     public void dismiss() {
         if (dialog != null) {
             dialog.dismiss();
-            dialog.cancel();
         }
     }
 }

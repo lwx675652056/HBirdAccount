@@ -225,9 +225,9 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
     private void openJiZhang() {
         Utils.playVoice(MainActivity.this, R.raw.jizhang);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startActivity(new Intent(MainActivity.this, ChooseAccountTypeActivity.class), ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
+            startActivityForResult(new Intent(MainActivity.this, ChooseAccountTypeActivity.class),141, ActivityOptions.makeSceneTransitionAnimation(MainActivity.this).toBundle());
         } else {
-            startActivity(new Intent(MainActivity.this, ChooseAccountTypeActivity.class));
+            startActivityForResult(new Intent(MainActivity.this, ChooseAccountTypeActivity.class),141);
         }
     }
 
@@ -260,6 +260,9 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
         }
         if (requestCode == 131 && resultCode == 130) {
             indexFragement.onActivityResult(131, 130, null);
+        }
+        if (requestCode == 141){
+            indexFragement.onActivityResult(141, -1, null);
         }
     }
 

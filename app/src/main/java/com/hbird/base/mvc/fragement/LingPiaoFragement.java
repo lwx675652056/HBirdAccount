@@ -17,7 +17,6 @@ import com.hbird.base.R;
 import com.hbird.base.app.RingApplication;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.app.constant.UrlConstants;
-import com.hbird.base.listener.OnItemClickListener;
 import com.hbird.base.mvc.activity.AccountSafeActivity;
 import com.hbird.base.mvc.activity.BudgetActivity;
 import com.hbird.base.mvc.activity.CanSettingMoneyActivity;
@@ -79,7 +78,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     private String ids;
     private String name;
     private MainActivity activity;
-
+    private String token;
     private boolean isIndex = true;// 是否在首页
 
     @Override
@@ -92,7 +91,7 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
         LinearLayout ll = getActivity().findViewById(R.id.ll_parent);
         ll.setPadding(0, StatusBarUtil.getStateBarHeight(getActivity()), 0, 0);
 
-        String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
+        token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
         String version = Utils.getVersion(getActivity());
         url = url + token + "&currentVersion=" + version;
         LogUtil.e("领票票URL:---" + url);
@@ -103,11 +102,10 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), false);
+
             toSencoud(false);
 
-//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow()); // 导航栏白色字体
-            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);
-            String token = SPUtil.getPrefString(getActivity(), CommonTag.GLOABLE_TOKEN, "");
             getXiaoLvNet(token);
         }
     }
@@ -372,24 +370,17 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     private void getCode() {
         //先判断是否安装微信APP,按照微信的说法，目前移动应用上微信登录只提供原生的登录方式，需要用户安装微信客户端才能配合使用。
-//        if (!isWeChatAppInstalled(this)) {
-//            RingToast.show("您还未安装微信客户端");
-//        } else {
-        WXEntryActivity.setListener(new OnItemClickListener() {
-            @Override
-            public void onClick(int position, Object data, int type) {
-                String code = (String) data;
-                LogUtil.e("code = " + code);
-                uploadCode(code);
-            }
-        });
-        SharedPreferencesUtil.put("get_weixin_code", true);
-        SendAuth.Req req = new SendAuth.Req();
-        req.scope = "snsapi_userinfo";
-        req.state = "diandi_wx_login";
-        //像微信发送请求
-        RingApplication.mWxApi.sendReq(req);
-//        }
+        if (!Utils.isWeChatAppInstalled(getActivity())) {
+            ToastUtil.showShort("您还未安装微信客户端");
+        } else {
+            WXEntryActivity.setListener((position, data, type) -> uploadCode((String) data));
+
+            SharedPreferencesUtil.put("get_weixin_code", true);
+            SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "diandi_wx_login";
+            RingApplication.mWxApi.sendReq(req);
+        }
     }
 
     private void uploadCode(String code) {
@@ -405,7 +396,6 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
             @Override
             public void onError(String s) {
-                sing.util.LogUtil.e(s);
                 String result = " {\"result\":1}";
                 LogUtil.e("返给前端的数据" + result);
                 webView.loadUrl("javascript:getAndroidData(" + result + ")");
@@ -428,14 +418,14 @@ public class LingPiaoFragement extends BaseFragement implements View.OnClickList
 
     @Override
     public void onBackPressed() {
-        if (!isIndex){
-            if (webView.canGoBack()){
+        if (!isIndex) {
+            if (webView.canGoBack()) {
                 webView.goBack();
                 isIndex = !webView.canGoBack();// 还能后退就说明是二级页面
-            }else{
+            } else {
                 isIndex = true;
             }
-        }else{// 当前在首页
+        } else {// 当前在首页
             if ((System.currentTimeMillis() - exitTime) > 2000) {
                 Toast.makeText(getApplicationContext(), "再按一次退出程序", Toast.LENGTH_SHORT).show();
                 exitTime = System.currentTimeMillis();

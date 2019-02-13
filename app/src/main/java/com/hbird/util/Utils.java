@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.hbird.base.R;
+import com.hbird.base.app.RingApplication;
 import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.mvc.bean.indexBaseListBean;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
@@ -27,6 +28,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 public class Utils {
 
@@ -261,6 +263,28 @@ public class Utils {
         }
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && !useStatusBarColor) {//android6.0以后可以对状态栏文字颜色和图标进行修改
             context.getWindow().getDecorView().setSystemUiVisibility( View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN|View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
+    }
+
+    /**
+     * 判断微信客户端是否存在
+     * @return true安装, false未安装
+     */
+    public static boolean isWeChatAppInstalled(Context context) {
+        if (RingApplication.mWxApi.isWXAppInstalled() && RingApplication.mWxApi.isWXAppSupportAPI()) {
+            return true;
+        } else {
+            final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
+            List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所有已安装程序的包信息
+            if (pinfo != null) {
+                for (int i = 0; i < pinfo.size(); i++) {
+                    String pn = pinfo.get(i).packageName;
+                    if (pn.equalsIgnoreCase("com.tencent.mm")) {
+                        return true;
+                    }
+                }
+            }
+            return false;
         }
     }
 }

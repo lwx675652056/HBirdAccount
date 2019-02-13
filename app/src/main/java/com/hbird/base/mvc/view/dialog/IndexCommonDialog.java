@@ -31,36 +31,36 @@ public class IndexCommonDialog {
     public IndexCommonDialog(Context context, IndexFragement context2) {
         this.context = context;
         this.context2 = context2;
-        WindowManager windowManager = (WindowManager) context
-                .getSystemService(Context.WINDOW_SERVICE);
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         display = windowManager.getDefaultDisplay();
     }
-    public IndexCommonDialog builder() {
-        View view = LayoutInflater.from(context).inflate(
-                R.layout.dialog_index_common, null);
 
-        lLayout_bg = (LinearLayout) view.findViewById(R.id.lLayout_bg);
-        ivClose = (ImageView)view.findViewById(R.id.iv_dels);
-        chaKan = (ImageView)view.findViewById(R.id.iv_img_bg);
+    public IndexCommonDialog builder() {
+        View view = LayoutInflater.from(context).inflate(R.layout.dialog_index_common, null);
+
+        lLayout_bg = view.findViewById(R.id.lLayout_bg);
+        ivClose = view.findViewById(R.id.iv_dels);
+        chaKan = view.findViewById(R.id.iv_img_bg);
 
         dialog = new Dialog(context, R.style.AlertDialogStyle);
         dialog.setContentView(view);
 
-        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display
-                .getWidth() * 0.85), LinearLayout.LayoutParams.WRAP_CONTENT));
+        lLayout_bg.setLayoutParams(new FrameLayout.LayoutParams((int) (display.getWidth() * 0.85), LinearLayout.LayoutParams.WRAP_CONTENT));
 
         return this;
     }
+
     public IndexCommonDialog setMsg(String url) {
         GlideApp.with(context)
                 .load(url)
                 .centerCrop()
-                .override(500,700)
+                .override(500, 700)
                 .into(chaKan);
         return this;
     }
+
     //去查看
-    public IndexCommonDialog setChaKan(final View.OnClickListener listener){
+    public IndexCommonDialog setChaKan(final View.OnClickListener listener) {
         chaKan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,8 +70,10 @@ public class IndexCommonDialog {
         });
         return this;
     }
+
     /**
      * 设置关闭
+     *
      * @param listener
      * @return
      */
@@ -85,6 +87,7 @@ public class IndexCommonDialog {
         });
         return this;
     }
+
     public void show() {
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
