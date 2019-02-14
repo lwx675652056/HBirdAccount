@@ -910,6 +910,13 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
             setChart();
         } else if (requestCode == 101) {// 明细回来的
+            getIndexInfo();
+            loadDataForNet(false);
+
+            if (iii == -1){
+                return;
+            }
+
             setChart();
 
             pieChatList.clear();
