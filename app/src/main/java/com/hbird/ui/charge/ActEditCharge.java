@@ -569,6 +569,9 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 //        }
 //        String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
 //        w.setAssetsName(accountName);
+        if (bean.getAssetsName().equals("未选择")){
+            bean.setAssetsName("");
+        }
         b = DevRing.tableManager(WaterOrderCollect.class).updateOne(bean);
 
         pullToSyncDate(resultCode);

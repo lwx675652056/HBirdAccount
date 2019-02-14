@@ -26,7 +26,6 @@ import com.github.mikephil.chart_3_0_1v.data.PieDataSet;
 import com.github.mikephil.chart_3_0_1v.data.PieEntry;
 import com.github.mikephil.chart_3_0_1v.highlight.Highlight;
 import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
-import com.github.mikephil.charting.animation.Easing;
 import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.databinding.FragementIndexBinding;
@@ -1211,7 +1210,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         mChart.setRotationAngle(fromangle);
         ObjectAnimator spinAnimator = ObjectAnimator.ofFloat(mChart, "rotationAngle", fromangle, toangle);
         spinAnimator.setDuration(500);
-        spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(Easing.EasingOption.EaseInOutQuad));
+//        spinAnimator.setInterpolator(Easing.getEasingFunctionFromOption(Easing.EasingOption.EaseInOutQuad));
 
         spinAnimator.addUpdateListener(animation -> mChart.postInvalidate());
         spinAnimator.addListener(new AnimatorListenerAdapter() {

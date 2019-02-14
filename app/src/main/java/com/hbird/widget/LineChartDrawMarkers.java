@@ -60,8 +60,8 @@ public class LineChartDrawMarkers extends LineChart {
 
             float circleRadius = dataSetByIndex.getCircleRadius();
 
-            mRoundMarker.refreshContent(e, highlight);
-            mRoundMarker.draw(canvas, pos[0] - mRoundMarker.getWidth() / 2, pos[1] + circleRadius - mRoundMarker.getHeight()+5);
+//            mRoundMarker.refreshContent(e, highlight);
+//            mRoundMarker.draw(canvas, pos[0] - mRoundMarker.getWidth() / 2, pos[1] + circleRadius - mRoundMarker.getHeight()+5);
         }
     }
 }

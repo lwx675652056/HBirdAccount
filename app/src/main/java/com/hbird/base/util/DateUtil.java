@@ -187,6 +187,9 @@ public class DateUtil {
     }
 
     public static String dateToStamp1(String s) throws ParseException{
+        if (s == null){
+            return "";
+        }
         String res;
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         Date date = simpleDateFormat.parse(s);

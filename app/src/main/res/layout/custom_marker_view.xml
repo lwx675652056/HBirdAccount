@@ -17,7 +17,7 @@
         android:visibility="gone"/>
 
     <ImageView
-        android:layout_width="10dp"
-        android:layout_height="10dp"
+        android:layout_width="15dp"
+        android:layout_height="15dp"
         android:src="@mipmap/shuju_icon_qxtsjd_selected"/>
 </RelativeLayout>

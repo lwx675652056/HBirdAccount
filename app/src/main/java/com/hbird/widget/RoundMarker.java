@@ -2,7 +2,8 @@ package com.hbird.widget;
 
 import android.content.Context;
 
-import com.github.mikephil.chart_3_0_1v.components.MarkerView;
+import com.hbird.common.chating.components.MarkerView;
+import com.hbird.common.chating.utils.MPPointF;
 
 public class RoundMarker extends MarkerView {
     /**
@@ -13,5 +14,10 @@ public class RoundMarker extends MarkerView {
      */
     public RoundMarker(Context context, int layoutResource) {
         super(context, layoutResource);
+    }
+
+    @Override
+    public MPPointF getOffset() {
+        return new MPPointF(-(getWidth() / 2), -getHeight()/2);
     }
 }

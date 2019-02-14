@@ -697,7 +697,7 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
             w.setAssetsId(id);
         }
         String accountName = (String) SharedPreferencesUtil.get(Constants.CHOOSE_ACCOUNT_DESC, "");
-        w.setAssetsName(accountName);
+        w.setAssetsName(accountName.equals("未选择")?"":accountName);
         b = mManger.insertOne(w);
         pullToSyncDate(resultCode);
     }
