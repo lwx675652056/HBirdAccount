@@ -348,6 +348,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
                 SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYIDS, b1.getResult().getId() + "");
                 SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYNAME, b1.getResult().getNickName());
 
+                SharedPreferencesUtil.put(Constants.USER_MOBILE,b1.getResult().getMobile());// 新保存的
 //                String nickName = b1.getResult().getNickName();
 //                if (TextUtils.isEmpty(nickName)) {
 //                    String mobile = b1.getResult().getMobile();

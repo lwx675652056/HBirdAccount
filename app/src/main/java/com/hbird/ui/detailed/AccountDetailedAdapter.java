@@ -4,6 +4,7 @@ import android.content.Context;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 
 import com.hbird.base.R;
 import com.hbird.base.databinding.RowAccountDetailedBinding;
@@ -63,6 +64,9 @@ public class AccountDetailedAdapter extends BaseRecyclerAdapter<AccountDetailedB
 
         if (position == list.size()-1){
             binding.bottomView.setVisibility(View.VISIBLE);
+            LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) binding.bottomView.getLayoutParams();
+            params.height = context.getResources().getDimensionPixelSize(R.dimen.dp_90_x);
+            binding.bottomView.setLayoutParams(params);
         }else{
             binding.bottomView.setVisibility(View.GONE);
         }

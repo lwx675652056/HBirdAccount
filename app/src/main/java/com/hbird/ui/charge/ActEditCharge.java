@@ -558,6 +558,10 @@ public class ActEditCharge extends BaseActivity<BaseActivityPresenter> implement
 //        w.setAbName(zhangbenName);//对应的账本ID
         String headers = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, "");
         String nickName = SPUtil.getPrefString(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, "");
+        if (TextUtils.isEmpty(nickName)){
+            nickName = (String) SharedPreferencesUtil.get(Constants.USER_MOBILE,"");
+            nickName = com.hbird.util.Utils.getHiddenPhone(nickName);
+        }
         bean.setReporterNickName(nickName);//记录人名字
         bean.setReporterAvatar(headers);//记录人头像
 //        w.setIcon(bean.getIcon());

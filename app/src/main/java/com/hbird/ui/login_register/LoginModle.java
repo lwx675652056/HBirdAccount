@@ -238,6 +238,8 @@ public class LoginModle extends BaseViewModel {
                             SharedPreferencesUtil.put(Constants.USER_ID, String.valueOf(value.result.id));// 用户id
                             SharedPreferencesUtil.put(Constants.REGISTER_DATE, value.result.registerDate);// 注册时间
 
+                            SharedPreferencesUtil.put(Constants.USER_MOBILE,value.result.mobile==null?"":value.result.mobile);// 新保存的
+
                             // 旧的也保存一份   避免出错
                             SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, value.result.avatarUrl);
                             SPUtil.setPrefString(getApplication(), com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, value.result.nickName);

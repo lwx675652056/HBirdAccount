@@ -113,6 +113,16 @@ public interface GankDataService {
     @POST("loginByWeChat/android")
     Observable<HttpResult<String>> loginByWeChat(@Body RequestBody body);
 
+    // 获取资产页数据(净资产/初始时间/资产列表)
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("assets/android")
+    Observable<HttpResult<String>> getAssets(@Header("X-AUTH-TOKEN") String token);
+
+//    // 我的账户
+//    @Headers({"Content-Type: application/json","Accept: application/json"})
+//    @GET("assets/android")
+//    Observable<ResponseBody> getAssets1(@Header("X-AUTH-TOKEN") String token,@Query("flag") int flag);
+
 
     // 获取收入类型标签
     @GET("getHadABType/android")

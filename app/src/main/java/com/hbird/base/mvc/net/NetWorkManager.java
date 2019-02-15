@@ -2368,7 +2368,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError(message);
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }

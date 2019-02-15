@@ -48,14 +48,31 @@ public class IndexFragementModle extends BaseViewModel {
     }
 
     //月支出排行榜 前四
-    public List<StatisticsSpendTopArraysBean> getRankingBar(int yyyy, int mm, String accountId) {
+    public List<StatisticsSpendTopArraysBean> getRankingBar(int yyyy, int mm, String accountId, Set<String> prefSet) {
         List<StatisticsSpendTopArraysBean> list = new ArrayList<>();
 
         int orderType = 1;//1:支出  2:收入
         String monthTime = mm < 10 ? yyyy + "-0" + mm : yyyy + "-" + mm;
-        String sql;
+        String sql = "";
         if (TextUtils.isEmpty(accountId)) {// 总账本
-            sql = "select sum(money) money,type_id,USER_PRIVATE_LABEL_ID,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC LIMIT 5;";
+            if (prefSet != null) {
+                String ids = "";
+                Iterator<String> iterator = prefSet.iterator();
+                while (iterator.hasNext()) {
+                    String s = iterator.next();
+                    ids += s + ",";
+                }
+                if (!TextUtils.isEmpty(ids)) {
+                    String substring = ids.substring(0, ids.length() - 1);
+                    sql = "select sum(money) money,type_id,USER_PRIVATE_LABEL_ID,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo " +
+                            "where wo.delflag = 0" +
+                            " AND wo.order_type = " + orderType
+                            + " AND ACCOUNT_BOOK_ID in " + "(" + substring + ")"
+                            + " AND strftime('%Y-%m', charge_date2) = '" + monthTime
+                            + "' GROUP BY wo.type_name order by money DESC LIMIT 5;";
+                }
+            }
+
         } else {
             sql = "select sum(money) money,type_id,USER_PRIVATE_LABEL_ID,type_name as type_name ,icon as icon from (select *,datetime(charge_date/1000, 'unixepoch', 'localtime') charge_date2 from WATER_ORDER_COLLECT   where 1=1) wo where wo.account_book_id= '" + accountId + "' AND wo.delflag = 0 AND wo.order_type = " + orderType + " AND strftime('%Y-%m', charge_date2) = '" + monthTime + "' GROUP BY wo.type_name order by money DESC LIMIT 5;";
         }

@@ -49,9 +49,7 @@ import com.hbird.bean.StatisticsTopBean;
 import com.hbird.common.Constants;
 import com.hbird.common.chating.charts.LineChart;
 import com.hbird.common.chating.data.LineData;
-import com.hbird.common.chating.formatter.IFillFormatter;
 import com.hbird.common.chating.formatter.IndexAxisValueFormatter;
-import com.hbird.common.chating.interfaces.dataprovider.LineDataProvider;
 import com.hbird.ui.statistics_details.ActPieChartRanking;
 import com.hbird.ui.statistics_details.ActRankingDetails;
 import com.hbird.util.Utils;
@@ -135,6 +133,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         binding.recyclerView.setNestedScrollingEnabled(false);
+        binding.recyclerView.setItemAnimator(null);
 
         //获取当前周
         weeks = Utils.getYearToWeek();
@@ -443,7 +442,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             }
         } else if (item == 2) {
             //周 每周的数据
-            pos = Utils.getYearToWeek() - 1;
+            pos = Utils.getYearToWeek();
         } else {
             //月 获取当前月
             pos = DateUtils.getMonthToNum();
@@ -606,7 +605,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChart.setOnChartValueSelectedListener(new com.hbird.common.chating.listener.OnChartValueSelectedListener() {
             @Override
             public void onValueSelected(com.hbird.common.chating.data.Entry e, com.hbird.common.chating.highlight.Highlight h) {
-                setDateToCharts((int) e.getX() - 1, list);
+                setDateToCharts((int) e.getX(), list);
             }
 
             @Override
@@ -614,6 +613,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
             }
         });
+
         lineChart.setDrawGridBackground(false);
         // create marker to display box when values are selected
         RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
@@ -624,10 +624,9 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
 
-        // X轴的个数，Y轴最大范围
-//        setData();
-        ArrayList<com.hbird.common.chating.data.Entry> values = new ArrayList<>();
 
+        // X轴的个数，Y轴最大范围
+        ArrayList<com.hbird.common.chating.data.Entry> values = new ArrayList<>();
         for (int i = 0; i < yoyList.size(); i++) {
             yoyListEntity = yoyList.get(i);
             String amount = yoyListEntity.getAmount();
@@ -640,17 +639,16 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
                     f = 0;
                 }
                 if (f == 0) {
-                    values.add(new com.hbird.common.chating.data.Entry(i + 1, f));
+                    values.add(new com.hbird.common.chating.data.Entry(i, f));
                 } else {
-                    values.add(new com.hbird.common.chating.data.Entry(i + 1, f, getResources().getDrawable(R.mipmap.shuju_icon_zhengshu_normal)));
+                    values.add(new com.hbird.common.chating.data.Entry(i, f, getResources().getDrawable(R.mipmap.shuju_icon_zhengshu_normal)));
                 }
             }
         }
 
-        com.hbird.common.chating.data.LineDataSet set1;
-
         // create a dataset and give it a type
-        set1 = new com.hbird.common.chating.data.LineDataSet(values, "");
+        com.hbird.common.chating.data.LineDataSet set1 = new com.hbird.common.chating.data.LineDataSet(values, "");
+
         set1.setDrawIcons(true);
         // 画虚线
 //        set1.enableDashedLine(10f, 5f, 0f);
@@ -660,24 +658,19 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         // line thickness and point size
         set1.setLineWidth(1f);// 折线宽度
         set1.setCircleRadius(1f);// 顶点值圆的弧度
-        // draw points as solid circles
+        // 将点绘制为实心圆
         set1.setDrawCircleHole(false);
-        // customize legend entry
+        // 自定义图例项
         set1.setFormLineWidth(1f);
         set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
         set1.setFormSize(15.f);
         // text size of values
         set1.setValueTextSize(9f);
-        // draw selection line as dashed
+        // 将选择线绘制为虚线
         set1.enableDashedHighlightLine(10f, 5f, 0f);
-        // set the filled area
+        // 设置填充区域
         set1.setDrawFilled(true);
-        set1.setFillFormatter(new IFillFormatter() {
-            @Override
-            public float getFillLinePosition(com.hbird.common.chating.interfaces.datasets.ILineDataSet dataSet, LineDataProvider dataProvider) {
-                return lineChart.getAxisLeft().getAxisMinimum();
-            }
-        });
+        set1.setFillFormatter((dataSet, dataProvider) -> lineChart.getXAxis().getAxisMinimum());
 
         // set color of filled area
         if (com.hbird.common.chating.utils.Utils.getSDKInt() >= 18) {
@@ -693,16 +686,13 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         LineData data = new LineData(dataSets);
         // set data
         lineChart.setData(data);
-//        }
-
-        ////
 
         // 绘制动画结束时间
         lineChart.animateX(500);
-        // get the legend (only possible after setting data)
-        com.hbird.common.chating.components.Legend l = lineChart.getLegend();
 
-        // draw legend entries as lines 透明化图例
+        // 获取图例（仅在设置数据后可用）
+        com.hbird.common.chating.components.Legend l = lineChart.getLegend();
+        // 透明化图例
         l.setForm(com.hbird.common.chating.components.Legend.LegendForm.NONE);
         l.setTextColor(Color.WHITE);
 
@@ -724,12 +714,13 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
             set.setLineWidth(1f);//线条宽度
 
 //            set.setDrawHighlightIndicators(false);//关闭heightlight
+            set.setDrawHorizontalHighlightIndicator(false);
 //            set.setDrawVerticalHighlightIndicator(true); //或者使用
 //            set.setDrawHorizontalHighlightIndicator(true);//来打开单独某一方向的hightlight
         }
 
         // 移动到某个位置
-        lineChart.moveViewToX(pos);
+        lineChart.moveViewToX(pos > 0 ? (pos - 1) : pos);
         // 设置自动缩放最小值已启用
 //        lineChart.setAutoScaleMinMaxEnabled(false);
 
@@ -743,8 +734,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         //设置图表左边的y轴禁用
         leftAxis.setEnabled(false);
         //是否绘制0所在的网格线
-        leftAxis.setDrawZeroLine(false);
-//        leftAxis.setDrawLimitLinesBehindData(false);
+        leftAxis.setDrawZeroLine(true);
         leftAxis.enableGridDashedLine(10f, 10f, 0f);
 
         // 设置X轴文字选择
@@ -779,19 +769,19 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         xAxis.setAxisLineWidth(1f);//设置x轴线宽度
 
         List<String> t = new ArrayList<>();
-        for (int i = 0; i < yoyList.size(); i++) {
+        for (int i = 1; i < yoyList.size() + 1; i++) {
             if (this.data.getDateType() == 2) {
-                if (i == 0) {
-                    t.add("");
-                } else {
-                    t.add(yoyList.get(i).getMonth());
-                }
+//                if (i == 0) {
+//                    t.add("");
+//                } else {
+                t.add(yoyList.get(i - 1).getMonth());
+//                }
             } else {
-                if (i == 0) {
-                    t.add("");
-                } else {
-                    t.add(i + "");
-                }
+//                if (i == 0) {
+//                    t.add("");
+//                } else {
+                t.add(i + "");
+//                }
             }
         }
 
@@ -802,6 +792,8 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChart.setDragDecelerationEnabled(true);//拖拽滚动时，手放开是否会持续滚动，默认是true（false是拖到哪是哪，true拖拽之后还会有缓冲）
         lineChart.setDragDecelerationFrictionCoef(0.99f);//与上面那个属性配合，持续滚动时的速度快慢，[0,1) 0代表立即停止。
 
+        // 默认选择的marker
+        lineChart.highlightValue(pos, 0);
 
         lineChart.invalidate();
         ///////////////////////////////

@@ -215,7 +215,6 @@
                     android:layout_marginStart="@dimen/dp_10_x"
                     android:drawablePadding="@dimen/height_0_80"
                     android:gravity="center_vertical"
-                    android:maxLength="6"
                     android:singleLine="true"
                     android:textColor="#333333"
                     android:textSize="14sp"/>

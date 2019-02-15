@@ -65,7 +65,7 @@
 
     <string name="year">年</string>
     <string name="mouth">月</string>
-    <string name="money">￥</string>
+    <string name="money">¥</string>
     <string name="income">收入:</string>
     <string name="spend">支出:</string>
     <string name="income1">流入：</string>

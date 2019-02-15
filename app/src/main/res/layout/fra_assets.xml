@@ -51,7 +51,9 @@
                         android:textColor="@color/white"
                         android:textSize="18sp"/>
 
+                    <!--去掉了-->
                     <LinearLayout
+                        android:visibility="gone"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/dp_5_x"
@@ -83,8 +85,8 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginBottom="@dimen/dp_10_x"
-                        android:layout_marginTop="@dimen/dp_5_x"
+                        android:layout_marginBottom="@dimen/dp_15_x"
+                        android:layout_marginTop="@dimen/dp_15_x"
                         android:text="@{@string/money+data.value}"
                         android:textColor="@color/white"
                         android:textSize="28sp"/>

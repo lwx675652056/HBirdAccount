@@ -105,6 +105,10 @@ public class ActEditInfo extends BaseActivity<ActEditInfoBinding, EditInfoModle>
 
         findViewById(R.id.right_title2).setOnClickListener(v -> {
             Utils.playVoice(ActEditInfo.this, R.raw.changgui02);
+            if (TextUtils.isEmpty(data.getNickName())){
+                ToastUtil.showShort("请输入昵称");
+                return;
+            }
             persionalReq req = new persionalReq();
             req.setAvatarUrl(TextUtils.isEmpty(data.getHeadUrl()) ? "" : data.getHeadUrl());
             req.setBirthday(birthdayTime);

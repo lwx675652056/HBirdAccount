@@ -34,12 +34,14 @@ public class FragStatisticsAdapter extends BaseRecyclerAdapter<StatisticsSpendTo
 
     public void setMoney(double money) {
         this.money = money;
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, list.size());
+//        notifyDataSetChanged();
     }
 
     public void setOpen(boolean open) {
         this.open = open;
-        notifyDataSetChanged();
+        notifyItemRangeChanged(0, list.size());
+//        notifyDataSetChanged();
     }
 
     public FragStatisticsAdapter(Context context, List<StatisticsSpendTopArraysBean> list, int layoutId, OnItemClickListener listener) {

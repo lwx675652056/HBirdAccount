@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -178,8 +179,13 @@ public class MingXiInfoActivity extends BaseActivity<BasePresenter> implements V
         } else {
             mBeiZhu.setText(remark);
         }
-        Glide.with(this).load(bean.getReporterAvatar()).into(mImgHeader);
         Glide.with(this).load(iconUrl).into(mIcon);
+
+        if (TextUtils.isEmpty(bean.getReporterAvatar()) || bean.getReporterAvatar().equals("null")){
+            Glide.with(this).load(R.mipmap.ic_me_normal_headr).into(mImgHeader);
+        }else{
+            Glide.with(this).load(bean.getReporterAvatar()).into(mImgHeader);
+        }
     }
 
     @Override

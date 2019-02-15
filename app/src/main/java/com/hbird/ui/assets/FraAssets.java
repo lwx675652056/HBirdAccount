@@ -148,6 +148,14 @@ public class FraAssets extends BaseFragment<FraAssetsBinding, BaseViewModel> {
         }
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()){
+            getNetWorkInfo();
+        }
+    }
+
     private void getNetWorkInfo() {
         NetWorkManager.getInstance().setContext(getActivity()).getZiChanInfo(token, null, new NetWorkManager.CallBack() {
             @Override

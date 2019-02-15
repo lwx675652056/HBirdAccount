@@ -60,7 +60,6 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
     private List<ZhangBenMsgBean> data;
     private MyZhangBenAdapter adapter;
     private String token;
-    private List<AccountZbBean.ResultBean> result;
     private String id;
 
     @Override
@@ -123,13 +122,13 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
                         }
                         Intent intent = new Intent();
                         intent.setClass(MyZhangBenActivity.this, EditorZhangBenActivity.class);
-                        intent.putExtra("TITLE", result.get(position - 1).getAbName());
-                        intent.putExtra("ID", result.get(position - 1).getId() + "");
+                        intent.putExtra("TITLE", data.get(position).getZbName());
+                        intent.putExtra("ID", data.get(position).getId() + "");
                         startActivityForResult(intent, 401);
                         break;
                     case 1: //第二个选项
                         playVoice(R.raw.changgui02);
-                        if (position == 0 || position == data.size() - 1) {
+                        if (position == 0 || data.get(position).getDefaultFlag() == 1) {
                             showMessage("不可删除");
                             return;
                         }
@@ -150,11 +149,11 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
                     SPUtil.setPrefInt(MyZhangBenActivity.this, CommonTag.ACCOUNT_AB_TYPEID, 0);//设置无效值
                     intent.putExtra("typeBudget", "1");
                 } else {
-                    intent.putExtra("TITLE", result.get(i - 2).getAbName());
-                    intent.putExtra("ID", result.get(i - 2).getId() + "");
-                    SPUtil.setPrefInt(MyZhangBenActivity.this, CommonTag.ACCOUNT_AB_TYPEID, result.get(i - 2).getAbTypeId());
-                    intent.putExtra("typeBudget", result.get(i - 2).getTypeBudget() + "");
-                    intent.putExtra("abTypeId", result.get(i - 2).getAbTypeId() + "");
+                    intent.putExtra("TITLE", data.get(i - 1).getZbName());
+                    intent.putExtra("ID", data.get(i - 1).getId() + "");
+                    SPUtil.setPrefInt(MyZhangBenActivity.this, CommonTag.ACCOUNT_AB_TYPEID, data.get(i - 1).getAbTypeId());
+                    intent.putExtra("typeBudget", data.get(i - 1).getTypeBudget() + "");
+                    intent.putExtra("abTypeId", data.get(i - 1).getAbTypeId() + "");
                 }
 
                 setResult(130, intent);
@@ -163,10 +162,10 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
         });
         swipe.setOnItemLongClickListener((adapterView, view, i, l) -> {
             playVoice(R.raw.changgui02);
-            if (l == 0 || l == data.size() - 1) {
+            if (l == 0 || data.get((int) (l - 1)).getDefaultFlag() == 1) {
                 showMessage("不可删除");
             } else {
-                alertDialog(i, 0);
+                alertDialog(i-1, 0);
             }
             return true;
         });
@@ -242,7 +241,7 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
             @Override
             public void onSuccess(BaseReturn b) {
                 AccountZbBean b1 = (AccountZbBean) b;
-                result = b1.getResult();
+                List<AccountZbBean.ResultBean> result = b1.getResult();
                 if (null != result) {
                     data = new ArrayList<>();
                     data.clear();
@@ -263,6 +262,9 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
                             bean.setZbType(result.get(i - 1).getAbTypeName());
                             bean.setZbUTime(result.get(i - 1).getUpdateDate() + "");
                             bean.setId(result.get(i - 1).getId() + "");
+                            bean.setDefaultFlag(result.get(i - 1).getDefaultFlag());
+                            bean.setAbTypeId(result.get(i - 1).getAbTypeId());
+                            bean.setTypeBudget(result.get(i - 1).getTypeBudget());
                             data.add(bean);
                             set.add(result.get(i - 1).getId() + "");
                         }

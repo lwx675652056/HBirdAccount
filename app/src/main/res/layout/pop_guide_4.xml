@@ -9,11 +9,11 @@
         android:id="@+id/ll_content01"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_horizontal"
+        android:layout_marginStart="@dimen/dp_15_x"
         android:orientation="vertical">
 
         <RelativeLayout
+            android:layout_marginStart="@dimen/dp_5_x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@mipmap/icon_up_hover"/>
@@ -33,33 +33,5 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_4"/>
         </RelativeLayout>
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/ll_content02"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:gravity="right"
-        android:orientation="vertical">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="@dimen/height_6_80"
-            android:background="@mipmap/icon_xfjian_hover">
-
-            <TextView
-                android:id="@+id/tv_texts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/height_1_80"
-
-                android:text="点击这里开始记账~"
-                android:textColor="@color/white"
-                android:textSize="@dimen/text_size_4"/>
-        </RelativeLayout>
-
     </LinearLayout>
 </LinearLayout>

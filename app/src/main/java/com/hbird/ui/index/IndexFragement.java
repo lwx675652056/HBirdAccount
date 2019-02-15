@@ -52,6 +52,8 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.DialogUtils;
 import com.hbird.base.mvc.view.dialog.IndexCommonDialog;
 import com.hbird.base.mvc.view.dialog.InvitationFirendDialog;
+import com.hbird.base.mvc.widget.Guide2Pop;
+import com.hbird.base.mvc.widget.Guide4Pop;
 import com.hbird.base.mvc.widget.NewGuidePop;
 import com.hbird.base.mvc.widget.TabRadioButton;
 import com.hbird.base.mvp.model.entity.table.WaterOrderCollect;
@@ -146,7 +148,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
 
     @Override
     public void initData() {
-        LogUtil.e("1111","1");
+        LogUtil.e("1111", "1");
         ViewGroup.LayoutParams params = binding.llParent1.getLayoutParams();
         params.height += StatusBarUtil.getStateBarHeight(getActivity());
         binding.llParent1.setLayoutParams(params);
@@ -427,7 +429,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             shouldSetChat = false;
         }
 
-        LogUtil.e("1111","1");
+        LogUtil.e("1111", "1");
     }
 
     public void loadDataForNet(boolean showDialog) {
@@ -450,8 +452,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             } else {
                 if (comeInForLogin) {
                     pullToSyncDate(showDialog);
-                } else {
-                    //判断上次同步时间与本次登录的时间对比 大于一天则执行pull push操作
+                } else {  //判断上次同步时间与本次登录的时间对比 大于一天则执行pull push操作
                     if (timeB) {
                         pullToSyncDate(showDialog);
                     } else {
@@ -463,21 +464,6 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             getIndexInfo();
         }
     }
-
-//    private DialogToGig dialogToGig;
-//
-//    public void showGifProgress(String title) {
-//        if (dialogToGig == null) {
-//            dialogToGig = new DialogToGig(getActivity());
-//        }
-//        dialogToGig.builder().show();
-//    }
-//
-//    public void hideGifProgress() {
-//        if (dialogToGig != null) {
-//            dialogToGig.hide();
-//        }
-//    }
 
     private void pullToSyncDate(boolean showDialog) {
         //判断当前网络状态
@@ -641,7 +627,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     private void setNewGuide() {
         View cv = getActivity().getWindow().getDecorView();
         cv.post(() -> {  //改为popwindow
-            final NewGuidePop pop = new NewGuidePop(getActivity(), jizhangs, "点击这里开始记账~", 2, new NewGuidePop.PopDismissListener() {
+            final NewGuidePop pop = new NewGuidePop(getActivity(), jizhangs, "1.点击这里开始记账~", 2, new NewGuidePop.PopDismissListener() {
                 @Override
                 public void PopDismiss() {
                     SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
@@ -651,8 +637,74 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             new Handler().postDelayed(() -> {
                 if (pop != null) {
                     pop.hidePopWindow();
+                    setGuide2();
                 }
             }, FIRST_LENGHT);
+        });
+    }
+
+    private void setGuide2() {
+        if (!getUserVisibleHint()){
+            return;
+        }
+        View cv = getActivity().getWindow().getDecorView();
+        cv.post(() -> {  //改为popwindow
+            final Guide2Pop pop = new Guide2Pop(getActivity(), binding.tvEditor, "2.点击这里设置预算~", new Guide2Pop.PopDismissListener() {
+                @Override
+                public void PopDismiss() {
+                    SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
+                }
+            });
+            pop.showPopWindow();
+            new Handler().postDelayed(() -> {
+                if (pop != null) {
+                    pop.hidePopWindow();
+                    setGuide3();
+                }
+            }, 2000);
+        });
+    }
+
+    private void setGuide3() {
+        if (!getUserVisibleHint()){
+            return;
+        }
+        View cv = getActivity().getWindow().getDecorView();
+        cv.post(() -> {  //改为popwindow
+            final NewGuidePop pop = new NewGuidePop(getActivity(), binding.ivArrow, "3.点击邀请好友记账~", 1, new NewGuidePop.PopDismissListener() {
+                @Override
+                public void PopDismiss() {
+                    SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
+                }
+            });
+            pop.showPopWindow();
+            new Handler().postDelayed(() -> {
+                if (pop != null) {
+                    pop.hidePopWindow();
+                    setGuide4();
+                }
+            }, 2000);
+        });
+    }
+
+    private void setGuide4() {
+        if (!getUserVisibleHint()){
+            return;
+        }
+        View cv = getActivity().getWindow().getDecorView();
+        cv.post(() -> {  //改为popwindow
+            final Guide4Pop pop = new Guide4Pop(getActivity(), binding.ivChange, "4.点击这里切换账本~", new Guide4Pop.PopDismissListener() {
+                @Override
+                public void PopDismiss() {
+                    SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.APP_FIRST_ZHIYIN, false);
+                }
+            });
+            pop.showPopWindow();
+            new Handler().postDelayed(() -> {
+                if (pop != null) {
+                    pop.hidePopWindow();
+                }
+            }, 2000);
         });
     }
 
@@ -912,7 +964,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             getIndexInfo();
             loadDataForNet(false);
 
-            if (iii == -1){
+            if (iii == -1) {
                 return;
             }
 
@@ -931,7 +983,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                 }
             }
             pieChatAdapter.notifyDataSetChanged();
-        }else if (requestCode == 141){// 记账回来的
+        } else if (requestCode == 141) {// 记账回来的
             getIndexInfo();
             loadDataForNet(false);
         }
@@ -1253,7 +1305,11 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.setPiechat(bean);
         data.setSelestStr("");
 
-        List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId);
+
+        Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
+
+
+       List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId,prefSet);
         pieList.clear();
         data.setSize(temp == null ? 0 : temp.size());
         ArrayList<PieEntry> entries1 = new ArrayList<>();

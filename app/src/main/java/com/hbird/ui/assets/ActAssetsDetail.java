@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
@@ -62,9 +64,9 @@ import java.util.Map;
 import java.util.Set;
 
 import sing.common.base.BaseActivity;
-import sing.common.base.BaseViewModel;
 import sing.common.util.StatusBarUtil;
 import sing.util.ScreenUtil;
+import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
@@ -76,7 +78,7 @@ import static java.lang.Integer.parseInt;
  * @date: 2019/1/2 10:51
  * @Description: 资产详情
  */
-public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseViewModel> implements IBaseActivity {
+public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, ActAssetsDetailModle> implements IBaseActivity {
 
     private String token;
 //    private String accountId;
@@ -150,6 +152,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
         binding.recyclerView.setNestedScrollingEnabled(false);//禁止rcyc嵌套滑动
+        binding.recyclerView.setItemAnimator(null);//设置动画为null来解决闪烁问题
     }
 
     @Override
@@ -223,38 +226,13 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         String MonthLastDay = DateUtil.getMonthday2Last(day[0], day[1]);
 
         String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
-        String sql = "";
-//        if (TextUtils.isEmpty(accountId)) {
-//            Set<String> set = new LinkedHashSet<>();
-//            Set<String> prefSet = SPUtil.getPrefSet(this, com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, set);
-//            if (prefSet != null) {
-//                String ids = "";
-//                Iterator<String> iterator = prefSet.iterator();
-//                while (iterator.hasNext()) {
-//                    String s = iterator.next();
-//                    ids += s + ",";
-//                }
-//                if (!TextUtils.isEmpty(ids)) {
-//                    String substring = ids.substring(0, ids.length() - 1);
-//                    sql = "SELECT * FROM WATER_ORDER_COLLECT "
-////                            " where  ACCOUNT_BOOK_ID in " + "(" + substring + ")"
-//                            + " where DELFLAG = 0"
-//                            + " AND CHARGE_DATE >=" + MonthFirstDay
-//                            + " and CHARGE_DATE<" + MonthLastDays
-//                            + " and ASSETS_ID=" + data.getAssetsType()
-//                            + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-//                }
-//            }
-//        } else {
-            sql = "SELECT * FROM WATER_ORDER_COLLECT "
-//                    + " where ACCOUNT_BOOK_ID=" + accountId
-                    + " where DELFLAG = 0 "
-                    + "AND CHARGE_DATE >=" + MonthFirstDay
-                    + " AND CHARGE_DATE<" + MonthLastDays
-                    + " AND CREATE_BY = " + persionId
-                    + " AND ASSETS_ID=" + data.getAssetsType()
-                    + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
-//        }
+        String sql = "SELECT * FROM WATER_ORDER_COLLECT "
+                + " where DELFLAG = 0 "
+                + "AND CHARGE_DATE >=" + MonthFirstDay
+                + " AND CHARGE_DATE<" + MonthLastDays
+                + " AND CREATE_BY = " + persionId
+                + " AND ASSETS_ID=" + data.getAssetsType()
+                + " ORDER BY  CHARGE_DATE DESC, CREATE_DATE DESC";
 
         Cursor cursor = DevRing.tableManager(WaterOrderCollect.class).rawQuery(sql, null);
 
@@ -279,8 +257,8 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
                 if (dates != null && dates.size() > 0) {
                     double monthIncome = bean.getMonthIncome();
                     double monthSpend = bean.getMonthSpend();
-                    String monthIncomes = getNumToNumber(monthIncome);
-                    String monthSpends = getNumToNumber(monthSpend);
+                    String monthIncomes = Utils.getNumToNumber(monthIncome);
+                    String monthSpends = Utils.getNumToNumber(monthSpend);
                     data.setInComeMoney(monthIncomes);
                     data.setSpendingMoney(monthSpends);
                     // 设置流入、流出长度
@@ -315,35 +293,39 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 //                        list.add(temp);
                         list.add(JSON.parseObject(dates.get(i).toString(), AccountDetailedBean.class));
                     }
-//                    Collections.sort(list);
+
                     binding.recyclerView.setVisibility(View.VISIBLE);
                     binding.ivNoData.setVisibility(View.GONE);
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemRangeChanged(0, list.size());
                 } else {
                     binding.recyclerView.setVisibility(View.GONE);
                     binding.ivNoData.setVisibility(View.VISIBLE);
                     list.clear();
-                    adapter.notifyDataSetChanged();
+                    adapter.notifyItemRangeChanged(0, list.size());
                 }
             }
         } else {
             binding.recyclerView.setVisibility(View.GONE);
             binding.ivNoData.setVisibility(View.VISIBLE);
             list.clear();
-            adapter.notifyDataSetChanged();
+            adapter.notifyItemRangeChanged(0, list.size());
 
             data.setInComeMoney("0.00");
             data.setSpendingMoney("0.00");
 
             setLength(width_15, width_15);
         }
+
+        // 账户余额
+        h.sendEmptyMessageDelayed(1,1000);
     }
 
-    private String getNumToNumber(Double d) {
-        java.text.NumberFormat NF = java.text.NumberFormat.getInstance();
-        NF.setGroupingUsed(false);//去掉科学计数法显示
-        return NF.format(d);
-    }
+    Handler h = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            viewModel.getAssets(token, data.getAssetsType(), money -> data.setMoney(money));
+        }
+    };
 
     // 设置流入流出的进度条
     private void setLength(int spendWidth, int incomeWidth) {
@@ -419,11 +401,11 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 //                ja.put("monthIncome", account.get("income"));
 //                return ja;
 //            } else {
-                Map<String, BigDecimal> account = getAccounts();
-                ja.put("arrays", array2);
-                ja.put("monthSpend", account.get("spend"));
-                ja.put("monthIncome", account.get("income"));
-                return ja;
+            Map<String, BigDecimal> account = getAccounts();
+            ja.put("arrays", array2);
+            ja.put("monthSpend", account.get("spend"));
+            ja.put("monthIncome", account.get("income"));
+            return ja;
 //            }
 
         }
@@ -499,7 +481,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             int count = cursor.getCount();
             if (cursor.moveToFirst()) {
                 String spend = cursor.getString(0);
-                if (spend == null){
+                if (spend == null) {
                     spend = "0";
                 }
                 listBySql.put("spend", new BigDecimal(spend));
@@ -541,8 +523,10 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
             int count = cursor.getCount();
             if (cursor.moveToFirst()) {
                 String spend = cursor.getString(0);
+                if (spend == null) spend = "0";
                 listBySql.put("spend", new BigDecimal(spend));
                 String income = cursor.getString(1);
+                if (income == null) income = "0";
                 listBySql.put("income", new BigDecimal(income));
             }
         }
@@ -574,6 +558,11 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         // 记账
         public void add(View view) {
             Utils.playVoice(ActAssetsDetail.this, R.raw.jizhang);
+
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ID, bean.assetsType);
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_DESC, bean.assetsName);
+            SharedPreferencesUtil.put(Constants.CHOOSE_ACCOUNT_ICON, bean.icon);
+
             Intent intent = new Intent(ActAssetsDetail.this, ChooseAccountTypeActivity.class);
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 startActivityForResult(intent, 1001, ActivityOptions.makeSceneTransitionAnimation(ActAssetsDetail.this).toBundle());
@@ -662,7 +651,7 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
 //                hideGifProgress();
 
                 pushOffLine();
-                getData(currentDate);
+
 
                 SPUtil.setPrefBoolean(ActAssetsDetail.this, OFFLINEPULL_FIRST_LOGIN, false);
             }
@@ -749,12 +738,12 @@ public class ActAssetsDetail extends BaseActivity<ActAssetsDetailBinding, BaseVi
         NetWorkManager.getInstance().setContext(this).pushOffLineToFwq(jsonInfo, token, new NetWorkManager.CallBack() {
             @Override
             public void onSuccess(BaseReturn b) {
-
+                getData(currentDate);
             }
 
             @Override
             public void onError(String s) {
-
+                getData(currentDate);
             }
         });
     }

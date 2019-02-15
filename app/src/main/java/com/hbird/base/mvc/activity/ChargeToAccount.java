@@ -681,6 +681,10 @@ public class ChargeToAccount extends BaseActivity<BaseActivityPresenter> impleme
         w.setAbName(zhangbenName);//对应的账本ID
         String headers = SPUtil.getPrefString(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_HEADER, "");
         String nickName = SPUtil.getPrefString(ChargeToAccount.this, com.hbird.base.app.constant.CommonTag.ACCOUNT_USER_NICK_NAME, "");
+        if (TextUtils.isEmpty(nickName)){
+            nickName = (String) SharedPreferencesUtil.get(Constants.USER_MOBILE,"");
+            nickName = com.hbird.util.Utils.getHiddenPhone(nickName);
+        }
         w.setReporterNickName(nickName);//记录人名字
         w.setReporterAvatar(headers);//记录人头像
         String icon = "";
