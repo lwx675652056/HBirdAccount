@@ -5,8 +5,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.content.Intent;
 import android.graphics.Color;
-import android.graphics.DashPathEffect;
-import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -21,18 +19,12 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-import com.github.mikephil.chart_3_0_1v.charts.EmptyLineChartRendererNew;
 import com.github.mikephil.chart_3_0_1v.charts.PieChart;
-import com.github.mikephil.chart_3_0_1v.components.Legend;
-import com.github.mikephil.chart_3_0_1v.components.XAxis;
-import com.github.mikephil.chart_3_0_1v.components.YAxis;
 import com.github.mikephil.chart_3_0_1v.data.Entry;
-import com.github.mikephil.chart_3_0_1v.data.LineDataSet;
 import com.github.mikephil.chart_3_0_1v.data.PieData;
 import com.github.mikephil.chart_3_0_1v.data.PieDataSet;
 import com.github.mikephil.chart_3_0_1v.data.PieEntry;
 import com.github.mikephil.chart_3_0_1v.highlight.Highlight;
-import com.github.mikephil.chart_3_0_1v.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
 import com.hbird.base.R;
 import com.hbird.base.databinding.FragStatisticsBinding;
@@ -41,7 +33,6 @@ import com.hbird.base.mvc.bean.ReturnBean.chartToBarReturn;
 import com.hbird.base.mvc.bean.ReturnBean.chartToRankingReturn;
 import com.hbird.base.mvc.bean.YearAndMonthBean;
 import com.hbird.base.mvc.bean.YoyListEntity;
-import com.hbird.base.mvc.widget.MyChart.LineChartEntity;
 import com.hbird.base.util.DateUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.bean.StatisticsSpendTopArraysBean;
@@ -53,7 +44,6 @@ import com.hbird.common.chating.formatter.IndexAxisValueFormatter;
 import com.hbird.ui.statistics_details.ActPieChartRanking;
 import com.hbird.ui.statistics_details.ActRankingDetails;
 import com.hbird.util.Utils;
-import com.hbird.widget.LineChartDrawMarkers;
 import com.hbird.widget.RoundMarker;
 
 import java.text.DecimalFormat;
@@ -594,7 +584,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
     private void initChart(int pos, ArrayList<YearAndMonthBean> list) {
         mFormat = new DecimalFormat("#,###.##");
         binding.flParent.removeAllViews();
-        ///////////////////////////////
         LineChart lineChart = new LineChart(getActivity());
         lineChart.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
         binding.flParent.addView(lineChart);
@@ -610,7 +599,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
             @Override
             public void onNothingSelected() {
-
             }
         });
 
@@ -660,10 +648,6 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         set1.setCircleRadius(1f);// 顶点值圆的弧度
         // 将点绘制为实心圆
         set1.setDrawCircleHole(false);
-        // 自定义图例项
-        set1.setFormLineWidth(1f);
-        set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
-        set1.setFormSize(15.f);
         // text size of values
         set1.setValueTextSize(9f);
         // 将选择线绘制为虚线
@@ -690,11 +674,8 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         // 绘制动画结束时间
         lineChart.animateX(500);
 
-        // 获取图例（仅在设置数据后可用）
-        com.hbird.common.chating.components.Legend l = lineChart.getLegend();
-        // 透明化图例
-        l.setForm(com.hbird.common.chating.components.Legend.LegendForm.NONE);
-        l.setTextColor(Color.WHITE);
+        // 透明化图例 仅在设置数据后可用
+        lineChart.getLegend().setForm(com.hbird.common.chating.components.Legend.LegendForm.NONE);
 
         List<com.hbird.common.chating.interfaces.datasets.ILineDataSet> sets = lineChart.getData().getDataSets();
         for (com.hbird.common.chating.interfaces.datasets.ILineDataSet iSet : sets) {
@@ -721,73 +702,53 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
         // 移动到某个位置
         lineChart.moveViewToX(pos > 0 ? (pos - 1) : pos);
-        // 设置自动缩放最小值已启用
-//        lineChart.setAutoScaleMinMaxEnabled(false);
 
-        //设置样式
-        com.hbird.common.chating.components.YAxis rightAxis = lineChart.getAxisRight();
         //设置图表右边的y轴禁用
-        rightAxis.setEnabled(false);
-        rightAxis.enableGridDashedLine(10f, 10f, 0f);
+        lineChart.getAxisRight().setEnabled(false);
 
-        com.hbird.common.chating.components.YAxis leftAxis = lineChart.getAxisLeft();
         //设置图表左边的y轴禁用
-        leftAxis.setEnabled(false);
+        lineChart.getAxisLeft().setEnabled(false);
         //是否绘制0所在的网格线
-        leftAxis.setDrawZeroLine(true);
-        leftAxis.enableGridDashedLine(10f, 10f, 0f);
-
-        // 设置X轴文字选择
-        if (this.data.getDateType() == 2) {
-            lineChart.getXAxis().setLabelRotationAngle(45);
-            lineChart.setVisibleXRange(0, 5);//设置x轴显示范围，如果不设置会一次加载所有的点，很难看
-        } else {
-//            lineChart.getXAxis().setLabelRotationAngle(0);
-//            lineChart.setVisibleXRange(0, 31);//设置x轴显示范围，如果不设置会一次加载所有的点，很难看
-        }
+        lineChart.getAxisLeft().setDrawZeroLine(true);
 
         // 是否等比缩放、单独X或Y缩放
         lineChart.setScaleXEnabled(true); //是否可以缩放 仅x轴
         lineChart.setScaleYEnabled(false); //是否可以缩放 仅y轴
 
-
         //设置x轴
         com.hbird.common.chating.components.XAxis xAxis = lineChart.getXAxis();
         xAxis.setTextColor(Color.parseColor("#929292"));
-        xAxis.setTextSize(8f);
         xAxis.setAxisMinimum(0f);
-        xAxis.setDrawAxisLine(true);//是否绘制轴线
         xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
         xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
         xAxis.setPosition(com.hbird.common.chating.components.XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
         xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
-        //xAxis.setTextSize(20f);//设置字体
-        //xAxis.setTextColor(Color.BLACK);//设置字体颜色
-        xAxis.setAvoidFirstLastClipping(true);
 
-        xAxis.setAxisLineColor(Color.TRANSPARENT);//设置x轴线颜色
-        xAxis.setAxisLineWidth(1f);//设置x轴线宽度
+        xAxis.setDrawAxisLine(false);//是否绘制轴线
+
+        // 设置X轴文字选择
+        if (this.data.getDateType() == 2) {
+            xAxis.setLabelRotationAngle(45);
+            lineChart.setVisibleXRange(0, 5);//设置x轴显示范围，如果不设置会一次加载所有的点，很难看
+            xAxis.setTextSize(8f);
+            lineChart.setDoubleTapToZoomEnabled(false);//设置是否可以通过双击屏幕放大图表。默认是true
+        }else{
+            xAxis.setLabelRotationAngle(0);
+            xAxis.setTextSize(10f);
+            lineChart.setDoubleTapToZoomEnabled(true);//设置是否可以通过双击屏幕放大图表。默认是true
+        }
 
         List<String> t = new ArrayList<>();
         for (int i = 1; i < yoyList.size() + 1; i++) {
             if (this.data.getDateType() == 2) {
-//                if (i == 0) {
-//                    t.add("");
-//                } else {
                 t.add(yoyList.get(i - 1).getMonth());
-//                }
             } else {
-//                if (i == 0) {
-//                    t.add("");
-//                } else {
                 t.add(i + "");
-//                }
             }
         }
 
         xAxis.setValueFormatter(new IndexAxisValueFormatter(t));
 
-        lineChart.setDoubleTapToZoomEnabled(true);//设置是否可以通过双击屏幕放大图表。默认是true
         lineChart.setHighlightPerDragEnabled(true);//能否拖拽高亮线(数据点与坐标的提示线)，默认是true
         lineChart.setDragDecelerationEnabled(true);//拖拽滚动时，手放开是否会持续滚动，默认是true（false是拖到哪是哪，true拖拽之后还会有缓冲）
         lineChart.setDragDecelerationFrictionCoef(0.99f);//与上面那个属性配合，持续滚动时的速度快慢，[0,1) 0代表立即停止。
@@ -796,246 +757,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
         lineChart.highlightValue(pos, 0);
 
         lineChart.invalidate();
-        ///////////////////////////////
-//        LineChartDrawMarkers lineCharts = new LineChartDrawMarkers(getActivity());
-//        lineCharts.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
-//        binding.flParent.addView(lineCharts);
-//
-//        values1 = new ArrayList<>();
-//        values2 = new ArrayList<>();
-//        for (int i = 0; i < yoyList.size(); i++) {
-//            yoyListEntity = yoyList.get(i);
-//            String amount = yoyListEntity.getAmount();
-//            if (amount != null) {
-//                float f = 0;
-//                try {
-//                    f = Float.parseFloat(amount);
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                    f = 0;
-//                }
-//                Entry entry = new Entry(i + 1, f,getResources().getDrawable(R.drawable.home_icon_chakan_normal));
-//                values1.add(entry);
-//            }
-//        }
-//
-//        //折线图下面阴影遮罩的颜色
-//        Drawable[] drawables = {
-//                ContextCompat.getDrawable(getActivity(), R.drawable.chart_thisyear_blue),
-//                ContextCompat.getDrawable(getActivity(), R.drawable.chart_callserice_call_casecount)
-//        };
-//        //这个颜色我不说 自己猜
-//        int[] callDurationColors = {Color.parseColor("#45A2FF"), Color.parseColor("#F15C3C")};
-//        String thisYear = "";
-//        if (realList.size() > 0) {
-//            thisYear = realList.get(0).getYear();
-//        }
-//
-//        String lastYear = "";
-//        if (yoyList.size() > 0) {  //去掉右上角的 圆点2018
-//            lastYear = yoyList.get(0).getYear();
-//        }
-//        String[] labels = new String[]{thisYear, lastYear};
-//
-//        updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
-//        updateLinehart(yoyList, realList, lineCharts, callDurationColors, drawables, "元", values1, values2, labels, pos, list);
     }
-
-
-    // 双平滑曲线传入数据，添加markview，添加实体类单位
-    private void updateLinehart(final List<YoyListEntity> yoyList, final List<RealListEntity> realList, LineChartDrawMarkers lineChart, int[] colors, Drawable[] drawables, final String unit, List<Entry> values2, List<Entry> values1, final String[] labels, int pos, final ArrayList<YearAndMonthBean> list) {
-        List<Entry>[] entries = new ArrayList[2];
-        entries[0] = values1;
-        entries[1] = values2;
-        LineChartEntity lineChartEntity = new LineChartEntity(lineChart, entries, labels, colors, Color.parseColor("#999999"), 12f);
-
-        List<ILineDataSet> sets = lineChart.getData().getDataSets();
-        for (ILineDataSet iSet : sets) {
-            LineDataSet set = (LineDataSet) iSet;
-            set.setDrawCircles(true);
-
-            set.setLineWidth(0.2f); // 线宽
-            set.setColor(Color.RED);// 线条显示颜色
-
-            set.setCircleRadius(2f);// 显示的圆形大小
-            set.setCircleColor(Color.parseColor("#E8311B"));// 圆形的颜色
-
-            set.setHighLightColor(Color.parseColor("#E8311B")); // 高亮的线的颜色
-        }
-
-
-        lineChart.setScaleMinima(1.0f, 1.0f);
-        toggleFilled(lineChartEntity, drawables, colors);
-
-        lineChart.setDragEnabled(true);//设置是否可拖拽
-        lineChart.setScaleEnabled(false);//设置可缩放
-        lineChart.setTouchEnabled(true); //可点击
-        //lineChart.setPinchZoom(false);
-        lineChart.setBackgroundColor(Color.WHITE); //设置背景颜色
-
-        //移到某个位置
-        lineChart.moveViewToX(pos);
-        //日月切换时重新设定缩放倍数(还没来得及尝试此方法是否有用)
-        //lineChart.getViewPortHandler().setMinMaxScaleX(2,2);
-        //lineChart.highlightValue(pos,pos);//设置 默认显示对应月份时间 对应的记账金额 (0,0 默认显示第一个覆盖物)（不起作用 醉了）
-        //lineChart.getLineData().getDataSets().get(0).setVisible(true); //线条的隐藏以及显示
-//        lineChart.getAxisLeft().setLabelCount(4);
-
-        if (data.getDateType() == 3) {
-           /* lineChart.setDragEnabled(false);//设置是否可拖拽
-            //缩放第一种方式
-            Matrix matrix = new Matrix();
-            //1f代表不缩放
-            matrix.postScale(1f, 1f);
-            lineChart.getViewPortHandler().refresh(matrix, lineChart, false);
-            //重设所有缩放和拖动，使图表完全适合它的边界（完全缩小）。
-            lineChart.fitScreen();*/
-        } else if (data.getDateType() == 2) {
-          /*  //X轴的数量过多 坐标显示不全 （貌似不起作用）
-            XAxis xl = lineChart.getXAxis();
-            xl.setSpaceBetweenLabels(1);*/
-            XAxis xl = lineChart.getXAxis();
-            YAxis axisLeft = lineChart.getAxisLeft();
-            //xl.setGranularity(50f);
-            xl.setTextSize(8);
-            //axisLeft.setAxisLineWidth(50f);
-        } else if (data.getDateType() == 1) {// 日
-            lineChart.setDragEnabled(false);//设置是否可拖拽
-            //缩放第一种方式
-            Matrix matrix = new Matrix();
-            //1f代表不缩放
-            matrix.postScale(1f, 1f);
-            lineChart.getViewPortHandler().refresh(matrix, lineChart, false);
-            //重设所有缩放和拖动，使图表完全适合它的边界（完全缩小）。
-            lineChart.fitScreen();
-        }
-        //设置 不展示没有数据的点  未成功 暂时注释 后期调试
-        lineChart.setRenderer(new EmptyLineChartRendererNew(lineChart));
-        /**
-         * 这里切换平滑曲线或者折现图
-         */
-        //lineChartEntity.setLineMode(LineDataSet.Mode.CUBIC_BEZIER);// LINEAR, STEPPED,
-        lineChartEntity.setLineMode(LineDataSet.Mode.LINEAR);
-        lineChartEntity.initLegend(Legend.LegendForm.CIRCLE, 12f, Color.parseColor("#999999"));
-        lineChartEntity.updateLegendOrientation(Legend.LegendVerticalAlignment.TOP, Legend.LegendHorizontalAlignment.RIGHT, Legend.LegendOrientation.HORIZONTAL);
-
-        lineChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
-            @Override
-            public void onValueSelected(Entry e, Highlight h) {
-                //查看覆盖物是否被回收
-                if (lineChart.isMarkerAllNull()) {
-                    //重新绑定覆盖物
-                    lineChart.setRoundMarker(new RoundMarker(getActivity(), R.layout.custom_marker_view));
-                    //并且手动高亮覆盖物
-                    lineChart.highlightValue(h);
-                }
-
-                setDateToCharts((int) e.getX() - 1, list);
-            }
-
-            @Override
-            public void onNothingSelected() {
-
-            }
-        });
-
-        // 添加覆盖物
-        lineChart.setRoundMarker(new RoundMarker(getActivity(), R.layout.custom_marker_view));
-
-        lineChartEntity.setAxisFormatter((value, axis) -> {
-                    //设置折线图最底部月份显示
-                    if (value == 1.0f) {
-                        //return mFormat.format(value) + "月";
-                        if (data.getDateType() == 3) {
-                            return yoyList.get(0).getMonth().split("份")[0];
-                        } else if (data.getDateType() == 2) {
-
-                            return yoyList.get(0).getMonth();
-                        } else if (data.getDateType() == 1) {
-                            return yoyList.get(0).getMonth();
-                        }
-
-                    }
-                    String monthStr = mFormat.format(value);
-                    int i = Integer.parseInt(monthStr);
-                    if (i > yoyList.size()) {
-                        return "";
-                    }
-                    if (data.getDateType() == 3) {
-                        monthStr = yoyList.get(i - 1).getMonth().split("份")[0];
-                    } else {
-                        monthStr = yoyList.get(i - 1).getMonth();
-                    }
-                    if (monthStr.contains(".")) {
-                        return "";
-                    } else {
-                        return monthStr;
-                    }
-                },
-                //设置折线图最右边的百分比
-                (value, axis) -> "");
-
-        //设置折线图最右边的百分比
-        lineChartEntity.setDataValueFormatter((value, entry, dataSetIndex, viewPortHandler) -> "");
-
-
-//        final NewMarkerView markerView = new NewMarkerView(getActivity(), R.layout.custom_marker_view);
-//        markerView.setCallBack(new NewMarkerView.CallBack() {
-//            @Override
-//            public void onCallBack(float x, String value) {
-//                int index = (int) (x);
-//                if (index < 0) {
-//                    return;
-//                }
-//                if (index > yoyList.size() && index > realList.size()) {
-//                    return;
-//                }
-//                String textTemp = "";
-
-//                if (index <= yoyList.size()) {
-//                    if (!StringUtils.isEmpty(textTemp)) {
-//                    }
-//                    if (data.getDateType() == 2) {
-//                        textTemp += yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-//                    } else {
-//                        textTemp += yoyList.get(index - 1).getYear() + "." + yoyList.get(index - 1).getMonth().split("月份")[0] + "  " + mFormat.format(Float.parseFloat(yoyList.get(index - 1).getAmount())) + unit;
-//                    }
-//                }
-//
-//                if (index <= realList.size()) {
-//                    textTemp += "\n";
-//                    textTemp += realList.get(index - 1).getYear() + "." + index + "  " + mFormat.format(Float.parseFloat(realList.get(index - 1).getAmount())) + unit;
-//                }
-//                markerView.getTvContent().setText(textTemp);
-//
-//                if (!aa) {
-//                    setDateToCharts(index - 1, list);
-//                    aa = true;
-//                    aaa = index;
-//                }
-//                if (index != aaa) {
-//                    Utils.playVoice(getActivity(), R.raw.changgui01);
-//                    setDateToCharts(index - 1, list);
-//                    aaa = index;
-//                }
-//
-//            }
-//        });
-//
-//        lineChartEntity.setMarkView(markerView);
-        setDateToCharts(pos, list);
-        lineChart.getData().setDrawValues(false);
-    }
-
-    // 双平滑曲线添加线下的阴影
-    private void toggleFilled(LineChartEntity lineChartEntity, Drawable[] drawables, int[] colors) {
-        if (android.os.Build.VERSION.SDK_INT >= 18) {
-            lineChartEntity.toggleFilled(drawables, null, true);
-        } else {
-            lineChartEntity.toggleFilled(null, colors, true);
-        }
-    }
-
 
     // 饼图相关
     private PieChart mChart;
