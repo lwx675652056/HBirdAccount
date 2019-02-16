@@ -29,6 +29,7 @@ import com.github.mikephil.chart_3_0_1v.listener.OnChartValueSelectedListener;
 import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.databinding.FragementIndexBinding;
+import com.hbird.base.mvc.activity.ActSetBudget;
 import com.hbird.base.mvc.activity.AskFriendsActivity;
 import com.hbird.base.mvc.activity.BudgetActivity;
 import com.hbird.base.mvc.activity.ChooseAccountTypeActivity;
@@ -362,18 +363,29 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         // 编辑预算
         public void editor(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            Intent intent3 = new Intent(getActivity(), BudgetActivity.class);
-            intent3.putExtra("MONTH", mm + "");
-            intent3.putExtra("YEAR", yyyy + "");
-            if (indexResult.getBudget() != null) {
-                String s = "";
-                if (indexResult.getBudget().getBudgetMoney() != null) {
-                    s = indexResult.getBudget().getBudgetMoney() + "";
+            if (TextUtils.equals(typeBudget, "1")) {// 日常账本
+                Intent intent3 = new Intent(getActivity(), BudgetActivity.class);
+                intent3.putExtra("MONTH", mm + "");
+                intent3.putExtra("YEAR", yyyy + "");
+                if (indexResult.getBudget() != null) {
+                    String s = "";
+                    if (indexResult.getBudget().getBudgetMoney() != null) {
+                        s = indexResult.getBudget().getBudgetMoney() + "";
+                    }
+                    intent3.putExtra("MONEY", s);
                 }
-                intent3.putExtra("MONEY", s);
+                intent3.putExtra("accountBookId", zhangbenId);
+                startActivityForResult(intent3,1000);
+            } else {// 场景账本
+                Intent intent3 = new Intent(getActivity(), ActSetBudget.class);
+                intent3.putExtra("MONTH", data.getMm() + "");
+                intent3.putExtra("YEAR", data.getYyyy() + "");
+                String abId = SPUtil.getPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID, "");
+                intent3.putExtra("accountBookId", abId + "");
+                intent3.putExtra("topTime", "- - 年 - - 月 - - 日");
+                intent3.putExtra("endTime", "- - 年 - - 月 - - 日");
+                startActivityForResult(intent3, 1000);
             }
-            intent3.putExtra("accountBookId", zhangbenId);
-            startActivity(intent3);
         }
 
         // 账本成员设置
@@ -644,7 +656,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     private void setGuide2() {
-        if (!getUserVisibleHint()){
+        if (!getUserVisibleHint()) {
             return;
         }
         View cv = getActivity().getWindow().getDecorView();
@@ -666,7 +678,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     private void setGuide3() {
-        if (!getUserVisibleHint()){
+        if (!getUserVisibleHint()) {
             return;
         }
         View cv = getActivity().getWindow().getDecorView();
@@ -688,7 +700,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     private void setGuide4() {
-        if (!getUserVisibleHint()){
+        if (!getUserVisibleHint()) {
             return;
         }
         View cv = getActivity().getWindow().getDecorView();
@@ -986,6 +998,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         } else if (requestCode == 141) {// 记账回来的
             getIndexInfo();
             loadDataForNet(false);
+        }else if (requestCode == 1000){// 设置预算
+            getHeadNetInfo();
         }
     }
 
@@ -1309,7 +1323,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
 
 
-       List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId,prefSet);
+        List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId, prefSet);
         pieList.clear();
         data.setSize(temp == null ? 0 : temp.size());
         ArrayList<PieEntry> entries1 = new ArrayList<>();

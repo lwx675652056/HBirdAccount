@@ -583,6 +583,7 @@ public class FragStatistics extends BaseFragment<FragStatisticsBinding, FragStat
 
     private void initChart(int pos, ArrayList<YearAndMonthBean> list) {
         mFormat = new DecimalFormat("#,###.##");
+
         binding.flParent.removeAllViews();
         LineChart lineChart = new LineChart(getActivity());
         lineChart.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));

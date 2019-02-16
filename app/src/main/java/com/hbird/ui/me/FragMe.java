@@ -93,7 +93,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
 //            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
-            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);// 导航栏白色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), false);// 导航栏白色字体
 
             data.setShowLine(false);
             data.setFengniaoId(-1);// 空值
@@ -306,7 +306,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     private void onScroll(int scrollY) {
         if (scrollY < 50) {
 //            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
-            StatusBarUtil.setStatusBarDarkTheme(getActivity(),false);// 导航栏白色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), false);// 导航栏白色字体
 
             binding.flParent1.setVisibility(View.GONE);
             binding.flParent2.setVisibility(View.VISIBLE);
@@ -314,7 +314,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
             data.setShowLine(false);
         } else if (scrollY >= height) {
-            StatusBarUtil.setStatusBarDarkTheme(getActivity(),true);// 导航栏黑色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
 //            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());
 
             binding.flParent1.setVisibility(View.VISIBLE);
@@ -323,7 +323,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
             data.setShowLine(true);
         } else {
-            StatusBarUtil.setStatusBarDarkTheme(getActivity(),true);// 导航栏黑色字体
+            StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
 //            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
 
             binding.flParent1.setVisibility(View.VISIBLE);
@@ -348,7 +348,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
                 SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYIDS, b1.getResult().getId() + "");
                 SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYNAME, b1.getResult().getNickName());
 
-                SharedPreferencesUtil.put(Constants.USER_MOBILE,b1.getResult().getMobile());// 新保存的
+                SharedPreferencesUtil.put(Constants.USER_MOBILE, b1.getResult().getMobile() == null ? "" : b1.getResult().getMobile());// 新保存的
 //                String nickName = b1.getResult().getNickName();
 //                if (TextUtils.isEmpty(nickName)) {
 //                    String mobile = b1.getResult().getMobile();

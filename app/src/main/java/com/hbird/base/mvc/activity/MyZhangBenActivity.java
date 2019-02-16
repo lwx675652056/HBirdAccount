@@ -132,7 +132,7 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
                             showMessage("不可删除");
                             return;
                         }
-                        alertDialog(position, 1);
+                        alertDialog(position);
                         break;
                 }
             }
@@ -165,13 +165,13 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
             if (l == 0 || data.get((int) (l - 1)).getDefaultFlag() == 1) {
                 showMessage("不可删除");
             } else {
-                alertDialog(i-1, 0);
+                alertDialog(i-1);
             }
             return true;
         });
     }
 
-    private void alertDialog(final int position, final int type) {
+    private void alertDialog(final int position) {
         //如果最后一个人提示“是否删除本账单？删除后所有数据不可恢复。（删除，取消）；
         //如果不是最后一个人删除，删除账本提示“是否删除？删除直接退出账本，并且数据不可以恢复。”
         new DialogUtils(MyZhangBenActivity.this)
@@ -183,9 +183,6 @@ public class MyZhangBenActivity extends BaseActivity<BasePresenter> {
                 .setSureButton("删除", view -> {
                     playVoice(R.raw.changgui02);
                     int positions = position;
-                    if (type == 0) {
-                        positions = positions - 1;
-                    }
                     del(positions, swipe.getChildAt(positions + 1 - swipe.getFirstVisiblePosition()));
                     //删除账本接口
                     delAccount(position);

@@ -264,6 +264,9 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
         if (requestCode == 141){
             indexFragement.onActivityResult(141, -1, null);
         }
+        if (requestCode == 1000){
+            indexFragement.onActivityResult(requestCode, resultCode, data);
+        }
     }
 
 

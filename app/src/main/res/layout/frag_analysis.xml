@@ -183,14 +183,16 @@
 
                 </LinearLayout>
 
-                <com.hbird.common.chart.LineChartInViewPager
-                    android:id="@+id/xl_lineChart"
+                <!--代码内动态添加 LineChartInViewPager-->
+                <FrameLayout
+                    android:id="@+id/fl_parent"
                     android:layout_width="match_parent"
-                    android:layout_height="250dp"
-                    android:layout_marginEnd="@dimen/dp_15_x"
-                    android:layout_marginStart="@dimen/dp_15_x"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
                     android:layout_marginTop="@dimen/dp_15_x"
-                    android:visibility="gone"/>
+                    android:paddingEnd="@dimen/dp_15_x"
+                    android:visibility="gone"
+                    android:paddingStart="@dimen/dp_15_x"/>
 
                 <TextView
                     android:layout_width="wrap_content"
