@@ -52,11 +52,11 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Util;
 import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.SaveMoneyBean;
-import com.hbird.common.chart.LineChartInViewPager;
 import com.hbird.common.chating.data.LineData;
 import com.hbird.common.chating.formatter.IndexAxisValueFormatter;
 import com.hbird.common.chating.formatter.ValueFormatter;
 import com.hbird.util.Utils;
+import com.hbird.widget.RoundMarker;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -105,7 +105,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     private List<Entry> values1, values2;
     private RealListEntity realListEntity;
     private YoyListEntity yoyListEntity;
-    private LineChartInViewPager lineChart;
+//    private LineChartInViewPager lineChart1;
     private boolean xiaoLvs = false;
     private boolean zhipei = false;
 
@@ -368,15 +368,17 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
 //                mllViews.setVisibility(View.GONE);
                 data.setShowSetBudget(true);
                 mRadioDown.setVisibility(View.GONE);
-                if (lineChart != null) {
-                    lineChart.setVisibility(View.GONE);
-                }
+//                if (lineChart1 != null) {
+//                    lineChart1.setVisibility(View.GONE);
+                    binding.flParent1.setVisibility(View.GONE);
+//                }
                 zhipei = true;
             } else {
                 data.setShowSetBudget(false);
-                if (lineChart != null) {
-                    lineChart.setVisibility(View.VISIBLE);
-                }
+//                if (lineChart1 != null) {
+//                    lineChart1.setVisibility(View.VISIBLE);
+                    binding.flParent1.setVisibility(View.VISIBLE);
+//                }
                 zhipei = false;
 //                mllViews.setVisibility(View.VISIBLE);
                 //mFlViews.setVisibility(View.VISIBLE);
@@ -448,22 +450,25 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
             if (b2.getResults() == null || b2.getResults().getSceneBudget() == null || b2.getResults().getSceneBudget().getBudgetMoney() < 0) {
                 data.setShowSetBudget(true);
                 zhipei = false;
-                if (lineChart != null) {
-                    lineChart.setVisibility(View.GONE);
-                }
+//                if (lineChart1 != null) {
+//                    lineChart1.setVisibility(View.GONE);
+                    binding.flParent1.setVisibility(View.GONE);
+//                }
                 return;
             } else {
                 data.setShowSetBudget(false);
                 zhipei = false;
-                if (lineChart != null) {
-                    lineChart.setVisibility(View.VISIBLE);
-                }
+//                if (lineChart1 != null) {
+//                    lineChart1.setVisibility(View.VISIBLE);
+                    binding.flParent1.setVisibility(View.VISIBLE);
+//                }
             }
 
             // 没有数据
             if (b2.getResults() == null || b2.getResults().getArrays() == null || b2.getResults().getArrays().size() < 1) {
-                if (lineChart != null) lineChart.clearValues();
-                if (finishList != null) finishList.clear();
+//                if (lineChart1 != null) lineChart1.clearValues();
+//                if (finishList != null) finishList.clear();
+//                if (lineChart1 != null) lineChart1.setVisibility(View.GONE);
                 setToDates(types);
                 return;
             }
@@ -931,6 +936,16 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
 
         for (int i = 0; i < num; i++) {
             if (finishList.size() < num) {
+                binding.flParent1.setVisibility(View.VISIBLE);
+                binding.flParent1.removeAllViews();
+                com.hbird.common.chating.charts.LineChart lineChart = new com.hbird.common.chating.charts.LineChart(getActivity());
+                lineChart.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
+                binding.flParent1.addView(lineChart);
+                lineChart.setBackgroundColor(Color.WHITE); // background color
+                lineChart.getDescription().setEnabled(false);  // disable description text
+                lineChart.setTouchEnabled(true); // enable touch gestures
+                lineChart.setNoDataText("暂无记账记录");
+                lineChart.setDrawGridBackground(false);
                 return;
             }
             YearAndMonthBean bean = new YearAndMonthBean();
@@ -983,15 +998,43 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
     private void initChart(String unit) {
         LogUtil.e("initChart()");
         mFormat = new DecimalFormat("#,###.##");
-        lineChart = binding.newLineChart;
+
         if (zhipei) {
-            lineChart.setVisibility(View.GONE);
+            binding.flParent1.setVisibility(View.GONE);
         } else {
-            lineChart.setVisibility(View.VISIBLE);
+            binding.flParent1.setVisibility(View.VISIBLE);
         }
 
-        values1 = new ArrayList<>();
-        values2 = new ArrayList<>();
+        binding.flParent1.removeAllViews();
+        com.hbird.common.chating.charts.LineChart lineChart = new com.hbird.common.chating.charts.LineChart(getActivity());
+        lineChart.setLayoutParams(new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, height_200));
+        binding.flParent1.addView(lineChart);
+        lineChart.setBackgroundColor(Color.WHITE); // background color
+        lineChart.getDescription().setEnabled(false);  // disable description text
+        lineChart.setTouchEnabled(true); // enable touch gestures
+
+        lineChart.setDrawGridBackground(false);
+
+//        lineChart.setOnChartValueSelectedListener(new com.hbird.common.chating.listener.OnChartValueSelectedListener() {
+//            @Override
+//            public void onValueSelected(com.hbird.common.chating.data.Entry e, com.hbird.common.chating.highlight.Highlight h) {
+//                LogUtil.e("");
+//            }
+//
+//            @Override
+//            public void onNothingSelected() {
+//            }
+//        });
+        RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
+        mv.setChartView(lineChart);
+        lineChart.setMarker(mv);
+
+        // enable scaling and dragging
+        lineChart.setDragEnabled(true);
+        lineChart.setScaleEnabled(true);
+
+        // X轴的个数，Y轴最大范围
+        ArrayList<com.hbird.common.chating.data.Entry> values = new ArrayList<>();
         for (int i = 0; i < yoyList.size(); i++) {
             yoyListEntity = yoyList.get(i);
             String amount = yoyListEntity.getAmount();
@@ -1003,52 +1046,207 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
                     e.printStackTrace();
                     f = 0;
                 }
-                Entry entry = new Entry(i + 1, f);
-                values1.add(entry);
-            }
-        }
-
-        for (int i = 0; i < realList.size(); i++) {
-            realListEntity = realList.get(i);
-            String amount = realListEntity.getAmount();
-            if (amount != null) {
-                float f = 0;
-                try {
-                    f = Float.parseFloat(amount);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    f = 0;
+                if (f != 0) {
+                    values.add(new com.hbird.common.chating.data.Entry(i, f, getResources().getDrawable(R.mipmap.shuju_icon_zhengshu_normal)));
+                } else {
+                    values.add(new com.hbird.common.chating.data.Entry(i, f));
                 }
-                Entry entry = new Entry(i + 1, f);
-                values2.add(entry);
             }
         }
-        //折线图下面阴影遮罩的颜色
-        Drawable[] drawables = {
-                ContextCompat.getDrawable(getActivity(), R.drawable.chart_thisyear_blue),
-                ContextCompat.getDrawable(getActivity(), R.drawable.chart_callserice_call_casecount)
-        };
-        //这个颜色我不说 自己猜
-        int[] callDurationColors = {Color.parseColor("#45A2FF"), Color.parseColor("#F15C3C")};
-        String thisYear = "";
-        if (realList.size() > 0) {
-            thisYear = realList.get(0).getYear();
+
+        // create a dataset and give it a type
+        com.hbird.common.chating.data.LineDataSet set1 = new com.hbird.common.chating.data.LineDataSet(values, "");
+
+        set1.setDrawIcons(true);
+        // 画虚线
+//        set1.enableDashedLine(10f, 5f, 0f);
+        // black lines and points
+        set1.setColor(Color.RED);
+        set1.setCircleColor(Color.TRANSPARENT);
+        // line thickness and point size
+        set1.setLineWidth(1f);// 折线宽度
+        set1.setCircleRadius(1f);// 顶点值圆的弧度
+        // 将点绘制为实心圆
+        set1.setDrawCircleHole(false);
+        // text size of values
+        set1.setValueTextSize(9f);
+        // 将选择线绘制为虚线
+        set1.enableDashedHighlightLine(10f, 5f, 0f);
+        // 设置填充区域
+        set1.setDrawFilled(true);
+        set1.setFillFormatter((dataSet, dataProvider) -> lineChart.getXAxis().getAxisMinimum());
+
+        // set color of filled area
+        if (com.hbird.common.chating.utils.Utils.getSDKInt() >= 18) {
+            Drawable drawable = ContextCompat.getDrawable(getActivity(), R.drawable.fade_red);
+            set1.setFillDrawable(drawable);
+        } else {
+            set1.setFillColor(Color.BLACK);
         }
 
-        String lastYear = "";
-        if (yoyList.size() > 0) {
-            lastYear = yoyList.get(0).getYear();
-        }
-        String[] labels = new String[]{thisYear, lastYear};
+        ArrayList<com.hbird.common.chating.interfaces.datasets.ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+        // create a data object with the data sets
+        LineData data = new LineData(dataSets);
+        // set data
+        lineChart.setData(data);
 
-        updateLinehart(yoyList, realList, lineChart, callDurationColors, drawables, "%", values1, values2, labels, unit);
+        // 绘制动画结束时间
+        lineChart.animateX(200);
+
+        // 透明化图例 仅在设置数据后可用
+        lineChart.getLegend().setForm(com.hbird.common.chating.components.Legend.LegendForm.NONE);
+
+        List<com.hbird.common.chating.interfaces.datasets.ILineDataSet> sets = lineChart.getData().getDataSets();
+        for (com.hbird.common.chating.interfaces.datasets.ILineDataSet iSet : sets) {
+            com.hbird.common.chating.data.LineDataSet set = (com.hbird.common.chating.data.LineDataSet) iSet;
+            // 是否显示顶部的值
+            set.setDrawValues(false);
+            // 是否值要顶部的黑点
+            set.setDrawCircles(true);
+            // 是否要阴影
+            set.setDrawFilled(true);
+
+            set.setMode(com.hbird.common.chating.data.LineDataSet.Mode.LINEAR);// 直角
+            // 线条样式
+            set.setColor(Color.parseColor("#E9371F"));//线条颜色
+            set.setCircleColor(Color.parseColor("#E9371F"));//圆点颜色
+            set.setCircleHoleRadius(0.5f);
+            set.setLineWidth(1f);//线条宽度
+        }
+
+        // 移动到某个位置
+//        lineChart.moveViewToX(pos > 0 ? (pos - 1) : pos);
+
+        //设置图表右边的y轴禁用
+        lineChart.getAxisRight().setEnabled(false);
+
+        //设置图表左边的y轴禁用
+//        lineChart.getAxisLeft().setEnabled(false);
+        //是否绘制0所在的网格线
+        lineChart.getAxisLeft().setDrawZeroLine(true);
+        lineChart.getAxisLeft().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value) {
+                return (int) value + "%";
+            }
+        });
+
+        lineChart.getAxisLeft().setDrawGridLines(true);
+        lineChart.getAxisLeft().enableGridDashedLine(10f, 15f, 0f);
+        lineChart.getAxisLeft().setGridLineWidth(0.5f);
+        lineChart.getAxisLeft().setGridColor(Color.parseColor("#F5F5F5"));
+
+        lineChart.getAxisLeft().setDrawAxisLine(false);//是否绘制轴线 竖线
+
+        // 是否等比缩放、单独X或Y缩放
+        lineChart.setScaleXEnabled(true); //是否可以缩放 仅x轴
+        lineChart.setScaleYEnabled(false); //是否可以缩放 仅y轴
+
+        //设置x轴
+        com.hbird.common.chating.components.XAxis xAxis = lineChart.getXAxis();
+        xAxis.setTextColor(Color.parseColor("#929292"));
+        xAxis.setAxisMinimum(0f);
+        xAxis.setDrawGridLines(false);//设置x轴上每个点对应的线
+        xAxis.setDrawLabels(true);//绘制标签  指x轴上的对应数值
+        xAxis.setPosition(com.hbird.common.chating.components.XAxis.XAxisPosition.BOTTOM);//设置x轴的显示位置
+        xAxis.setGranularity(1f);//禁止放大后x轴标签重绘
+
+        xAxis.setDrawAxisLine(false);//是否绘制轴线
+
+        lineChart.setDoubleTapToZoomEnabled(false);//设置是否可以通过双击屏幕放大图表。默认是true
+
+        xAxis.setLabelRotationAngle(0);
+        xAxis.setTextSize(10f);
+
+        List<String> t = new ArrayList<>();
+        for (int i = 1; i < yoyList.size() + 1; i++) {
+            String s = yoyList.get(i - 1).getMonth();
+            if (types != 12) {
+                s += unit;
+            }
+            t.add(s);
+        }
+
+        xAxis.setValueFormatter(new IndexAxisValueFormatter(t));
+
+        lineChart.setHighlightPerDragEnabled(true);//能否拖拽高亮线(数据点与坐标的提示线)，默认是true
+        lineChart.setDragDecelerationEnabled(true);//拖拽滚动时，手放开是否会持续滚动，默认是true（false是拖到哪是哪，true拖拽之后还会有缓冲）
+        lineChart.setDragDecelerationFrictionCoef(0.99f);//与上面那个属性配合，持续滚动时的速度快慢，[0,1) 0代表立即停止。
+
+        // 默认选择的marker
+//        lineChart.highlightValue(xlList.size()-1, 0);
+
+        lineChart.invalidate();
+
+
+        /////////// 啊实打实大
+//        lineChart1 = binding.newLineChart;
+//        if (zhipei) {
+//            lineChart1.setVisibility(View.GONE);
+//        } else {
+//            lineChart1.setVisibility(View.VISIBLE);
+//        }
+//        lineChart1.setVisibility(View.GONE);
+//
+//        values1 = new ArrayList<>();
+//        values2 = new ArrayList<>();
+//        for (int i = 0; i < yoyList.size(); i++) {
+//            yoyListEntity = yoyList.get(i);
+//            String amount = yoyListEntity.getAmount();
+//            if (amount != null) {
+//                float f = 0;
+//                try {
+//                    f = Float.parseFloat(amount);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    f = 0;
+//                }
+//                Entry entry = new Entry(i + 1, f);
+//                values1.add(entry);
+//            }
+//        }
+//
+//        for (int i = 0; i < realList.size(); i++) {
+//            realListEntity = realList.get(i);
+//            String amount = realListEntity.getAmount();
+//            if (amount != null) {
+//                float f = 0;
+//                try {
+//                    f = Float.parseFloat(amount);
+//                } catch (Exception e) {
+//                    e.printStackTrace();
+//                    f = 0;
+//                }
+//                Entry entry = new Entry(i + 1, f);
+//                values2.add(entry);
+//            }
+//        }
+//        //折线图下面阴影遮罩的颜色
+//        Drawable[] drawables = {
+//                ContextCompat.getDrawable(getActivity(), R.drawable.chart_thisyear_blue),
+//                ContextCompat.getDrawable(getActivity(), R.drawable.chart_callserice_call_casecount)
+//        };
+//        //这个颜色我不说 自己猜
+//        int[] callDurationColors = {Color.parseColor("#45A2FF"), Color.parseColor("#F15C3C")};
+//        String thisYear = "";
+//        if (realList.size() > 0) {
+//            thisYear = realList.get(0).getYear();
+//        }
+//
+//        String lastYear = "";
+//        if (yoyList.size() > 0) {
+//            lastYear = yoyList.get(0).getYear();
+//        }
+//        String[] labels = new String[]{thisYear, lastYear};
+//
+//        updateLinehart(yoyList, realList, lineChart1, callDurationColors, drawables, "%", values1, values2, labels, unit);
     }
 
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
-            case R.id.tv_choose_zb:
-                //showMessage("请选择账本");
+            case R.id.tv_choose_zb: // 选择账本
                 NetWorkManager.getInstance().setContext(getActivity()).getMyAccounts(token, new NetWorkManager.CallBack() {
                     @Override
                     public void onSuccess(BaseReturn b) {
@@ -1255,12 +1453,11 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChart.setTouchEnabled(true); // enable touch gestures
 
         lineChart.setDrawGridBackground(false);
-        // create marker to display box when values are selected
-//        RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
-        // Set the marker to the chart
-//        mv.setChartView(lineChart);
-//        lineChart.setMarker(mv);
-        // enable scaling and dragging
+
+        RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
+        mv.setChartView(lineChart);
+        lineChart.setMarker(mv);
+
         lineChart.setDragEnabled(true);
         lineChart.setScaleEnabled(true);
 

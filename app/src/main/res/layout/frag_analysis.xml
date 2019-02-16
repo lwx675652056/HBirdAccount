@@ -188,11 +188,11 @@
                     android:id="@+id/fl_parent"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:background="@color/white"
                     android:layout_marginTop="@dimen/dp_15_x"
+                    android:background="@color/white"
                     android:paddingEnd="@dimen/dp_15_x"
-                    android:visibility="gone"
-                    android:paddingStart="@dimen/dp_15_x"/>
+                    android:paddingStart="@dimen/dp_15_x"
+                    android:visibility="gone"/>
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -418,13 +418,17 @@
                         android:textSize="14sp"
                         android:visibility="@{data.showSetBudget?View.VISIBLE:View.GONE}"/>
 
-                    <com.hbird.common.chart.LineChartInViewPager
-                        android:id="@+id/new_lineChart"
+                    <FrameLayout
+                        android:id="@+id/fl_parent1"
                         android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:layout_marginEnd="@dimen/dp_15_x"
+                        android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_15_x"
                         android:layout_marginTop="@dimen/dp_15_x"/>
+
+                    <!--<com.hbird.common.chart.LineChartInViewPager-->
+                        <!--android:id="@+id/new_lineChart"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="250dp"/>-->
 
                     <TextView
                         android:id="@+id/tv_yusuan_time"
