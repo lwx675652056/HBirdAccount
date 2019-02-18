@@ -7,6 +7,8 @@
 
     <include layout="@layout/activity_headers"/>
 
+    <View style="@style/horizontal_line"/>
+
     <include layout="@layout/view_xiaofei"/>
 
     <LinearLayout

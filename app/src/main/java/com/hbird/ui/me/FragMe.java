@@ -33,7 +33,6 @@ import com.hbird.base.mvc.activity.SuggestFanKuiActivity;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.ReturnBean.CheckVersionReturn;
 import com.hbird.base.mvc.bean.ReturnBean.FengMessageReturn;
-import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.HeaderInfoReturn;
 import com.hbird.base.mvc.global.CommonTag;
 import com.hbird.base.mvc.net.NetWorkManager;
@@ -60,7 +59,6 @@ import java.io.File;
 import java.util.Date;
 
 import sing.common.base.BaseFragment;
-import sing.common.base.BaseViewModel;
 import sing.common.util.DownLoadUtil;
 import sing.common.util.LogUtil;
 import sing.common.util.StatusBarUtil;
@@ -69,13 +67,12 @@ import sing.util.ToastUtil;
 
 import static java.lang.Integer.parseInt;
 
-public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
+public class FragMe extends BaseFragment<FragMeBinding, MeModle> {
 
     private int height;// 頂部红色View高度
     private FragMeData data;
     private String token;
     private String accountId;// 账本id
-    private GeRenInfoReturn b1;// 个人信息
     private HeaderInfoReturn b1s;// 头部信息
 
     @Override
@@ -92,7 +89,6 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
         if (isVisibleToUser) {
-//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
             StatusBarUtil.setStatusBarDarkTheme(getActivity(), false);// 导航栏白色字体
 
             data.setShowLine(false);
@@ -103,10 +99,10 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             binding.flParent2.setVisibility(View.VISIBLE);
 
             // 调三个接口，获取个人信息、获取头部信息、获取丰丰通知数
-            getUserInfo();
             getTopInfo();
             getMessage();
         }
+        getUserInfo();// 这里要获取到丰丰ID在领票票页面用
     }
 
     @RequiresApi(api = Build.VERSION_CODES.M)
@@ -137,12 +133,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
         // 设置
         public void setting(View view) {
             Utils.playVoice(getActivity(), R.raw.changgui02);
-            Intent intent5 = new Intent(getActivity(), SettingsActivity.class);
-            if (null != b1) {
-                intent5.putExtra("PHONE", b1.getResult().getMobile());
-                intent5.putExtra("WEIXIN", b1.getResult().getWechatAuth());
-            }
-            startActivity(intent5);
+            startActivity(new Intent(getActivity(), SettingsActivity.class));
         }
 
         // 个人信息
@@ -150,11 +141,7 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             Utils.playVoice(getActivity(), R.raw.changgui02);
 //            Intent intent1 = new Intent(getActivity(), PersionnalInfoActivity.class);
             Intent intent1 = new Intent(getActivity(), ActEditInfo.class);
-            if (null != b1) {
-                String json = new Gson().toJson(b1);
-                intent1.putExtra("JSON", json);
-                startActivityForResult(intent1, 1001);
-            }
+            startActivityForResult(intent1, 1001);
         }
 
         // 邀请的好友数
@@ -192,10 +179,8 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
                 String jsons = new Gson().toJson(b1s);
                 intent4.putExtra("JSON", jsons);
             }
-            if (null != b1) {
-                intent4.putExtra("HEADYRL", data.getHeadUrl());
-                intent4.putExtra("NAME", data.getName());
-            }
+            intent4.putExtra("HEADYRL", data.getHeadUrl());
+            intent4.putExtra("NAME", data.getName());
             intent4.putExtra("JZDAYS", data.getMonthNum().substring(0, data.getMonthNum().indexOf("/")));
             intent4.putExtra("ZONGJZ", data.getTotalNum() + "");
             intent4.putExtra("FENXIANG", data.getInviteNum() + "");
@@ -305,7 +290,6 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
     // scrollView 滑动监听
     private void onScroll(int scrollY) {
         if (scrollY < 50) {
-//            StatusBarUtil.clearStatusBarDarkMode(getActivity().getWindow());
             StatusBarUtil.setStatusBarDarkTheme(getActivity(), false);// 导航栏白色字体
 
             binding.flParent1.setVisibility(View.GONE);
@@ -315,7 +299,6 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             data.setShowLine(false);
         } else if (scrollY >= height) {
             StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
-//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());
 
             binding.flParent1.setVisibility(View.VISIBLE);
             binding.flParent2.setVisibility(View.GONE);
@@ -324,7 +307,6 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
             data.setShowLine(true);
         } else {
             StatusBarUtil.setStatusBarDarkTheme(getActivity(), true);// 导航栏黑色字体
-//            StatusBarUtil.setStatusBarLightMode(getActivity().getWindow());// 导航栏黑色字体
 
             binding.flParent1.setVisibility(View.VISIBLE);
             binding.flParent2.setVisibility(View.GONE);
@@ -338,57 +320,18 @@ public class FragMe extends BaseFragment<FragMeBinding, BaseViewModel> {
 
     //获取个人信息
     private void getUserInfo() {
-        NetWorkManager.getInstance().setContext(getActivity()).getPersionalInfos(token, new NetWorkManager.CallBack() {
-            @Override
-            public void onSuccess(BaseReturn b) {
-                b1 = (GeRenInfoReturn) b;
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYPHONE, b1.getResult().getMobile());
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYWEIXIN, b1.getResult().getWechatAuth());
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYZILIAO, new Gson().toJson(b1));
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYIDS, b1.getResult().getId() + "");
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.H5PRIMKEYNAME, b1.getResult().getNickName());
-
-                SharedPreferencesUtil.put(Constants.USER_MOBILE, b1.getResult().getMobile() == null ? "" : b1.getResult().getMobile());// 新保存的
-//                String nickName = b1.getResult().getNickName();
-//                if (TextUtils.isEmpty(nickName)) {
-//                    String mobile = b1.getResult().getMobile();
-//                    nickName = com.hbird.base.util.Utils.getHiddenPhone(mobile);
-//                    SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUNICKNAME, "");
-//                    SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUPHONE, nickName);
-//                } else {
-//                    SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUNICKNAME, nickName);
-//                    String mobile = b1.getResult().getMobile();
-//                    SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUPHONE, mobile);
-//                }
-
-                data.setName(b1.getResult().getNickName(), b1.getResult().getMobile());
+        if (viewModel != null) {
+            viewModel.getUserInfo(token, info -> {
+                data.setName(info.nickName, info.mobile);
                 // 资料完善度
-                Double precent = b1.getResult().getIntegrity();
-                if (precent == 1) {
-                    data.setPrecent(true);
-                    data.setPrecent("已完善");// 无所谓 反正不显示
-                } else {
-                    data.setPrecent(false);
-                    data.setPrecent("完善度" + precent * 100 + "%");
-                }
+                Double precent = info.integrity;
+                data.setPrecent(precent == 1);
+                data.setPrecent("完善度" + precent * 100 + "%");
 
-                data.setFengniaoId(b1.getResult().getId());
-
-                SharedPreferencesUtil.put(Constants.FENGFENG_ID, String.valueOf(b1.getResult().getId()));// 保存峰峰id
-                //保存id 极光推送需要用到
-                //JPushInterface.setAlias(getActivity(),1,b1.getResult().getId()+"");
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.FENG_NIAO_ID, b1.getResult().getId() + "");
-
-                SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUIMG, b1.getResult().getAvatarUrl());
-
-                data.setHeadUrl(b1.getResult().getAvatarUrl());
-            }
-
-            @Override
-            public void onError(String s) {
-                ToastUtil.showShort(s);
-            }
-        });
+                data.setFengniaoId(info.id);
+                data.setHeadUrl(info.avatarUrl);
+            });
+        }
     }
 
     // 获取顶部信息

@@ -250,7 +250,6 @@ public class MeFragement extends BaseFragement implements View.OnClickListener {
                         SharedPreferencesUtil.put(Constants.FENGFENG_ID,String.valueOf(b1.getResult().getId()));// 保存峰峰id
                         //保存id 极光推送需要用到
                         //JPushInterface.setAlias(getActivity(),1,b1.getResult().getId()+"");
-                        SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.FENG_NIAO_ID, b1.getResult().getId() + "");
                         String avatarUrl = b1.getResult().getAvatarUrl();
                         SPUtil.setPrefString(getActivity(), com.hbird.base.app.constant.CommonTag.KEFUIMG, avatarUrl);
                         GlideApp.with(MeFragement.this)

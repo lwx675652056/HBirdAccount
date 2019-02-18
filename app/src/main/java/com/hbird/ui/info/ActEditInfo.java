@@ -10,18 +10,20 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hbird.base.R;
+import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.databinding.ActEditInfoBinding;
 import com.hbird.base.listener.OnMyTextChangedListener;
 import com.hbird.base.mvc.bean.RequestBean.persionalReq;
-import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.view.dialog.MyChooseSexDialog;
 import com.hbird.base.mvc.view.dialog.MyHangYeDialog;
 import com.hbird.base.mvc.view.dialog.MyZhiWeiDialog;
 import com.hbird.base.mvc.widget.CityPickerDialog;
 import com.hbird.base.mvc.widget.TimePickerDialog;
 import com.hbird.base.util.SPUtil;
+import com.hbird.bean.UserInfo;
 import com.hbird.util.Utils;
 import com.hbird.util.image.PicChooserHelper;
 
@@ -59,32 +61,30 @@ public class ActEditInfo extends BaseActivity<ActEditInfoBinding, EditInfoModle>
         binding.setListener(new OnClick());
         initDialog();
 
-        String jsons = getIntent().getStringExtra("JSON");
-        if (!TextUtils.isEmpty(jsons)) {
-            GeRenInfoReturn info = new Gson().fromJson(jsons, GeRenInfoReturn.class);
+        String jsons = SPUtil.getPrefString(this, CommonTag.H5PRIMKEYZILIAO, "");
 
-            String nickName = info.getResult().getNickName();
+        if (!TextUtils.isEmpty(jsons)) {
+            UserInfo info = JSON.parseObject(jsons, UserInfo.class);
+            String nickName = info.nickName;
             if (TextUtils.isEmpty(nickName)) {
-                String phones = Utils.getHiddenPhone(info.getResult().getMobile());
-                data.setNickName(phones);
+                data.setNickName(Utils.getHiddenPhone(info.mobile));
             } else {
                 data.setNickName(nickName);
             }
-            LogUtil.e(info.getResult().getAvatarUrl());
-            data.setHeadUrl(info.getResult().getAvatarUrl());
-            data.setFengniaoId(info.getResult().getId());
-            data.setSex(info.getResult().getSex());
+            data.setHeadUrl(info.avatarUrl);
+            data.setFengniaoId(info.id);
+            data.setSex(info.sex);
 
-            long birthday = info.getResult().getBirthday();
+            long birthday = info.birthday;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             if (birthday != 0) {
                 data.setBirthday(dateFormat.format(birthday));
             }
 
-            data.setProvince(info.getResult().getProvinceName());
-            data.setCity(info.getResult().getCityName());
-            data.setProfession(info.getResult().getProfession());
-            data.setProfion(info.getResult().getPosition());
+            data.setProvince(info.provinceName);
+            data.setCity(info.cityName);
+            data.setProfession(info.profession);
+            data.setProfion(info.position);
 
             binding.etNickName.requestFocus();
             binding.etNickName.setCursorVisible(false);
@@ -105,7 +105,7 @@ public class ActEditInfo extends BaseActivity<ActEditInfoBinding, EditInfoModle>
 
         findViewById(R.id.right_title2).setOnClickListener(v -> {
             Utils.playVoice(ActEditInfo.this, R.raw.changgui02);
-            if (TextUtils.isEmpty(data.getNickName())){
+            if (TextUtils.isEmpty(data.getNickName())) {
                 ToastUtil.showShort("请输入昵称");
                 return;
             }

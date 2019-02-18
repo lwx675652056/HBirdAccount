@@ -10,7 +10,6 @@ import com.hbird.base.app.constant.CommonTag;
 import com.hbird.base.app.constant.UrlConstants;
 import com.hbird.base.mvp.model.bus.RxBusManager;
 import com.hbird.base.mvp.model.db.greendao.GreenDBManager;
-import com.hbird.base.util.SPUtil;
 import com.hbird.base.wxapi.WXEntryActivity;
 import com.hbird.common.Constants;
 import com.ljy.devring.DevRing;
@@ -144,7 +143,8 @@ public class RingApplication extends BaseApplication {
         SobotApi.initSobotSDK(context, "615a726d25e941309939e5ce3a6d3d89", "");
         JPushInterface.setDebugMode(true);
         JPushInterface.init(this);
-        String ss = SPUtil.getPrefString(getApplicationContext(), CommonTag.FENG_NIAO_ID, "");
+
+        String ss = (String) SharedPreferencesUtil.get(Constants.FENGFENG_ID, "");
         JPushInterface.setAlias(getApplicationContext(), 1, ss);
         MiPushClient.getRegId(getApplicationContext());
 

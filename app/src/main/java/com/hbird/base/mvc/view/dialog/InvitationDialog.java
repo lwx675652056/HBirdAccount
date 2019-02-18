@@ -7,8 +7,9 @@ import android.content.Context;
 import android.widget.TextView;
 
 import com.hbird.base.R;
-import com.hbird.base.util.SPUtil;
+import com.hbird.common.Constants;
 
+import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
 /**
@@ -24,7 +25,7 @@ public class InvitationDialog {
         this.dialog = new Dialog(context, R.style.apd_dialog_style);
         dialog.setContentView(R.layout.dialog_invitation);
 
-        String fengNiaoId = SPUtil.getPrefString(context, com.hbird.base.app.constant.CommonTag.FENG_NIAO_ID, "");
+        String fengNiaoId = (String) SharedPreferencesUtil.get(Constants.FENGFENG_ID, "");
         TextView tvId = dialog.findViewById(R.id.tv_id);
         tvId.setText(fengNiaoId);
 

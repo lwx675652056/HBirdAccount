@@ -21,11 +21,11 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 import com.hbird.base.R;
 import com.hbird.base.mvc.bean.BaseReturn;
 import com.hbird.base.mvc.bean.RequestBean.persionalReq;
-import com.hbird.base.mvc.bean.ReturnBean.GeRenInfoReturn;
 import com.hbird.base.mvc.bean.ReturnBean.QiNiuReturn;
 import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvc.view.dialog.MyChooseSexDialog;
@@ -39,6 +39,7 @@ import com.hbird.base.util.ConstantSet;
 import com.hbird.base.util.SDCardUtils;
 import com.hbird.base.util.SPUtil;
 import com.hbird.base.util.Utils;
+import com.hbird.bean.UserInfo;
 import com.ljy.devring.image.support.GlideApp;
 import com.qiniu.android.common.Zone;
 import com.qiniu.android.http.ResponseInfo;
@@ -121,9 +122,9 @@ public class PersionnalInfoActivity extends BaseActivity<BasePresenter> implemen
         initDialog();
         String jsons = getIntent().getStringExtra("JSON");
         if (!TextUtils.isEmpty(jsons)) {
-            GeRenInfoReturn info = new Gson().fromJson(jsons, GeRenInfoReturn.class);
-            String sex = info.getResult().getSex();
-            long birthday = info.getResult().getBirthday();
+            UserInfo info = JSON.parseObject(jsons,UserInfo.class);
+            String sex = info.sex;
+            long birthday = info.birthday;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
             String date = "";
             if (birthday == 0) {
@@ -131,17 +132,16 @@ public class PersionnalInfoActivity extends BaseActivity<BasePresenter> implemen
             } else {
                 date = dateFormat.format(birthday);
             }
-            String provinceName = info.getResult().getProvinceName();
-            String cityName = info.getResult().getCityName();
-            String profession = info.getResult().getProfession();
-            String profion = info.getResult().getPosition();
-            int id = info.getResult().getId();
-            String nickName = info.getResult().getNickName();
+            String provinceName = info.provinceName;
+            String cityName = info.cityName;
+            String profession = info.profession;
+            String profion = info.position;
+            int id = info.id;
+            String nickName = info.nickName;
             if (TextUtils.isEmpty(nickName)) {
-                String phones = Utils.getHiddenPhone(info.getResult().getMobile());
-                nickName = phones;
+                nickName = Utils.getHiddenPhone(info.mobile);
             }
-            String avatarUrl = info.getResult().getAvatarUrl();
+            String avatarUrl = info.avatarUrl;
             if (TextUtils.equals(sex, "1")) {
                 sex = "男";
             } else if (TextUtils.equals(sex, "2")) {

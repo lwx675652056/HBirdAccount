@@ -83,8 +83,6 @@ public class CommonTag {
     public static final String FIRST_COME_1_2_0 = "first_come_1_2_0";
     //资产重置时间
     public static final String ZICHANCHONGZHI = "zichanchongzhi";
-    //蜂鸟ID
-    public static final String FENG_NIAO_ID  = "feng_niao_id";
 
     //资产相关
     //记账提醒 开关按钮的key

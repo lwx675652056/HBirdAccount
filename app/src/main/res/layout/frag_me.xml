@@ -150,7 +150,6 @@
                                     android:textSize="16sp"/>
 
                                 <TextView
-                                    android:id="@+id/tv_id"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginTop="@dimen/dp_5_x"
@@ -160,7 +159,6 @@
                             </LinearLayout>
 
                             <TextView
-                                android:id="@+id/tv_wans"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/dp_15_x"
@@ -178,7 +176,6 @@
                                 bind:layout_constraintTop_toTopOf="@+id/temp1"/>
 
                             <ImageView
-                                android:id="@+id/iv_biaozhi"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginEnd="@dimen/dp_15_x"
@@ -398,7 +395,6 @@
                         android:textSize="16sp"/>
 
                     <TextView
-                        android:id="@+id/tv_te_num"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentRight="true"
@@ -693,7 +689,6 @@
                             android:textSize="13sp"/>
 
                         <TextView
-                            android:id="@+id/tv_miaoshu"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:gravity="center_horizontal"

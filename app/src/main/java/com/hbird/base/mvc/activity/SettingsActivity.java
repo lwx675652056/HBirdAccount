@@ -31,10 +31,6 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
     @BindView(R.id.toggle_btn)
     com.hbird.base.mvc.widget.IosLikeToggleButton mToggleButton;
 
-    private String phones;
-    private String weiXin;
-
-
     @Override
     protected int getContentLayout() {
         return R.layout.activity_settings;
@@ -57,8 +53,6 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
             //mVoiceImg.setBackgroundResource(R.mipmap.icon_btn_close);
             mToggleButton.setChecked(false);
         }
-        phones = getIntent().getStringExtra("PHONE");
-        weiXin = getIntent().getStringExtra("WEIXIN");
     }
 
     @Override
@@ -87,11 +81,7 @@ public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implem
                 break;
             case R.id.ll_account_safe:// 账户安全
                 playVoice(R.raw.changgui02);
-                Intent intent3 = new Intent();
-                intent3.setClass(this, AccountSafeActivity.class);
-                intent3.putExtra("PHONE", phones);
-                intent3.putExtra("WEIXIN", weiXin);
-                startActivity(intent3);
+                startActivity(new Intent(this, AccountSafeActivity.class));
                 break;
             case R.id.ll_shoushi:
                 playVoice(R.raw.changgui02);

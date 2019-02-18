@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.alibaba.fastjson.JSON;
 import com.growingio.android.sdk.collection.GrowingIO;
 import com.hbird.base.R;
 import com.hbird.base.app.GestureUtil;
@@ -20,6 +21,7 @@ import com.hbird.base.mvc.net.NetWorkManager;
 import com.hbird.base.mvp.event.WxLoginCodeEvent;
 import com.hbird.base.mvp.view.activity.base.BaseActivity;
 import com.hbird.base.util.SPUtil;
+import com.hbird.bean.UserInfo;
 import com.hbird.ui.login_register.ActLogin;
 import com.hbird.util.Utils;
 import com.ljy.devring.DevRing;
@@ -104,8 +106,15 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
     @Override
     protected void initData(Bundle savedInstanceState) {
         //判断当前是微信登录还是手机登录 现只判断是否是手机号登录
-        phones = getIntent().getStringExtra("PHONE");
-        weiXin = getIntent().getStringExtra("WEIXIN");
+        String jsons = SPUtil.getPrefString(this, CommonTag.H5PRIMKEYZILIAO, "");
+        UserInfo info = JSON.parseObject(jsons,UserInfo.class);
+
+        phones = info.mobile;
+        weiXin = info.wechatAuth;
+        if (phones.equals("null")){
+            phones = "";
+        }
+
         mLoginPasswords.setVisibility(View.VISIBLE);
         temp1.setVisibility(View.VISIBLE);
         if (!TextUtils.isEmpty(phones)) {
@@ -126,7 +135,6 @@ public class AccountSafeActivity extends BaseActivity<BaseActivityPresenter> imp
         if (TextUtils.isEmpty(weiXin)) {
             hasBd = false;
             //doWeChatLogin();
-
         } else {
             mFangshi.setText("当前登录方式（微信）");
             mWxNum.setText("已绑定");
