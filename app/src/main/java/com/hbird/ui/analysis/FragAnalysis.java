@@ -56,7 +56,7 @@ import com.hbird.common.chating.data.LineData;
 import com.hbird.common.chating.formatter.IndexAxisValueFormatter;
 import com.hbird.common.chating.formatter.ValueFormatter;
 import com.hbird.util.Utils;
-import com.hbird.widget.RoundMarker;
+import com.hbird.widget.RoundMarker1;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -1014,18 +1014,23 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChart.setTouchEnabled(true); // enable touch gestures
 
         lineChart.setDrawGridBackground(false);
+        lineChart.setOnChartValueSelectedListener(new com.hbird.common.chating.listener.OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(com.hbird.common.chating.data.Entry e, com.hbird.common.chating.highlight.Highlight h) {
+                String s = Utils.to2DigitString(e.getY()) + "%";
 
-//        lineChart.setOnChartValueSelectedListener(new com.hbird.common.chating.listener.OnChartValueSelectedListener() {
-//            @Override
-//            public void onValueSelected(com.hbird.common.chating.data.Entry e, com.hbird.common.chating.highlight.Highlight h) {
-//                LogUtil.e("");
-//            }
-//
-//            @Override
-//            public void onNothingSelected() {
-//            }
-//        });
-        RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
+                TextView tv = ((RoundMarker1)lineChart.getMarker()).getText();
+                tv.setText(s);
+
+                lineChart.invalidate();
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+
+        RoundMarker1 mv = new RoundMarker1(getActivity(), R.layout.custom_marker_view1);
         mv.setChartView(lineChart);
         lineChart.setMarker(mv);
 
@@ -1071,7 +1076,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         // text size of values
         set1.setValueTextSize(9f);
         // 将选择线绘制为虚线
-        set1.enableDashedHighlightLine(10f, 5f, 0f);
+//        set1.enableDashedHighlightLine(10f, 5f, 0f);
         // 设置填充区域
         set1.setDrawFilled(true);
         set1.setFillFormatter((dataSet, dataProvider) -> lineChart.getXAxis().getAxisMinimum());
@@ -1453,8 +1458,23 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         lineChart.setTouchEnabled(true); // enable touch gestures
 
         lineChart.setDrawGridBackground(false);
+        lineChart.setOnChartValueSelectedListener(new com.hbird.common.chating.listener.OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(com.hbird.common.chating.data.Entry e, com.hbird.common.chating.highlight.Highlight h) {
+                String s = Utils.to2DigitString(e.getY()) + "%";
 
-        RoundMarker mv = new RoundMarker(getActivity(), R.layout.custom_marker_view);
+                TextView tv = ((RoundMarker1)lineChart.getMarker()).getText();
+                tv.setText(s);
+
+                lineChart.invalidate();
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+
+        RoundMarker1 mv = new RoundMarker1(getActivity(), R.layout.custom_marker_view1);
         mv.setChartView(lineChart);
         lineChart.setMarker(mv);
 
@@ -1502,7 +1522,7 @@ public class FragAnalysis extends BaseFragment<FragAnalysisBinding, AnalysisModl
         // text size of values
         set1.setValueTextSize(9f);
         // 将选择线绘制为虚线
-        set1.enableDashedHighlightLine(10f, 5f, 0f);
+//        set1.enableDashedHighlightLine(10f, 5f, 0f);
         // 设置填充区域
         set1.setDrawFilled(true);
         set1.setFillFormatter((dataSet, dataProvider) -> lineChart.getXAxis().getAxisMinimum());
