@@ -35,6 +35,7 @@ import java.util.List;
 import butterknife.BindView;
 import sing.common.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
+import sing.util.ToastUtil;
 
 /**
  * @author: LiangYX
@@ -229,6 +230,7 @@ public class AccountOutFragementNew1 extends BaseFragement {
     }
 
     private boolean canDelete = true;// 是否可以删除
+
     private void deleteItems(final int i) {
         canDelete = false;
         //如果没有网 则不执行删除操作
@@ -285,13 +287,19 @@ public class AccountOutFragementNew1 extends BaseFragement {
     public void loadDataForNet() {
         super.loadDataForNet();
 
-        String temp = (String) SharedPreferencesUtil.get("userId_" + userInfoId + "abTypeId_" + abTypeId + "type_spend", "");
-        List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> list = JSON.parseArray(temp, SystemBiaoqReturn.ResultBean.LabelBean.SpendBean.class);
-
-        if (list == null || list.size() < 1) {// 本地沒有取網絡
+        //如果没有网 则不执行删除操作
+        boolean net = NetworkUtil.isNetWorkAvailable(getActivity());
+        if (net) {// 有网就取网络的
             getData(userInfoId, Integer.parseInt(abTypeId));
         } else {
-            addData(list);
+            String temp = (String) SharedPreferencesUtil.get("userId_" + userInfoId + "abTypeId_" + abTypeId + "type_spend", "");
+            List<SystemBiaoqReturn.ResultBean.LabelBean.SpendBean> list = JSON.parseArray(temp, SystemBiaoqReturn.ResultBean.LabelBean.SpendBean.class);
+
+            if (list != null && list.size() > 0) {
+                addData(list);
+            }else{
+                ToastUtil.showShort("没有标签");
+            }
         }
     }
 

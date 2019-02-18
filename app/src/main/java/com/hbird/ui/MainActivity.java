@@ -229,6 +229,7 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
         } else {
             startActivityForResult(new Intent(MainActivity.this, ChooseAccountTypeActivity.class),141);
         }
+        overridePendingTransition(R.anim.slide_in_from_right, R.anim.slide_out_to_left);
     }
 
     public void setBottomDH2Visiable() {

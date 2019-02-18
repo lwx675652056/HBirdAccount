@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -72,6 +73,8 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
         StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
 
         tag = getIntent().getStringExtra("TAG");
+        mRightTitle.setText("完成");
+        mRightTitle.setTextColor(ContextCompat.getColor(this,R.color.color_D80200));
         mRightTitle.setVisibility(View.GONE);
         list = new ArrayList<>();
         outFragement = new AccountOutFragementNew1();
@@ -178,7 +181,7 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
         switch (view.getId()){
             case R.id.iv_backs:
                 playVoice(R.raw.changgui02);
-                finish();
+                onBackPressed();
                 break;
             case R.id.tv_right_title:
                 //完成点击分两部分（收入 支出） 通过type: 0   1 标识
@@ -194,5 +197,13 @@ public class ChooseAccountTypeActivity extends BaseActivity<BaseActivityPresente
         }else {
             SuperSelectComeManager.getInstance().setnum(2,"收入完成");
         }
+    }
+
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        // singleInstance 模式必须这么写
+        overridePendingTransition( R.anim.slide_in_from_left,R.anim.slide_out_to_right);
     }
 }
