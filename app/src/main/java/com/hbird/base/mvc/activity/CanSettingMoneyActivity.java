@@ -62,10 +62,10 @@ public class CanSettingMoneyActivity extends BaseActivity<BaseActivityPresenter>
         year = getIntent().getStringExtra("YEAR");
         largeNum = getIntent().getStringExtra("LargeExpenditure");
         lifeNum = getIntent().getStringExtra("LifeExpenditure");
-        if(!TextUtils.isEmpty(largeNum) && !TextUtils.equals(largeNum,"null")){
+        if (!TextUtils.isEmpty(largeNum) && !TextUtils.equals(largeNum, "null")) {
             mMoneyBig.setText(largeNum);
         }
-        if(!TextUtils.isEmpty(lifeNum)&& !TextUtils.equals(lifeNum,"null")){
+        if (!TextUtils.isEmpty(lifeNum) && !TextUtils.equals(lifeNum, "null")) {
             mMoneyLife.setText(lifeNum);
         }
 
@@ -79,7 +79,7 @@ public class CanSettingMoneyActivity extends BaseActivity<BaseActivityPresenter>
 
     @Override
     public void onClick(View view) {
-        switch (view.getId()){
+        switch (view.getId()) {
             case R.id.iv_back:
                 playVoice(R.raw.changgui02);
                 finish();
@@ -88,32 +88,32 @@ public class CanSettingMoneyActivity extends BaseActivity<BaseActivityPresenter>
                 playVoice(R.raw.changgui02);
                 String BigMoney = mMoneyBig.getText().toString().trim();
                 String lifeMoney = mMoneyLife.getText().toString().trim();
-                boolean a=false;
-                boolean b=false;
-                if(TextUtils.isEmpty(BigMoney)){
-                    BigMoney= -1+"";
+                boolean a = false;
+                boolean b = false;
+                if (TextUtils.isEmpty(BigMoney)) {
+                    BigMoney = 0 + "";
                     a = true;
                 }
-                if(TextUtils.isEmpty(lifeMoney)){
-                    lifeMoney = -1+"";
+                if (TextUtils.isEmpty(lifeMoney)) {
+                    lifeMoney = 0 + "";
                     b = true;
                 }
                 double BigMoneys = Double.parseDouble(BigMoney);
-                if(BigMoneys<0){
-                    if(!a){
+                if (BigMoneys < 0) {
+                    if (!a) {
                         showMessage("每月固定大额总支出不能小于0");
                         return;
                     }
                 }
 
                 double lifeMoneys = Double.parseDouble(lifeMoney);
-                if(lifeMoneys<0){
-                    if(!b){
+                if (lifeMoneys < 0) {
+                    if (!b) {
                         showMessage("每月固定生活总支出不能小于0");
                         return;
                     }
-
                 }
+
                 FenXiMoneys fenxi = new FenXiMoneys();
                 //fenxi.setTime(year+"-"+month);
                 //fenxi.setBudgetMoney(3000);
@@ -123,27 +123,22 @@ public class CanSettingMoneyActivity extends BaseActivity<BaseActivityPresenter>
                 String token = SPUtil.getPrefString(this, CommonTag.GLOABLE_TOKEN, "");
 
                 showProgress("");
-                NetWorkManager.getInstance().setContext(this)
-                        .postBudgets(json, token, new NetWorkManager.CallBack() {
-                            @Override
-                            public void onSuccess(BaseReturn b) {
-                                hideProgress();
-                                GloableReturn b1 = (GloableReturn) b;
-                                setResult(331);
-                                finish();
+                NetWorkManager.getInstance().setContext(this).postBudgets(json, token, new NetWorkManager.CallBack() {
+                    @Override
+                    public void onSuccess(BaseReturn b) {
+                        hideProgress();
+                        GloableReturn b1 = (GloableReturn) b;
+                        setResult(331);
+                        finish();
+                    }
 
-                            }
-
-                            @Override
-                            public void onError(String s) {
-                                hideProgress();
-                                showMessage(s);
-                            }
-                        });
+                    @Override
+                    public void onError(String s) {
+                        hideProgress();
+                        showMessage(s);
+                    }
+                });
                 break;
-
-
         }
     }
-
 }

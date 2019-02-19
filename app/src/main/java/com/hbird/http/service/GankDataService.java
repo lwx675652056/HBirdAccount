@@ -6,6 +6,8 @@ import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.EditAddressBean;
 import com.hbird.bean.SaveMoneyBean;
 import com.hbird.bean.UserInfo;
+import com.hbird.bean.YuSuan1Bean;
+import com.hbird.bean.YuSuan2Bean;
 import com.hbird.http.HttpResult;
 
 import java.util.List;
@@ -81,7 +83,15 @@ public interface GankDataService {
     @GET("getsavingefficiencyv2/android") // range 查询范围 可选值 3/6/12 不传默认为3
     Observable<HttpResult<SaveMoneyBean>> getSaveEfficientMoney(@Header("X-AUTH-TOKEN") String token, @Query("range") int range, @Query("month") int month, @Query("abId") Object abId);
 
+    // 分接口-获取预算完成率 日常账本
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("getbudgetcompletionratev2/android")
+    Observable<HttpResult<List<YuSuan1Bean>>> getYSFinish1(@Header("X-AUTH-TOKEN") String token, @Query("month") String month, @Query("range") String range, @Query("abId") String abId);
 
+    // 分接口-获取预算完成率 场景账本
+    @Headers({"Content-Type: application/json","Accept: application/json"})
+    @GET("getbudgetcompletionratev2/android")
+    Observable<HttpResult<YuSuan2Bean>> getYSFinish2(@Header("X-AUTH-TOKEN") String token, @Query("month") String month, @Query("range") String range, @Query("abId") String abId);
 
     // 手机号密码登录
     @Headers({"Content-Type: application/json","Accept: application/json"})//需要添加头

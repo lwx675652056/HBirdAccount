@@ -121,6 +121,10 @@
             android:name="com.hbird.ui.statistics_details.ActPieChartRanking"
             android:screenOrientation="portrait"
             android:theme="@style/TranslucentTheme"/>
+        <!--首页饼图类别的排行-->
+        <activity android:name="com.hbird.ui.index.ActTypeDetails"
+                  android:screenOrientation="portrait"
+                  android:theme="@style/TranslucentTheme"/>
         <!--登录-->
         <activity
             android:name="com.hbird.ui.login_register.ActLogin"

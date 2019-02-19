@@ -83,7 +83,7 @@ public class StatisticsDetailAdapter extends BaseRecyclerAdapter<AccountDetailed
             }
         }
 
-//        binding.llContent.setOnClickListener(v -> listener.onClick(position,accountDetailedBean,0));
+        binding.llContent.setOnClickListener(v -> listener.onClick(position,accountDetailedBean,0));
 //        binding.llContent.setOnLongClickListener(v -> {
 //            listener.onClick(position,accountDetailedBean,1);
 //            return true;

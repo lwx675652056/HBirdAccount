@@ -7,8 +7,7 @@
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="@dimen/height_20_80"
-
+        android:layout_height="@dimen/dp_150_x"
         android:layout_marginLeft="-700dp"
         android:layout_marginTop="@dimen/height_10_80"
         android:background="@mipmap/icon_kuang_disabled"

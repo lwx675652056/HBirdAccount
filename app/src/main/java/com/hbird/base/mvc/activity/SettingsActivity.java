@@ -22,6 +22,7 @@ import butterknife.OnClick;
  */
 
 public class SettingsActivity extends BaseActivity<BaseActivityPresenter> implements View.OnClickListener {
+
     @BindView(R.id.iv_back)
     ImageView mBack;
     @BindView(R.id.center_title)

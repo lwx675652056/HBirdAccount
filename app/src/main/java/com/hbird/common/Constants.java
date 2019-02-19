@@ -7,6 +7,8 @@ public class Constants {
     public static final String BASE_PATH = Environment.getExternalStorageDirectory().getAbsolutePath() + "/accounthbird";
     public static final String IMAGE_PATH = BASE_PATH + "/image";
 
+    public static final String CURRENT_VERSION = "current_version";
+
     /** 拍照的临时文件 */
     public static final String TAKE_PHOTO_PATH = IMAGE_PATH + "/temp.jpg";
     /** 剪切图片 */

@@ -129,7 +129,7 @@ public class NetWorkManager {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
                 //尚不清楚 错误信息怎么提示 暂时提示错误
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -182,7 +182,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -214,7 +214,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -250,7 +250,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -283,7 +283,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -315,7 +315,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -348,7 +348,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -380,7 +380,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -413,7 +413,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -450,7 +450,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -488,7 +488,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -535,7 +535,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -574,7 +574,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -614,7 +614,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -647,7 +647,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -679,7 +679,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -712,7 +712,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -748,7 +748,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -781,7 +781,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -813,7 +813,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -849,7 +849,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -894,7 +894,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -941,7 +941,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -987,7 +987,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1034,7 +1034,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1067,7 +1067,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1101,7 +1101,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1134,7 +1134,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1167,7 +1167,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1201,7 +1201,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1233,7 +1233,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1267,7 +1267,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1299,7 +1299,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1331,7 +1331,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1363,7 +1363,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1395,7 +1395,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1412,7 +1412,8 @@ public class NetWorkManager {
                     LogUtil.e(json);
                     if (checkInterCode.isSuccess(json)) {
                         try {// 日常账本
-                            YuSuanFinishReturn request = new Gson().fromJson(json, YuSuanFinishReturn.class);
+                            YuSuanFinishReturn request =  JSON.parseObject(json, YuSuanFinishReturn.class);
+//                            YuSuanFinishReturn request = new Gson().fromJson(json, YuSuanFinishReturn.class);
                             callBack.onSuccess(request);
                         } catch (Exception e) {// 场景账本
                             YuSuanZbFinishReturn bean = new Gson().fromJson(json, YuSuanZbFinishReturn.class);
@@ -1432,7 +1433,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1464,7 +1465,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1498,7 +1499,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1534,7 +1535,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1567,7 +1568,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1600,7 +1601,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1633,7 +1634,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1667,7 +1668,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1701,7 +1702,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1739,7 +1740,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1776,7 +1777,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败：" + message);
+                callBack.onError("请检查网络连接：" + message);
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1810,7 +1811,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1842,7 +1843,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1874,7 +1875,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1906,7 +1907,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1938,7 +1939,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -1970,7 +1971,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2007,7 +2008,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2041,7 +2042,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2075,7 +2076,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2107,7 +2108,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2141,7 +2142,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2173,7 +2174,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2207,7 +2208,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2239,7 +2240,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2271,7 +2272,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2303,7 +2304,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2336,7 +2337,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2401,7 +2402,7 @@ public class NetWorkManager {
             public void onError(HttpThrowable httpThrowable) {
                 String message = httpThrowable.message;
                 LogUtil.e(message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2435,7 +2436,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 LogUtil.e(httpThrowable.message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2470,7 +2471,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 LogUtil.e(httpThrowable.message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }
@@ -2504,7 +2505,7 @@ public class NetWorkManager {
             @Override
             public void onError(HttpThrowable httpThrowable) {
                 LogUtil.e(httpThrowable.message);
-                callBack.onError("失败");
+                callBack.onError("请检查网络连接");
             }
         }, RxLifecycleUtil.bindUntilEvent(context, ActivityEvent.DESTROY));
     }

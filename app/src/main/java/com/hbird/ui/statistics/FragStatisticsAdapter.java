@@ -55,6 +55,7 @@ public class FragStatisticsAdapter extends BaseRecyclerAdapter<StatisticsSpendTo
 
     @Override
     protected void onBindItem(RowStatisticsBinding binding, StatisticsSpendTopArraysBean bean, int position) {
+        bean.money = Utils.to2Digit(bean.money);
         binding.setBean(bean);
 
         double ratios = bean.money / money;

@@ -1,4 +1,4 @@
-package com.hbird.ui.statistics_details;
+package com.hbird.ui.index;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,8 @@ import com.hbird.base.util.SPUtil;
 import com.hbird.bean.AccountDetailedBean;
 import com.hbird.bean.TitleBean;
 import com.hbird.common.Constants;
+import com.hbird.ui.statistics_details.StatisticsDetailAdapter;
+import com.hbird.ui.statistics_details.StatisticsDetailData;
 import com.hbird.util.Utils;
 
 import java.util.ArrayList;
@@ -25,11 +27,11 @@ import sing.common.util.StatusBarUtil;
 
 /**
  * @author: LiangYX
- * @ClassName: ActDayDetails
- * @date: 2019/1/21 10:09
- * @Description: 统计 - 详情
+ * @ClassName: ActTypeDetails
+ * @date: 2019/2/19 11:40
+ * @Description: 首页饼图类别的排行
  */
-public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailModle> {
+public class ActTypeDetails extends BaseActivity<ActDetailsBinding, TypeDetailModle> {
 
     private StatisticsDetailData data;
     private List<AccountDetailedBean> list = new ArrayList<>();
@@ -37,10 +39,9 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
     private String firstDay;
     private String lastDay;
     private String typeName; // 标签名
-    private int dateType; // 1 2 3 , 日 周 年
-    private int orderType; // 1:支出  2:收入
-    private boolean isAll; //
+    private int orderType = 1; // 1:支出  2:收入
     private String persionId;// 个人的ID
+    private String SQL;
 
     @Override
     public int initContentView(Bundle savedInstanceState) {
@@ -55,9 +56,7 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
         String money = getIntent().getExtras().getString(Constants.START_INTENT_B, "0.00");
         firstDay = getIntent().getExtras().getString(Constants.START_INTENT_C, "2019-01-01");
         lastDay = getIntent().getExtras().getString(Constants.START_INTENT_D, "2019-01-02");
-        dateType = getIntent().getExtras().getInt(Constants.START_INTENT_E, 1);
-        orderType = getIntent().getExtras().getInt(Constants.START_INTENT_F, 1);
-        isAll = getIntent().getExtras().getBoolean(Constants.START_INTENT_G, false);
+        SQL = getIntent().getExtras().getString(Constants.START_INTENT_E, "");
 
         binding.toolbar.ivBack.setOnClickListener(v -> onBackPressed());
         binding.toolbar.ivBack.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_white_back));
@@ -71,35 +70,20 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
         data = new StatisticsDetailData();
         binding.setData(data);
 
-
-        if (dateType == 1) {// 日
-            data.setDate(DateUtils.str2Str(firstDay));
-        } else if (dateType == 2) {// 周
-            String t = DateUtils.str2Str(lastDay);// 2019年01月02日
-            String m = t.substring(5,8);// 01月
-            String d = t.substring(8,10);// 02
-            int day = Integer.parseInt(d)-1;
-            data.setDate(DateUtils.str2Str(firstDay) + "-" + m+(day<10?"0"+day:day)+"日");
-        } else if (dateType == 3) {// 月
-            String t = DateUtils.str2Str(firstDay);
-            data.setDate(t.substring(0, t.length() - 3));
-        }
+        String t = DateUtils.str2Str(firstDay);
+        data.setDate(t.substring(0, t.length() - 3));
         if (orderType == 1) {
             data.setType(typeName + "总计消费");
             binding.setTitle(new TitleBean("支出详情"));
-        } else {
-            data.setType(typeName + "总计收入");
-            binding.setTitle(new TitleBean("收入详情"));
         }
         data.setMoney("￥" + money);
 
-        adapter = new StatisticsDetailAdapter(this, list, R.layout.row_statictics_detail,orderType, (position, data, type) -> onItemClick(((AccountDetailedBean)data).getId()));
+        adapter = new StatisticsDetailAdapter(this, list, R.layout.row_statictics_detail, orderType, (position, data, type) -> onItemClick(((AccountDetailedBean) data).getId()));
         binding.recyclerView.setAdapter(adapter);
         binding.recyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         getData();
     }
-
 
     private void onItemClick(String id) {
         Intent intent = new Intent(this, MingXiInfoActivity.class);
@@ -110,13 +94,13 @@ public class ActRankingDetails extends BaseActivity<ActDetailsBinding, DetailMod
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 101){
+        if (requestCode == 101) {
             getData();
         }
     }
 
     private void getData() {
-        viewModel.getRankingData(firstDay, lastDay,isAll,orderType,persionId,typeName, (dbList, moneyIncome, moneySpend) -> {
+        viewModel.getData(SQL, firstDay, lastDay, (dbList, moneyIncome, moneySpend) -> {
             list.clear();
             for (int i = 0; i < dbList.size(); i++) {
                 AccountDetailedBean temp = new AccountDetailedBean();

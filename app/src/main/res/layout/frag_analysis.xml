@@ -425,11 +425,6 @@
                         android:layout_marginStart="@dimen/dp_15_x"
                         android:layout_marginTop="@dimen/dp_15_x"/>
 
-                    <!--<com.hbird.common.chart.LineChartInViewPager-->
-                        <!--android:id="@+id/new_lineChart"-->
-                        <!--android:layout_width="match_parent"-->
-                        <!--android:layout_height="250dp"/>-->
-
                     <TextView
                         android:id="@+id/tv_yusuan_time"
                         android:layout_width="match_parent"

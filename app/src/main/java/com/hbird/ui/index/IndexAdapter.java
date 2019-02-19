@@ -69,9 +69,9 @@ public class IndexAdapter extends BaseRecyclerAdapter<AccountDetailedBean, RowIn
         }
 
         binding.llContent.setOnClickListener(v -> listener.onClick(position, accountDetailedBean, 0));
-        binding.llContent.setOnLongClickListener(v -> {
-            listener.onClick(position, accountDetailedBean, 1);
-            return true;
-        });
+//        binding.llContent.setOnLongClickListener(v -> {
+//            listener.onClick(position, accountDetailedBean, 1);
+//            return true;
+//        });
     }
 }

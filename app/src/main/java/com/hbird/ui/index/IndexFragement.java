@@ -83,12 +83,10 @@ import java.util.Set;
 
 import sing.common.base.BaseFragment;
 import sing.common.util.StatusBarUtil;
-import sing.util.AppUtil;
 import sing.util.LogUtil;
 import sing.util.SharedPreferencesUtil;
 import sing.util.ToastUtil;
 
-import static com.hbird.base.app.constant.CommonTag.FIRST_COME_1_2_0;
 import static com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST_LOGIN;
 import static java.lang.Integer.parseInt;
 
@@ -294,9 +292,9 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             Intent intent = new Intent(getActivity(), MingXiInfoActivity.class);
             intent.putExtra("ID", bean.id);
             startActivityForResult(intent, 101);
-        } else if (type == 1) {
-            Utils.playVoice(getActivity(), R.raw.changgui02);
-            alertDialog(bean);
+//        } else if (type == 1) {
+//            Utils.playVoice(getActivity(), R.raw.changgui02);
+//            alertDialog(bean);
         }
     }
 
@@ -375,7 +373,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     intent3.putExtra("MONEY", s);
                 }
                 intent3.putExtra("accountBookId", zhangbenId);
-                startActivityForResult(intent3,1000);
+                startActivityForResult(intent3, 1000);
             } else {// 场景账本
                 Intent intent3 = new Intent(getActivity(), ActSetBudget.class);
                 intent3.putExtra("MONTH", data.getMm() + "");
@@ -402,6 +400,87 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             Intent intent = new Intent(getActivity(), ActAccountDetailed.class);
             intent.putExtra("accountId", accountId);
             startActivity(intent);
+        }
+
+        // 饼图的某一种类别支出详情
+        public void typeDeatil(View view) {
+            if (bean == null) {
+                return;
+            }
+
+            String MonthFirstDay = DateUtil.getMonthday2First(yyyy, mm);
+            String MonthLastDay = DateUtil.getMonthday2Last(yyyy, mm);
+            String MonthLastDays = MonthLastDay.substring(0, MonthLastDay.length() - 3) + "000";
+
+            String SQL = "";
+            if (bean.typeName.equals("剩余消费")) {
+                String typeName1 = pieList.get(0).getTypeName();
+                String typeName2 = pieList.get(1).getTypeName();
+                String typeName3 = pieList.get(2).getTypeName();
+                String typeName4 = pieList.get(3).getTypeName();
+
+                if (TextUtils.isEmpty(accountId)) {// 总账本里的
+                    SQL = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+                            ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+                            ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+                            " WHERE"
+                            + " DELFLAG = 0 "
+                            + " AND CHARGE_DATE >=" + MonthFirstDay
+                            + " AND CHARGE_DATE<" + MonthLastDays
+                            + " AND type_name != '" + typeName1
+                            + "' AND type_name != '" + typeName2
+                            + "' AND type_name != '" + typeName3
+                            + "' AND type_name != '" + typeName4
+                            + "' AND order_type = 1"
+                            + " ORDER BY  money DESC";
+                } else {// 单个账本的
+                    SQL = "SELECT * FROM WATER_ORDER_COLLECT " +
+                            " WHERE ACCOUNT_BOOK_ID=" + accountId
+                            + " AND  DELFLAG = 0 "
+                            + " AND CHARGE_DATE >=" + MonthFirstDay
+                            + " AND CHARGE_DATE<" + MonthLastDays
+                            + " AND type_name != '" + typeName1
+                            + "' AND type_name != '" + typeName2
+                            + "' AND type_name != '" + typeName3
+                            + "' AND type_name != '" + typeName4
+                            + "' AND order_type = 1"
+                            + " ORDER BY  money DESC";
+                }
+            } else {
+                if (TextUtils.isEmpty(accountId)) {// 总账本里的
+                    SQL = "SELECT  id, money, account_book_id, order_type, is_staged, spend_happiness, use_degree" +
+                                ", type_pid, type_pname, type_id, type_name, picture_url, create_date, charge_date" +
+                                ", remark, USER_PRIVATE_LABEL_ID, REPORTER_AVATAR, ASSETS_NAME,  REPORTER_NICK_NAME,AB_NAME,icon FROM WATER_ORDER_COLLECT " +
+                                " where"
+                                + " DELFLAG = 0 "
+                                + " AND CHARGE_DATE >=" + MonthFirstDay
+                                + " AND CHARGE_DATE<" + MonthLastDays
+                                + " AND type_name = '" + bean.typeName
+                                + "' AND order_type = 1"
+                                + " ORDER BY money DESC";
+
+                } else {// 单个账本的
+                    SQL = "SELECT * FROM WATER_ORDER_COLLECT " +
+                            " where"
+                            + " ACCOUNT_BOOK_ID=" + accountId
+                            + " AND  DELFLAG = 0 "
+                            + " AND CHARGE_DATE >=" + MonthFirstDay
+                            + " AND CHARGE_DATE<" + MonthLastDays
+                            + " AND type_name = '" + bean.typeName
+                            + "' AND order_type = 1"
+                            + " ORDER BY  money DESC";
+                }
+            }
+
+            Utils.playVoice(getActivity(), R.raw.changgui02);
+
+            Intent intent = new Intent(getActivity(), ActTypeDetails.class);
+            intent.putExtra(Constants.START_INTENT_A, bean.typeName);
+            intent.putExtra(Constants.START_INTENT_B, String.valueOf(bean.money));
+            intent.putExtra(Constants.START_INTENT_C, data.getYyyy() + "-" + data.getMm() + "-01");
+            intent.putExtra(Constants.START_INTENT_D, data.getYyyy() + "-" + (data.getMm() + 1) + "-01");
+            intent.putExtra(Constants.START_INTENT_E, SQL);
+            startActivityForResult(intent, 141);
         }
     }
 
@@ -453,12 +532,14 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
         isFirst = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.OFFLINEPULL_FIRST, true);
 
-        // 因为前辈的数据库不能升级，现阶段数据库新增了字段，故这里废弃之前的数据库，强制同步最新数据到新数据库
-        boolean mustUpload = SPUtil.getPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, false);
+        String currentVersion = (String) SharedPreferencesUtil.get(Constants.CURRENT_VERSION, "");
+        if (!currentVersion.equals("2.0.0")) {
+//            SharedPreferencesUtil.put(Constants.CURRENT_VERSION, "2.0.0");// pullToSyncDate()方法中更新
+            comeInForLogin = true;
+        }
 
         if (NetworkUtil.isNetWorkAvailable(getActivity())) {
-            if (isFirst || !mustUpload) {
-                SPUtil.setPrefBoolean(getActivity(), com.hbird.base.app.constant.CommonTag.MUST_UPDATE, true);
+            if (isFirst) {
                 pullToSyncDate(showDialog);
                 SPUtil.setPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
             } else {
@@ -486,14 +567,12 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         if (showDialog) {
             showDialog();
         }
-        if (AppUtil.getVersionCode(getActivity()) < 10) {
-            comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
-        } else {
-            boolean a = SPUtil.getPrefBoolean(getActivity(), FIRST_COME_1_2_0, false);
-            if (!a) {// 主动更新一下数据库
-                SPUtil.setPrefBoolean(getActivity(), FIRST_COME_1_2_0, true);
-                comeInForLogin = true;
-            }
+        comeInForLogin = SPUtil.getPrefBoolean(getActivity(), OFFLINEPULL_FIRST_LOGIN, false);
+
+        String currentVersion = (String) SharedPreferencesUtil.get(Constants.CURRENT_VERSION, "");
+        if (!currentVersion.equals("2.0.0")) {
+            SharedPreferencesUtil.put(Constants.CURRENT_VERSION, "2.0.0");
+            comeInForLogin = true;
         }
 
         NetWorkManager.getInstance().setContext(getActivity()).postPullToSyncDate(deviceId, comeInForLogin, token, new NetWorkManager.CallBack() {
@@ -999,7 +1078,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             shouldSetChat = true;
             getIndexInfo();
             loadDataForNet(false);
-        }else if (requestCode == 1000){// 设置预算
+        } else if (requestCode == 1000) {// 设置预算
             getHeadNetInfo();
         }
     }
@@ -1195,8 +1274,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         int width_150 = getResources().getDimensionPixelSize(R.dimen.dp_150_x);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(width_150, width_150);
         mChart.setLayoutParams(params);
-        binding.aaa.removeAllViews();
-        binding.aaa.addView(mChart);
+        binding.pieParent.removeAllViews();
+        binding.pieParent.addView(mChart);
 
         //mChart的半径是根据整体的控件大小来动态计算的，设置外边距等都会影响到圆的半径
         mChart.getDescription().setEnabled(false);
@@ -1224,8 +1303,8 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
                     data.setSelect(i);
                 }
 
-                fromangle = start;
-                toangle = end;
+//                fromangle = start;
+//                toangle = end;
                 iii = i;
                 spin(start, end, i);
             }
@@ -1240,16 +1319,15 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
     }
 
     private boolean first = true;// 第一次需要初始化饼图，之后不再初始化只设置值
-    private float fromangle, toangle;
     private int iii = -1;
 
     private void setChart() {
-        if (first) {
-            initChart();
-            first = false;
-        } else {
-            mChart.setData(generatePieData()); //设置数据源
-        }
+//        if (first) {
+        initChart();
+//            first = false;
+//        } else {
+//            mChart.setData(generatePieData()); //设置数据源
+//        }
 
         Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
         double spend1 = Double.parseDouble(data.getSpendingMoney());
@@ -1320,17 +1398,24 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
         binding.setPiechat(bean);
         data.setSelestStr("");
 
-
         Set<String> prefSet = SPUtil.getPrefSet(getActivity(), com.hbird.base.app.constant.CommonTag.ACCOUNT_BOOK_ID_ALL, new LinkedHashSet<>());
 
 
         List<StatisticsSpendTopArraysBean> temp = viewModel.getRankingBar(data.getYyyy(), data.getMm(), accountId, prefSet);
         pieList.clear();
         data.setSize(temp == null ? 0 : temp.size());
+
         ArrayList<PieEntry> entries1 = new ArrayList<>();
 
         if (data.getSize() == 0) {
             entries1.add(new PieEntry((float) (100), ""));
+            data.setNoData(true);
+            data.setShowMore(false);
+            data.setComparison("");
+            bean = null;
+            data.setSelect(-1);// 没有选择任何
+            binding.setPiechat(bean);
+            data.setSelestStr("");
         }
 
         double t1 = 0, t2 = 0, t3 = 0, t4 = 0, t5 = 0;// 饼图显示的比例，太小的显示10%的大小
@@ -1375,7 +1460,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             data.setCop4(Utils.to2Digit(a4 * 100) + "%");
         }
         if (data.getSize() > 4) {// 至少有五条以上
-            data.setStr5("其它");
+            data.setStr5("剩余消费");
             double a5 = 1 - a1 - a2 - a3 - a4;
             t5 = a4 / t4 * a5;
             entries1.add(new PieEntry((float) t5, ""));
@@ -1384,7 +1469,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             StatisticsSpendTopArraysBean t = new StatisticsSpendTopArraysBean();
             t.setIcon(Constants.ICON_OTHER);
             t.setMoney(Utils.to4Digit(Double.parseDouble(data.getSpendingMoney()) * a5));
-            t.setTypeName("其它");
+            t.setTypeName("剩余消费");
             pieList.add(t);
         }
 

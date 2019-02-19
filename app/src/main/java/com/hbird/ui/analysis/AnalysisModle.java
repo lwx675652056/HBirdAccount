@@ -7,6 +7,8 @@ import android.util.Log;
 
 import com.hbird.bean.ConsumptionRatioBean;
 import com.hbird.bean.SaveMoneyBean;
+import com.hbird.bean.YuSuan1Bean;
+import com.hbird.bean.YuSuan2Bean;
 import com.hbird.http.ApiClient;
 import com.hbird.http.HttpResult;
 
@@ -120,6 +122,82 @@ public class AnalysisModle extends BaseViewModel {
                 });
     }
 
+    // 获取预算完成率  日常账本
+    public void getYuSuanFinish1(String month, String range, String abId, String token,YuSuanCallBack callBack){
+        ApiClient.getGankDataService()
+                .getYSFinish1(token,month,range,abId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> showDialog(""))
+                .subscribe(new Observer<HttpResult<List<YuSuan1Bean>>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<List<YuSuan1Bean>> value) {
+                        dismissDialog();
+                        LogUtil.e(value.toString());
+                        if (value.code == 200) {
+                            callBack.success(value.result);
+                        } else {
+                            ToastUtil.showShort(value.msg);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                        ToastUtil.showShort(e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("danxx", "onComplete------>");
+                    }
+                });
+    }
+
+    // 获取预算完成率  场景账本
+    public void getYuSuanFinish2(String month, String range, String abId, String token,YuSuanCallBack1 callBack){
+        ApiClient.getGankDataService()
+                .getYSFinish2(token,month,range,abId)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .doOnSubscribe(disposable -> showDialog(""))
+                .subscribe(new Observer<HttpResult<YuSuan2Bean>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
+                        mDisposable.add(d);
+                    }
+
+                    @Override
+                    public void onNext(HttpResult<YuSuan2Bean> value) {
+                        dismissDialog();
+                        LogUtil.e(value.toString());
+                        if (value.code == 200) {
+                            callBack.success(value.result);
+                        } else {
+                            ToastUtil.showShort(value.msg);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        dismissDialog();
+                        ToastUtil.showShort(e.getMessage());
+                        e.printStackTrace();
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        Log.i("danxx", "onComplete------>");
+                    }
+                });
+    }
+
     @Override
     protected void onCleared() {
         super.onCleared();
@@ -132,5 +210,12 @@ public class AnalysisModle extends BaseViewModel {
 
     public interface EfficientsCallBack {
         void success(SaveMoneyBean bean);
+    }
+
+    public interface YuSuanCallBack {
+        void success(List<YuSuan1Bean> list);
+    }
+    public interface YuSuanCallBack1 {
+        void success(YuSuan2Bean b);
     }
 }

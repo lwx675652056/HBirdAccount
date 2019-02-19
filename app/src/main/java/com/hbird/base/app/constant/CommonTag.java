@@ -75,8 +75,6 @@ public class CommonTag {
     public static final String SYNDATE = "synDate";
     //下拉数据时 判断用户是否首次调用，卸载后安装按首次调用处理 true:首次 反之 null
     public static final String OFFLINEPULL_FIRST = "offlinepull_first";
-    // 强制更新数据库
-    public static final String MUST_UPDATE = "must_update";
     //下拉数据时 判断用户是否首次调用 是从重新登录 微信登录 注册界面跳转过来的判断
     public static final String OFFLINEPULL_FIRST_LOGIN = "offlinepull_first_login";
     // 第一次进入1.2.0

@@ -614,13 +614,10 @@
                         </LinearLayout>
 
                         <LinearLayout
-                            android:id="@+id/aaa"
+                            android:orientation="vertical"
+                            android:id="@+id/pie_parent"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"/>
-                        <!--<com.github.mikephil.chart_3_0_1v.charts.PieChart-->
-                        <!--android:id="@+id/pie_chart"-->
-                        <!--android:layout_width="@dimen/dp_150_x"-->
-                        <!--android:layout_height="@dimen/dp_150_x"/>-->
                     </LinearLayout>
 
                     <FrameLayout
@@ -634,6 +631,7 @@
 
                         <android.support.constraint.ConstraintLayout
                             android:layout_width="match_parent"
+                            android:onClick="@{listener.typeDeatil}"
                             android:layout_height="wrap_content"
                             android:layout_marginTop="@dimen/dp_5_x"
                             android:background="@mipmap/home_icon_btqxzk_disabled"

@@ -39,16 +39,16 @@ public class YuSuanFinishReturn extends BaseReturn {
     }
 
     public static class ResultBean {
-        private int budgetMoney;
+        private double budgetMoney;
         private String time;
         private double monthSpend;
         private String tag;//自己区分 空数据 和数据为0的
 
-        public int getBudgetMoney() {
+        public double getBudgetMoney() {
             return budgetMoney;
         }
 
-        public void setBudgetMoney(int budgetMoney) {
+        public void setBudgetMoney(double budgetMoney) {
             this.budgetMoney = budgetMoney;
         }
 

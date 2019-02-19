@@ -149,7 +149,7 @@ public class RingApplication extends BaseApplication {
         MiPushClient.getRegId(getApplicationContext());
 
         // 打包时设置为false  控制日志
-        CrashReport.initCrashReport(getApplicationContext(), "bd239c9a7f", true);
+        CrashReport.initCrashReport(getApplicationContext(), "bd239c9a7f", false);
     }
 
     public static Context getContextObject() {
