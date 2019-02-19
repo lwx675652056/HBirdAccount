@@ -219,7 +219,7 @@
                                     android:layout_marginTop="@dimen/dp_5_x"
                                     android:text="邀请/推荐好友"
                                     android:textColor="#BDBDBD"
-                                    android:textSize="14sp"/>
+                                    android:textSize="12sp"/>
                             </LinearLayout>
 
                             <View
@@ -248,7 +248,7 @@
                                     android:layout_marginTop="@dimen/dp_5_x"
                                     android:text="本月记账天数"
                                     android:textColor="#BDBDBD"
-                                    android:textSize="14sp"/>
+                                    android:textSize="12sp"/>
                             </LinearLayout>
 
                             <View
@@ -277,7 +277,7 @@
                                     android:layout_marginTop="@dimen/dp_5_x"
                                     android:text="记账总笔数"
                                     android:textColor="#BDBDBD"
-                                    android:textSize="14sp"/>
+                                    android:textSize="12sp"/>
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
@@ -297,8 +297,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_zmlb_normal"/>
 
                     <TextView
@@ -339,8 +339,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_jztx_normal"/>
 
                     <TextView
@@ -381,8 +381,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_fftz_normal"/>
 
                     <TextView
@@ -436,8 +436,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_lxkf_normal"/>
 
                     <TextView
@@ -478,8 +478,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_shxx_normal"/>
 
                     <TextView
@@ -514,8 +514,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_tjyj_normal"/>
 
                     <TextView
@@ -556,8 +556,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_yjfk_normal"/>
 
                     <TextView
@@ -598,8 +598,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_jcgx_normal"/>
 
                     <TextView
@@ -640,8 +640,8 @@
                     android:paddingTop="@dimen/dp_15_x">
 
                     <ImageView
-                        android:layout_width="@dimen/dp_18_x"
-                        android:layout_height="@dimen/dp_18_x"
+                        android:layout_width="@dimen/dp_16_x"
+                        android:layout_height="@dimen/dp_16_x"
                         android:src="@mipmap/my_icon_gzfnjzgzh_normal"/>
 
                     <TextView

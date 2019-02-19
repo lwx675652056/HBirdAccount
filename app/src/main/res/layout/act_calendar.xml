@@ -14,6 +14,7 @@
         <variable
             name="bean"
             type="com.hbird.ui.calendar.CalendarData"/>
+        <import type="android.view.View"/>
     </data>
 
     <LinearLayout
@@ -153,6 +154,7 @@
             </ScrollView>
 
             <TextView
+                android:visibility="@{bean.showToday?View.VISIBLE:View.GONE}"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="end|bottom"

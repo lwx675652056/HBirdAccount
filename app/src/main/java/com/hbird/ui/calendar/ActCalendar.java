@@ -40,6 +40,7 @@ import com.ljy.devring.util.NetworkUtil;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -95,6 +96,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         public void today(View view) {
             binding.calendar.today();
             currentDate = CalendarUtil.getCurrentDate();
+            data.setShowToday(false);
             getData(currentDate);
         }
 
@@ -144,6 +146,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         binding.calendar.setOnPagerChangeListener(ints -> {
             data.setYyyy(ints[0]);
             data.setMm(ints[1]);
+            data.setShowToday(!Arrays.equals(ints,CalendarUtil.getCurrentDate()));
         });
 
         binding.calendar.setOnSingleChooseListener((view, date) -> {
@@ -153,6 +156,9 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
             currentDate[0] = date.getSolar()[0];
             currentDate[1] = date.getSolar()[1];
             currentDate[2] = date.getSolar()[2];
+
+            data.setShowToday(!Arrays.equals(currentDate,CalendarUtil.getCurrentDate()));
+
             getData(currentDate);
         });
 
@@ -386,7 +392,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
             indexBaseListBean indexBeans = new indexBaseListBean();
             if (dayArrays != null && dayArrays.size() > 0) {
                 ArrayList<indexBaseListBean.indexBean> iBeen = new ArrayList<>();
-                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, 0,"");
+                indexBeans.setDates(0, 0, "", "", 0, "", 0, 0, "", "", "", 0, 0, 0, 0, "");
                 indexBaseListBean.indexBean xBean = new indexBaseListBean.indexBean();
                 xBean.setDayIncome(arrays.get(i).getDayIncome());
                 xBean.setDaySpend(arrays.get(i).getDaySpend());
@@ -423,7 +429,6 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
         }
         return been;
     }
-
 
     public Map<String, BigDecimal> getAccount(int accountBookId) {
         Map<String, BigDecimal> listBySql = new HashMap<>();
@@ -610,7 +615,7 @@ public class ActCalendar extends BaseActivity<ActCalendarBinding, CalendarModle>
 
     @Override
     public void onBackPressed() {
-        Utils.playVoice(this,R.raw.changgui02);
+        Utils.playVoice(this, R.raw.changgui02);
         finish();
     }
 }

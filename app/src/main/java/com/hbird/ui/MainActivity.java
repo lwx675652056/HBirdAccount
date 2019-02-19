@@ -97,8 +97,6 @@ public class MainActivity extends AppCompatActivity implements IBaseActivity {
         trb3 = findViewById(R.id.button_lingpp);
         trb4 = findViewById(R.id.button_wo);
 
-//        StatusBarUtil.setStatusBarLightMode(getWindow()); // 导航栏黑色字体
-
         rg = findViewById(R.id.rg_top);
         viewPager = findViewById(R.id.viewpager);
         mHomeView = findViewById(R.id.ll_home_view);

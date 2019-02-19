@@ -996,6 +996,7 @@ public class IndexFragement extends BaseFragment<FragementIndexBinding, IndexFra
             }
             pieChatAdapter.notifyDataSetChanged();
         } else if (requestCode == 141) {// 记账回来的
+            shouldSetChat = true;
             getIndexInfo();
             loadDataForNet(false);
         }else if (requestCode == 1000){// 设置预算

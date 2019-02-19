@@ -15,6 +15,11 @@ public class CalendarData extends BaseObservable {
 
     private int yyyy = 2018;// 年
     private int mm = 8;// 月
+    private boolean showToday = true;
+
+    public CalendarData() {
+        this.showToday = false;
+    }
 
     @Bindable
     public int getYyyy() {
@@ -34,5 +39,15 @@ public class CalendarData extends BaseObservable {
     public void setMm(int mm) {
         this.mm = mm;
         notifyPropertyChanged(BR.mm);
+    }
+
+    @Bindable
+    public boolean isShowToday() {
+        return showToday;
+    }
+
+    public void setShowToday(boolean showToday) {
+        this.showToday = showToday;
+        notifyPropertyChanged(BR.showToday);
     }
 }

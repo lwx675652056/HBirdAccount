@@ -20,7 +20,6 @@ import com.ljy.devring.DevRing;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -93,7 +92,7 @@ public class AccountDetailedModle extends BaseViewModel{
         List<AccountDetailedBean> list = new ArrayList<>();
 
         if (null != dbList && dbList.size() > 0) {
-            Collections.sort(dbList);
+//            Collections.sort(dbList);
 
             Map<String, Object> dbDate = getDBDate(dbList,accountId,prefSet,yyyy,mm);
             String json = new Gson().toJson(dbDate);

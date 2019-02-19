@@ -55,7 +55,6 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/height_1_80"
-
                 android:text="点击这里开始记账~"
                 android:textColor="@color/white"
                 android:textSize="@dimen/text_size_4"/>

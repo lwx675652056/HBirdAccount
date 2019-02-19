@@ -2,6 +2,7 @@ package com.hbird.common.calendar.weiget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
 import android.util.SparseArray;
@@ -308,6 +309,9 @@ public class CalendarView extends ViewPager {
      * 单选时跳转到今天
      */
     public void today() {
+        mAttrsBean.setDayBg(R.mipmap.calendar_bg_today_normal);
+        mAttrsBean.setColorChoose(Color.WHITE);
+
         int destPosition = CalendarUtil.dateToPosition(CalendarUtil.getCurrentDate()[0], CalendarUtil.getCurrentDate()[1], startDate[0], startDate[1]);
         lastClickDate[0] = destPosition;
         lastClickDate[1] = CalendarUtil.getCurrentDate()[2];
@@ -334,6 +338,15 @@ public class CalendarView extends ViewPager {
     }
 
     private void toDestDate(int year, int month, int day) {
+        int[] days = CalendarUtil.getCurrentDate();
+        if (days[0] == year && days[1] == month && days[2] == day) {
+            mAttrsBean.setDayBg(R.mipmap.calendar_bg_today_normal);
+            mAttrsBean.setColorChoose(Color.WHITE);
+        } else {
+            mAttrsBean.setDayBg(R.mipmap.calendar_bg_selected_normal);
+            mAttrsBean.setColorChoose(Color.BLACK);
+        }
+
         int destPosition = CalendarUtil.dateToPosition(year, month, startDate[0], startDate[1]);
         if (!mAttrsBean.isSwitchChoose() && day != 0) {
             lastClickDate[0] = destPosition;

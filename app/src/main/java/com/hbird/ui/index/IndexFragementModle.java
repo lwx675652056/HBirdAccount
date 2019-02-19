@@ -22,7 +22,6 @@ import com.ljy.devring.DevRing;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -261,7 +260,7 @@ public class IndexFragementModle extends BaseViewModel {
         }
 
         if (null != dbList && dbList.size() > 0) {
-            Collections.sort(dbList);
+//            Collections.sort(dbList);
             Map<String, Object> dbDate = getDBDate(dbList, accountId, yyyy, mm, prefSet);
             String json = new Gson().toJson(dbDate);
             dayListBean.ResultBean bean = new Gson().fromJson(json, dayListBean.ResultBean.class);
