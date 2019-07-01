@@ -168,8 +168,9 @@ dependencies {
     api 'cn.jiguang.sdk.plugin:huawei:3.1.5'
     api'cn.jiguang.sdk.plugin:meizu:3.1.5'
 
-//    implementation 'sing.baseadapter:library:1.0.1'
-//    implementation 'sing.util:library:1.0.14'
+    api 'sing.baseadapter:library:1.0.1'
+    api 'sing.util:library:1.0.14'
+
 
     // bugly
     api 'com.tencent.bugly:crashreport:2.8.6.0'
